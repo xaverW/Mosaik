@@ -19,7 +19,6 @@ package de.mtplayer.gui.tools;
 import de.mtplayer.controller.config.Config;
 import de.mtplayer.controller.config.Daten;
 import de.mtplayer.controller.data.Data;
-import de.mtplayer.controller.data.abo.Abo;
 import de.mtplayer.mLib.tools.Log;
 import de.mtplayer.mLib.tools.MLConfigs;
 import javafx.scene.control.TableColumn;
@@ -27,7 +26,7 @@ import javafx.scene.control.TableView;
 
 public class Table {
     public static enum TABLE {
-        FILM, DOWNLOAD, ABO
+        FILM, DOWNLOAD
     }
 
     private static final String SORT_ASCENDING = "ASCENDING";
@@ -69,13 +68,6 @@ public class Table {
                 confOrder = Config.DOWNLOAD_GUI_TABLE_ORDER;
                 break;
 
-            case ABO:
-                confWidth = Config.ABO_GUI_TABLE_WIDTH;
-                confSort = Config.ABO_GUI_TABLE_SORT;
-                confUpDown = Config.ABO_GUI_TABLE_UPDOWN;
-                confVis = Config.ABO_GUI_TABLE_VIS;
-                confOrder = Config.ABO_GUI_TABLE_ORDER;
-                break;
         }
     }
 
@@ -89,9 +81,6 @@ public class Table {
                 tArray = TableDownload.initDownloadColumn(table);
                 break;
 
-            case ABO:
-                tArray = TableAbo.initAboColumn(table);
-                break;
         }
         String order = confOrder.get();
         String[] arOrder = order.split(",");
@@ -171,9 +160,6 @@ public class Table {
                 resetDownload();
                 break;
 
-            case ABO:
-                resetAbo();
-                break;
         }
     }
 
@@ -342,24 +328,5 @@ public class Table {
         confOrder.setValue("");
     }
 
-    private void resetAbo() {
-        String[] visArray = new String[maxSpalten];
-        String set = "";
-
-        for (int i = 0; i < maxSpalten; ++i) {
-            visArray[i] = Boolean.TRUE.toString();
-        }
-        visArray[Abo.ABO_PSET] = Boolean.FALSE.toString();
-
-        for (int i = 0; i < maxSpalten; ++i) {
-            set += visArray[i] + ",";
-        }
-
-        confWidth.setValue("");
-        confVis.setValue(set);
-        confSort.setValue("");
-        confUpDown.setValue("");
-        confOrder.setValue("");
-    }
 
 }

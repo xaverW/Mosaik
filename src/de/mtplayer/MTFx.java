@@ -16,22 +16,16 @@
 package de.mtplayer;
 
 import de.mtplayer.controller.ProgQuitt;
-import de.mtplayer.controller.ProgSave;
 import de.mtplayer.controller.ProgStart;
 import de.mtplayer.controller.config.Config;
 import de.mtplayer.controller.config.Const;
 import de.mtplayer.controller.config.Daten;
-import de.mtplayer.controller.data.ListePsetVorlagen;
-import de.mtplayer.controller.data.SetList;
-import de.mtplayer.controller.loadFilmlist.ListenerFilmListLoad;
-import de.mtplayer.controller.loadFilmlist.ListenerFilmListLoadEvent;
 import de.mtplayer.gui.dialogStart.StartDialogController;
 import de.mtplayer.gui.tools.GuiSize;
 import de.mtplayer.gui.tools.Listener;
 import de.mtplayer.mLib.tools.Duration;
 import de.mtplayer.mLib.tools.SysMsg;
 import de.mtplayer.res.GetIcon;
-import de.mtplayer.tools.storedFilter.ProgInitFilter;
 import de.mtplayer.tools.update.CheckUpdate;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -133,20 +127,9 @@ public class MTFx extends Application {
             // konnte nicht geladen werden
             Duration.staticPing("Erster Start");
 
-            // einmal ein Muster anlegen, für Linux/OS X ist es bereits aktiv!
-            daten.replaceList.init();
-
             new StartDialogController();
 
-            //todo das ist noch nicht ganz klar ob dahin
-            final SetList pSet = ListePsetVorlagen.getStandarset(true /*replaceMuster*/);
-            if (pSet != null) {
-                Daten.setList.addPset(pSet);
-                Config.SYSTEM_VERSION_PROGRAMMSET.setValue(pSet.version);
-            }
-
             Config.loadSystemParameter();
-            ProgInitFilter.setProgInitFilter();
         }
 
         daten.initDialogs();
@@ -210,26 +193,8 @@ public class MTFx extends Application {
     }
 
     private void initProg() {
-        daten.loadFilmList.addAdListener(new ListenerFilmListLoad() {
-            @Override
-            public void start(ListenerFilmListLoadEvent event) {
-
-            }
-
-            @Override
-            public void fertig(ListenerFilmListLoadEvent event) {
-                new ProgSave().allesSpeichern(); // damit nichts verlorengeht
-            }
-
-            @Override
-            public void fertigOnlyOne(ListenerFilmListLoadEvent event) {
                 // Prüfen obs ein Programmupdate gibt
                 Duration.staticPing(LOG_TEXT_CHECK_UPDATE);
                 new CheckUpdate(daten).checkProgUpdate();
-                daten.mediaDbList.loadSavedList();
-                daten.mediaDbList.createMediaDB();
-            }
-        });
-
     }
 }

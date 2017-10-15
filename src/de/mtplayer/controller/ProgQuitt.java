@@ -18,7 +18,6 @@ package de.mtplayer.controller;
 
 import de.mtplayer.controller.config.Config;
 import de.mtplayer.controller.config.Daten;
-import de.mtplayer.gui.dialog.QuittDialogController;
 import de.mtplayer.gui.tools.GuiSize;
 import de.mtplayer.mLib.tools.Duration;
 import de.mtplayer.mLib.tools.Log;
@@ -31,13 +30,6 @@ public class ProgQuitt {
         daten = Daten.getInstance();
     }
 
-    private void stopAllDownloads() {
-        daten.downloadList.forEach(download ->
-        {
-            if (download.isStateStartedRun())
-                download.stopDownload();
-        });
-    }
 
     private void writeWindowSizes() {
         // Hauptfenster
@@ -48,7 +40,6 @@ public class ProgQuitt {
         // Tabelleneinstellungen merken
         daten.filmGuiController.saveTable();
         daten.downloadGuiController.saveTable();
-        daten.aboGuiController.saveTable();
     }
 
     /**
@@ -70,19 +61,7 @@ public class ProgQuitt {
     }
 
     private boolean beenden_(boolean showOptionTerminate, boolean shutDown) {
-        if (daten.downloadList.countRunningDownloads() > 0) {
-
-            // erst mal prüfen ob noch Downloads laufen
-            if (showOptionTerminate) {
-                QuittDialogController quittDialogController = new QuittDialogController(daten);
-                if (!quittDialogController.canTerminate()) {
-                    return false;
-                }
-            }
-        }
-
         writeTabSettings();
-        stopAllDownloads();
         writeWindowSizes();
 
         new ProgSave().allesSpeichern();

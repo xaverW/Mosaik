@@ -37,12 +37,6 @@ public class Main {
     }
 
     private static final String JAVAFX_CLASSNAME_APPLICATION_PLATFORM = "javafx.application.Platform";
-    private static final String HTTP_PROXY_USER = "http.proxyUser";
-    private static final String HTTP_PROXY_PW = "http.proxyPassword";
-    private static final String LOG_TEXT_PROXY_AUTHENTICATION_SUCESSFUL = "Proxy Authentication: (%s)";
-    private static final String LOG_TEXT_PROXY_AUTHENTICATION_NOT_CONFIGURED = "Proxy Authentication: not configured";
-    private static final String LOG_TEXT_PROXY_PASSWORD_NOT_SET = "Proxy Authentication: Password is not set";
-    private static final String LOG_TEXT_PROXY_AUTHENTICATION_CANNOT_ACCESS_PROXY_USER_PROXY_PW = "Proxy Authentication: cannot access proxyUser / proxyPassword";
     private static final String X11_AWT_APP_CLASS_NAME = "awtAppClassName";
     public static final String TEXT_LINE = "===========================================";
 
@@ -82,8 +76,6 @@ public class Main {
 
     private void start(String... args) {
         if (hasJavaFx()) {
-
-            proxyAuthentication();
 
             if (args != null) {
                 processArgs(args);
@@ -139,27 +131,4 @@ public class Main {
         }
     }
 
-    private void proxyAuthentication() {
-        try {
-            final String prxUser = System.getProperty(HTTP_PROXY_USER, null);
-            final String prxPassword = System.getProperty(HTTP_PROXY_PW, null);
-            if (prxUser != null && prxPassword != null) {
-                final PasswordAuthentication authenticator = new PasswordAuthentication(prxUser, prxPassword.toCharArray());
-                Authenticator.setDefault(new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return authenticator;
-                    }
-                });
-                SysMsg.sysMsg(String.format(LOG_TEXT_PROXY_AUTHENTICATION_SUCESSFUL, prxUser));
-            } else if (prxUser != null && prxPassword == null) {
-                SysMsg.sysMsg(LOG_TEXT_PROXY_PASSWORD_NOT_SET);
-            } else {
-                SysMsg.sysMsg(LOG_TEXT_PROXY_AUTHENTICATION_NOT_CONFIGURED);
-            }
-
-        } catch (final SecurityException se) {
-            SysMsg.sysMsg(LOG_TEXT_PROXY_AUTHENTICATION_CANNOT_ACCESS_PROXY_USER_PROXY_PW + se.toString());
-        }
-    }
 }

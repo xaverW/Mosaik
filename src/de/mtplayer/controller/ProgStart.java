@@ -16,20 +16,18 @@
 
 package de.mtplayer.controller;
 
-import de.mtplayer.controller.config.Config;
 import de.mtplayer.controller.config.Const;
 import de.mtplayer.controller.config.Daten;
 import de.mtplayer.controller.config.ProgInfos;
-import de.mtplayer.controller.loadFilmlist.ListenerFilmListLoadEvent;
-import de.mtplayer.controller.loadFilmlist.ReadFilmlist;
 import de.mtplayer.gui.dialog.MTAlert;
 import de.mtplayer.mLib.MLInit;
-import de.mtplayer.mLib.tools.*;
+import de.mtplayer.mLib.tools.Log;
+import de.mtplayer.mLib.tools.MLAlert;
+import de.mtplayer.mLib.tools.SysMsg;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Date;
 
 import static de.mtplayer.mLib.tools.Log.LILNE;
 
@@ -44,8 +42,6 @@ public class ProgStart {
     // Filmliste beim Programmstart!! laden
     // #########################################################
     public void loadDataProgStart() {
-        // Gui startet ein wenig flüssiger
-        new Thread(new loadFilmlistProgStart_()).start();
     }
 
     public static void startMeldungen() {
@@ -56,37 +52,6 @@ public class ProgStart {
         SysMsg.sysMsg(LILNE);
         SysMsg.sysMsg("");
         SysMsg.sysMsg("");
-    }
-
-    private class loadFilmlistProgStart_ implements Runnable {
-
-        @Override
-        public synchronized void run() {
-            Duration.staticPing("Programmstart Daten laden");
-
-            final Daten daten = Daten.getInstance();
-
-            new ReadFilmlist().readFilmListe(ProgInfos.getFilmListFile(),
-                    daten.filmList,
-                    Integer.parseInt(Config.SYSTEM_ANZ_TAGE_FILMLISTE.get()));
-
-            SysMsg.sysMsg("Liste Filme gelesen am: " + StringFormatters.FORMATTER_ddMMyyyyHHmm.format(new Date()));
-            SysMsg.sysMsg("  erstellt am: " + daten.filmList.genDate());
-            SysMsg.sysMsg("  Anzahl Filme: " + daten.filmList.size());
-            SysMsg.sysMsg("  Anzahl Neue: " + daten.filmList.countNewFilms());
-
-            if (daten.filmList.isTooOld() && Config.SYSTEM_LOAD_FILME_START.getBool()) {
-                SysMsg.sysMsg("Filmliste zu alt, neue Filmliste laden");
-                daten.loadFilmList.loadFilmlist("", false);
-
-            } else {
-                // beim Neuladen wird es dann erst gemacht
-                daten.loadFilmList.notifyStart(new ListenerFilmListLoadEvent("", "", 0, 0, 0, false/* Fehler */));
-                daten.loadFilmList.afterFilmlistLoad();
-                daten.loadFilmList.notifyFertig(new ListenerFilmListLoadEvent("", "", 0, 0, 0, false/* Fehler */));
-            }
-        }
-
     }
 
 
@@ -104,17 +69,12 @@ public class ProgStart {
         }
         SysMsg.sysMsg("Konfig wurde gelesen!");
         MLInit.initLib(Daten.debug, Const.PROGRAMMNAME, ProgInfos.getUserAgent());
-        Daten.mTColor.load(); // Farben einrichten
         return true;
     }
 
     private void clearKonfig() {
         Daten daten = Daten.getInstance();
-        Daten.setList.clear();
-        daten.replaceList.clear();
-        daten.aboList.clear();
         daten.downloadList.clear();
-        daten.blackList.clear();
     }
 
     private boolean load() {

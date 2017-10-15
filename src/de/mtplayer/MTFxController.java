@@ -20,12 +20,11 @@ import de.mtplayer.controller.ProgQuitt;
 import de.mtplayer.controller.config.Config;
 import de.mtplayer.controller.config.Daten;
 import de.mtplayer.controller.data.Icons;
-import de.mtplayer.gui.*;
+import de.mtplayer.gui.DownloadGuiPack;
+import de.mtplayer.gui.FilmGuiPack;
+import de.mtplayer.gui.StatusBarController;
 import de.mtplayer.gui.configDialog.ConfigDialogController;
 import de.mtplayer.gui.dialog.AboutDialogController;
-import de.mtplayer.gui.dialog.ResetDialogController;
-import de.mtplayer.gui.mediaDialog.MediaConfigDialogController;
-import de.mtplayer.gui.tools.WriteProtocolFile;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Insets;
@@ -36,11 +35,8 @@ import org.controlsfx.control.MaskerPane;
 
 public class MTFxController extends StackPane {
 
-    Button btnFilmliste = new Button("Filmliste");
     Button btnFilm = new Button("Filme");
     Button btnDownload = new Button("Downloads");
-    Button btnAbo = new Button("Abos");
-    Button btnMsg = new Button("Meldungen");
 
     MenuButton menuButton = new MenuButton("");
 
@@ -52,15 +48,12 @@ public class MTFxController extends StackPane {
 
     private SplitPane splitPaneFilm;
     private SplitPane splitPaneDownoad;
-    private SplitPane splitPaneAbo;
-    private SplitPane splitPaneMsg;
 
     private final Daten daten;
     BooleanProperty msgVisProperty = Config.MSG_VISIBLE.getBooleanProperty();
 
     FilmGuiPack filmGuiPack = new FilmGuiPack();
     DownloadGuiPack downloadGuiPack = new DownloadGuiPack();
-    AboGuiPack aboGuiPack = new AboGuiPack();
 
 
     public MTFxController() {
@@ -84,16 +77,13 @@ public class MTFxController extends StackPane {
             tilePane.setAlignment(Pos.CENTER);
             HBox.setHgrow(tilePane, Priority.ALWAYS);
 
-            tilePane.getChildren().addAll(btnFilm, btnDownload, btnAbo, btnMsg);
-            hBoxTop.getChildren().addAll(btnFilmliste, tilePane, menuButton);
+            tilePane.getChildren().addAll(btnFilm, btnDownload);
+            hBoxTop.getChildren().addAll( tilePane, menuButton);
 
 
             splitPaneFilm = filmGuiPack.pack();
             splitPaneDownoad = downloadGuiPack.pack();
-            splitPaneAbo = aboGuiPack.pack();
-            splitPaneMsg = new MsgGuiPack().pack();
-            splitPaneMsg.visibleProperty().bind(msgVisProperty);
-            stackPaneCont.getChildren().addAll(splitPaneFilm, splitPaneDownoad, splitPaneAbo, splitPaneMsg);
+            stackPaneCont.getChildren().addAll(splitPaneFilm, splitPaneDownoad);
 
             statusBarController = new StatusBarController(daten);
 
@@ -112,9 +102,6 @@ public class MTFxController extends StackPane {
             maskerPane.toFront();
             maskerPane.setVisible(false);
 
-            btnFilmliste.getStyleClass().add("btnFilmlist");
-            btnFilmliste.setOnAction(e -> daten.loadFilmList.loadFilmlist(""));
-
             btnFilm.getStyleClass().add("btnFilm");
             btnFilm.setOnAction(e -> selPanelFilm());
             btnFilm.setMaxWidth(Double.MAX_VALUE);
@@ -123,31 +110,8 @@ public class MTFxController extends StackPane {
             btnDownload.setOnAction(e -> selPanelDownload());
             btnDownload.setMaxWidth(Double.MAX_VALUE);
 
-            btnAbo.getStyleClass().add("btnAbo");
-            btnAbo.setOnAction(e -> selPanelAbo());
-            btnAbo.setMaxWidth(Double.MAX_VALUE);
-
-            btnMsg.getStyleClass().add("btnMsg");
-            btnMsg.setOnAction(e -> selPanelMsg());
-            btnMsg.visibleProperty().bind(msgVisProperty);
-            btnMsg.managedProperty().bind(msgVisProperty);
-
             final MenuItem miConfig = new MenuItem("Einstellungen");
             miConfig.setOnAction(e -> new ConfigDialogController());
-
-            final MenuItem miMedia = new MenuItem("Mediensammlung");
-            miMedia.setOnAction(e -> new MediaConfigDialogController());
-
-            final CheckMenuItem miMsg = new CheckMenuItem("Meldungen");
-            miMsg.selectedProperty().bindBidirectional(msgVisProperty);
-            miMsg.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue) {
-                    selPanelMsg();
-                    splitPaneMsg.requestLayout();
-                } else {
-                    selPanelFilm();
-                }
-            });
 
             final MenuItem miQuitt = new MenuItem("Beenden");
             miQuitt.setOnAction(e -> new ProgQuitt().beenden(true, false));
@@ -155,33 +119,14 @@ public class MTFxController extends StackPane {
             final MenuItem miAbout = new MenuItem("Über dieses Programm");
             miAbout.setOnAction(event -> new AboutDialogController(daten));
 
-            final MenuItem miLog = new MenuItem("Protokolldatei erstellen");
-            miLog.setOnAction(event -> new WriteProtocolFile().write());
-
-            final MenuItem miReset = new MenuItem("Einstellungen zurücksetzen");
-            miReset.setOnAction(event -> new ResetDialogController(daten));
-
             final Menu mHelp = new Menu("Hilfe");
-            mHelp.getItems().addAll(miAbout, new SeparatorMenuItem(), miLog, miReset);
+            mHelp.getItems().addAll(miAbout);
 
             menuButton.getStyleClass().add("btnFunction");
             menuButton.setText("");
             menuButton.setGraphic(new Icons().FX_ICON_TOOLBAR_MENUE_TOP);
-            menuButton.getItems().addAll(miConfig, miMedia, miMsg, mHelp, new SeparatorMenuItem(), miQuitt);
+            menuButton.getItems().addAll(miConfig, mHelp, new SeparatorMenuItem(), miQuitt);
 
-
-            //todo geht, brauchts das aber unbedingt??
-//            daten.loadFilmList.addAdListener(new ListenerFilmListLoad() {
-//                @Override
-//                public void start(ListenerFilmListLoadEvent event) {
-//                    setMasker();
-//                }
-//
-//                @Override
-//                public void fertig(ListenerFilmListLoadEvent event) {
-//                    resetMasker();
-//                }
-//            });
 
             selPanelFilm();
 
@@ -196,20 +141,11 @@ public class MTFxController extends StackPane {
             return;
         }
 
-        if (stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1).equals(splitPaneFilm)) {
-            filmGuiPack.closeSplit();
-            return;
-        }
-
         btnFilm.getStyleClass().clear();
         btnDownload.getStyleClass().clear();
-        btnAbo.getStyleClass().clear();
-        btnMsg.getStyleClass().clear();
 
         btnFilm.getStyleClass().add("btnTab-sel");
         btnDownload.getStyleClass().add("btnTab");
-        btnAbo.getStyleClass().add("btnTab");
-        btnMsg.getStyleClass().add("btnTab");
 
         splitPaneFilm.toFront();
         daten.filmGuiController.isShown();
@@ -221,67 +157,15 @@ public class MTFxController extends StackPane {
             return;
         }
 
-        if (stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1).equals(splitPaneDownoad)) {
-            downloadGuiPack.closeSplit();
-            return;
-        }
-
         btnFilm.getStyleClass().clear();
         btnDownload.getStyleClass().clear();
-        btnAbo.getStyleClass().clear();
-        btnMsg.getStyleClass().clear();
 
         btnFilm.getStyleClass().add("btnTab");
         btnDownload.getStyleClass().add("btnTab-sel");
-        btnAbo.getStyleClass().add("btnTab");
-        btnMsg.getStyleClass().add("btnTab");
 
         daten.downloadGuiController.isShown();
         splitPaneDownoad.toFront();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.DOWNLOAD);
-    }
-
-    private void selPanelAbo() {
-        if (maskerPane.isVisible()) {
-            return;
-        }
-
-        if (stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1).equals(splitPaneAbo)) {
-            aboGuiPack.closeSplit();
-            return;
-        }
-
-        btnFilm.getStyleClass().clear();
-        btnDownload.getStyleClass().clear();
-        btnAbo.getStyleClass().clear();
-        btnMsg.getStyleClass().clear();
-
-        btnFilm.getStyleClass().add("btnTab");
-        btnDownload.getStyleClass().add("btnTab");
-        btnAbo.getStyleClass().add("btnTab-sel");
-        btnMsg.getStyleClass().add("btnTab");
-
-        daten.aboGuiController.isShown();
-        splitPaneAbo.toFront();
-        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.ABO);
-    }
-
-    private void selPanelMsg() {
-        if (maskerPane.isVisible()) {
-            return;
-        }
-        btnFilm.getStyleClass().clear();
-        btnDownload.getStyleClass().clear();
-        btnAbo.getStyleClass().clear();
-        btnMsg.getStyleClass().clear();
-
-        btnFilm.getStyleClass().add("btnTab");
-        btnDownload.getStyleClass().add("btnTab");
-        btnAbo.getStyleClass().add("btnTab");
-        btnMsg.getStyleClass().add("btnTab-sel");
-
-        splitPaneMsg.toFront();
-        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.NONE);
     }
 
     public void setMasker() {

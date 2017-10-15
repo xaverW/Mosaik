@@ -19,7 +19,6 @@ package de.mtplayer.controller;
 import de.mtplayer.controller.config.Const;
 import de.mtplayer.controller.config.Daten;
 import de.mtplayer.controller.config.ProgInfos;
-import de.mtplayer.controller.loadFilmlist.WriteFilmlistJson;
 import de.mtplayer.gui.dialog.MTAlert;
 import de.mtplayer.mLib.tools.Log;
 import de.mtplayer.mLib.tools.SysMsg;
@@ -46,9 +45,6 @@ public class ProgSave {
         daten = Daten.getInstance();
     }
 
-    public void filmlisteSpeichern() {
-        new WriteFilmlistJson().filmlisteSchreibenJson(ProgInfos.getFilmListFile(), daten.filmList);
-    }
 
     public void allesSpeichern() {
         konfigCopy();

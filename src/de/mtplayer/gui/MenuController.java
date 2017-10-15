@@ -44,9 +44,6 @@ public class MenuController extends VBox {
             case DOWNLOAD:
                 new DownloadMenu(this).init();
                 break;
-            case ABO:
-                new AboMenu(this).init();
-                break;
         }
     }
 

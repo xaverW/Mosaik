@@ -21,6 +21,7 @@ import de.mtplayer.controller.config.Daten;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -32,7 +33,7 @@ public class DownloadGuiPack {
     private final HBox hBox = new HBox();
     DoubleProperty doubleProperty; //sonst geht die Ref verloren
     BooleanProperty boolDivOn;
-    private final DownloadFilterController downloadFilterController;
+    private final AnchorPane downloadFilterController=new AnchorPane();
     private final DownloadGuiController guiController;
 
     private boolean bound = false;
@@ -42,7 +43,6 @@ public class DownloadGuiPack {
         daten = Daten.getInstance();
         this.doubleProperty = Config.DOWNLOAD_GUI_FILTER_DIVIDER.getDoubleProperty();
         this.boolDivOn = Config.DOWNLOAD_GUI_FILTER_DIVIDER_ON.getBooleanProperty();
-        downloadFilterController = new DownloadFilterController();
         guiController = new DownloadGuiController();
     }
 

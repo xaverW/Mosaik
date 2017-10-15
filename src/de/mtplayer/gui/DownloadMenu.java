@@ -76,13 +76,6 @@ public class DownloadMenu {
                 new ToolBarButton(vbox, REMOVE_DOWNLOADS_TEXT, REMOVE_DOWNLOADS_TEXT, new Icons().FX_ICON_TOOLBAR_DOWNLOAD_DEL);
         final ToolBarButton btDownloadClear =
                 new ToolBarButton(vbox, CLEANUP_DL_LIST_TEXT, CLEANUP_DL_LIST_TEXT, new Icons().FX_ICON_TOOLBAR_DOWNLOAD_CLEAR);
-        btDownloadRefresh.setOnAction(a -> daten.downloadGuiController.aktualisieren());
-        btDownloadAll.setOnAction(a -> daten.downloadGuiController.starten(true));
-        btStartDownloads.setOnAction(a -> daten.downloadGuiController.starten(false));
-        btDownloadFilm.setOnAction(a -> daten.downloadGuiController.filmAbspielen());
-        btDownloadBack.setOnAction(a -> daten.downloadGuiController.zurueckstellen());
-        btDownloadDel.setOnAction(a -> daten.downloadGuiController.loeschen());
-        btDownloadClear.setOnAction(a -> daten.downloadGuiController.aufraeumen());
 
     }
 
@@ -94,75 +87,10 @@ public class DownloadMenu {
         mb.getStyleClass().add("btnFunction");
 
         final MenuItem mbStartAll = new MenuItem("alle Downloads starten");
-        mbStartAll.setOnAction(a -> daten.downloadGuiController.starten(true /* alle */));
-
         final MenuItem mbStopAll = new MenuItem("alle Downloads stoppen");
-        mbStopAll.setOnAction(a -> daten.downloadGuiController.stoppen(true /* alle */));
-
-        final MenuItem mbStopWait = new MenuItem("wartende stoppen");
-        mbStopWait.setOnAction(a -> daten.downloadGuiController.wartendeStoppen());
-
-        final MenuItem mbAct = new MenuItem("Liste der Downloads aktualisieren");
-        mbAct.setOnAction(e -> daten.downloadGuiController.aktualisieren());
-
-        final MenuItem mbClean = new MenuItem("Liste der Downloads aufräumen");
-        mbClean.setOnAction(e -> daten.downloadGuiController.aufraeumen());
-
-        final MenuItem miDownloadStart = new MenuItem("Download starten");
-        miDownloadStart.setOnAction(a -> daten.downloadGuiController.starten(false));
-
-        final MenuItem miDownloadStop = new MenuItem("Download stoppen");
-        miDownloadStop.setOnAction(a -> daten.downloadGuiController.stoppen(false));
-
-        final MenuItem miDownloadTop = new MenuItem("Download vorziehen");
-        miDownloadTop.setOnAction(a -> daten.downloadGuiController.vorziehen());
-
-        final MenuItem miDownloadEnd = new MenuItem("Download zurückstellen");
-        miDownloadEnd.setOnAction(a -> daten.downloadGuiController.zurueckstellen());
-
-        final MenuItem miDownloadRemove = new MenuItem("Downloads aus Liste entfernen");
-        miDownloadRemove.setOnAction(a -> daten.downloadGuiController.loeschen());
-
-        final MenuItem miDownloadChange = new MenuItem("Download ändern");
-        miDownloadChange.setOnAction(a -> daten.downloadGuiController.aendern());
-
-        final MenuItem miDownloadGesehen = new MenuItem("Filme als gesehen markieren");
-        miDownloadGesehen.setOnAction(a -> daten.downloadGuiController.filmGesehen());
-
-        final MenuItem miDownloadUngesehen = new MenuItem("Filme als ungesehen markieren");
-        miDownloadUngesehen.setOnAction(a -> daten.downloadGuiController.filmUngesehen());
-
-        final MenuItem miDownloadStored = new MenuItem("gespeicherten Film abspielen");
-        miDownloadStored.setOnAction(a -> daten.downloadGuiController.filmAbspielen());
-
-        final MenuItem miFilmeMediensammlung = new MenuItem("Titel in der Mediensammlung suchen");
-        miFilmeMediensammlung.setOnAction(a -> daten.downloadGuiController.guiFilmMediensammlung());
-
-        final MenuItem miSelection = new MenuItem("Auswahl umkehren");
-        miSelection.setOnAction(a -> daten.downloadGuiController.invertSelection());
-
-        final CheckMenuItem miShowFilter = new CheckMenuItem("Filter anzeigen");
-        miShowFilter.selectedProperty().bindBidirectional(boolDivOn);
-
-        final CheckMenuItem miShowInfo = new CheckMenuItem("Downloadinfos anzeigen");
-        miShowInfo.selectedProperty().bindBidirectional(boolInfoOn);
 
 
-        mb.getItems().addAll(mbStartAll, mbStopAll, mbStopWait, mbAct, mbClean);
-        mb.getItems().add(new SeparatorMenuItem());
-        mb.getItems().addAll(miDownloadStart,
-                miDownloadStop,
-                miDownloadTop,
-                miDownloadEnd,
-                miDownloadRemove,
-                miDownloadChange);
-        mb.getItems().add(new SeparatorMenuItem());
-        mb.getItems().addAll(miDownloadGesehen, miDownloadUngesehen, miDownloadStored, miFilmeMediensammlung);
-        mb.getItems().add(new SeparatorMenuItem());
-        mb.getItems().add(miSelection);
-        mb.getItems().add(new SeparatorMenuItem());
-        mb.getItems().addAll(miShowFilter, miShowInfo);
-
+        mb.getItems().addAll(mbStartAll, mbStopAll);
         vbox.getChildren().add(mb);
 
     }

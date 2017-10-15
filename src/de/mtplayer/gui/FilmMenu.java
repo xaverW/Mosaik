@@ -55,8 +55,6 @@ public class FilmMenu {
         final ToolBarButton btSave =
                 new ToolBarButton(vbox, "Speichern", FILM_RECORD_TEXT, new Icons().FX_ICON_TOOLBAR_FILME_REC);
 
-        btPlay.setOnAction(a -> daten.filmGuiController.playFilmUrl());
-        btSave.setOnAction(a -> daten.filmGuiController.filmSpeichern());
     }
 
     private void initFilmMenu() {
@@ -65,32 +63,9 @@ public class FilmMenu {
         mb.getStyleClass().add("btnFunction");
 
         final MenuItem mbPlay = new MenuItem("Film abspielen");
-        mbPlay.setOnAction(a -> daten.filmGuiController.playFilmUrl());
-
-        final MenuItem mbSave = new MenuItem("Film aufzeichnen");
-        mbSave.setOnAction(e -> daten.filmGuiController.filmSpeichern());
-
-        final MenuItem miFilmeGesehen = new MenuItem("Filme als gesehen markieren");
-        miFilmeGesehen.setOnAction(a -> daten.filmGuiController.filmGesehen());
-
-        final MenuItem miFilmeUngesehen = new MenuItem("Filme als ungesehen markieren");
-        miFilmeUngesehen.setOnAction(a -> daten.filmGuiController.filmUngesehen());
-
-        final MenuItem miFilmeMediensammlung = new MenuItem("Titel in der Mediensammlung suchen");
-        miFilmeMediensammlung.setOnAction(a -> daten.filmGuiController.guiFilmMediensammlung());
-
-        final CheckMenuItem miShowFilter = new CheckMenuItem("Filter anzeigen");
-        miShowFilter.selectedProperty().bindBidirectional(boolFilterOn);
-
-        final CheckMenuItem miShowInfo = new CheckMenuItem("Filminfos anzeigen");
-        miShowInfo.selectedProperty().bindBidirectional(boolInfoOn);
+         final MenuItem mbSave = new MenuItem("Film aufzeichnen");
 
         mb.getItems().addAll(mbPlay, mbSave);
-        mb.getItems().add(new SeparatorMenuItem());
-        mb.getItems().addAll(miFilmeGesehen, miFilmeUngesehen, miFilmeMediensammlung);
-        mb.getItems().add(new SeparatorMenuItem());
-        mb.getItems().addAll(miShowFilter, miShowInfo);
-
-        vbox.getChildren().add(mb);
+         vbox.getChildren().add(mb);
     }
 }

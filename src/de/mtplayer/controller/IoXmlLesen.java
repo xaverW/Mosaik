@@ -19,24 +19,15 @@ package de.mtplayer.controller;
 
 import de.mtplayer.controller.config.Config;
 import de.mtplayer.controller.config.Daten;
-import de.mtplayer.controller.data.*;
-import de.mtplayer.controller.data.abo.Abo;
-import de.mtplayer.controller.data.abo.AboXml;
 import de.mtplayer.controller.data.download.Download;
 import de.mtplayer.controller.data.download.DownloadXml;
-import de.mtplayer.controller.loadFilmlist.FilmlistUrlData;
-import de.mtplayer.gui.tools.Listener;
 import de.mtplayer.mLib.tools.Duration;
 import de.mtplayer.mLib.tools.Log;
 import de.mtplayer.mLib.tools.MLConfigs;
-import de.mtplayer.tools.storedFilter.FilterToXml;
-import de.mtplayer.tools.storedFilter.ProgInitFilter;
-import de.mtplayer.tools.storedFilter.SelectedFilter;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -58,10 +49,8 @@ public class IoXmlLesen implements AutoCloseable {
     public boolean readConfiguration(Path xmlFilePath) {
         Duration.counterStart("Konfig lesen");
         boolean ret = false;
-        int filtercount = 0;
 
         if (Files.exists(xmlFilePath)) {
-            SetData psetData = null;
             XMLStreamReader parser = null;
             try (InputStream is = Files.newInputStream(xmlFilePath);
                  InputStreamReader in = new InputStreamReader(is, StandardCharsets.UTF_8)) {
@@ -74,94 +63,12 @@ public class IoXmlLesen implements AutoCloseable {
                                 // System
                                 getConfig(parser, Config.SYSTEM);
                                 break;
-                            case SetData.TAG:
-                                // Programmgruppen
-                                psetData = new SetData();
-                                if (get(parser, SetData.TAG, SetData.XML_NAMES, psetData.arr)) {
-                                    psetData.setPropsFromXml();
-                                    Daten.setList.add(psetData);
-                                }
-                                break;
-                            case ProgData.TAG:
-                                final ProgData progData = new ProgData();
-                                if (get(parser, ProgData.TAG, ProgData.XML_NAMES, progData.arr)) {
-                                    if (psetData != null) {
-                                        progData.setPropsFromXml();
-                                        psetData.addProg(progData);
-                                    }
-                                }
-                                // ende Programgruppen
-                                break;
-                            case ReplaceData.TAG:
-                                // Ersetzungstabelle
-                                final ReplaceData replaceData = new ReplaceData();
-                                if (get(parser, ReplaceData.TAG, ReplaceData.COLUMN_NAMES, replaceData.arr)) {
-                                    replaceData.setPropsFromXml();
-                                    daten.replaceList.add(replaceData);
-                                }
-                                break;
-                            case AboXml.TAG:
-                                // Abo
-                                final Abo abo = new Abo();
-                                if (get(parser, AboXml.TAG, AboXml.XML_NAMES, abo.arr)) {
-                                    abo.setPropsFromXml();
-                                    daten.aboList.addAbo(abo);
-                                }
-
-                                break;
                             case DownloadXml.TAG:
                                 // Downloads
                                 final Download d = new Download();
                                 if (get(parser, DownloadXml.TAG, DownloadXml.XML_NAMES, d.arr)) {
                                     d.setPropsFromXml();
                                     daten.downloadList.add(d);
-                                }
-                                break;
-                            case BlackData.TAG:
-                                // Blacklist
-                                final BlackData blackData = new BlackData();
-                                if (get(parser, BlackData.TAG, BlackData.XML_NAMES, blackData.arr)) {
-                                    blackData.setPropsFromXml();
-                                    daten.blackList.add(blackData);
-                                }
-                                break;
-                            case MediaPathData.TAG:
-                                // Blacklist
-                                final MediaPathData mp = new MediaPathData();
-                                if (get(parser, MediaPathData.TAG, MediaPathData.XML_NAMES, mp.arr)) {
-                                    mp.setPropsFromXml();
-                                    daten.mediaPathList.add(mp);
-                                }
-                                break;
-                            case FilterToXml.TAG:
-                                // Filter
-                                final SelectedFilter sf = new SelectedFilter();
-                                final String[] ar = FilterToXml.getEmptyArray();
-                                if (get(parser, FilterToXml.TAG, FilterToXml.getXmlArray(), ar)) {
-                                    FilterToXml.setValueArray(sf, ar);
-                                    if (filtercount == 0) {
-                                        SelectedFilter.copyFilter(sf, daten.storedFilter.getSelectedFilter());
-                                    } else {
-                                        daten.storedFilter.getStordeFilterList().add(sf);
-                                    }
-                                    ++filtercount;
-                                }
-                                break;
-                            case FilmlistUrlData.FILMLIST_UPDATE_SERVER:
-                                // Urls Filmlisten
-                                final FilmlistUrlData filmlistUrlData = new FilmlistUrlData();
-                                if (get(parser,
-                                        FilmlistUrlData.FILMLIST_UPDATE_SERVER,
-                                        FilmlistUrlData.FILMLIST_UPDATE_SERVER_COLUMN_NAMES,
-                                        filmlistUrlData.arr)) {
-                                    switch (filmlistUrlData.arr[FilmlistUrlData.FILMLIST_UPDATE_SERVER_ART_NR]) {
-                                        case FilmlistUrlData.SERVER_ART_AKT:
-                                            daten.loadFilmList.getDownloadUrlsFilmlisten_akt().addWithCheck(filmlistUrlData);
-                                            break;
-                                        case FilmlistUrlData.SERVER_ART_DIFF:
-                                            daten.loadFilmList.getDownloadUrlsFilmlisten_diff().addWithCheck(filmlistUrlData);
-                                            break;
-                                    }
                                 }
                                 break;
                         }
@@ -179,15 +86,6 @@ public class IoXmlLesen implements AutoCloseable {
                 } catch (final Exception ignored) {
                 }
             }
-            daten.downloadList.initDownloads();
-            daten.aboList.sort();
-            daten.aboList.aenderungMelden();
-            // ListeFilmUpdateServer aufbauen
-            daten.loadFilmList.getDownloadUrlsFilmlisten_akt().sort();
-            daten.loadFilmList.getDownloadUrlsFilmlisten_diff().sort();
-            if (daten.storedFilter.getStordeFilterList().isEmpty()) {
-                ProgInitFilter.setProgInitFilter();
-            }
             Config.loadSystemParameter();
         }
 
@@ -195,69 +93,6 @@ public class IoXmlLesen implements AutoCloseable {
         return ret;
     }
 
-    public ImportStatistics importConfiguration(String datei,
-                                                boolean importAbos,
-                                                boolean importBlacklist,
-                                                boolean importReplaceList) {
-        final ImportStatistics stats = new ImportStatistics();
-        XMLStreamReader parser = null;
-        try (FileInputStream fis = new FileInputStream(datei);
-             InputStreamReader in = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
-            parser = inFactory.createXMLStreamReader(in);
-            while (parser.hasNext()) {
-                final int event = parser.next();
-                if (event == XMLStreamConstants.START_ELEMENT) {
-
-                    if (importAbos && parser.getLocalName().equals(AboXml.TAG)) {
-                        // Abo
-                        final Abo abo = new Abo();
-                        if (get(parser, AboXml.TAG, AboXml.XML_NAMES, abo.arr)) {
-                            abo.setPropsFromXml();
-                            stats.foundAbos++;
-                            daten.aboList.addAbo(abo);
-                        }
-                    } else if (importBlacklist && parser.getLocalName().equals(BlackData.TAG)) {
-                        // Blacklist
-                        final BlackList blacklist = daten.blackList;
-                        final BlackData blackData = new BlackData();
-                        if (get(parser, BlackData.TAG, BlackData.XML_NAMES, blackData.arr)) {
-                            blackData.setPropsFromXml();
-                            stats.foundBlacklist++;
-                            blacklist.add(blackData);
-                        }
-                    } else if (importReplaceList && parser.getLocalName().equals(ReplaceData.TAG)) {
-                        // Ersetzungstabelle
-                        final ReplaceData replaceData = new ReplaceData();
-                        if (get(parser, ReplaceData.TAG, ReplaceData.COLUMN_NAMES, replaceData.arr)) {
-                            replaceData.setPropsFromXml();
-                            stats.foundReplacements++;
-                            daten.replaceList.add(replaceData);
-                        }
-                    }
-                }
-            }
-        } catch (final Exception ex) {
-            Log.errorLog(302045698, ex);
-        } finally {
-            try {
-                if (parser != null) {
-                    parser.close();
-                }
-            } catch (final Exception ignored) {
-            }
-        }
-
-        if (stats.foundAbos > 0) {
-            daten.aboList.aenderungMelden();
-        }
-        if (stats.foundBlacklist > 0) {
-            daten.blackList.filterListAndNotifyListeners();
-        }
-        if (stats.foundReplacements > 0) {
-            Listener.notify(Listener.EREIGNIS_REPLACELIST_CHANGED, IoXmlLesen.class.getSimpleName());
-        }
-        return stats;
-    }
 
     private boolean get(XMLStreamReader parser, String xmlElem, String[] xmlNames, String[] strRet) {
         boolean ret = true;
@@ -323,18 +158,4 @@ public class IoXmlLesen implements AutoCloseable {
 
     }
 
-    public class ImportStatistics {
-
-        public int foundAbos = 0;
-        public int foundBlacklist = 0;
-        public int foundReplacements = 0;
-    }
-
-    private String[] getArr(int i) {
-        String[] str = new String[i];
-        for (int ii = 0; ii < i; ++ii) {
-            str[ii] = "";
-        }
-        return str;
-    }
 }

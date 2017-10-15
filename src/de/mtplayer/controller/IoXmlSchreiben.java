@@ -20,17 +20,10 @@ import de.mtplayer.controller.config.Config;
 import de.mtplayer.controller.config.Const;
 import de.mtplayer.controller.config.Daten;
 import de.mtplayer.controller.config.ProgInfos;
-import de.mtplayer.controller.data.*;
-import de.mtplayer.controller.data.abo.Abo;
-import de.mtplayer.controller.data.abo.AboXml;
 import de.mtplayer.controller.data.download.Download;
 import de.mtplayer.controller.data.download.DownloadXml;
-import de.mtplayer.controller.loadFilmlist.FilmlistUrlData;
 import de.mtplayer.mLib.tools.Log;
 import de.mtplayer.mLib.tools.SysMsg;
-import de.mtplayer.tools.storedFilter.FilterToXml;
-import de.mtplayer.tools.storedFilter.SelectedFilter;
-import de.mtplayer.tools.storedFilter.StoredFilter;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -41,7 +34,6 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class IoXmlSchreiben implements AutoCloseable {
 
@@ -61,36 +53,9 @@ public class IoXmlSchreiben implements AutoCloseable {
         xmlDatenSchreiben();
     }
 
-    public synchronized void exportPset(SetData[] pSet, String datei) {
-        try {
-            xmlFilePath = Paths.get(datei);
-            SysMsg.sysMsg("Pset exportieren nach: " + xmlFilePath.toString());
-            xmlSchreibenStart();
-            xmlSchreibenPset(pSet);
-            xmlSchreibenEnde();
-        } catch (final Exception ex) {
-            Log.errorLog(392846204, ex, "nach: " + datei);
-        }
-    }
-
     private void xmlDatenSchreiben() {
         try {
             xmlSchreibenStart();
-
-            writer.writeCharacters("\n\n");
-            writer.writeComment("Abos");
-            writer.writeCharacters("\n");
-            xmlSchreibenAbo();
-
-            writer.writeCharacters("\n\n");
-            writer.writeComment("Blacklist");
-            writer.writeCharacters("\n");
-            xmlSchreibenBlackList();
-
-            writer.writeCharacters("\n\n");
-            writer.writeComment("Filter-Film");
-            writer.writeCharacters("\n");
-            xmlSchreibenFilterFilm();
 
             writer.writeCharacters("\n\n");
             writer.writeComment(Config.PARAMETER_INFO);
@@ -101,29 +66,9 @@ public class IoXmlSchreiben implements AutoCloseable {
             writer.writeCharacters("\n");
 
             writer.writeCharacters("\n\n");
-            writer.writeComment("Programmsets");
-            writer.writeCharacters("\n");
-            xmlSchreibenProg();
-
-            writer.writeCharacters("\n\n");
-            writer.writeComment("Ersetzungstabelle");
-            writer.writeCharacters("\n");
-            xmlWriteReplaceData();
-
-            writer.writeCharacters("\n\n");
             writer.writeComment("Downloads");
             writer.writeCharacters("\n");
             xmlSchreibenDownloads();
-
-            writer.writeCharacters("\n\n");
-            writer.writeComment("Pfade MedienDB");
-            writer.writeCharacters("\n");
-            xmlSchreibenMediaPath();
-
-            writer.writeCharacters("\n\n");
-            writer.writeComment("Update Filmliste");
-            writer.writeCharacters("\n");
-            xmlSchreibenFilmUpdateServer();
 
             writer.writeCharacters("\n\n");
             xmlSchreibenEnde();
@@ -145,38 +90,6 @@ public class IoXmlSchreiben implements AutoCloseable {
         writer.writeCharacters("\n");// neue Zeile
     }
 
-    private void xmlWriteReplaceData() {
-        daten.replaceList.stream().forEach(replaceData -> {
-            replaceData.setXmlFromProps();
-            xmlSchreibenDaten(ReplaceData.TAG, ReplaceData.COLUMN_NAMES, replaceData.arr, false);
-        });
-    }
-
-    private void xmlSchreibenProg() {
-        // Proggruppen schreiben, bei Konfig-Datei
-        for (final SetData psetData : Daten.setList) {
-            psetData.setXmlFromProps();
-            xmlSchreibenDaten(SetData.TAG, SetData.XML_NAMES, psetData.arr, false);
-            for (final ProgData progData : psetData.getProgList()) {
-                progData.setXmlFromProps();
-                xmlSchreibenDaten(ProgData.TAG, ProgData.XML_NAMES, progData.arr, false);
-            }
-        }
-    }
-
-    private void xmlSchreibenPset(SetData[] psetArray) throws XMLStreamException {
-        // wird beim Export Sets verwendete
-        writer.writeCharacters("\n\n");
-        for (final SetData pset : psetArray) {
-            pset.setXmlFromProps();
-            xmlSchreibenDaten(SetData.TAG, SetData.XML_NAMES, pset.arr, true);
-            for (final ProgData progData : pset.getProgList()) {
-                progData.setXmlFromProps();
-                xmlSchreibenDaten(ProgData.TAG, ProgData.XML_NAMES, progData.arr, true);
-            }
-            writer.writeCharacters("\n\n");
-        }
-    }
 
     private void xmlSchreibenDownloads() {
         // Downloads schreiben
@@ -193,78 +106,6 @@ public class IoXmlSchreiben implements AutoCloseable {
         }
     }
 
-    private void xmlSchreibenAbo() {
-        // Abo schreiben
-        for (final Abo abo : daten.aboList) {
-            abo.setXmlFromProps();
-            xmlSchreibenDaten(AboXml.TAG, AboXml.XML_NAMES, abo.arr, false);
-        }
-    }
-
-    private void xmlSchreibenMediaPath() {
-        // Pfade der MedienDB schreiben
-        for (final MediaPathData mp : daten.mediaPathList) {
-            mp.setXmlFromProps();
-            xmlSchreibenDaten(MediaPathData.TAG, MediaPathData.XML_NAMES, mp.arr, false);
-        }
-    }
-
-    private void xmlSchreibenBlackList() {
-        // Blacklist schreiben
-        for (final BlackData blacklist : daten.blackList) {
-            blacklist.setXmlFromProps();
-            xmlSchreibenDaten(BlackData.TAG, BlackData.XML_NAMES, blacklist.arr, false);
-        }
-    }
-
-    private void xmlSchreibenFilterFilm() throws XMLStreamException {
-        // Filter schreiben, aktuellen
-        final SelectedFilter akt_sf = daten.storedFilter.getSelectedFilter();
-        // nur zur Info im Config-File
-        akt_sf.setName(StoredFilter.SELECTED_FILTER_NAME);
-
-        writer.writeComment("aktuelle Filtereinstellungen");
-        writer.writeCharacters("\n");
-
-        xmlSchreibenDaten(FilterToXml.TAG,
-                FilterToXml.getXmlArray(),
-                FilterToXml.getValueArray(daten.storedFilter.getSelectedFilter()),
-                true);
-
-        writer.writeCharacters("\n");
-        writer.writeComment("gespeicherte Filter");
-        writer.writeCharacters("\n");
-        // Liste der Filterprofile
-        daten.storedFilter.getStordeFilterList().stream().forEach((sf) -> {
-            xmlSchreibenDaten(FilterToXml.TAG, FilterToXml.getXmlArray(), FilterToXml.getValueArray(sf), true);
-        });
-    }
-
-    private void xmlSchreibenFilmUpdateServer() throws XMLStreamException {
-        // FilmUpdate schreiben
-        writer.writeCharacters("\n");
-        writer.writeComment("Akt-Filmliste");
-        writer.writeCharacters("\n");
-
-        for (final FilmlistUrlData datenUrlFilmliste : daten.loadFilmList.getDownloadUrlsFilmlisten_akt()) {
-            datenUrlFilmliste.arr[FilmlistUrlData.FILMLIST_UPDATE_SERVER_ART_NR] = FilmlistUrlData.SERVER_ART_AKT;
-            xmlSchreibenDaten(FilmlistUrlData.FILMLIST_UPDATE_SERVER,
-                    FilmlistUrlData.FILMLIST_UPDATE_SERVER_COLUMN_NAMES,
-                    datenUrlFilmliste.arr,
-                    false);
-        }
-
-        writer.writeCharacters("\n");
-        writer.writeComment("Diff-Filmliste");
-        writer.writeCharacters("\n");
-        for (final FilmlistUrlData datenUrlFilmliste : daten.loadFilmList.getDownloadUrlsFilmlisten_diff()) {
-            datenUrlFilmliste.arr[FilmlistUrlData.FILMLIST_UPDATE_SERVER_ART_NR] = FilmlistUrlData.SERVER_ART_DIFF;
-            xmlSchreibenDaten(FilmlistUrlData.FILMLIST_UPDATE_SERVER,
-                    FilmlistUrlData.FILMLIST_UPDATE_SERVER_COLUMN_NAMES,
-                    datenUrlFilmliste.arr,
-                    false);
-        }
-    }
 
     private void xmlSchreibenDaten(String xmlName, String[] xmlSpalten, String[] datenArray, boolean newLine) {
         final int xmlMax = datenArray.length;

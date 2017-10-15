@@ -18,32 +18,12 @@
 package de.mtplayer.controller.config;
 
 import com.jidesoft.utils.SystemInfo;
-import de.mtplayer.controller.data.film.FilmXml;
 import de.mtplayer.gui.tools.SetsPrograms;
 import de.mtplayer.mLib.tools.*;
-import de.mtplayer.tools.storedFilter.SelectedFilter;
 
 public class Config extends MLConfig {
 
     public static final String SYSTEM = "system";
-
-    // ============================================
-    // Programm-Configs, änderbar nur im Konfig-File
-    // ============================================
-    // 250 Sekunden, wie bei Firefox
-    public static MLConfigs SYSTEM_PARAMETER_DOWNLOAD_TIMEOUT_SEKUNDEN = addNewKey("__system-parameter__download-timeout-sekunden_250__", "250");
-    // max. Startversuche für fehlgeschlagene Downloads (insgesamt: restart * restart_http Versuche)
-    public static MLConfigs SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART = addNewKey("__system-parameter__download-max-restart_5__", "5");
-    // max. Startversuche für fehlgeschlagene Downloads, direkt beim Download
-    public static MLConfigs SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART_HTTP = addNewKey("__system-parameter__download-max-restart-http_10__", "10");
-    // Beim Dialog "Download weiterführen" wird in dieser Zeit der DownloadXml weitergeführt
-    public static MLConfigs SYSTEM_PARAMETER_DOWNLOAD_WEITERFUEHREN_IN_SEKUNDEN = addNewKey("__system-parameter__download-weiterfuehren-sekunden_60__", "60");
-    // Downloadfehlermeldung wird xx Sedunden lang angezeigt
-    public static MLConfigs SYSTEM_PARAMETER_DOWNLOAD_ERRORMSG_IN_SEKUNDEN = addNewKey("__system-parameter__download-fehlermeldung-sekunden_30__", "30");
-    // Useragent für direkte Downloads
-    public static MLConfigs SYSTEM_PARAMETER_USERAGENT = addNewKey("__system-parameter__useragent__", Const.USER_AGENT_DEFAULT);
-    // Downloadprogress im Terminal (-auto) anzeigen
-    public static MLConfigs SYSTEM_PARAMETER_DOWNLOAD_PROGRESS = addNewKey("__system-parameter__dl_progress_", Boolean.TRUE.toString());
 
     // ============================================
     public static MLConfigs SYSTEM_BUILD_NR = addNewKey("BuildNr");
@@ -57,8 +37,6 @@ public class Config extends MLConfig {
     public static MLConfigs SYSTEM_PROG_OPEN_DIR = addNewKey("Programm-Ordner-oeffnen");
     public static MLConfigs SYSTEM_PROG_OPEN_URL = addNewKey("Programm-Url-oeffnen");
     public static MLConfigs SYSTEM_PROG_PLAY_FILE = addNewKey("Programm-zum-Abspielen");
-    public static MLConfigs SYSTEM_GEO_MARK = addNewKey("Geo-markieren", Boolean.TRUE.toString());
-    public static MLConfigs SYSTEM_GEO_HOME_PLACE = addNewKey("Geo-Standort", FilmXml.GEO_DE);
 
     // Fenstereinstellungen
     public static MLConfigs SYSTEM_GROESSE_GUI = addNewKey("Groesse-Gui", "1000:900");
@@ -127,7 +105,6 @@ public class Config extends MLConfig {
     // Abo
     public static MLConfigs ABO_SOFORT_SUCHEN = addNewKey("Abo-sofort-suchen", Boolean.TRUE.toString());
     public static MLConfigs ABO_MIN_SIZE_MIN = addNewKey("Abo-Mindestdauer-Minuten", 0); //Vorgabe beim Anlegen eines Abos
-    public static MLConfigs ABO_MAX_SIZE_MIN = addNewKey("Abo-Maxdestdauer-Minuten", SelectedFilter.FILTER_DURATIION_MAX_MIN); //Vorgabe beim Anlegen eines Abos
     public static MLConfigs ABO_EDIT_DIALOG_GROESSE = addNewKey("Abo-Edit-Dialog-Groesse");
     public static MLConfigs ABO_GUI_FILTER_DIVIDER = addNewKey("Abo-Gui-Filter-Divider", Const.GUI_ABO_FILTER_DIVIDER_LOCATION);
     public static MLConfigs ABO_GUI_FILTER_DIVIDER_ON = addNewKey("Abo-Gui-Filter-Divider-On", Boolean.TRUE.toString());
@@ -196,61 +173,11 @@ public class Config extends MLConfig {
     public static MLConfigs FARBE__DOWNLOAD_DATEINAME_ALT = addNewKey("FARBE_DOWNLOAD_DATEINAME_ALT");
 
 
-    public static String PARAMETER_INFO = "\n" + "\t"
-            + "\"__system-parameter__xxx\" können nur im Konfigfile geändert werden\n"
-            + "\t" + "und sind auch nicht für ständige Änderungen gedacht.\n"
-            + "\t" + "Wird eine Zeile gelöscht, wird der Parameter wieder mit dem Standardwert angelegt.\n"
-            + "\n"
-            + "\t" + SYSTEM_PARAMETER_DOWNLOAD_TIMEOUT_SEKUNDEN.getKey() + "\n"
-            + "\t" + "Timeout für direkte Downloads, Standardwert: "
-            + SYSTEM_PARAMETER_DOWNLOAD_TIMEOUT_SEKUNDEN.getInitValue() + "\n" +
-            "\n"
-            + "\t" + SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART.getKey() + "\n"
-            + "\t" + "max. Startversuche für fehlgeschlagene Downloads, am Ende aller Downloads\n"
-            + "\t" + "(Versuche insgesamt: DOWNLOAD_MAX_RESTART * DOWNLOAD_MAX_RESTART_HTTP), Standardwert: " +
-            SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART.getInitValue() + "\n" +
-            "\n"
-            + "\t" + SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART_HTTP.getKey() + "\n"
-            + "\t" + "max. Startversuche für fehlgeschlagene Downloads, direkt beim Download,\n"
-            + "\t" + "(Versuche insgesamt: DOWNLOAD_MAX_RESTART * DOWNLOAD_MAX_RESTART_HTTP), Standardwert: "
-            + SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART_HTTP.getInitValue() + "\n" +
-            "\n"
-            + "\t" + SYSTEM_PARAMETER_DOWNLOAD_WEITERFUEHREN_IN_SEKUNDEN.getKey() + "\n"
-            + "\t" + "Beim Dialog \"Download weiterführen\" wird nach dieser Zeit der DownloadXml weitergeführt, Standardwert: "
-            + SYSTEM_PARAMETER_DOWNLOAD_WEITERFUEHREN_IN_SEKUNDEN.getInitValue() + "\n" +
-            "\n"
-            + "\t" + SYSTEM_PARAMETER_DOWNLOAD_ERRORMSG_IN_SEKUNDEN.getKey() + "\n"
-            + "\t" + "Downloadfehlermeldung wird xx Sedunden lang angezeigt, Standardwert: "
-            + SYSTEM_PARAMETER_DOWNLOAD_ERRORMSG_IN_SEKUNDEN.getInitValue() + "\n" +
-            "\n"
-            + "\t" + SYSTEM_PARAMETER_DOWNLOAD_PROGRESS.getKey() + "\n"
-            + "\t" + "Downloadprogress im Terminal (-auto) anzeigen: "
-            + SYSTEM_PARAMETER_DOWNLOAD_PROGRESS.getInitValue() + "\n" +
-            "\n"
-            + "\t" + SYSTEM_PARAMETER_USERAGENT.getKey() + "\n"
-            + "\t" + "Useragent für direkte Downloads, Standardwert: "
-            + SYSTEM_PARAMETER_USERAGENT.get()
-            + "\n";
-
-
     public static void loadSystemParameter() {
-        check(SYSTEM_PARAMETER_DOWNLOAD_TIMEOUT_SEKUNDEN, 5, 1000);
-        check(SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART, 0, 100);
-        check(SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART_HTTP, 0, 100);
-        check(SYSTEM_PARAMETER_DOWNLOAD_WEITERFUEHREN_IN_SEKUNDEN, 5, 1000);
-        check(SYSTEM_PARAMETER_DOWNLOAD_ERRORMSG_IN_SEKUNDEN, 5, 1000);
-
         Log.sysLog("");
         Log.sysLog("=======================================");
         Log.sysLog("Systemparameter");
         Log.sysLog("-----------------");
-        Log.sysLog("Download-Timeout [s]: " + SYSTEM_PARAMETER_DOWNLOAD_TIMEOUT_SEKUNDEN.getInt());
-        Log.sysLog("max. Download-Restart: " + SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART.getInt());
-        Log.sysLog("max. Download-Restart-Http: " + SYSTEM_PARAMETER_DOWNLOAD_MAX_RESTART_HTTP.getInt());
-        Log.sysLog("Download weiterführen in [s]: " + SYSTEM_PARAMETER_DOWNLOAD_WEITERFUEHREN_IN_SEKUNDEN.getInt());
-        Log.sysLog("Download Fehlermeldung anzeigen [s]: " + Config.SYSTEM_PARAMETER_DOWNLOAD_ERRORMSG_IN_SEKUNDEN.getInt());
-        Log.sysLog("Downoadprogress anzeigen: " + Config.SYSTEM_PARAMETER_DOWNLOAD_PROGRESS.get());
-        Log.sysLog("Useragent: " + Config.SYSTEM_PARAMETER_USERAGENT.get());
         Log.sysLog("=======================================");
         Log.sysLog("");
     }

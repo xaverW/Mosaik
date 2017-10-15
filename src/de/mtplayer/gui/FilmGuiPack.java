@@ -21,6 +21,7 @@ import de.mtplayer.controller.config.Daten;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -32,7 +33,7 @@ public class FilmGuiPack {
     private final HBox hBox = new HBox();
     static DoubleProperty doubleProperty;//sonst geht die Ref verloren
     static BooleanProperty boolDivOn;
-    private final FilmFilterController filmFilterController;
+    private final AnchorPane filmFilterController=new AnchorPane();
     private final FilmGuiController guiController;
     private boolean bound = false;
 
@@ -40,7 +41,6 @@ public class FilmGuiPack {
         daten = Daten.getInstance();
         this.doubleProperty = Config.FILM_GUI_FILTER_DIVIDER.getDoubleProperty();
         this.boolDivOn = Config.FILM_GUI_FILTER_DIVIDER_ON.getBooleanProperty();
-        filmFilterController = new FilmFilterController();
         guiController = new FilmGuiController();
     }
 

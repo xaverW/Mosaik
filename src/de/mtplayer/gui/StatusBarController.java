@@ -174,8 +174,7 @@ public class StatusBarController extends AnchorPane {
 
 
     private void setTextNone() {
-        final int anzAll = daten.filmList.size();
-        lblLeftNone.setText("Anzahl Filme: " + anzAll);
+        lblLeftNone.setText("Anzahl Filme: " + 0);
     }
 
     private void setInfoFilme() {

@@ -18,17 +18,10 @@ package de.mtplayer.tools.update;
 
 import de.mtplayer.controller.config.Config;
 import de.mtplayer.controller.config.Daten;
-import de.mtplayer.controller.data.ListePsetVorlagen;
-import de.mtplayer.controller.data.SetData;
-import de.mtplayer.controller.data.SetList;
-import de.mtplayer.gui.dialog.NewSetDialogController;
 import de.mtplayer.gui.tools.Listener;
-import de.mtplayer.gui.tools.SetsPrograms;
 import de.mtplayer.mLib.tools.Functions;
 import de.mtplayer.mLib.tools.Log;
 import de.mtplayer.mLib.tools.StringFormatters;
-import de.mtplayer.mLib.tools.SysMsg;
-import javafx.application.Platform;
 
 import java.util.Date;
 
@@ -88,93 +81,5 @@ public class CheckUpdate {
     }
 
     private void checkForPsetUpdates() {
-        if (updateCheckAlreadyPerformed) {
-            return;// nur einmal laufen
-        } else {
-            updateCheckAlreadyPerformed = true;
-        }
-
-        try {
-            Platform.runLater(() -> {
-
-                final SetList listePsetStandard = ListePsetVorlagen.getStandarset(false /* replaceMuster */);
-                final String version = Config.SYSTEM_VERSION_PROGRAMMSET.get();
-                if (listePsetStandard == null) {
-                    return;
-                }
-
-                if (!Daten.setList.isEmpty()) {
-                    // ansonsten ist die Liste leer und dann gibts immer was
-                    if (listePsetStandard.version.isEmpty()) {
-                        // dann hat das Laden der aktuellen Standardversion nicht geklappt
-                        return;
-                    }
-
-                    if (version.equals(listePsetStandard.version)) {
-                        // dann passt alles
-                        return;
-                    }
-
-                    final NewSetDialogController newSetDialogController = new NewSetDialogController(daten);
-                    if (newSetDialogController.getReplaceSet()) {
-                        // dann werden die Sets durch die Neuen ersetzt
-                        Daten.setList.clear();
-                    } else if (!newSetDialogController.getAddNewSet()) {
-                        // und wenn auch nicht "Anfügen" gewählt, dann halt nix
-                        SysMsg.sysMsg("Setanlegen: Abbruch");
-                        if (!newSetDialogController.getAskAgain()) {
-                            // dann auch die Versionsnummer aktualisieren
-                            SysMsg.sysMsg("Setanlegen: Nicht wieder nachfragen");
-                            Config.SYSTEM_VERSION_PROGRAMMSET.setValue(listePsetStandard.version);
-                        }
-                        SysMsg.sysMsg("==========================================");
-                        return;
-                    }
-                }
-
-
-                // ========================================
-                // gibt keine Sets oder aktualisieren
-                // damit die Variablen ersetzt werden
-                SetList.progMusterErsetzen(listePsetStandard);
-                Config.SYSTEM_VERSION_PROGRAMMSET.setValue(listePsetStandard.version);
-
-                // die Zielpafade anpassen
-                final SetList listePsetOrgSpeichern = Daten.setList.getListeSpeichern();
-
-                if (!listePsetOrgSpeichern.isEmpty()) {
-                    for (final SetData psNew : listePsetStandard.getListeSpeichern()) {
-                        psNew.setDestPath(listePsetOrgSpeichern.get(0).getDestPath());
-                        psNew.setGenThema(listePsetOrgSpeichern.get(0).isGenThema());
-                        psNew.setMaxSize(listePsetOrgSpeichern.get(0).getMaxSize());
-                        psNew.setMaxField(listePsetOrgSpeichern.get(0).getMaxField());
-                    }
-                }
-
-                if (!Daten.setList.isEmpty()) {
-                    // wenn leer, dann gibts immer die neuen und die sind dann auch aktiv
-                    for (final SetData psNew : listePsetStandard) {
-                        // die bestehenden Sets sollen nicht gestört werden
-                        psNew.setPlay(false);
-                        psNew.setAbo(false);
-                        psNew.setButton(false);
-                        psNew.setSave(false);
-                    }
-
-                    // damit man sie auch findet :)
-                    final String date = StringFormatters.FORMATTER_ddMMyyyy.format(new Date());
-                    listePsetStandard.forEach((psNew) -> psNew.setName(psNew.getName() + ", neu: " + date));
-
-                }
-
-                SetsPrograms.addSetVorlagen(listePsetStandard); // damit auch AddOns
-                // geladen werden
-                SysMsg.sysMsg("Setanlegen: OK");
-                SysMsg.sysMsg("==========================================");
-            });
-
-        } catch (final Exception ignored) {
-        }
     }
-
 }
