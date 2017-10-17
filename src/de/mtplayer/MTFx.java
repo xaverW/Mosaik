@@ -20,7 +20,6 @@ import de.mtplayer.controller.ProgStart;
 import de.mtplayer.controller.config.Config;
 import de.mtplayer.controller.config.Const;
 import de.mtplayer.controller.config.Daten;
-import de.mtplayer.gui.dialogStart.StartDialogController;
 import de.mtplayer.gui.tools.GuiSize;
 import de.mtplayer.gui.tools.Listener;
 import de.mtplayer.mLib.tools.Duration;
@@ -127,12 +126,9 @@ public class MTFx extends Application {
             // konnte nicht geladen werden
             Duration.staticPing("Erster Start");
 
-            new StartDialogController();
-
             Config.loadSystemParameter();
         }
 
-        daten.initDialogs();
     }
 
     private String readPfadFromArguments(final String[] aArguments) {

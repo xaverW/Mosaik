@@ -57,13 +57,13 @@ public class WriteProtocolFile {
             return;
         }
 
-        try {
-            final Path logFilePath = Paths.get(logFile);
-            writeLogFile(logFilePath, ProgInfos.getSettingsDirectory_String(), Daten.setList.getListProg(), Config.getAll());
-            new MTAlert().showInfoAlert(TITEL, "Logfile schreiben", "Die Datei wurde erfolgreich geschrieben.", false);
-        } catch (final IOException ex) {
-            new MTAlert().showErrorAlert(TITEL, "Logfile schreiben", "Die Datei konnte nicht geschrieben werden.");
-        }
+//        try {
+//            final Path logFilePath = Paths.get(logFile);
+////            writeLogFile(logFilePath, ProgInfos.getSettingsDirectory_String(), Daten.setList.getListProg(), Config.getAll());
+//            new MTAlert().showInfoAlert(TITEL, "Logfile schreiben", "Die Datei wurde erfolgreich geschrieben.", false);
+//        } catch (final IOException ex) {
+//            new MTAlert().showErrorAlert(TITEL, "Logfile schreiben", "Die Datei konnte nicht geschrieben werden.");
+//        }
 
     }
 

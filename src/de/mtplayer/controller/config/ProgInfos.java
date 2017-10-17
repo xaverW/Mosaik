@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class ProgInfos {
 
     public static String getUserAgent() {
-        return Config.SYSTEM_PARAMETER_USERAGENT.get();
+        return "";
     }
 
 

@@ -58,8 +58,6 @@ public class IoXmlSchreiben implements AutoCloseable {
             xmlSchreibenStart();
 
             writer.writeCharacters("\n\n");
-            writer.writeComment(Config.PARAMETER_INFO);
-            writer.writeCharacters("\n\n");
             writer.writeComment("Programmeinstellungen");
             writer.writeCharacters("\n");
             xmlSchreibenConfig(Config.SYSTEM, Config.getAll());
@@ -94,15 +92,8 @@ public class IoXmlSchreiben implements AutoCloseable {
     private void xmlSchreibenDownloads() {
         // Downloads schreiben
         for (final Download download : daten.downloadList) {
-            if (download.isStateStoped()) {
-                // unterbrochene werden gespeichert, dass die Info "Interrupt" erhalten bleibt
                 download.setXmlFromProps();
                 xmlSchreibenDaten(DownloadXml.TAG, DownloadXml.XML_NAMES, download.arr, false);
-            } else if (!download.isAbo() && !download.isStateFinished()) {
-                // Download, (Abo müssen neu angelegt werden)
-                download.setXmlFromProps();
-                xmlSchreibenDaten(DownloadXml.TAG, DownloadXml.XML_NAMES, download.arr, false);
-            }
         }
     }
 

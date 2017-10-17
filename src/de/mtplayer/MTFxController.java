@@ -52,12 +52,14 @@ public class MTFxController extends StackPane {
     private final Daten daten;
     BooleanProperty msgVisProperty = Config.MSG_VISIBLE.getBooleanProperty();
 
-    FilmGuiPack filmGuiPack = new FilmGuiPack();
-    DownloadGuiPack downloadGuiPack = new DownloadGuiPack();
+    FilmGuiPack filmGuiPack ;
+    DownloadGuiPack downloadGuiPack;
 
 
     public MTFxController() {
         daten = Daten.getInstance();
+        filmGuiPack = new FilmGuiPack();
+        downloadGuiPack = new DownloadGuiPack();
         init();
     }
 

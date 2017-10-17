@@ -67,7 +67,7 @@ public class FilmGuiController extends AnchorPane {
     }
 
     private void setSplit() {
-        //     splitPane.getItems().addAll(scrollPane, filmInfoPane);
+             splitPane.getItems().addAll(scrollPane, filmInfoPane);
         filmInfoPane.setVisible(boolInfoOn.getValue());
         filmInfoPane.setManaged(boolInfoOn.getValue());
         if (!boolInfoOn.getValue()) {
