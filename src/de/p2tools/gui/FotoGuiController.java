@@ -28,7 +28,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 
-public class FilmGuiController extends AnchorPane {
+public class FotoGuiController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
     ScrollPane scrollPane = new ScrollPane();
     TableView table = new TableView<>();
@@ -41,7 +41,7 @@ public class FilmGuiController extends AnchorPane {
     BooleanProperty boolInfoOn = Config.FILM_GUI_DIVIDER_ON.getBooleanProperty();
     private boolean bound = false;
 
-    public FilmGuiController() {
+    public FotoGuiController() {
         daten = Daten.getInstance();
 
         scrollPane.setFitToHeight(true);

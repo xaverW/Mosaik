@@ -25,12 +25,12 @@ import javafx.scene.control.TableView;
 public class FilmGuiContextMenu {
 
     private final Daten daten;
-    private final FilmGuiController filmGuiController;
+    private final FotoGuiController fotoGuiController;
     private final TableView tableView;
 
-    public FilmGuiContextMenu(Daten daten, FilmGuiController filmGuiController, TableView tableView) {
+    public FilmGuiContextMenu(Daten daten, FotoGuiController fotoGuiController, TableView tableView) {
         this.daten = daten;
-        this.filmGuiController = filmGuiController;
+        this.fotoGuiController = fotoGuiController;
         this.tableView = tableView;
     }
 

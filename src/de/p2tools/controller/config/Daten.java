@@ -20,7 +20,7 @@ package de.p2tools.controller.config;
 import de.p2tools.MosaikController;
 import de.p2tools.controller.data.download.DownloadList;
 import de.p2tools.gui.DownloadGuiController;
-import de.p2tools.gui.FilmGuiController;
+import de.p2tools.gui.FotoGuiController;
 import de.p2tools.gui.tools.Listener;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -44,7 +44,7 @@ public class Daten {
     // Gui
     public Stage primaryStage = null;
     public MosaikController mosaikController = null;
-    public FilmGuiController filmGuiController = null; // Tab mit den Filmen
+    public FotoGuiController fotoGuiController = null; // Tab mit den Filmen
     public DownloadGuiController downloadGuiController = null; // Tab mit den Downloads
 
     // Programmdaten

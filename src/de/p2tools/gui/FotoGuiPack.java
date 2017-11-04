@@ -33,15 +33,15 @@ public class FotoGuiPack {
     private final HBox hBox = new HBox();
     static DoubleProperty doubleProperty;//sonst geht die Ref verloren
     static BooleanProperty boolDivOn;
-    private final AnchorPane filmFilterController=new AnchorPane();
-    private final FilmGuiController guiController;
+    private final FotoListPane fotoListPane =new FotoListPane();
+    private final FotoGuiController guiController;
     private boolean bound = false;
 
     public FotoGuiPack() {
         daten = Daten.getInstance();
         this.doubleProperty = Config.FILM_GUI_FILTER_DIVIDER.getDoubleProperty();
         this.boolDivOn = Config.FILM_GUI_FILTER_DIVIDER_ON.getBooleanProperty();
-        guiController = new FilmGuiController();
+        guiController = new FotoGuiController();
     }
 
     public void closeSplit() {
@@ -51,7 +51,7 @@ public class FotoGuiPack {
     private void setSplit() {
         if (boolDivOn.getValue()) {
             splitPane.getItems().clear();
-            splitPane.getItems().addAll(filmFilterController, guiController);
+            splitPane.getItems().addAll(guiController,fotoListPane );
             bound = true;
             splitPane.getDividers().get(0).positionProperty().bindBidirectional(doubleProperty);
         } else {
@@ -70,10 +70,10 @@ public class FotoGuiPack {
         menuController.setId("film-menu-pane");
 
         // Gui
-        daten.filmGuiController = guiController;
+        daten.fotoGuiController = guiController;
 
         splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        SplitPane.setResizableWithParent(filmFilterController, Boolean.FALSE);
+        SplitPane.setResizableWithParent(guiController, Boolean.FALSE);
 
         hBox.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         hBox.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);

@@ -38,7 +38,7 @@ public class ProgQuitt {
 
     private void writeTabSettings() {
         // Tabelleneinstellungen merken
-        daten.filmGuiController.saveTable();
+        daten.fotoGuiController.saveTable();
         daten.downloadGuiController.saveTable();
     }
 

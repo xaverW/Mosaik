@@ -143,7 +143,7 @@ public class MosaikController extends StackPane {
         btnDownload.getStyleClass().add("btnTab");
 
         paneFoto.toFront();
-        daten.filmGuiController.isShown();
+        daten.fotoGuiController.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.FILME);
     }
 
