@@ -23,7 +23,7 @@ import mosaik.Funktionen;
 import mosaik.daten.Daten;
 import mosaik.daten.DatenFarbe;
 
-public class GetColor {
+public class GetColor_ {
 
     /**
      * 
@@ -31,7 +31,7 @@ public class GetColor {
      * @param img
      */
     public static void getColor(Daten daten, File img) {
-        Raster rast = Funktionen.getRenderedImage(daten, img).getData();
+        Raster rast = Funktionen.getRenderedImage( img).getData();
         long r = 0, g = 0, b = 0;
         long count = 0;
         if (rast != null) {

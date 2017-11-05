@@ -17,7 +17,7 @@
 package de.p2tools.gui.dialog;
 
 import de.p2tools.controller.config.Const;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.gui.tools.GuiSize;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLConfigs;
@@ -192,7 +192,7 @@ public class MTDialog {
         if (conf != null) {
             GuiSize.setPos(conf, stage);
         } else {
-            Stage parentStage = Daten.getInstance().primaryStage;
+            Stage parentStage = ProgData.getInstance().primaryStage;
             ChangeListener<Number> widthListener = (observable, oldValue, newValue) -> {
                 double stageWidth = newValue.doubleValue();
                 stage.setX(parentStage.getX() + parentStage.getWidth() / 2 - stageWidth / 2);

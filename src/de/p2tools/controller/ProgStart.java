@@ -17,7 +17,7 @@
 package de.p2tools.controller;
 
 import de.p2tools.controller.config.Const;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.MLInit;
@@ -32,10 +32,10 @@ import java.util.ArrayList;
 import static de.p2tools.mLib.tools.Log.LILNE;
 
 public class ProgStart {
-    Daten daten;
+    ProgData progData;
 
-    public ProgStart(Daten daten) {
-        this.daten = daten;
+    public ProgStart(ProgData progData) {
+        this.progData = progData;
     }
 
     // #########################################################
@@ -68,22 +68,22 @@ public class ProgStart {
             return false;
         }
         SysMsg.sysMsg("Konfig wurde gelesen!");
-        MLInit.initLib(Daten.debug, Const.PROGRAMMNAME, ProgInfos.getUserAgent());
+        MLInit.initLib(ProgData.debug, Const.PROGRAMMNAME, ProgInfos.getUserAgent());
         return true;
     }
 
     private void clearKonfig() {
-        Daten daten = Daten.getInstance();
-        daten.downloadList.clear();
+        ProgData progData = ProgData.getInstance();
+        progData.downloadList.clear();
     }
 
     private boolean load() {
-        Daten daten = Daten.getInstance();
+        ProgData progData = ProgData.getInstance();
 
         boolean ret = false;
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();
 
-        try (IoXmlLesen reader = new IoXmlLesen(daten)) {
+        try (IoXmlLesen reader = new IoXmlLesen(progData)) {
             if (Files.exists(xmlFilePath)) {
                 if (reader.readConfiguration(xmlFilePath)) {
                     return true;
@@ -107,7 +107,7 @@ public class ProgStart {
     }
 
     private boolean loadBackup() {
-        Daten daten = Daten.getInstance();
+        ProgData progData = ProgData.getInstance();
         boolean ret = false;
         final ArrayList<Path> path = new ArrayList<>();
         new ProgInfos().getMTPlayerXmlCopyFilePath(path);
@@ -136,7 +136,7 @@ public class ProgStart {
             // teils geladene Reste entfernen
             clearKonfig();
             SysMsg.sysMsg(new String[]{"Versuch Backup zu laden:", p.toString()});
-            try (IoXmlLesen reader = new IoXmlLesen(daten)) {
+            try (IoXmlLesen reader = new IoXmlLesen(progData)) {
                 if (reader.readConfiguration(p)) {
                     SysMsg.sysMsg(new String[]{"Backup hat geklappt:", p.toString()});
                     ret = true;

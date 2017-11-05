@@ -16,16 +16,16 @@
 
 package de.p2tools.gui.tools;
 
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class TableFilm {
 
-    private final Daten daten;
+    private final ProgData progData;
 
-    public TableFilm(Daten daten) {
-        this.daten = daten;
+    public TableFilm(ProgData progData) {
+        this.progData = progData;
     }
 
     public TableColumn[] initFilmColumn(TableView table) {

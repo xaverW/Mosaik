@@ -16,11 +16,7 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.scene.control.SplitPane;
+import de.p2tools.controller.config.ProgData;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -28,64 +24,34 @@ import javafx.scene.layout.Region;
 
 public class FotoGuiPack {
 
-    Daten daten;
-    private final SplitPane splitPane = new SplitPane();
+    ProgData progData;
     private final HBox hBox = new HBox();
-    static DoubleProperty doubleProperty;//sonst geht die Ref verloren
-    static BooleanProperty boolDivOn;
-    private final FotoListPane fotoListPane =new FotoListPane();
     private final FotoGuiController guiController;
-    private boolean bound = false;
 
     public FotoGuiPack() {
-        daten = Daten.getInstance();
-        this.doubleProperty = Config.FILM_GUI_FILTER_DIVIDER.getDoubleProperty();
-        this.boolDivOn = Config.FILM_GUI_FILTER_DIVIDER_ON.getBooleanProperty();
+        progData = ProgData.getInstance();
         guiController = new FotoGuiController();
     }
 
-    public void closeSplit() {
-        boolDivOn.setValue(!boolDivOn.get());
-    }
-
-    private void setSplit() {
-        if (boolDivOn.getValue()) {
-            splitPane.getItems().clear();
-            splitPane.getItems().addAll(guiController,fotoListPane );
-            bound = true;
-            splitPane.getDividers().get(0).positionProperty().bindBidirectional(doubleProperty);
-        } else {
-            if (bound) {
-                splitPane.getDividers().get(0).positionProperty().unbindBidirectional(doubleProperty);
-            }
-            splitPane.getItems().clear();
-            splitPane.getItems().addAll(guiController);
-        }
-    }
-
     public AnchorPane pack() {
-
         // Menü
         final MenuController menuController = new MenuController(MenuController.StartupMode.Film);
         menuController.setId("film-menu-pane");
 
         // Gui
-        daten.fotoGuiController = guiController;
-
-        splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        SplitPane.setResizableWithParent(guiController, Boolean.FALSE);
+        progData.fotoGuiController = guiController;
 
         hBox.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         hBox.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        HBox.setHgrow(splitPane, Priority.ALWAYS);
-        hBox.getChildren().addAll(splitPane, menuController);
+        HBox.setHgrow(guiController, Priority.ALWAYS);
+        hBox.getChildren().addAll(guiController, menuController);
+
         AnchorPane.setTopAnchor(hBox, 0.0);
         AnchorPane.setLeftAnchor(hBox, 0.0);
         AnchorPane.setBottomAnchor(hBox, 0.0);
         AnchorPane.setRightAnchor(hBox, 0.0);
-        boolDivOn.addListener((observable, oldValue, newValue) -> setSplit());
-        setSplit();
+
         return new AnchorPane(hBox);
     }
 

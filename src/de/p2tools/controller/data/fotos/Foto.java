@@ -22,6 +22,12 @@ public final class Foto extends FotoProps {
     public Foto() {
     }
 
+    public Foto(int r, int g, int b, String path) {
+        setRed(r);
+        setGreen(g);
+        setBlue(b);
+    }
+
     public Foto getCopy() {
         final Foto ret = new Foto();
         for (int i = 0; i < properties.length; ++i) {

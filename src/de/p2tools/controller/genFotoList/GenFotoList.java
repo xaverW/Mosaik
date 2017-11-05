@@ -15,26 +15,30 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mosaik.bild;
+package de.p2tools.controller.genFotoList;
 
-import java.io.IOException;
-import mosaik.*;
-import mosaik.daten.Daten;
-import java.io.File;
-import java.util.LinkedList;
+import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgData;
+import mosaik.BildEvent;
+import mosaik.BildListener;
+import mosaik.bild.CountFile;
+import mosaik.bild.GetColor_;
+
 import javax.swing.event.EventListenerList;
-import mosaik.daten.Konstanten;
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
 
-public class BildArchiv {
+public class GenFotoList {
 
-    private Daten daten;
+    private ProgData progData;
     private EventListenerList listeners = new EventListenerList();
     private int progress = 0;
     private boolean stopAll = false;
     private int fileCount = 0;
     private LinkedList<File> fileListeEinlesen = new LinkedList<File>();
     private LinkedList<File[]> fileListeErstellen = new LinkedList<File[]>();
-    private ScaleImage_ scaleImage;
+    private ScaleImage scaleImage;
     private File src;
     private File destDir;
     private boolean rekurs;
@@ -43,32 +47,19 @@ public class BildArchiv {
     private CountFile countFile;
 
     /**
-     * 
-     * @param ddaten
+     *
      */
-    public BildArchiv(Daten ddaten) {
-        daten = ddaten;
-        scaleImage = new ScaleImage_(daten);
+    public GenFotoList() {
+        progData = ProgData.getInstance();
+        scaleImage = new ScaleImage();
         anzThread = Runtime.getRuntime().availableProcessors();
         countFile = new CountFile();
-//////        anzThread = 5;
     }
-    /////////////////////////
-    // public
-    /////////////////////////
     /**
      * 
      */
     public void setStop() {
         stopAll = true;
-    }
-
-    /**
-     * 
-     * @param listener
-     */
-    public void addAdListener(BildListener listener) {
-        listeners.add(BildListener.class, listener);
     }
 
     public void erstellen(String ssrc, String ddest, boolean rrekurs) {
@@ -96,9 +87,6 @@ public class BildArchiv {
         return fileCount;
     }
 
-    ////////////////////////
-    // private
-    ////////////////////////
     private void notifyEvent(int max, int progress, String text) {
         BildEvent event;
         event = new BildEvent(this, progress, max, text, threads);
@@ -144,7 +132,7 @@ public class BildArchiv {
                     notifyEvent(fileCount, 0, "");
                     erstellenMakeThumb(src);
                 } else {
-                    daten.fehler.fehlermeldung("Quelle oder Ziel ist kein Verzeichnis!");
+                    System.out.println("Quelle oder Ziel ist kein Verzeichnis!");
                 }
                 Thread t;
                 for (int i = 0; i < anzThread; ++i) {
@@ -154,7 +142,7 @@ public class BildArchiv {
                     t.start();
                 }
             } catch (Exception ex) {
-                daten.fehler.fehlermeldung(ex, "BildArchiv.Erstellen.start");
+                System.out.println(ex.getMessage() +"BildArchiv.Erstellen.start");
             }
         }
 
@@ -167,12 +155,15 @@ public class BildArchiv {
                     if (liste[i].isFile()) {
                         if (countFile.checkSuffix(liste[i])) {
                             try {
-                                File dest = new File(destDir.getAbsolutePath() + File.separator + liste[i].getName() + "_" + daten.random.nextInt(
-                                                     Integer.MAX_VALUE) + "." + daten.datenProjekt.arr[Konstanten.PROJEKT_ARCHIV_FORMAT_NR]);
+                                File dest = new File(destDir.getAbsolutePath() +
+                                        File.separator + liste[i].getName()                                      +
+                                        "_" +
+                                        progData.random.nextInt(                                 Integer.MAX_VALUE) +
+                                        "." + Config.FOTO_FORMAT.get() );
                                 str = dest.getAbsolutePath();
                                 addFileErstellen(liste[i], dest);
                             } catch (Exception ex) {
-                                daten.fehler.fehlermeldung(ex, "BildArchiv.makeThumb");
+                                System.out.println(ex.getMessage() + "BildArchiv.makeThumb");
                                 System.out.println("----------------------------------");
                                 System.out.println("Fehler - Src: " + liste[i].getAbsolutePath());
                                 System.out.println("Fehler - Dest: " + str);
@@ -203,9 +194,9 @@ public class BildArchiv {
                     ++progress;
                     notifyEvent(fileCount, progress, fileSrc.getName());
                     scaleImage.tus(fileSrc, fileDest);
-                    GetColor_.getColor(daten, fileDest);
+                    GetColor.getColor(progData, fileDest);
                 } catch (IOException ex) {
-                    daten.fehler.fehlermeldung(ex, "MakeThumb.thumb");
+                    System.out.println(ex.getMessage()+"MakeThumb.thumb");
                     System.out.println("----------------------------------");
                     System.out.println("Fehler - Src: " + fileSrc.getAbsolutePath());
                     System.out.println("Fehler - Dest: " + fileDest.getAbsolutePath());
@@ -234,10 +225,10 @@ public class BildArchiv {
                     notifyEvent(fileCount, 0, "");
                     einlesenGetFile(src);
                 } else {
-                    daten.fehler.fehlermeldung("Quelle ist kein Verzeichnis!");
+                    System.out.println("Quelle ist kein Verzeichnis!");
                 }
             } catch (Exception ex) {
-                daten.fehler.fehlermeldung(ex, "BildArchiv.Einlesen.start");
+                System.out.println(ex.getMessage()+"BildArchiv.Einlesen.start");
             } finally {
                 try {
                 } catch (Exception ex) {
@@ -276,7 +267,7 @@ public class BildArchiv {
             public void run() {
                 File file;
                 while (!stopAll && (file = getFileEinlesen()) != null) {
-                    GetColor_.getColor(daten, file);
+                    GetColor.getColor(progData, file);
                     ++progress;
                     notifyEvent(fileCount, progress, "");
                 }

@@ -53,7 +53,7 @@ public class Const {
     public static final String GUI_DOWNLOAD_FILTER_DIVIDER_LOCATION = "0.3";
     public static final String GUI_ABO_FILTER_DIVIDER_LOCATION = "0.3";
 
-    public static final String GUI_FILME_DIVIDER_LOCATION = "0.7";
+    public static final String GUI_FILME_DIVIDER_LOCATION = "0.3";
     public static final String GUI_DOWNLOAD_DIVIDER_LOCATION = "0.7";
     public static final String GUI_ABO_DIVIDER_LOCATION = "0.7";
     public static final String GUI_MSG_DIVIDER_LOCATION = "0.7";
@@ -71,4 +71,6 @@ public class Const {
     public static final int MIN_TABLE_HEIGHT = 250;
 
 
+    public static final String IMAGE_FORMAT_JPG = "jpg";
+    public static final String IMAGE_FORMAT_PNG = "png";
 }

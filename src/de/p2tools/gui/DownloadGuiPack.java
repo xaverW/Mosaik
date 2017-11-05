@@ -17,7 +17,7 @@
 package de.p2tools.gui;
 
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.control.SplitPane;
@@ -28,7 +28,7 @@ import javafx.scene.layout.Region;
 
 public class DownloadGuiPack {
 
-    Daten daten;
+    ProgData progData;
     private final SplitPane splitPane = new SplitPane();
     private final HBox hBox = new HBox();
     DoubleProperty doubleProperty; //sonst geht die Ref verloren
@@ -40,7 +40,7 @@ public class DownloadGuiPack {
 
 
     public DownloadGuiPack() {
-        daten = Daten.getInstance();
+        progData = ProgData.getInstance();
         this.doubleProperty = Config.DOWNLOAD_GUI_FILTER_DIVIDER.getDoubleProperty();
         this.boolDivOn = Config.DOWNLOAD_GUI_FILTER_DIVIDER_ON.getBooleanProperty();
         guiController = new DownloadGuiController();
@@ -71,7 +71,7 @@ public class DownloadGuiPack {
         menuController.setId("download-menu-pane");
 
         // Gui
-        daten.downloadGuiController = guiController;
+        progData.downloadGuiController = guiController;
 
         splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         SplitPane.setResizableWithParent(downloadFilterController, Boolean.FALSE);

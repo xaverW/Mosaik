@@ -16,7 +16,7 @@
 
 package de.p2tools.gui.dialog;
 
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.mLib.tools.DirFileChooser;
 import de.p2tools.mLib.tools.MLAlert;
@@ -72,9 +72,9 @@ public class MTAlert extends MLAlert {
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
         btnDest.setOnAction(event -> {
             if (dir) {
-                DirFileChooser.DirChooser(Daten.getInstance().primaryStage, txtFile);
+                DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtFile);
             } else {
-                DirFileChooser.FileChooser(Daten.getInstance().primaryStage, txtFile);
+                DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtFile);
             }
         });
 

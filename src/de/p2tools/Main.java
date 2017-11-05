@@ -19,7 +19,7 @@ import com.jidesoft.utils.SystemInfo;
 import de.p2tools.controller.Messages;
 import de.p2tools.controller.ProgStart;
 import de.p2tools.controller.config.Const;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.mLib.tools.Log;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -121,7 +121,7 @@ public class Main {
                     break;
 
                 case ProgramArguments.STARTUPMODE_DEBUG:
-                    Daten.debug = true;
+                    ProgData.debug = true;
                     break;
 
             }

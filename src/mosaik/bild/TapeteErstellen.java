@@ -30,7 +30,7 @@ import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JOptionPane;
-import mosaik.Fehler;
+
 import mosaik.daten.Daten;
 import mosaik.daten.DatenFarbe;
 import mosaik.daten.Konstanten;
@@ -39,12 +39,12 @@ public class TapeteErstellen {
 
     Daten daten;
     String dest;
-    ScaleImage scaleImage;
+    ScaleImage_ scaleImage;
 
     public TapeteErstellen(Daten ddaten, String ddest) {
         daten = ddaten;
         dest = ddest;
-        scaleImage = new ScaleImage(daten);
+        scaleImage = new ScaleImage_(daten);
     }
 
     public void tus(int spalten) {
@@ -72,7 +72,7 @@ public class TapeteErstellen {
                     DatenFarbe farbe = daten.listeFarben.get(i);
                     BufferedImage img = getBufferedImage(new File(farbe.arr[Konstanten.FARBEN_PFAD_NR]));
                     ////        try {
-                    ////                if (img.getWidth() != Integer.parseInt(daten.datenProjekt.arr[Konstanten.PROJEKT_AUFLOESUNG_ZIEL_NR])) {
+                    ////                if (img.getWidth() != Integer.parseInt(progData.datenProjekt.arr[Konstanten.PROJEKT_AUFLOESUNG_ZIEL_NR])) {
                     ////                    File file = File.createTempFile("mosaik", null);
                     ////                    scaleImage.tus(new File(farbe.arr[Konstanten.FARBEN_PFAD_NR]), file);
                     ////                    img = getBufferedImage(file);

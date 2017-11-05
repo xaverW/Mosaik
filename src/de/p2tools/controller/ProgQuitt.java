@@ -17,39 +17,38 @@
 package de.p2tools.controller;
 
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.gui.tools.GuiSize;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 import javafx.application.Platform;
 
 public class ProgQuitt {
-    final Daten daten;
+    final ProgData progData;
 
     public ProgQuitt() {
-        daten = Daten.getInstance();
+        progData = ProgData.getInstance();
     }
 
 
     private void writeWindowSizes() {
         // Hauptfenster
-        GuiSize.getSizeScene(Config.SYSTEM_GROESSE_GUI, daten.primaryStage);
+        GuiSize.getSizeScene(Config.SYSTEM_GROESSE_GUI, progData.primaryStage);
     }
 
     private void writeTabSettings() {
         // Tabelleneinstellungen merken
-        daten.fotoGuiController.saveTable();
-        daten.downloadGuiController.saveTable();
+        progData.fotoGuiController.saveTable();
+        progData.downloadGuiController.saveTable();
     }
 
     /**
      * Quit the MTPlayer application
      *
      * @param showOptionTerminate show options dialog when downloads are running
-     * @param shutDown            try to shutdown the computer if requested
      */
-    public void beenden(boolean showOptionTerminate, boolean shutDown) {
-        if (beenden_(showOptionTerminate, shutDown)) {
+    public void beenden(boolean showOptionTerminate) {
+        if (beenden_()) {
 
             // dann jetzt beenden -> Thüss
             Platform.runLater(() -> {
@@ -60,7 +59,7 @@ public class ProgQuitt {
         }
     }
 
-    private boolean beenden_(boolean showOptionTerminate, boolean shutDown) {
+    private boolean beenden_() {
         writeTabSettings();
         writeWindowSizes();
 

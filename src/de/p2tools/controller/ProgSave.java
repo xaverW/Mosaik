@@ -17,7 +17,7 @@
 package de.p2tools.controller;
 
 import de.p2tools.controller.config.Const;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.Log;
@@ -37,24 +37,24 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ProgSave {
-    final Daten daten;
+    final ProgData progData;
     private boolean alreadyMadeBackup = false;
     private boolean open = true;
 
     public ProgSave() {
-        daten = Daten.getInstance();
+        progData = ProgData.getInstance();
     }
 
 
     public void allesSpeichern() {
         konfigCopy();
-        try (IoXmlSchreiben writer = new IoXmlSchreiben(daten)) {
+        try (IoXmlSchreiben writer = new IoXmlSchreiben(progData)) {
             writer.datenSchreiben();
         } catch (final Exception ex) {
             ex.printStackTrace();
         }
 
-        if (Daten.reset) {
+        if (ProgData.reset) {
             // das Programm soll beim nächsten Start mit den Standardeinstellungen gestartet werden
             // dazu wird den Ordner mit den Einstellungen umbenannt
             String dir1 = ProgInfos.getSettingsDirectory_String();

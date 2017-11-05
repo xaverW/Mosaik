@@ -66,7 +66,7 @@ public class TModel extends DefaultTableModel {
     }
 
     public String[] getModelOfField(Daten daten, int feld, boolean leer) {
-        /* erstellt ein StringArray mit den Daten des Feldes
+        /* erstellt ein StringArray mit den ProgData des Feldes
         lee: immer ein leeres Feld am Anfang */
         LinkedList<String> list = new LinkedList<String>();
         String[] ret;

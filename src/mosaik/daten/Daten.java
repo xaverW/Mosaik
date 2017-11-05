@@ -78,7 +78,7 @@ public class Daten {
         File basis = new File(getBasisVerzeichnis());
         if (!basis.exists()) {
             if (!basis.mkdir()) {
-           fehler.fehlermeldung("Kann den Ordner zum Speichern der Daten nicht anlegen!", "Daten.getBasisVerzeichnis");
+           fehler.fehlermeldung("Kann den Ordner zum Speichern der ProgData nicht anlegen!", "ProgData.getBasisVerzeichnis");
             }
         }
     }

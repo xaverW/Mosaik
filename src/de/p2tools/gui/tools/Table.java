@@ -17,7 +17,7 @@
 package de.p2tools.gui.tools;
 
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Data;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLConfigs;
@@ -74,7 +74,7 @@ public class Table {
     private void initColumn(TABLE eTable, TableView<Data> table) {
         switch (eTable) {
             case FILM:
-                tArray = new TableFilm(Daten.getInstance()).initFilmColumn(table);
+                tArray = new TableFilm(ProgData.getInstance()).initFilmColumn(table);
                 break;
 
             case DOWNLOAD:

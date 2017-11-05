@@ -16,7 +16,7 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.tools.Listener;
 import de.p2tools.mLib.tools.Log;
@@ -65,12 +65,12 @@ public class StatusBarController extends AnchorPane {
     private StatusbarIndex statusbarIndex = StatusbarIndex.NONE;
     private boolean loadList = false;
 
-    private final Daten daten;
+    private final ProgData progData;
     private boolean stopTimer = false;
     private static final String TRENNER = "  ||  ";
 
-    public StatusBarController(Daten daten) {
-        this.daten = daten;
+    public StatusBarController(ProgData progData) {
+        this.progData = progData;
 
         getChildren().addAll(stackPane);
         AnchorPane.setLeftAnchor(stackPane, 0.0);

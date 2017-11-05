@@ -18,7 +18,7 @@ package de.p2tools;
 
 import de.p2tools.controller.ProgQuitt;
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.DownloadGuiPack;
 import de.p2tools.gui.FotoGuiPack;
@@ -48,7 +48,7 @@ public class MosaikController extends StackPane {
     private AnchorPane paneFoto;
     private SplitPane splitPaneDownoad;
 
-    private final Daten daten;
+    private final ProgData progData;
     BooleanProperty msgVisProperty = Config.MSG_VISIBLE.getBooleanProperty();
 
     FotoGuiPack fotoGuiPack;
@@ -56,7 +56,7 @@ public class MosaikController extends StackPane {
 
 
     public MosaikController() {
-        daten = Daten.getInstance();
+        progData = ProgData.getInstance();
         fotoGuiPack = new FotoGuiPack();
         downloadGuiPack = new DownloadGuiPack();
         init();
@@ -83,7 +83,7 @@ public class MosaikController extends StackPane {
             splitPaneDownoad = downloadGuiPack.pack();
             stackPaneCont.getChildren().addAll(paneFoto, splitPaneDownoad);
 
-            statusBarController = new StatusBarController(daten);
+            statusBarController = new StatusBarController(progData);
 
             VBox.setVgrow(hBoxTop, Priority.NEVER);
             VBox.setVgrow(statusBarController, Priority.NEVER);
@@ -111,10 +111,10 @@ public class MosaikController extends StackPane {
             miConfig.setOnAction(e -> new ConfigDialogController());
 
             final MenuItem miQuitt = new MenuItem("Beenden");
-            miQuitt.setOnAction(e -> new ProgQuitt().beenden(true, false));
+            miQuitt.setOnAction(e -> new ProgQuitt().beenden(true));
 
             final MenuItem miAbout = new MenuItem("Über dieses Programm");
-            miAbout.setOnAction(event -> new AboutDialogController(daten));
+            miAbout.setOnAction(event -> new AboutDialogController(progData));
 
             final Menu mHelp = new Menu("Hilfe");
             mHelp.getItems().addAll(miAbout);
@@ -143,7 +143,7 @@ public class MosaikController extends StackPane {
         btnDownload.getStyleClass().add("btnTab");
 
         paneFoto.toFront();
-        daten.fotoGuiController.isShown();
+        progData.fotoGuiController.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.FILME);
     }
 
@@ -158,7 +158,7 @@ public class MosaikController extends StackPane {
         btnFoto.getStyleClass().add("btnTab");
         btnDownload.getStyleClass().add("btnTab-sel");
 
-        daten.downloadGuiController.isShown();
+        progData.downloadGuiController.isShown();
         splitPaneDownoad.toFront();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.DOWNLOAD);
     }

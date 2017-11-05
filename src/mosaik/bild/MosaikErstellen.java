@@ -42,7 +42,7 @@ public class MosaikErstellen {
     Daten daten;
     String dest;
     String src;
-    ScaleImage scaleImage;
+    ScaleImage_ scaleImage;
 //    Farbraum farbraum;
     private int anz = 5;
     private EventListenerList listeners = new EventListenerList();
@@ -82,7 +82,7 @@ public class MosaikErstellen {
         anz = aanz;
         progress = 0;
         stopAll = false;
-//        farbraum = new Farbraum(daten);
+//        farbraum = new Farbraum(progData);
         Tus tus = new Tus();
         Thread startenThread = new Thread(tus);
         startenThread.setDaemon(true);
@@ -127,7 +127,7 @@ public class MosaikErstellen {
                 int len = daten.listeFarben.size();
                 if (weiter && len > 0) {
                     int width = Integer.parseInt(daten.datenProjekt.arr[Konstanten.PROJEKT_AUFLOESUNG_ZIEL_NR]);
-                    BufferedImage img = Funktionen.getBufferedImage(daten, new File(src));
+                    BufferedImage img = Funktionen.getBufferedImage( new File(src));
                     int h = img.getRaster().getHeight();
                     int w = img.getRaster().getWidth();
                     int anzH = Integer.parseInt(daten.datenProjekt.arr[Konstanten.PROJEKT_BILDER_HOEHE_NR]);
@@ -150,7 +150,7 @@ public class MosaikErstellen {
                             if (farbe != null) {
                                 ++farbe.anz;
                                 file = new File(farbe.arr[Konstanten.FARBEN_PFAD_NR]);
-                                buffImg = Funktionen.getBufferedImage(daten, file);
+                                buffImg = Funktionen.getBufferedImage( file);
                                 int count = 0;
                                 while (buffImg == null && count < 5) {
                                     ++count;
@@ -161,7 +161,7 @@ public class MosaikErstellen {
                                     JOptionPane.showMessageDialog(null, "Kann Bild nicht laden!",
                                                                   "??", JOptionPane.INFORMATION_MESSAGE);
                                     System.out.println("buffImg == null  -  " + farbe.arr[Konstanten.FARBEN_PFAD_NR]);
-                                    buffImg = Funktionen.getBufferedImage(daten, file);
+                                    buffImg = Funktionen.getBufferedImage( file);
                                 }
                                 imgOut.getRaster().setRect(xx * width, yy * width, buffImg.getData());
                             } else {

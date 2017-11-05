@@ -17,7 +17,7 @@
 package de.p2tools.gui;
 
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.download.Download;
 import de.p2tools.gui.tools.Table;
 import javafx.beans.property.BooleanProperty;
@@ -37,13 +37,13 @@ public class DownloadGuiController extends AnchorPane {
     private final AnchorPane tabDownloadInfos = new AnchorPane();
     private final ScrollPane scrollPane = new ScrollPane();
 
-    private final Daten daten;
+    private final ProgData progData;
     DoubleProperty splitPaneProperty = Config.DOWNLOAD_GUI_DIVIDER.getDoubleProperty();
     BooleanProperty boolInfoOn = Config.DOWNLOAD_GUI_DIVIDER_ON.getBooleanProperty();
     private boolean bound = false;
 
     public DownloadGuiController() {
-        daten = Daten.getInstance();
+        progData = ProgData.getInstance();
 
 
         scrollPane.setFitToHeight(true);

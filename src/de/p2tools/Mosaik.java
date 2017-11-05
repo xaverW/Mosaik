@@ -19,13 +19,11 @@ import de.p2tools.controller.ProgQuitt;
 import de.p2tools.controller.ProgStart;
 import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.Const;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.gui.tools.GuiSize;
-import de.p2tools.gui.tools.Listener;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.SysMsg;
 import de.p2tools.res.GetIcon;
-import de.p2tools.tools.update.CheckUpdate;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -47,11 +45,8 @@ public class Mosaik extends Application {
 
     private static final String LOG_TEXT_PROGRAMMSTART = "***Programmstart***";
     private static final String ARGUMENT_PREFIX = "-";
-    private static final String TITLE_TEXT_PROGRAMMVERSION_IST_AKTUELL = "Programmversion ist aktuell";
-    private static final String TITLE_TEXT_EIN_PROGRAMMUPDATE_IST_VERFUEGBAR = "Ein Programmupdate ist verfügbar";
-    private static final String LOG_TEXT_CHECK_UPDATE = "CheckUpdate";
 
-    protected Daten daten;
+    protected ProgData progData;
     ProgStart progStart;
     Scene scene = null;
 
@@ -68,9 +63,10 @@ public class Mosaik extends Application {
         final String pfad = readPfadFromArguments(rawArguments.toArray(new String[]{}));
 
         Duration.counterStart(LOG_TEXT_PROGRAMMSTART);
-        daten = Daten.getInstance(pfad);
-        daten.primaryStage = primaryStage;
-        progStart = new ProgStart(daten);
+        progData = ProgData.getInstance(pfad);
+        progData.primaryStage = primaryStage;
+        progStart = new ProgStart(progData);
+        Config.loadSystemParameter();
 
         loadData();
         initRootLayout();
@@ -80,7 +76,7 @@ public class Mosaik extends Application {
     private void initRootLayout() {
         try {
             root = new MosaikController();
-            daten.mosaikController = root;
+            progData.mosaikController = root;
             scene = new Scene(root,
                     GuiSize.getWidth(Config.SYSTEM_GROESSE_GUI),
                     GuiSize.getHeight(Config.SYSTEM_GROESSE_GUI));
@@ -91,7 +87,7 @@ public class Mosaik extends Application {
             primaryStage.setScene(scene);
             primaryStage.setOnCloseRequest(e -> {
                 e.consume();
-                new ProgQuitt().beenden(true, false);
+                new ProgQuitt().beenden(true);
             });
 
             GuiSize.setPos(Config.SYSTEM_GROESSE_GUI, primaryStage);
@@ -109,10 +105,7 @@ public class Mosaik extends Application {
         progStart.startMeldungen();
 
         Duration.staticPing("Erster Start");
-        setOrgTitel();
-        initProg();
-
-        addListener();
+        primaryStage.setTitle(Const.PROGRAMMNAME);
 
         Duration.staticPing("Gui steht!");
         progStart.loadDataProgStart();
@@ -124,7 +117,6 @@ public class Mosaik extends Application {
 
             // konnte nicht geladen werden
             Duration.staticPing("Erster Start");
-
             Config.loadSystemParameter();
         }
 
@@ -162,34 +154,4 @@ public class Mosaik extends Application {
         SysMsg.sysMsg("");
     }
 
-    private void addListener() {
-        Listener.addListener(new Listener(Listener.EREIGNIS_GUI_ORG_TITEL, Mosaik.class.getSimpleName()) {
-            @Override
-            public void ping() {
-                setOrgTitel();
-            }
-        });
-        Listener.addListener(new Listener(Listener.EREIGNIS_GUI_PROGRAMM_AKTUELL, Mosaik.class.getSimpleName()) {
-            @Override
-            public void ping() {
-                primaryStage.setTitle(TITLE_TEXT_PROGRAMMVERSION_IST_AKTUELL);
-            }
-        });
-        Listener.addListener(new Listener(Listener.EREIGNIS_GUI_UPDATE_VERFUEGBAR, Mosaik.class.getSimpleName()) {
-            @Override
-            public void ping() {
-                primaryStage.setTitle(TITLE_TEXT_EIN_PROGRAMMUPDATE_IST_VERFUEGBAR);
-            }
-        });
-    }
-
-    private void setOrgTitel() {
-        primaryStage.setTitle(Const.PROGRAMMNAME);
-    }
-
-    private void initProg() {
-                // Prüfen obs ein Programmupdate gibt
-                Duration.staticPing(LOG_TEXT_CHECK_UPDATE);
-                new CheckUpdate(daten).checkProgUpdate();
-    }
 }

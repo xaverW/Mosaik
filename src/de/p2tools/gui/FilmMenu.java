@@ -16,25 +16,21 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
-import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 
 public class FilmMenu {
     final private VBox vbox;
-    final private Daten daten;
+    final private ProgData progData;
     private static final String FILM_ABSPIELEN_TEXT = "Film abspielen";
     private static final String FILM_RECORD_TEXT = "Film aufzeichnen";
-    BooleanProperty boolFilterOn = Config.FILM_GUI_FILTER_DIVIDER_ON.getBooleanProperty();
-    BooleanProperty boolInfoOn = Config.FILM_GUI_DIVIDER_ON.getBooleanProperty();
 
     public FilmMenu(VBox vbox) {
         this.vbox = vbox;
-        daten = Daten.getInstance();
+        progData = ProgData.getInstance();
     }
 
 

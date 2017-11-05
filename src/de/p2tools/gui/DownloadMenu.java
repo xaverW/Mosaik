@@ -17,7 +17,7 @@
 package de.p2tools.gui;
 
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.MenuButton;
@@ -26,7 +26,7 @@ import javafx.scene.layout.VBox;
 
 public class DownloadMenu {
     final private VBox vbox;
-    final private Daten daten;
+    final private ProgData progData;
     private static final String UPDATE_DOWNLOADS_TEXT = "Liste der Downloads aktualisieren";
     private static final String START_ALL_DOWNLOADS_TEXT = "alle Downloads starten";
     private static final String REMOVE_DOWNLOADS_TEXT = "Downloads aus Liste entfernen";
@@ -37,7 +37,7 @@ public class DownloadMenu {
 
     public DownloadMenu(VBox vbox) {
         this.vbox = vbox;
-        daten = Daten.getInstance();
+        progData = ProgData.getInstance();
     }
 
 

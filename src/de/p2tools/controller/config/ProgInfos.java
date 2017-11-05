@@ -110,10 +110,10 @@ public class ProgInfos {
      */
     public static Path getSettingsDirectory() throws IllegalStateException {
         final Path baseDirectoryPath;
-        if (Daten.configDir == null || Daten.configDir.isEmpty()) {
+        if (ProgData.configDir == null || ProgData.configDir.isEmpty()) {
             baseDirectoryPath = Paths.get(System.getProperty("user.home"), Const.VERZEICHNIS_EINSTELLUNGEN);
         } else {
-            baseDirectoryPath = Paths.get(Daten.configDir);
+            baseDirectoryPath = Paths.get(ProgData.configDir);
         }
 
         if (Files.notExists(baseDirectoryPath)) {

@@ -19,6 +19,7 @@ package de.p2tools.controller.config;
 
 import de.p2tools.MosaikController;
 import de.p2tools.controller.data.download.DownloadList;
+import de.p2tools.controller.data.fotos.FotoList;
 import de.p2tools.gui.DownloadGuiController;
 import de.p2tools.gui.FotoGuiController;
 import de.p2tools.gui.tools.Listener;
@@ -28,10 +29,12 @@ import javafx.animation.Timeline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Daten {
+import java.util.Random;
 
-    private static Daten instance;
+public class ProgData {
 
+    private static ProgData instance;
+    public Random random = new Random();
     // flags
     public static boolean debug = false; // Debugmodus
     public static boolean reset = false; // Programm auf Starteinstellungen zurücksetzen
@@ -40,7 +43,7 @@ public class Daten {
     public static String configDir; // Verzeichnis zum Speichern der Programmeinstellungen
 
     // zentrale Klassen
-
+    public FotoList fotoList;
     // Gui
     public Stage primaryStage = null;
     public MosaikController mosaikController = null;
@@ -51,25 +54,26 @@ public class Daten {
     public DownloadList downloadList = null; // Filme die als "Download" geladen werden sollen
 
 
-    private Daten() {
+    private ProgData() {
+        fotoList = new FotoList();
         downloadList = new DownloadList(this);
 
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000), ae -> {
-            Listener.notify(Listener.EREIGNIS_TIMER, Daten.class.getName());
+            Listener.notify(Listener.EREIGNIS_TIMER, ProgData.class.getName());
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.setDelay(Duration.seconds(5));
         timeline.play();
     }
 
-    public static final Daten getInstance(String dir) {
+    public static final ProgData getInstance(String dir) {
         configDir = dir;
         return getInstance();
     }
 
-    public static final Daten getInstance() {
-        return instance == null ? instance = new Daten() : instance;
+    public static final ProgData getInstance() {
+        return instance == null ? instance = new ProgData() : instance;
     }
 
 

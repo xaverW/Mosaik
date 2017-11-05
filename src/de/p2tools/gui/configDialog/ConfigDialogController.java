@@ -17,7 +17,7 @@
 package de.p2tools.gui.configDialog;
 
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.gui.dialog.MTDialog;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -35,7 +35,7 @@ public class ConfigDialogController extends MTDialog {
     private TabPane tabPane = new TabPane();
     private Button btnOk = new Button("Ok");
 
-    private final Daten daten;
+    private final ProgData progData;
 
     public ConfigDialogController() {
         super(null, Config.CONFIG_DIALOG_SIZE, "Einstellungen", true);
@@ -52,7 +52,7 @@ public class ConfigDialogController extends MTDialog {
         hBox.getChildren().add(btnOk);
         vBox.getChildren().add(hBox);
 
-        this.daten = Daten.getInstance();
+        this.progData = ProgData.getInstance();
         init(vBox, true);
     }
 

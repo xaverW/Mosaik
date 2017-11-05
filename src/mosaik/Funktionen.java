@@ -29,9 +29,9 @@ import mosaik.daten.Konstanten;
 
 public class Funktionen {
 
-    public static BufferedImage getBufferedImage(Daten daten, File source) {
+    public static BufferedImage getBufferedImage( File source) {
         BufferedImage img = null;
-        ImageReader reader = getReader(daten,source);
+        ImageReader reader = getReader(source);
         try {
             img = reader.read(0);
         } catch (Exception e) {
@@ -49,20 +49,20 @@ public class Funktionen {
         return ret;
     }
 
-    public static RenderedImage getRenderedImage(Daten daten, File file) {
+    public static RenderedImage getRenderedImage( File file) {
         RenderedImage img;
-        ImageReader reader = getReader(daten, file);
+        ImageReader reader = getReader( file);
         try {
             img = reader.readAsRenderedImage(0, null);
         } catch (Exception e) {
-            daten.fehler.fehlermeldung(e, "BildArchiv - getRenderedImage");
+            System.out.println(e.getMessage()+"BildArchiv - getRenderedImage");
             return null;
         }
         reader.dispose();
         return img;
     }
 
-    private static ImageReader getReader(Daten daten, File source) {
+    private static ImageReader getReader( File source) {
         try {
             Iterator readers = ImageIO.getImageReadersByFormatName(fileType(source));
             ImageReader reader = (ImageReader) readers.next();
@@ -70,7 +70,7 @@ public class Funktionen {
             reader.setInput(iis, true);
             return reader;
         } catch (Exception e) {
-            daten.fehler.fehlermeldung(e, "Funktionen - getReader");
+            System.out.println(e.getMessage() + "\n"+ "Funktionen - getReader");
             return null;
         }
     }

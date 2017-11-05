@@ -16,20 +16,20 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.download.Download;
 import de.p2tools.gui.tools.Table;
 import javafx.scene.control.*;
 
 public class DownloadGuiContextMenu {
 
-    private final Daten daten;
+    private final ProgData progData;
     private final DownloadGuiController downloadGuiController;
     private final TableView tableView;
 
-    public DownloadGuiContextMenu(Daten daten, DownloadGuiController downloadGuiController, TableView tableView) {
+    public DownloadGuiContextMenu(ProgData progData, DownloadGuiController downloadGuiController, TableView tableView) {
 
-        this.daten = daten;
+        this.progData = progData;
         this.downloadGuiController = downloadGuiController;
         this.tableView = tableView;
 

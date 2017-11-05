@@ -34,7 +34,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import mosaik.bild.ScaleImage;
+import mosaik.bild.ScaleImage_;
 import mosaik.daten.Daten;
 import mosaik.daten.DatenFarbe;
 import mosaik.daten.Konstanten;
@@ -414,7 +414,7 @@ public class DialogAnzeigeBild extends javax.swing.JDialog {
             }
 
             public void actionPerformed(ActionEvent arg0) {
-                new ScaleImage(daten).drehen(new File(daten.listeFarben.get(idx + nr).arr[Konstanten.FARBEN_PFAD_NR]), rechts);
+                new ScaleImage_(daten).drehen(new File(daten.listeFarben.get(idx + nr).arr[Konstanten.FARBEN_PFAD_NR]), rechts);
                 set();
             }
 

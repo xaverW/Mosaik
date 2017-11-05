@@ -15,28 +15,31 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mosaik.bild;
+package de.p2tools.controller.genFotoList;
 
-import java.io.IOException;
-import mosaik.*;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgData;
+import de.p2tools.mLib.tools.MLConfig;
+import de.p2tools.mLib.tools.MLConfigs;
+import mosaik.Funktionen;
+import mosaik.daten.Daten;
+import mosaik.daten.Konstanten;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
-import javax.imageio.ImageIO;
-import mosaik.daten.Daten;
-import mosaik.daten.Konstanten;
+import java.io.IOException;
 
 public class ScaleImage {
 
-    Daten daten;
+    ProgData progData;
 
-    public ScaleImage(Daten ddaten) {
-        daten = ddaten;
+    public ScaleImage() {
+        progData = ProgData.getInstance();
     }
 
     /**
@@ -46,8 +49,8 @@ public class ScaleImage {
      * @throws IOException 
      */
     public void tus(File source, File dest) throws IOException {
-        BufferedImage img = Funktionen.getBufferedImage(daten,source);
-        if (Boolean.parseBoolean(daten.datenProjekt.arr[Konstanten.PROJEKT_ARCHIV_RECHTECK_NR])) {
+        BufferedImage img = Funktionen.getBufferedImage(source);
+        if (Config.FOTO_RECT.getBool()) {
             int h = img.getHeight(), w = img.getWidth(), x, y;
             int widthNew = (h > w) ? w : h;
             if (w > h) {
@@ -69,13 +72,13 @@ public class ScaleImage {
             }
             img = imgOut;
         }
-        int width = Integer.parseInt(daten.datenProjekt.arr[Konstanten.PROJEKT_AUFLOESUNG_ZIEL_NR]);
+        int width =Config.FOTO_SIZE.getInt();
         Image scaledImage = img.getScaledInstance(width, width, Image.SCALE_SMOOTH);
         BufferedImage outImg = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
         Graphics g = outImg.getGraphics();
         g.drawImage(scaledImage, 0, 0, null);
         g.dispose();
-        ImageIO.write(outImg, daten.datenProjekt.arr[Konstanten.PROJEKT_ARCHIV_FORMAT_NR], dest);
+        ImageIO.write(outImg, Config.FOTO_FORMAT.get(), dest);
     }
 
     /**
@@ -85,11 +88,11 @@ public class ScaleImage {
      */
     public void drehen(File source, boolean rechts) {
         try {
-            BufferedImage img = Funktionen.getBufferedImage(daten,source);
+            BufferedImage img = Funktionen.getBufferedImage(source);
             BufferedImage rImg = rotateImage(img, (rechts) ? 1 : -1);
             ImageIO.write(rImg, Funktionen.fileType(source), source);
         } catch (Exception ex) {
-            daten.fehler.fehlermeldung(ex, "ScaleImage.drehen");
+            System.out.println(ex.getMessage() + "\n"+"ScaleImage_.drehen");
         }
     }
 

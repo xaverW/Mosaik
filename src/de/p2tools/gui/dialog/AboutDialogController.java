@@ -17,7 +17,7 @@
 package de.p2tools.gui.dialog;
 
 import de.p2tools.controller.config.Const;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.mLib.tools.Functions;
 import javafx.geometry.Insets;
@@ -35,15 +35,15 @@ import java.nio.file.Path;
 
 public class AboutDialogController extends MTDialogExtra {
 
-    private final Daten daten;
+    private final ProgData progData;
     Button btnOk = new Button("Ok");
     private final Color GRAY = Color.DARKSLATEGRAY;
 
 
-    public AboutDialogController(Daten daten) {
+    public AboutDialogController(ProgData progData) {
         super(null, null, "Über das Programm", true);
 
-        this.daten = daten;
+        this.progData = progData;
 
         getTilePaneOk().getChildren().addAll(btnOk);
         init(getvBoxDialog(), true);

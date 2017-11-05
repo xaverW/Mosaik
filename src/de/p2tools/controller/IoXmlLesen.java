@@ -18,7 +18,7 @@
 package de.p2tools.controller;
 
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.download.Download;
 import de.p2tools.controller.data.download.DownloadXml;
 import de.p2tools.mLib.tools.Duration;
@@ -37,10 +37,10 @@ import java.nio.file.Path;
 public class IoXmlLesen implements AutoCloseable {
 
     private XMLInputFactory inFactory = null;
-    private Daten daten = null;
+    private ProgData progData = null;
 
-    public IoXmlLesen(Daten daten) {
-        this.daten = daten;
+    public IoXmlLesen(ProgData progData) {
+        this.progData = progData;
 
         inFactory = XMLInputFactory.newInstance();
         inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
@@ -68,7 +68,7 @@ public class IoXmlLesen implements AutoCloseable {
                                 final Download d = new Download();
                                 if (get(parser, DownloadXml.TAG, DownloadXml.XML_NAMES, d.arr)) {
                                     d.setPropsFromXml();
-                                    daten.downloadList.add(d);
+                                    progData.downloadList.add(d);
                                 }
                                 break;
                         }

@@ -16,7 +16,7 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.gui.tools.Table;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -24,12 +24,12 @@ import javafx.scene.control.TableView;
 
 public class FilmGuiContextMenu {
 
-    private final Daten daten;
+    private final ProgData progData;
     private final FotoGuiController fotoGuiController;
     private final TableView tableView;
 
-    public FilmGuiContextMenu(Daten daten, FotoGuiController fotoGuiController, TableView tableView) {
-        this.daten = daten;
+    public FilmGuiContextMenu(ProgData progData, FotoGuiController fotoGuiController, TableView tableView) {
+        this.progData = progData;
         this.fotoGuiController = fotoGuiController;
         this.tableView = tableView;
     }

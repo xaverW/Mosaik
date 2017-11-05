@@ -16,7 +16,7 @@
 
 package de.p2tools.controller.data.download;
 
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -27,13 +27,13 @@ import java.util.Collections;
 
 public class DownloadList extends SimpleListProperty<Download> {
 
-    private final Daten daten;
+    private final ProgData progData;
     private BooleanProperty downloadsChanged = new SimpleBooleanProperty(true);
 
 
-    public DownloadList(Daten daten) {
+    public DownloadList(ProgData progData) {
         super(FXCollections.observableArrayList());
-        this.daten = daten;
+        this.progData = progData;
     }
 
     public boolean getDownloadsChanged() {

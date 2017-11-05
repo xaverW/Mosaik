@@ -32,7 +32,6 @@ public class ListeFarben extends LinkedList<DatenFarbe> {
 
     /**
      * 
-     * @param daten
      * @param farbe
      * @return
      */

@@ -17,10 +17,9 @@
 package de.p2tools.gui.configDialog;
 
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.tools.update.ProgrammUpdateSuchen;
 import javafx.beans.property.BooleanProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -33,7 +32,7 @@ import java.util.Collection;
 
 public class ConfigPaneController extends AnchorPane {
 
-    private final Daten daten;
+    private final ProgData progData;
     VBox noaccordion = new VBox();
     private final Accordion accordion = new Accordion();
     private final HBox hBox = new HBox(0);
@@ -45,7 +44,7 @@ public class ConfigPaneController extends AnchorPane {
     ScrollPane scrollPane = new ScrollPane();
 
     public ConfigPaneController() {
-        daten = Daten.getInstance();
+        progData = ProgData.getInstance();
 
         cbxAccordion.selectedProperty().bindBidirectional(accordionProp);
         cbxAccordion.selectedProperty().addListener((observable, oldValue, newValue) -> setAccordion());
@@ -121,24 +120,6 @@ public class ConfigPaneController extends AnchorPane {
         ccTxt.setHgrow(Priority.ALWAYS);
         gridPane.getColumnConstraints().addAll(new ColumnConstraints(), ccTxt);
 
-        //jetzt suchen
-        Button btnNow = new Button("Jetzt suchen");
-        btnNow.setMaxWidth(Double.MAX_VALUE);
-        btnNow.setOnAction(event -> new ProgrammUpdateSuchen().checkVersion(true /* bei aktuell anzeigen */,
-                false /* Hinweis */,
-                true /* hinweiseAlleAnzeigen */));
-
-        Button btnInfo = new Button("Programminfos anzeigen");
-        btnInfo.setMaxWidth(Double.MAX_VALUE);
-        btnInfo.setOnAction(event -> new ProgrammUpdateSuchen().checkVersion(false /* bei aktuell anzeigen */,
-                true /* Hinweis */,
-                true /* hinweiseAlleAnzeigen */));
-
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(10, 0, 0, 0));
-        hBox.setSpacing(10);
-        hBox.getChildren().addAll(btnNow, btnInfo);
-        gridPane.add(hBox, 0, 1);
     }
 
 }

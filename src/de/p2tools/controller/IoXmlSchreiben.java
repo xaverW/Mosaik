@@ -18,7 +18,7 @@ package de.p2tools.controller;
 
 import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.Const;
-import de.p2tools.controller.config.Daten;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.download.Download;
 import de.p2tools.controller.data.download.DownloadXml;
@@ -41,15 +41,15 @@ public class IoXmlSchreiben implements AutoCloseable {
     private OutputStreamWriter out = null;
     private Path xmlFilePath = null;
     private OutputStream os = null;
-    private Daten daten = null;
+    private ProgData progData = null;
 
-    public IoXmlSchreiben(Daten daten) {
-        this.daten = daten;
+    public IoXmlSchreiben(ProgData progData) {
+        this.progData = progData;
     }
 
     public synchronized void datenSchreiben() {
         xmlFilePath = new ProgInfos().getXmlFilePath();
-        SysMsg.sysMsg("Daten Schreiben nach: " + xmlFilePath.toString());
+        SysMsg.sysMsg("ProgData Schreiben nach: " + xmlFilePath.toString());
         xmlDatenSchreiben();
     }
 
@@ -91,7 +91,7 @@ public class IoXmlSchreiben implements AutoCloseable {
 
     private void xmlSchreibenDownloads() {
         // Downloads schreiben
-        for (final Download download : daten.downloadList) {
+        for (final Download download : progData.downloadList) {
                 download.setXmlFromProps();
                 xmlSchreibenDaten(DownloadXml.TAG, DownloadXml.XML_NAMES, download.arr, false);
         }

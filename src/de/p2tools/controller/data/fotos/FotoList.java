@@ -16,7 +16,6 @@
 
 package de.p2tools.controller.data.fotos;
 
-import de.p2tools.controller.config.Daten;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
