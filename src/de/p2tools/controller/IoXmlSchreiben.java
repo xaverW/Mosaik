@@ -22,6 +22,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.download.Download;
 import de.p2tools.controller.data.download.DownloadXml;
+import de.p2tools.controller.data.fotos.FotoCollection;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.SysMsg;
 
@@ -64,6 +65,11 @@ public class IoXmlSchreiben implements AutoCloseable {
             writer.writeCharacters("\n");
 
             writer.writeCharacters("\n\n");
+            writer.writeComment("FotoCollections");
+            writer.writeCharacters("\n");
+            xmlWriteFotoCollection();
+
+            writer.writeCharacters("\n\n");
             writer.writeComment("Downloads");
             writer.writeCharacters("\n");
             xmlSchreibenDownloads();
@@ -89,11 +95,18 @@ public class IoXmlSchreiben implements AutoCloseable {
     }
 
 
+    private void xmlWriteFotoCollection() {
+        for (final FotoCollection fotoCollection : progData.fotoCollectionList) {
+            fotoCollection.setXmlFromProps();
+            xmlSchreibenDaten(FotoCollection.TAG, FotoCollection.XML_NAMES, fotoCollection.arr, false);
+        }
+    }
+
     private void xmlSchreibenDownloads() {
         // Downloads schreiben
         for (final Download download : progData.downloadList) {
-                download.setXmlFromProps();
-                xmlSchreibenDaten(DownloadXml.TAG, DownloadXml.XML_NAMES, download.arr, false);
+            download.setXmlFromProps();
+            xmlSchreibenDaten(DownloadXml.TAG, DownloadXml.XML_NAMES, download.arr, false);
         }
     }
 

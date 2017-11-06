@@ -19,6 +19,7 @@ package de.p2tools.gui;
 import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
+import de.p2tools.controller.data.fotos.FotoCollection;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.Table;
 import de.p2tools.mLib.tools.DirFileChooser;
@@ -30,13 +31,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import mosaik.daten.Daten;
+import javafx.util.StringConverter;
 
 public class FotoGuiController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
     ScrollPane scrollPane = new ScrollPane();
     TableView table = new TableView<>();
     AnchorPane contPane = new AnchorPane();
+    AnchorPane collectPane = new AnchorPane();
+
+
+    FotoCollection fotoCollection = null;
+    ComboBox<FotoCollection> cbCollection = new ComboBox<>();
+    TextField txtName = new TextField("");
 
     private final ProgData progData;
     DoubleProperty splitPaneProperty = Config.FILM_GUI_DIVIDER.getDoubleProperty();
@@ -58,8 +65,13 @@ public class FotoGuiController extends AnchorPane {
         SplitPane.setResizableWithParent(scrollPane, Boolean.FALSE);
         initTable();
 
-        addCont();
-        splitPane.getItems().addAll(contPane,scrollPane);
+        initCollection();
+        initCont();
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+
+        vBox.getChildren().addAll(collectPane, contPane);
+        splitPane.getItems().addAll(vBox, scrollPane);
         splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
 
         initListener();
@@ -87,20 +99,92 @@ public class FotoGuiController extends AnchorPane {
         new Table().setTable(table, Table.TABLE.FILM);
     }
 
-    private void addCont(){
+    private void initCollection() {
+        cbCollection.setItems(progData.fotoCollectionList);
+        cbCollection.getSelectionModel().selectFirst();
+        final StringConverter<FotoCollection> converter = new StringConverter<FotoCollection>() {
+            @Override
+            public String toString(FotoCollection fc) {
+                return fc == null ? "" : fc.getName();
+            }
+
+            @Override
+            public FotoCollection fromString(String id) {
+                final int i = cbCollection.getSelectionModel().getSelectedIndex();
+                return progData.fotoCollectionList.get(i);
+            }
+        };
+        cbCollection.setConverter(converter);
+        cbCollection.setMaxWidth(Double.MAX_VALUE);
+        cbCollection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            setContPane();
+        });
+
+        Button btnNew = new Button("");
+        btnNew.setGraphic(new Icons().ICON_BUTTON_ADD);
+        btnNew.setOnAction(event -> {
+            FotoCollection fc = new FotoCollection("Neu-" + progData.fotoCollectionList.size());
+            progData.fotoCollectionList.add(fc);
+            cbCollection.getSelectionModel().select(fc);
+        });
+
+        Button btnDel = new Button("");
+        btnDel.setGraphic(new Icons().ICON_BUTTON_REMOVE);
+        btnDel.setOnAction(event -> {
+            int i = cbCollection.getSelectionModel().getSelectedIndex();
+            if (i < 0) {
+                return;
+            }
+            FotoCollection fc = progData.fotoCollectionList.get(i);
+            if (fc != null) {
+                progData.fotoCollectionList.remove(fc);
+                cbCollection.getSelectionModel().selectFirst();
+            }
+        });
+
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(10));
+        vBox.setSpacing(10);
+        vBox.getChildren().add(cbCollection);
+
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(10));
+        hBox.setSpacing(10);
+        hBox.getChildren().addAll(btnNew, btnDel);
+        vBox.getChildren().add(hBox);
+        collectPane.getChildren().add(vBox);
+    }
+
+
+    private void setContPane() {
+        if (fotoCollection != null) {
+            txtName.textProperty().unbindBidirectional(fotoCollection.nameProperty());
+        }
+        fotoCollection = cbCollection.getSelectionModel().getSelectedItem();
+
+        if (fotoCollection == null) {
+            contPane.setDisable(true);
+        } else {
+            contPane.setDisable(false);
+            txtName.textProperty().bindBidirectional(fotoCollection.nameProperty());
+        }
+    }
+
+    private void initCont() {
         VBox vBox = new VBox();
         vBox.setSpacing(10);
         vBox.setPadding(new Insets(10));
         HBox hBox = new HBox();
         hBox.setSpacing(10);
-        Label lblADd = new Label("Ordner mit Fotos auswählen");
-        TextField txtAdd = new TextField("");
-        txtAdd.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(txtAdd, Priority.ALWAYS);
+        Label lblAdd = new Label("Ordner mit Fotos auswählen");
+        TextField txtDir = new TextField("");
+        txtDir.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(txtDir, Priority.ALWAYS);
+        txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.fotoCollectionList.setListChanged());
 
         final Button btnDir = new Button();
         btnDir.setOnAction(event -> {
-            DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtAdd);
+            DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir);
         });
         btnDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
@@ -108,8 +192,8 @@ public class FotoGuiController extends AnchorPane {
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        hBox.getChildren().addAll(txtAdd, btnDir, btnHelp);
-        vBox.getChildren().addAll(lblADd, hBox);
+        hBox.getChildren().addAll(txtDir, btnDir, btnHelp);
+        vBox.getChildren().addAll(txtName, lblAdd, hBox);
 
         AnchorPane.setTopAnchor(vBox, 0.0);
         AnchorPane.setLeftAnchor(vBox, 0.0);

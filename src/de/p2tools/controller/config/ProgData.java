@@ -19,6 +19,7 @@ package de.p2tools.controller.config;
 
 import de.p2tools.MosaikController;
 import de.p2tools.controller.data.download.DownloadList;
+import de.p2tools.controller.data.fotos.FotoCollectionList;
 import de.p2tools.controller.data.fotos.FotoList;
 import de.p2tools.gui.DownloadGuiController;
 import de.p2tools.gui.FotoGuiController;
@@ -43,6 +44,7 @@ public class ProgData {
     public static String configDir; // Verzeichnis zum Speichern der Programmeinstellungen
 
     // zentrale Klassen
+    public FotoCollectionList fotoCollectionList;
     public FotoList fotoList;
     // Gui
     public Stage primaryStage = null;
@@ -55,6 +57,7 @@ public class ProgData {
 
 
     private ProgData() {
+        fotoCollectionList = new FotoCollectionList();
         fotoList = new FotoList();
         downloadList = new DownloadList(this);
 
