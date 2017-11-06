@@ -21,11 +21,10 @@ import de.p2tools.mLib.tools.Functions;
 public class Const {
 
     public static final String PROGRAMMNAME = "Mosaik";
-    public static final String USER_AGENT_DEFAULT = "";
     public static final String CONFIG_FILE = "mosaik.xml";
     public static final String CONFIG_FILE_COPY = "modaik.xml_copy_";
     public static final String CSS_FILE = "/de/p2tools/mosaik.css";
-
+    public static final String DIR_FOTO_COLLECTIONS = "Fotos";
 
     public static final String ADRESSE_MTPLAYER = "https://www.p2tools.de";
     public static final String ADRESSE_MTPLAYER_CONFIGS = "https://www.p2tools.de/mtp/v-" + Functions.getProgVersion() + "/";

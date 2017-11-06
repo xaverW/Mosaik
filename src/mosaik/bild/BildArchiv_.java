@@ -15,29 +15,28 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.genFotoList;
+package mosaik.bild;
 
-import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.ProgData;
 import mosaik.BildEvent;
 import mosaik.BildListener;
-import mosaik.bild.CountFile_;
+import mosaik.daten.Daten;
+import mosaik.daten.Konstanten;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class GenFotoList {
+public class BildArchiv_ {
 
-    private ProgData progData;
+    private Daten daten;
     private EventListenerList listeners = new EventListenerList();
     private int progress = 0;
     private boolean stopAll = false;
     private int fileCount = 0;
     private LinkedList<File> fileListeEinlesen = new LinkedList<File>();
     private LinkedList<File[]> fileListeErstellen = new LinkedList<File[]>();
-    private ScaleImage scaleImage;
+    private ScaleImage_ scaleImage;
     private File src;
     private File destDir;
     private boolean rekurs;
@@ -46,20 +45,31 @@ public class GenFotoList {
     private CountFile_ countFile;
 
     /**
-     *
+     * @param ddaten
      */
-    public GenFotoList() {
-        progData = ProgData.getInstance();
-        scaleImage = new ScaleImage();
+    public BildArchiv_(Daten ddaten) {
+        daten = ddaten;
+        scaleImage = new ScaleImage_(daten);
         anzThread = Runtime.getRuntime().availableProcessors();
         countFile = new CountFile_();
+//////        anzThread = 5;
     }
+    /////////////////////////
+    // public
+    /////////////////////////
 
     /**
      *
      */
     public void setStop() {
         stopAll = true;
+    }
+
+    /**
+     * @param listener
+     */
+    public void addAdListener(BildListener listener) {
+        listeners.add(BildListener.class, listener);
     }
 
     public void erstellen(String ssrc, String ddest, boolean rrekurs) {
@@ -87,6 +97,9 @@ public class GenFotoList {
         return fileCount;
     }
 
+    ////////////////////////
+    // private
+    ////////////////////////
     private void notifyEvent(int max, int progress, String text) {
         BildEvent event;
         event = new BildEvent(this, progress, max, text, threads);
@@ -132,7 +145,7 @@ public class GenFotoList {
                     notifyEvent(fileCount, 0, "");
                     erstellenMakeThumb(src);
                 } else {
-                    System.out.println("Quelle oder Ziel ist kein Verzeichnis!");
+                    daten.fehler.fehlermeldung("Quelle oder Ziel ist kein Verzeichnis!");
                 }
                 Thread t;
                 for (int i = 0; i < anzThread; ++i) {
@@ -142,7 +155,7 @@ public class GenFotoList {
                     t.start();
                 }
             } catch (Exception ex) {
-                System.out.println(ex.getMessage() + "BildArchiv_.CreateThumbList.start");
+                daten.fehler.fehlermeldung(ex, "BildArchiv_.CreateThumbList.start");
             }
         }
 
@@ -155,15 +168,12 @@ public class GenFotoList {
                     if (liste[i].isFile()) {
                         if (countFile.checkSuffix(liste[i])) {
                             try {
-                                File dest = new File(destDir.getAbsolutePath() +
-                                        File.separator + liste[i].getName() +
-                                        "_" +
-                                        progData.random.nextInt(Integer.MAX_VALUE) +
-                                        "." + Config.FOTO_FORMAT.get());
+                                File dest = new File(destDir.getAbsolutePath() + File.separator + liste[i].getName() + "_" + daten.random.nextInt(
+                                        Integer.MAX_VALUE) + "." + daten.datenProjekt.arr[Konstanten.PROJEKT_ARCHIV_FORMAT_NR]);
                                 str = dest.getAbsolutePath();
                                 addFileErstellen(liste[i], dest);
                             } catch (Exception ex) {
-                                System.out.println(ex.getMessage() + "BildArchiv_.makeThumb");
+                                daten.fehler.fehlermeldung(ex, "BildArchiv_.makeThumb");
                                 System.out.println("----------------------------------");
                                 System.out.println("Fehler - Src: " + liste[i].getAbsolutePath());
                                 System.out.println("Fehler - Dest: " + str);
@@ -194,9 +204,9 @@ public class GenFotoList {
                     ++progress;
                     notifyEvent(fileCount, progress, fileSrc.getName());
                     scaleImage.tus(fileSrc, fileDest);
-                    GetColor.getColor(progData, fileDest);
+                    GetColor_.getColor(daten, fileDest);
                 } catch (IOException ex) {
-                    System.out.println(ex.getMessage() + "MakeThumb.thumb");
+                    daten.fehler.fehlermeldung(ex, "MakeThumb.thumb");
                     System.out.println("----------------------------------");
                     System.out.println("Fehler - Src: " + fileSrc.getAbsolutePath());
                     System.out.println("Fehler - Dest: " + fileDest.getAbsolutePath());
@@ -225,10 +235,10 @@ public class GenFotoList {
                     notifyEvent(fileCount, 0, "");
                     einlesenGetFile(src);
                 } else {
-                    System.out.println("Quelle ist kein Verzeichnis!");
+                    daten.fehler.fehlermeldung("Quelle ist kein Verzeichnis!");
                 }
             } catch (Exception ex) {
-                System.out.println(ex.getMessage() + "BildArchiv_.Einlesen.start");
+                daten.fehler.fehlermeldung(ex, "BildArchiv_.Einlesen.start");
             } finally {
                 try {
                 } catch (Exception ex) {
@@ -267,7 +277,7 @@ public class GenFotoList {
             public void run() {
                 File file;
                 while (!stopAll && (file = getFileEinlesen()) != null) {
-                    GetColor.getColor(progData, file);
+                    GetColor_.getColor(daten, file);
                     ++progress;
                     notifyEvent(fileCount, progress, "");
                 }

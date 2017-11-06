@@ -20,7 +20,6 @@ package de.p2tools.controller.genFotoList;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.fotos.Foto;
 import mosaik.Funktionen;
-import mosaik.daten.DatenFarbe;
 
 import java.awt.image.Raster;
 import java.io.File;
@@ -28,12 +27,11 @@ import java.io.File;
 public class GetColor {
 
     /**
-     * 
      * @param progData
      * @param img
      */
     public static void getColor(ProgData progData, File img) {
-        Raster rast = Funktionen.getRenderedImage( img).getData();
+        Raster rast = Funktionen.getRenderedImage(img).getData();
         int r = 0, g = 0, b = 0;
         long count = 0;
         if (rast != null) {
@@ -45,7 +43,7 @@ public class GetColor {
                     ++count;
                 }
             }
-            Foto farbe =new Foto(r,g,b, img.getAbsolutePath());
+            Foto farbe = new Foto(r, g, b, img.getAbsolutePath());
             progData.fotoList.add(farbe);
         }
     }

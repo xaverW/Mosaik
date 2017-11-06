@@ -133,6 +133,16 @@ public class ProgInfos {
         return getSettingsDirectory().toString();
     }
 
+    public static String getFotoCollectionsDirectory_String() {
+        String dir = ProgInfos.getSettingsDirectory_String();
+        if (dir.endsWith(File.separator)) {
+            dir += Const.DIR_FOTO_COLLECTIONS;
+        } else {
+            dir += File.separator + Const.DIR_FOTO_COLLECTIONS;
+        }
+        return dir;
+    }
+
     /**
      * Return the path to "p2tools.xml_copy_" first copy exists
      *

@@ -37,6 +37,24 @@ public class FileUtils {
         return System.getProperty("user.home");
     }
 
+    public static int countFilesInDirectory(String directory) {
+        File dir = new File(directory);
+        return countFilesInDirectory(dir);
+    }
+
+    public static int countFilesInDirectory(File directory) {
+        int count = 0;
+        for (File file : directory.listFiles()) {
+            if (file.isFile()) {
+                count++;
+            }
+            if (file.isDirectory()) {
+                count += countFilesInDirectory(file);
+            }
+        }
+        return count;
+    }
+
     public static String addsPfad(String pfad1, String pfad2) {
         final String ret = concatPaths(pfad1, pfad2);
         if (ret.isEmpty()) {
@@ -132,29 +150,6 @@ public class FileUtils {
             hh = '0' + hh;
         }
         return hh;
-    }
-
-    public static String getSuffixFromUrl(String pfad) {
-        // Suffix einer URL extrahieren
-        // "http://ios-ondemand.swr.de/i/swr-fernsehen/bw-extra/20130202/601676.,m,s,l,.mp4.csmil/index_2_av.m3u8?e=b471643725c47acd"
-        String ret = "";
-        if (pfad != null) {
-            if (!pfad.isEmpty() && pfad.contains(".")) {
-                ret = pfad.substring(pfad.lastIndexOf('.') + 1);
-            }
-        }
-        if (ret.isEmpty()) {
-            Log.errorLog(969871236, pfad);
-        }
-        if (ret.contains("?")) {
-            ret = ret.substring(0, ret.indexOf('?'));
-        }
-        if (ret.length() > 5) {
-            // dann ist was faul
-            ret = "---";
-            Log.errorLog(821397046, pfad);
-        }
-        return ret;
     }
 
     public static String getFileNameWithoutSuffix(String pfad) {

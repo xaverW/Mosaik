@@ -17,10 +17,11 @@
 
 package mosaik.bild;
 
-import java.io.File;
 import mosaik.daten.Konstanten;
 
-public class CountFile {
+import java.io.File;
+
+public class CountFile_ {
 
     public int countFile(File pfad) {
         int fileCount = 0;
@@ -43,8 +44,8 @@ public class CountFile {
     public boolean checkSuffix(File file) {
         boolean ret = false;
         if (file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(Konstanten.IMAGE_FORMAT_JPG) ||
-            file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase("jpeg") ||
-            file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(Konstanten.IMAGE_FORMAT_PNG)) {
+                file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase("jpeg") ||
+                file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(Konstanten.IMAGE_FORMAT_PNG)) {
             ret = true;
         }
         return ret;

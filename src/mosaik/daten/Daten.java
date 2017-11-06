@@ -5,17 +5,18 @@
 
 package mosaik.daten;
 
-import mosaik.bild.BildArchiv;
-import java.awt.Dimension;
-import mosaik.*;
-import java.io.File;
-import java.util.Random;
+import mosaik.BeobAenderung;
+import mosaik.Fehler;
+import mosaik.bild.BildArchiv_;
 import mosaik.bild.MosaikErstellen;
 import mosaik.gui.Mosaik;
 import mosaik.io.IoXml;
 
+import java.awt.*;
+import java.io.File;
+import java.util.Random;
+
 /**
- *
  * @author emil
  */
 public class Daten {
@@ -23,9 +24,9 @@ public class Daten {
     public String[] system;
     public DatenProjekt datenProjekt = new DatenProjekt();
     public ListeFarben listeFarben = new ListeFarben(this);
-//    public Farbraum farbraum = new Farbraum(this);
+    //    public Farbraum farbraum = new Farbraum(this);
     public IoXml ioXml = new IoXml(this);
-    public BildArchiv bildArchiv = new BildArchiv(this);
+    public BildArchiv_ bildArchiv = new BildArchiv_(this);
     public MosaikErstellen mosaikErstellen = new MosaikErstellen(this);
     public Random random = new Random();
     public Dimension groesseBild;
@@ -38,7 +39,6 @@ public class Daten {
     private String basisverzeichnis = "";
 
     /**
-     * 
      * @param basis
      * @param mmosaik
      */
@@ -78,7 +78,7 @@ public class Daten {
         File basis = new File(getBasisVerzeichnis());
         if (!basis.exists()) {
             if (!basis.mkdir()) {
-           fehler.fehlermeldung("Kann den Ordner zum Speichern der ProgData nicht anlegen!", "ProgData.getBasisVerzeichnis");
+                fehler.fehlermeldung("Kann den Ordner zum Speichern der ProgData nicht anlegen!", "ProgData.getBasisVerzeichnis");
             }
         }
     }

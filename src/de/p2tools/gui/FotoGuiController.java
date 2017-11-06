@@ -18,8 +18,10 @@ package de.p2tools.gui;
 
 import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.ProgData;
+import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.fotos.FotoCollection;
+import de.p2tools.controller.genFotoList.ThumbList;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.Table;
 import de.p2tools.mLib.tools.DirFileChooser;
@@ -44,6 +46,8 @@ public class FotoGuiController extends AnchorPane {
     FotoCollection fotoCollection = null;
     ComboBox<FotoCollection> cbCollection = new ComboBox<>();
     TextField txtName = new TextField("");
+    TextField txtDir = new TextField("");
+    Button btnLod = new Button("Fotos hinzufügen");
 
     private final ProgData progData;
     DoubleProperty splitPaneProperty = Config.FILM_GUI_DIVIDER.getDoubleProperty();
@@ -67,6 +71,8 @@ public class FotoGuiController extends AnchorPane {
 
         initCollection();
         initCont();
+        setContPane();
+
         VBox vBox = new VBox();
         vBox.setSpacing(10);
 
@@ -176,8 +182,9 @@ public class FotoGuiController extends AnchorPane {
         vBox.setPadding(new Insets(10));
         HBox hBox = new HBox();
         hBox.setSpacing(10);
-        Label lblAdd = new Label("Ordner mit Fotos auswählen");
-        TextField txtDir = new TextField("");
+
+        Label lblTitle = new Label("Ordner mit Fotos auswählen");
+
         txtDir.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDir, Priority.ALWAYS);
         txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.fotoCollectionList.setListChanged());
@@ -192,8 +199,18 @@ public class FotoGuiController extends AnchorPane {
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
+        btnLod.setOnAction(a -> {
+            if (txtDir.getText().isEmpty()) {
+                return;
+            }
+            new ThumbList().create(txtDir.getText(),
+                    ProgInfos.getFotoCollectionsDirectory_String(),
+                    true);
+        });
+
+
         hBox.getChildren().addAll(txtDir, btnDir, btnHelp);
-        vBox.getChildren().addAll(txtName, lblAdd, hBox);
+        vBox.getChildren().addAll(txtName, lblTitle, hBox, btnLod);
 
         AnchorPane.setTopAnchor(vBox, 0.0);
         AnchorPane.setLeftAnchor(vBox, 0.0);
@@ -201,4 +218,5 @@ public class FotoGuiController extends AnchorPane {
         AnchorPane.setRightAnchor(vBox, 0.0);
         contPane.getChildren().add(vBox);
     }
+
 }
