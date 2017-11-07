@@ -21,8 +21,8 @@ import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.download.Download;
 import de.p2tools.controller.data.download.DownloadXml;
-import de.p2tools.controller.data.fotos.FotoCollection;
-import de.p2tools.controller.data.fotos.FotoCollectionXml;
+import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.controller.data.thumb.ThumbCollectionXml;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLConfigs;
@@ -65,11 +65,11 @@ public class IoXmlLesen implements AutoCloseable {
                                 // System
                                 getConfig(parser, Config.SYSTEM);
                                 break;
-                            case FotoCollection.TAG:
-                                final FotoCollection f = new FotoCollection();
-                                if (get(parser, FotoCollectionXml.TAG, FotoCollectionXml.XML_NAMES, f.arr)) {
+                            case ThumbCollection.TAG:
+                                final ThumbCollection f = new ThumbCollection();
+                                if (get(parser, ThumbCollectionXml.TAG, ThumbCollectionXml.XML_NAMES, f.arr)) {
                                     f.setPropsFromXml();
-                                    progData.fotoCollectionList.add(f);
+                                    progData.thumbCollectionList.add(f);
                                 }
                                 break;
                             case DownloadXml.TAG:

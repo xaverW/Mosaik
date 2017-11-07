@@ -14,19 +14,24 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.data.fotos;
+package de.p2tools.controller.data.thumb;
 
-import javafx.beans.property.*;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleIntegerProperty;
 
-public class FotoProps extends FotoXml {
+import java.awt.*;
+
+public class ThumbProps extends ThumbXml {
 
     private final IntegerProperty nr = new SimpleIntegerProperty(0);
     private final IntegerProperty red = new SimpleIntegerProperty(0);
     private final IntegerProperty green = new SimpleIntegerProperty(0);
     private final IntegerProperty blue = new SimpleIntegerProperty(0);
     private final IntegerProperty sum = new SimpleIntegerProperty(0);
+    private Color color = new Color(0);
 
-    public final Property[] properties = {nr, red, green, blue, sum};
+    public final Property[] properties = {nr, red, green, blue};
 
 
     public int getNr() {
@@ -51,6 +56,7 @@ public class FotoProps extends FotoXml {
 
     public void setRed(int red) {
         this.red.set(red);
+        setColor();
     }
 
     public int getGreen() {
@@ -63,6 +69,7 @@ public class FotoProps extends FotoXml {
 
     public void setGreen(int green) {
         this.green.set(green);
+        setColor();
     }
 
     public int getBlue() {
@@ -75,6 +82,7 @@ public class FotoProps extends FotoXml {
 
     public void setBlue(int blue) {
         this.blue.set(blue);
+        setColor();
     }
 
     public int getSum() {
@@ -89,29 +97,37 @@ public class FotoProps extends FotoXml {
         this.sum.set(sum);
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor() {
+        this.color = new Color(getRed(), getGreen(), getBlue());
+    }
+
     public void setPropsFromXml() {
         setRed(Integer.parseInt(arr[COLOR_RED]));
         setGreen(Integer.parseInt(arr[COLOR_GREEN]));
         setBlue(Integer.parseInt(arr[COLOR_BLUE]));
-    setSum(getRed()+getGreen()+getBlue());
+        setSum(getRed() + getGreen() + getBlue());
     }
 
 
     public void setXmlFromProps() {
-        arr[COLOR_RED] =String.valueOf(getRed());
-        arr[COLOR_GREEN] =String.valueOf(getGreen());
-        arr[COLOR_BLUE] =String.valueOf(getBlue());
-        arr[COLOR_SUM] =String.valueOf(getSum());
+        arr[COLOR_RED] = String.valueOf(getRed());
+        arr[COLOR_GREEN] = String.valueOf(getGreen());
+        arr[COLOR_BLUE] = String.valueOf(getBlue());
+        arr[COLOR_SUM] = String.valueOf(getSum());
     }
 
 
     @Override
-    public int compareTo(Foto arg0) {
-        if (arg0.getSum()==getSum()){
+    public int compareTo(Thumb arg0) {
+        if (arg0.getSum() == getSum()) {
             return 0;
-        }else if (arg0.getSum()<getSum()){
+        } else if (arg0.getSum() < getSum()) {
             return -1;
-        }else{
+        } else {
             return 1;
         }
     }

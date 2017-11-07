@@ -20,8 +20,9 @@ import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.Icons;
-import de.p2tools.controller.data.fotos.FotoCollection;
-import de.p2tools.controller.genFotoList.ThumbList;
+import de.p2tools.controller.data.thumb.Thumb;
+import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.controller.genFotoList.GenThumbList;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.Table;
 import de.p2tools.mLib.tools.DirFileChooser;
@@ -29,10 +30,13 @@ import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class FotoGuiController extends AnchorPane {
@@ -43,8 +47,8 @@ public class FotoGuiController extends AnchorPane {
     AnchorPane collectPane = new AnchorPane();
 
 
-    FotoCollection fotoCollection = null;
-    ComboBox<FotoCollection> cbCollection = new ComboBox<>();
+    ThumbCollection thumbCollection = null;
+    ComboBox<ThumbCollection> cbCollection = new ComboBox<>();
     TextField txtName = new TextField("");
     TextField txtDir = new TextField("");
     Button btnLod = new Button("Fotos hinzufügen");
@@ -101,23 +105,22 @@ public class FotoGuiController extends AnchorPane {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        table.setItems(progData.fotoList);
-        new Table().setTable(table, Table.TABLE.FILM);
+        initTableColor(table);
     }
 
     private void initCollection() {
-        cbCollection.setItems(progData.fotoCollectionList);
+        cbCollection.setItems(progData.thumbCollectionList);
         cbCollection.getSelectionModel().selectFirst();
-        final StringConverter<FotoCollection> converter = new StringConverter<FotoCollection>() {
+        final StringConverter<ThumbCollection> converter = new StringConverter<ThumbCollection>() {
             @Override
-            public String toString(FotoCollection fc) {
+            public String toString(ThumbCollection fc) {
                 return fc == null ? "" : fc.getName();
             }
 
             @Override
-            public FotoCollection fromString(String id) {
+            public ThumbCollection fromString(String id) {
                 final int i = cbCollection.getSelectionModel().getSelectedIndex();
-                return progData.fotoCollectionList.get(i);
+                return progData.thumbCollectionList.get(i);
             }
         };
         cbCollection.setConverter(converter);
@@ -129,8 +132,8 @@ public class FotoGuiController extends AnchorPane {
         Button btnNew = new Button("");
         btnNew.setGraphic(new Icons().ICON_BUTTON_ADD);
         btnNew.setOnAction(event -> {
-            FotoCollection fc = new FotoCollection("Neu-" + progData.fotoCollectionList.size());
-            progData.fotoCollectionList.add(fc);
+            ThumbCollection fc = new ThumbCollection("Neu-" + progData.thumbCollectionList.size());
+            progData.thumbCollectionList.add(fc);
             cbCollection.getSelectionModel().select(fc);
         });
 
@@ -141,9 +144,9 @@ public class FotoGuiController extends AnchorPane {
             if (i < 0) {
                 return;
             }
-            FotoCollection fc = progData.fotoCollectionList.get(i);
+            ThumbCollection fc = progData.thumbCollectionList.get(i);
             if (fc != null) {
-                progData.fotoCollectionList.remove(fc);
+                progData.thumbCollectionList.remove(fc);
                 cbCollection.getSelectionModel().selectFirst();
             }
         });
@@ -163,16 +166,18 @@ public class FotoGuiController extends AnchorPane {
 
 
     private void setContPane() {
-        if (fotoCollection != null) {
-            txtName.textProperty().unbindBidirectional(fotoCollection.nameProperty());
+        if (thumbCollection != null) {
+            txtName.textProperty().unbindBidirectional(thumbCollection.nameProperty());
+            txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
         }
-        fotoCollection = cbCollection.getSelectionModel().getSelectedItem();
+        thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
 
-        if (fotoCollection == null) {
+        if (thumbCollection == null) {
             contPane.setDisable(true);
         } else {
             contPane.setDisable(false);
-            txtName.textProperty().bindBidirectional(fotoCollection.nameProperty());
+            txtName.textProperty().bindBidirectional(thumbCollection.nameProperty());
+            txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
         }
     }
 
@@ -187,7 +192,7 @@ public class FotoGuiController extends AnchorPane {
 
         txtDir.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDir, Priority.ALWAYS);
-        txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.fotoCollectionList.setListChanged());
+        txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.thumbCollectionList.setListChanged());
 
         final Button btnDir = new Button();
         btnDir.setOnAction(event -> {
@@ -203,8 +208,14 @@ public class FotoGuiController extends AnchorPane {
             if (txtDir.getText().isEmpty()) {
                 return;
             }
-            new ThumbList().create(txtDir.getText(),
-                    ProgInfos.getFotoCollectionsDirectory_String(),
+            // todo destDir ist leer
+            String destDir = ProgInfos.getFotoCollectionsDirectory_String(thumbCollection.getName());
+            thumbCollection.setThumbDir(destDir);
+            table.getItems().clear();
+            table.setItems(thumbCollection.getThumbList());
+
+            new GenThumbList(thumbCollection).create(txtDir.getText(),
+                    destDir,
                     true);
         });
 
@@ -219,4 +230,43 @@ public class FotoGuiController extends AnchorPane {
         contPane.getChildren().add(vBox);
     }
 
+    private void initTableColor(TableView<Thumb> tableView) {
+
+        final TableColumn<Thumb, String> nrColumn = new TableColumn<>("Nr");
+        nrColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
+
+        final TableColumn<Thumb, Color> colorColumn = new TableColumn<>("Farbe");
+        colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
+        colorColumn.setCellFactory(cellFactoryColor);
+
+        tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+
+        tableView.getColumns().addAll(nrColumn, colorColumn);
+//        tableView.setItems(thumbCollection.getFotos());
+    }
+
+    private Callback<TableColumn<Thumb, Color>, TableCell<Thumb, Color>> cellFactoryColor
+            = (final TableColumn<Thumb, Color> param) -> {
+
+        final TableCell<Thumb, Color> cell = new TableCell<Thumb, Color>() {
+
+
+            @Override
+            public void updateItem(Color item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    setText(null);
+                    return;
+                }
+
+                Thumb thumb = getTableView().getItems().get(getIndex());
+                setStyle("-fx-background-color:" + thumb.getColor());
+            }
+
+        };
+
+        return cell;
+    };
 }

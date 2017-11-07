@@ -17,8 +17,8 @@
 
 package de.p2tools.controller.genFotoList;
 
-import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.data.fotos.Foto;
+import de.p2tools.controller.data.thumb.Thumb;
+import de.p2tools.controller.data.thumb.ThumbList;
 import mosaik.Funktionen;
 
 import java.awt.image.Raster;
@@ -27,10 +27,10 @@ import java.io.File;
 public class GetColor {
 
     /**
-     * @param progData
+     * @param thumbList
      * @param img
      */
-    public static void getColor(ProgData progData, File img) {
+    public static void getColor(ThumbList thumbList, File img) {
         Raster rast = Funktionen.getRenderedImage(img).getData();
         int r = 0, g = 0, b = 0;
         long count = 0;
@@ -43,8 +43,8 @@ public class GetColor {
                     ++count;
                 }
             }
-            Foto farbe = new Foto(r, g, b, img.getAbsolutePath());
-            progData.fotoList.add(farbe);
+            Thumb farbe = new Thumb(r, g, b, img.getAbsolutePath());
+            thumbList.add(farbe);
         }
     }
 

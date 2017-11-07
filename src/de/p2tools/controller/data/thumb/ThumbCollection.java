@@ -14,26 +14,29 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.data.fotos;
+package de.p2tools.controller.data.thumb;
 
-public final class FotoCollection extends FotoCollectionProps {
+public final class ThumbCollection extends ThumbCollectionProps {
 
+    private ThumbList thumbList = new ThumbList();
 
-    public FotoCollection() {
+    public ThumbCollection() {
     }
 
-    public FotoCollection(String name) {
+    public ThumbCollection(String name) {
         setName(name);
     }
 
-//    @Override
-//    public String toString() {
-//        return getName();
-//    }
+    public ThumbList getThumbList() {
+        return thumbList;
+    }
 
+    public void setThumbList(ThumbList thumbList) {
+        this.thumbList = thumbList;
+    }
 
-    public FotoCollection getCopy() {
-        final FotoCollection ret = new FotoCollection();
+    public ThumbCollection getCopy() {
+        final ThumbCollection ret = new ThumbCollection();
         for (int i = 0; i < properties.length; ++i) {
             ret.properties[i].setValue(this.properties[i].getValue());
         }
@@ -42,7 +45,7 @@ public final class FotoCollection extends FotoCollectionProps {
         return ret;
     }
 
-    public void copyToMe(FotoCollection foto) {
+    public void copyToMe(ThumbCollection foto) {
         for (int i = 0; i < properties.length; ++i) {
             properties[i].setValue(foto.properties[i].getValue());
         }

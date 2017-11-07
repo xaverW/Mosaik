@@ -19,6 +19,7 @@ package de.p2tools.controller.genFotoList;
 
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
+import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.FileUtils;
 import mosaik.BildEvent;
 import mosaik.BildListener;
@@ -29,7 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class ThumbList {
+public class GenThumbList {
 
     private ProgData progData;
     private EventListenerList listeners = new EventListenerList();
@@ -39,18 +40,20 @@ public class ThumbList {
     private LinkedList<File> fileListeEinlesen = new LinkedList<>();
     private LinkedList<File[]> fileListeErstellen = new LinkedList<>();
     private ScaleImage scaleImage;
-
+    private ThumbCollection thumbCollection;
 
     private int anzThread = 1;
     private int threads = 0;
 
     /**
      */
-    public ThumbList() {
+    public GenThumbList(ThumbCollection thumbCollection) {
+        this.thumbCollection = thumbCollection;
         progData = ProgData.getInstance();
         scaleImage = new ScaleImage();
         anzThread = Runtime.getRuntime().availableProcessors();
     }
+
 
     /**
      *
@@ -195,7 +198,7 @@ public class ThumbList {
                     ++progress;
                     notifyEvent(fileCount, progress, fileSrc.getName());
                     scaleImage.tus(fileSrc, fileDest);
-                    GetColor.getColor(progData, fileDest);
+                    GetColor.getColor(thumbCollection.getThumbList(), fileDest);
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage() + "MakeThumb.thumb");
                     System.out.println("----------------------------------");
@@ -268,7 +271,7 @@ public class ThumbList {
             public void run() {
                 File file;
                 while (!stopAll && (file = getFileEinlesen()) != null) {
-                    GetColor.getColor(progData, file);
+                    GetColor.getColor(thumbCollection.getThumbList(), file);
                     ++progress;
                     notifyEvent(fileCount, progress, "");
                 }

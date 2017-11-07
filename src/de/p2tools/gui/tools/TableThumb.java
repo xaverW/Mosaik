@@ -14,30 +14,29 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.data.fotos;
+package de.p2tools.gui.tools;
+
+import de.p2tools.controller.data.thumb.ThumbCollection;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+public class TableThumb {
+
+    public static TableColumn[] initDownloadColumn(TableView table) {
+        table.getColumns().clear();
+
+        final TableColumn<ThumbCollection, Integer> nrColumn = new TableColumn<>("Nr");
+        nrColumn.setCellValueFactory(new PropertyValueFactory<>("nr"));
 
 
-import de.p2tools.controller.data.Data;
+        return new TableColumn[]{
+                nrColumn
+        };
 
-public class FotoXml extends Data<Foto> {
 
-
-    public static final int FOTO_NR = 0;
-    public static final int COLOR_RED = 1;
-    public static final int COLOR_GREEN = 2;
-    public static final int COLOR_BLUE = 3;
-    public static final int COLOR_SUM = 4;
-
-    public static final String[] XML_NAMES = {"Nr",
-            "red",
-            "green",
-            "blue",
-    "sum"};
-    public static final String TAG = "Foto";
-    public static int MAX_ELEM = XML_NAMES.length;
-
-    public FotoXml() {
-        arr = makeArr(MAX_ELEM);
     }
 
+
 }
+

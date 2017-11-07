@@ -100,16 +100,6 @@ public class AboutDialogController extends MTDialogExtra {
         text.setFont(Font.font(null, FontWeight.BOLD, 15));
         gridPane.add(text, 0, ++row, 2, 1);
 
-        text = new Text("Filmliste:");
-        text.setFont(new Font(15));
-        text.setFill(GRAY);
-        gridPane.add(text, 0, ++row);
-
-        text = new Text(ProgInfos.getFilmListFile());
-        text.setFont(new Font(15));
-        text.setFill(GRAY);
-        gridPane.add(text, 1, row);
-
         text = new Text("Einstellungen:");
         text.setFont(new Font(15));
         text.setFill(GRAY);

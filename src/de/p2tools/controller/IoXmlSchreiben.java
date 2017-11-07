@@ -22,7 +22,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.download.Download;
 import de.p2tools.controller.data.download.DownloadXml;
-import de.p2tools.controller.data.fotos.FotoCollection;
+import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.SysMsg;
 
@@ -96,9 +96,9 @@ public class IoXmlSchreiben implements AutoCloseable {
 
 
     private void xmlWriteFotoCollection() {
-        for (final FotoCollection fotoCollection : progData.fotoCollectionList) {
-            fotoCollection.setXmlFromProps();
-            xmlSchreibenDaten(FotoCollection.TAG, FotoCollection.XML_NAMES, fotoCollection.arr, false);
+        for (final ThumbCollection thumbCollection : progData.thumbCollectionList) {
+            thumbCollection.setXmlFromProps();
+            xmlSchreibenDaten(ThumbCollection.TAG, ThumbCollection.XML_NAMES, thumbCollection.arr, false);
         }
     }
 

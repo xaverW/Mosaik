@@ -14,7 +14,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.data.fotos;
+package de.p2tools.controller.data.thumb;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -24,13 +24,13 @@ import javafx.collections.FXCollections;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FotoList extends SimpleListProperty<Foto> {
+public class ThumbList extends SimpleListProperty<Thumb> {
 
-    private int nr=1;
+    private int nr = 1;
     private BooleanProperty fotoListChanged = new SimpleBooleanProperty(true);
 
 
-    public FotoList() {
+    public ThumbList() {
         super(FXCollections.observableArrayList());
     }
 
@@ -52,13 +52,13 @@ public class FotoList extends SimpleListProperty<Foto> {
     }
 
 
-    public synchronized boolean add(Foto d) {
+    public synchronized boolean add(Thumb d) {
         d.setNr(nr++);
         return super.add(d);
     }
 
 
-    public synchronized boolean addAll(ArrayList<Foto> d) {
+    public synchronized boolean addAll(ArrayList<Thumb> d) {
         d.forEach(foto -> foto.setNr(nr++));
         return super.addAll(d);
     }

@@ -14,34 +14,30 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.data.fotos;
-
-public final class Foto extends FotoProps {
+package de.p2tools.controller.data.thumb;
 
 
-    public Foto() {
+import de.p2tools.controller.data.Data;
+
+public class ThumbXml extends Data<Thumb> {
+
+
+    public static final int FOTO_NR = 0;
+    public static final int COLOR_RED = 1;
+    public static final int COLOR_GREEN = 2;
+    public static final int COLOR_BLUE = 3;
+    public static final int COLOR_SUM = 4;
+
+    public static final String[] XML_NAMES = {"Nr",
+            "red",
+            "green",
+            "blue",
+            "sum"};
+    public static final String TAG = "Thumb";
+    public static int MAX_ELEM = XML_NAMES.length;
+
+    public ThumbXml() {
+        arr = makeArr(MAX_ELEM);
     }
 
-    public Foto(int r, int g, int b, String path) {
-        setRed(r);
-        setGreen(g);
-        setBlue(b);
-    }
-
-    public Foto getCopy() {
-        final Foto ret = new Foto();
-        for (int i = 0; i < properties.length; ++i) {
-            ret.properties[i].setValue(this.properties[i].getValue());
-        }
-        ret.setXmlFromProps();
-
-        return ret;
-    }
-
-    public void copyToMe(Foto foto) {
-        for (int i = 0; i < properties.length; ++i) {
-            properties[i].setValue(foto.properties[i].getValue());
-        }
-        setXmlFromProps();
-    }
 }

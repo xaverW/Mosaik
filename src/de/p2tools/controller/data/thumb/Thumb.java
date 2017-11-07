@@ -14,30 +14,34 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.gui.tools;
+package de.p2tools.controller.data.thumb;
 
-import de.p2tools.controller.config.ProgData;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+public final class Thumb extends ThumbProps {
 
-public class TableFilm {
 
-    private final ProgData progData;
-
-    public TableFilm(ProgData progData) {
-        this.progData = progData;
+    public Thumb() {
     }
 
-    public TableColumn[] initFilmColumn(TableView table) {
-        table.getColumns().clear();
-
-        final TableColumn nrColumn = new TableColumn<>("Nr");
-
-        return new TableColumn[]{
-                nrColumn
-        };
-
+    public Thumb(int r, int g, int b, String path) {
+        setRed(r);
+        setGreen(g);
+        setBlue(b);
     }
 
+    public Thumb getCopy() {
+        final Thumb ret = new Thumb();
+        for (int i = 0; i < properties.length; ++i) {
+            ret.properties[i].setValue(this.properties[i].getValue());
+        }
+        ret.setXmlFromProps();
 
+        return ret;
+    }
+
+    public void copyToMe(Thumb thumb) {
+        for (int i = 0; i < properties.length; ++i) {
+            properties[i].setValue(thumb.properties[i].getValue());
+        }
+        setXmlFromProps();
+    }
 }

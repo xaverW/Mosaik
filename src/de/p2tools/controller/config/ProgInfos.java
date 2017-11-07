@@ -16,10 +16,8 @@
 
 package de.p2tools.controller.config;
 
-import com.jidesoft.utils.SystemInfo;
 import de.p2tools.Main;
 import de.p2tools.controller.Messages;
-import de.p2tools.mLib.tools.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,28 +78,6 @@ public class ProgInfos {
     }
 
     /**
-     * Liefert den Pfad zur Filmliste
-     *
-     * @return Den Pfad als String
-     */
-    public static String getFilmListFile() {
-        String strFile;
-
-        if (SystemInfo.isMacOSX()) {
-            // place filmlist into OS X user cache directory in order not to backup it all the time in
-            // TimeMachine...
-            strFile = FileUtils.getHomePath() + File.separator
-                    + "Library/Caches/MTPlayer"
-                    + File.separator
-                    + Const.JSON_DATEI_FILME;
-        } else {
-            strFile = ProgInfos.getSettingsDirectory_String() + File.separator + Const.JSON_DATEI_FILME;
-        }
-
-        return strFile;
-    }
-
-    /**
      * Return the location of the settings directory. If it does not exist, create one.
      *
      * @return Path to the settings directory
@@ -133,13 +109,14 @@ public class ProgInfos {
         return getSettingsDirectory().toString();
     }
 
-    public static String getFotoCollectionsDirectory_String() {
+    public static String getFotoCollectionsDirectory_String(String destDir) {
         String dir = ProgInfos.getSettingsDirectory_String();
         if (dir.endsWith(File.separator)) {
             dir += Const.DIR_FOTO_COLLECTIONS;
         } else {
             dir += File.separator + Const.DIR_FOTO_COLLECTIONS;
         }
+        dir += File.separator + destDir;
         return dir;
     }
 

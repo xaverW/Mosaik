@@ -14,27 +14,30 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.data.fotos;
+package de.p2tools.controller.data.thumb;
 
 
 import de.p2tools.controller.data.Data;
-import mosaik.daten.Konstanten;
 
-public class FotoCollectionXml extends Data<FotoCollection> {
+public class ThumbCollectionXml extends Data<ThumbCollection> {
 
-    public static final int NR= 0;
-    public static final int NAME= 1;
-    public static final int RESOLUTION= 2;
-    public static final int FOTO_FORMAT= 3;
+    public static final int NR = 0;
+    public static final int NAME = 1;
+    public static final int RESOLUTION = 2;
+    public static final int FOTO_FORMAT = 3;
+    public static final int DIR_THUMB = 4;
+    public static final int DIR_FOTO_SRC = 5;
 
     public static final String[] XML_NAMES = {"Nr",
             "name",
             "resolution",
-            "foto-format"};
-    public static final String TAG = "FotoCollection";
+            "foto-format",
+            "dir-thumb",
+            "dir-foto-src"};
+    public static final String TAG = "ThumbCollection";
     public static int MAX_ELEM = XML_NAMES.length;
 
-    public FotoCollectionXml() {
+    public ThumbCollectionXml() {
         arr = makeArr(MAX_ELEM);
     }
 

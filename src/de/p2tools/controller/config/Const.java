@@ -16,8 +16,6 @@
 
 package de.p2tools.controller.config;
 
-import de.p2tools.mLib.tools.Functions;
-
 public class Const {
 
     public static final String PROGRAMMNAME = "Mosaik";
@@ -26,24 +24,12 @@ public class Const {
     public static final String CSS_FILE = "/de/p2tools/mosaik.css";
     public static final String DIR_FOTO_COLLECTIONS = "Fotos";
 
-    public static final String ADRESSE_MTPLAYER = "https://www.p2tools.de";
-    public static final String ADRESSE_MTPLAYER_CONFIGS = "https://www.p2tools.de/mtp/v-" + Functions.getProgVersion() + "/";
-    public static final String ADRESSE_MTPLAYER_VERSION = "https://www.p2tools.de/mtp/prog-version.xml";
-
-    public static final String ADRESSE_PROGRAMM_VERSION = "https://res.mediathekview.de/prog-info-13.xml";
-    public static final String ADRESSE_DOWNLAD = "https://mediathekview.de/download/";
-    public static final String ADRESSE_ANLEITUNG = "https://mediathekview.de/anleitung/";
-    public static final String ADRESSE_ONLINE_HELP = "https://mediathekview.de/anleitung/";
-    public static final String ADRESSE_VORLAGE_PROGRAMMGRUPPEN = "https://res.mediathekview.de/programmgruppen13/programmgruppen.xml";
-    public static final String ADRESSE_WEBSITE = "https://mediathekview.de/";
-    public static final String ADRESSE_FORUM = "https://forum.mediathekview.de/";
-    public static final String ADRESSE_DONATION = "https://mediathekview.de/spenden/";
+    public static final String WEBSITE_MOSAIK = "https://www.p2tools.de";
 
     // Dateien/Verzeichnisse
     public static final String VERZEICHNIS_PROGRAMM_ICONS = "Icons/Programm"; // Unterverzeichnis im Programmverzeichnis
     public static final String VERZEICHNIS_SENDER_ICONS = "Icons/Sender"; // Unterverzeichnis im Programmverzeichnis
     public static final String VERZEICHNIS_EINSTELLUNGEN = ".mosaik"; // im Homeverzeichnis
-    public static final String JSON_DATEI_FILME = "filme.json";
 
     public static final String XML_START = "Mosaik";
 
@@ -60,10 +46,6 @@ public class Const {
 
     public static final String CONFIG_DIALOG_SET_DIVIDER = "0.2";
 
-    public static final int DOWNLOAD_CHART_MAX_TIME = 30; // Minuten
-
-    public static final int LAENGE_DATEINAME_MAX = 200; // Standardwert für die Länge des Zieldateinamens
-    public static final int LAENGE_FELD_MAX = 100; // Standardwert für die Länge des Feldes des
     public final static int MAX_COPY_BACKUPFILE = 5; // Maximum number of backup files to be stored.
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
