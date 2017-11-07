@@ -31,10 +31,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -242,7 +239,6 @@ public class FotoGuiController extends AnchorPane {
         tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         tableView.getColumns().addAll(nrColumn, colorColumn);
-//        tableView.setItems(thumbCollection.getFotos());
     }
 
     private Callback<TableColumn<Thumb, Color>, TableCell<Thumb, Color>> cellFactoryColor
@@ -260,9 +256,9 @@ public class FotoGuiController extends AnchorPane {
                     setText(null);
                     return;
                 }
-
                 Thumb thumb = getTableView().getItems().get(getIndex());
-                setStyle("-fx-background-color:" + thumb.getColor());
+//                setStyle("-fx-background-color:" + thumb.getColor());
+                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
             }
 
         };

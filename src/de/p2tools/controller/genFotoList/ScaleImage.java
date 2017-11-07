@@ -18,12 +18,8 @@
 package de.p2tools.controller.genFotoList;
 
 import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.ProgData;
-import de.p2tools.mLib.tools.MLConfig;
-import de.p2tools.mLib.tools.MLConfigs;
+import de.p2tools.controller.data.thumb.Thumb;
 import mosaik.Funktionen;
-import mosaik.daten.Daten;
-import mosaik.daten.Konstanten;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -36,19 +32,12 @@ import java.io.IOException;
 
 public class ScaleImage {
 
-    ProgData progData;
-
-    public ScaleImage() {
-        progData = ProgData.getInstance();
-    }
-
     /**
-     * 
      * @param source
      * @param dest
-     * @throws IOException 
+     * @throws IOException
      */
-    public void tus(File source, File dest) throws IOException {
+    public static void scale(File source, File dest) throws IOException {
         BufferedImage img = Funktionen.getBufferedImage(source);
         if (Config.FOTO_RECT.getBool()) {
             int h = img.getHeight(), w = img.getWidth(), x, y;
@@ -72,7 +61,7 @@ public class ScaleImage {
             }
             img = imgOut;
         }
-        int width =Config.FOTO_SIZE.getInt();
+        int width = Config.FOTO_SIZE.getInt();
         Image scaledImage = img.getScaledInstance(width, width, Image.SCALE_SMOOTH);
         BufferedImage outImg = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
         Graphics g = outImg.getGraphics();
@@ -82,23 +71,22 @@ public class ScaleImage {
     }
 
     /**
-     * 
      * @param source
-     * @param rechts 
+     * @param rechts
      */
-    public void drehen(File source, boolean rechts) {
+    public static void rotate(File source, boolean rechts) {
         try {
             BufferedImage img = Funktionen.getBufferedImage(source);
             BufferedImage rImg = rotateImage(img, (rechts) ? 1 : -1);
             ImageIO.write(rImg, Funktionen.fileType(source), source);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage() + "\n"+"ScaleImage_.drehen");
+            System.out.println(ex.getMessage() + "\n" + "ScaleImage_.drehen");
         }
     }
 
     private static BufferedImage rotateImage(BufferedImage src, int degrees) {
         AffineTransform affineTransform = AffineTransform.getQuadrantRotateInstance(
-            degrees, src.getWidth() / 2, src.getHeight() / 2);
+                degrees, src.getWidth() / 2, src.getHeight() / 2);
         BufferedImage rotatedImage = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) rotatedImage.getGraphics();
         g.setTransform(affineTransform);
@@ -106,4 +94,25 @@ public class ScaleImage {
         return rotatedImage;
     }
 
+    /**
+     * @param img
+     */
+    public static Thumb getThumb(File img) {
+        Thumb ret = null;
+        Raster rast = Funktionen.getRenderedImage(img).getData();
+        int r = 0, g = 0, b = 0;
+        long count = 0;
+        if (rast != null) {
+            for (int x = rast.getMinX(); x < (rast.getMinX() + rast.getWidth()); x++) {
+                for (int y = rast.getMinY(); y < (rast.getMinY() + rast.getHeight()); y++) {
+                    r += rast.getSample(x, y, 0);
+                    g += rast.getSample(x, y, 1);
+                    b += rast.getSample(x, y, 2);
+                    ++count;
+                }
+            }
+            ret = new Thumb((int) (r / count), (int) (g / count), (int) (b / count), img.getAbsolutePath());
+        }
+        return ret;
+    }
 }

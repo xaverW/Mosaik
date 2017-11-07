@@ -19,8 +19,8 @@ package de.p2tools.controller.data.thumb;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.paint.Color;
 
-import java.awt.*;
 
 public class ThumbProps extends ThumbXml {
 
@@ -29,7 +29,7 @@ public class ThumbProps extends ThumbXml {
     private final IntegerProperty green = new SimpleIntegerProperty(0);
     private final IntegerProperty blue = new SimpleIntegerProperty(0);
     private final IntegerProperty sum = new SimpleIntegerProperty(0);
-    private Color color = new Color(0);
+    private Color color = Color.rgb(0, 0, 0);
 
     public final Property[] properties = {nr, red, green, blue};
 
@@ -102,7 +102,7 @@ public class ThumbProps extends ThumbXml {
     }
 
     public void setColor() {
-        this.color = new Color(getRed(), getGreen(), getBlue());
+        this.color = Color.rgb(getRed(), getGreen(), getBlue());
     }
 
     public void setPropsFromXml() {

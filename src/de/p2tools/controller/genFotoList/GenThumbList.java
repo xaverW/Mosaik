@@ -19,6 +19,7 @@ package de.p2tools.controller.genFotoList;
 
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
+import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.FileUtils;
 import mosaik.BildEvent;
@@ -38,8 +39,7 @@ public class GenThumbList {
     private boolean stopAll = false;
     private int fileCount = 0;
     private LinkedList<File> fileListeEinlesen = new LinkedList<>();
-    private LinkedList<File[]> fileListeErstellen = new LinkedList<>();
-    private ScaleImage scaleImage;
+    private LinkedList<File[]> filesCreateThumb = new LinkedList<>();
     private ThumbCollection thumbCollection;
 
     private int anzThread = 1;
@@ -50,7 +50,6 @@ public class GenThumbList {
     public GenThumbList(ThumbCollection thumbCollection) {
         this.thumbCollection = thumbCollection;
         progData = ProgData.getInstance();
-        scaleImage = new ScaleImage();
         anzThread = Runtime.getRuntime().availableProcessors();
     }
 
@@ -72,11 +71,11 @@ public class GenThumbList {
     public void create(String srcDir, String destDir, boolean rekursiv) {
         progress = 0;
         stopAll = false;
-        fileListeErstellen.clear();
-        CreateListOfThumbs erst = new CreateListOfThumbs(srcDir, destDir, rekursiv);
-        Thread tErst = new Thread(erst);
-        tErst.setDaemon(true);
-        tErst.start();
+        filesCreateThumb.clear();
+        CreateListOfThumbs thumbs = new CreateListOfThumbs(srcDir, destDir, rekursiv);
+        Thread thread = new Thread(thumbs);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     public void read(String srcDir) {
@@ -105,12 +104,12 @@ public class GenThumbList {
         return fileListeEinlesen.poll();
     }
 
-    private synchronized void addFileErstellen(File file1, File file2) {
-        fileListeErstellen.add(new File[]{file1, file2});
+    private synchronized void addCreationsList(File file1, File file2) {
+        filesCreateThumb.add(new File[]{file1, file2});
     }
 
-    private synchronized File[] getFileErstellen() {
-        return fileListeErstellen.poll();
+    private synchronized File[] getFromCreationsList() {
+        return filesCreateThumb.poll();
     }
 
     private class CreateListOfThumbs implements Runnable {
@@ -136,10 +135,14 @@ public class GenThumbList {
                     return;
                 }
 
-                //Dateien zählen
+                // Dateien zählen
                 fileCount = FileUtils.countFilesInDirectory(srcDir);
                 notifyEvent(fileCount, 0, "");
+
+                // Fotos zum Erstellen der Thumbs suchen
                 createFileList(srcDir);
+
+                // Thumbs erstellen
                 Thread t;
                 for (int i = 0; i < anzThread; ++i) {
                     ++threads;
@@ -162,10 +165,10 @@ public class GenThumbList {
                         if (checkSuffix(liste[i])) {
                             try {
                                 File dest = new File(destDir.getAbsolutePath() + File.separator +
-                                        liste[i].getName() + "_" + progData.random.nextInt(
-                                        Integer.MAX_VALUE) + "." + Const.IMAGE_FORMAT_JPG);
+                                        liste[i].getName() + "_" +
+                                        progData.random.nextInt(Integer.MAX_VALUE) + "." + Const.IMAGE_FORMAT_JPG);
                                 str = dest.getAbsolutePath();
-                                addFileErstellen(liste[i], dest);
+                                addCreationsList(liste[i], dest);
                             } catch (Exception ex) {
                                 System.out.println(ex.getMessage() + "BildArchiv_.makeThumb");
                                 System.out.println("----------------------------------");
@@ -184,7 +187,7 @@ public class GenThumbList {
 
             public void run() {
                 File[] file;
-                while (!stopAll && (file = getFileErstellen()) != null) {
+                while (!stopAll && (file = getFromCreationsList()) != null) {
                     create(file[0], file[1]);
                 }
                 --threads;
@@ -197,8 +200,11 @@ public class GenThumbList {
                 try {
                     ++progress;
                     notifyEvent(fileCount, progress, fileSrc.getName());
-                    scaleImage.tus(fileSrc, fileDest);
-                    GetColor.getColor(thumbCollection.getThumbList(), fileDest);
+                    ScaleImage.scale(fileSrc, fileDest);
+                    Thumb thumb;
+                    if ((thumb = ScaleImage.getThumb(fileDest)) != null) {
+                        thumbCollection.getThumbList().add(thumb);
+                    }
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage() + "MakeThumb.thumb");
                     System.out.println("----------------------------------");
@@ -271,7 +277,11 @@ public class GenThumbList {
             public void run() {
                 File file;
                 while (!stopAll && (file = getFileEinlesen()) != null) {
-                    GetColor.getColor(thumbCollection.getThumbList(), file);
+                    Thumb thumb;
+                    if ((thumb = ScaleImage.getThumb(file)) != null) {
+                        thumbCollection.getThumbList().add(thumb);
+                    }
+
                     ++progress;
                     notifyEvent(fileCount, progress, "");
                 }
