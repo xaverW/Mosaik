@@ -38,36 +38,41 @@ public class ScaleImage {
      * @throws IOException
      */
     public static void scale(File source, File dest) throws IOException {
-        BufferedImage img = Funktionen.getBufferedImage(source);
-        if (Config.FOTO_RECT.getBool()) {
-            int h = img.getHeight(), w = img.getWidth(), x, y;
-            int widthNew = (h > w) ? w : h;
-            if (w > h) {
-                y = 0;
-                x = (w - h) / 2;
-            } else {
-                y = (h - w) / 2;
-                x = 0;
-            }
-            BufferedImage imgOut = new BufferedImage(widthNew, widthNew, BufferedImage.TYPE_INT_RGB);
-            Raster raster1 = img.getRaster();
-            WritableRaster raster2 = imgOut.getRaster();
-            for (int i = 0; i < widthNew; i++) {
-                for (int k = 0; k < widthNew; k++) {
-                    raster2.setSample(i, k, 0, raster1.getSample(i + x, k + y, 0));
-                    raster2.setSample(i, k, 1, raster1.getSample(i + x, k + y, 1));
-                    raster2.setSample(i, k, 2, raster1.getSample(i + x, k + y, 2));
+        try {
+            source = new File("/mnt/lager/mosaik/1970er/1971/1971_015.jpg");
+            BufferedImage img = Funktionen.getBufferedImage(source);
+            if (Config.FOTO_RECT.getBool()) {
+                int h = img.getHeight(), w = img.getWidth(), x, y;
+                int widthNew = (h > w) ? w : h;
+                if (w > h) {
+                    y = 0;
+                    x = (w - h) / 2;
+                } else {
+                    y = (h - w) / 2;
+                    x = 0;
                 }
+                BufferedImage imgOut = new BufferedImage(widthNew, widthNew, BufferedImage.TYPE_INT_RGB);
+                Raster raster1 = img.getRaster();
+                WritableRaster raster2 = imgOut.getRaster();
+                for (int i = 0; i < widthNew; i++) {
+                    for (int k = 0; k < widthNew; k++) {
+                        raster2.setSample(i, k, 0, raster1.getSample(i + x, k + y, 0));
+                        raster2.setSample(i, k, 1, raster1.getSample(i + x, k + y, 1));
+                        raster2.setSample(i, k, 2, raster1.getSample(i + x, k + y, 2));
+                    }
+                }
+                img = imgOut;
             }
-            img = imgOut;
+            int width = Config.FOTO_SIZE.getInt();
+            Image scaledImage = img.getScaledInstance(width, width, Image.SCALE_SMOOTH);
+            BufferedImage outImg = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
+            Graphics g = outImg.getGraphics();
+            g.drawImage(scaledImage, 0, 0, null);
+            g.dispose();
+            ImageIO.write(outImg, Config.FOTO_FORMAT.get(), dest);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
-        int width = Config.FOTO_SIZE.getInt();
-        Image scaledImage = img.getScaledInstance(width, width, Image.SCALE_SMOOTH);
-        BufferedImage outImg = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
-        Graphics g = outImg.getGraphics();
-        g.drawImage(scaledImage, 0, 0, null);
-        g.dispose();
-        ImageIO.write(outImg, Config.FOTO_FORMAT.get(), dest);
     }
 
     /**

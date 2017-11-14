@@ -31,7 +31,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -166,15 +169,20 @@ public class FotoGuiController extends AnchorPane {
         if (thumbCollection != null) {
             txtName.textProperty().unbindBidirectional(thumbCollection.nameProperty());
             txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
+            table.getItems().clear();
         }
         thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
 
         if (thumbCollection == null) {
             contPane.setDisable(true);
+            table.getItems().clear();
         } else {
             contPane.setDisable(false);
             txtName.textProperty().bindBidirectional(thumbCollection.nameProperty());
             txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
+            table.getItems().clear();
+            table.setItems(thumbCollection.getThumbList());
+
         }
     }
 
@@ -208,8 +216,6 @@ public class FotoGuiController extends AnchorPane {
             // todo destDir ist leer
             String destDir = ProgInfos.getFotoCollectionsDirectory_String(thumbCollection.getName());
             thumbCollection.setThumbDir(destDir);
-            table.getItems().clear();
-            table.setItems(thumbCollection.getThumbList());
 
             new GenThumbList(thumbCollection).create(txtDir.getText(),
                     destDir,
@@ -257,8 +263,8 @@ public class FotoGuiController extends AnchorPane {
                     return;
                 }
                 Thumb thumb = getTableView().getItems().get(getIndex());
-//                setStyle("-fx-background-color:" + thumb.getColor());
-                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+                setStyle("-fx-background-color: rgb(" + thumb.getRed() + "," + thumb.getGreen() + ", " + thumb.getBlue() + ");");
+//                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
             }
 
         };

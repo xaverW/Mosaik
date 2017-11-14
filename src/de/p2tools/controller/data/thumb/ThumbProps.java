@@ -16,9 +16,7 @@
 
 package de.p2tools.controller.data.thumb;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
 
@@ -29,9 +27,11 @@ public class ThumbProps extends ThumbXml {
     private final IntegerProperty green = new SimpleIntegerProperty(0);
     private final IntegerProperty blue = new SimpleIntegerProperty(0);
     private final IntegerProperty sum = new SimpleIntegerProperty(0);
+    private final StringProperty filename = new SimpleStringProperty("");
+
     private Color color = Color.rgb(0, 0, 0);
 
-    public final Property[] properties = {nr, red, green, blue};
+    public final Property[] properties = {nr, red, green, blue, filename};
 
 
     public int getNr() {
@@ -95,6 +95,18 @@ public class ThumbProps extends ThumbXml {
 
     public void setSum(int sum) {
         this.sum.set(sum);
+    }
+
+    public String getFilename() {
+        return filename.get();
+    }
+
+    public StringProperty filenameProperty() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename.set(filename);
     }
 
     public Color getColor() {

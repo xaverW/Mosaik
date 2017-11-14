@@ -21,6 +21,7 @@ import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.download.Download;
 import de.p2tools.controller.data.download.DownloadXml;
+import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbCollectionXml;
 import de.p2tools.mLib.tools.Duration;
@@ -66,11 +67,7 @@ public class IoXmlLesen implements AutoCloseable {
                                 getConfig(parser, Config.SYSTEM);
                                 break;
                             case ThumbCollection.TAG:
-                                final ThumbCollection f = new ThumbCollection();
-                                if (get(parser, ThumbCollectionXml.TAG, ThumbCollectionXml.XML_NAMES, f.arr)) {
-                                    f.setPropsFromXml();
-                                    progData.thumbCollectionList.add(f);
-                                }
+                                getThumbCollection(parser);
                                 break;
                             case DownloadXml.TAG:
                                 // Downloads
@@ -129,6 +126,56 @@ public class IoXmlLesen implements AutoCloseable {
                     }
                 }
             }
+        } catch (final Exception ex) {
+            ret = false;
+            Log.errorLog(739530149, ex);
+        }
+        return ret;
+    }
+
+    private boolean getThumbCollection(XMLStreamReader parser) {
+        final ThumbCollection thumbCollection = new ThumbCollection();
+
+        boolean ret = true;
+        final int maxElem = thumbCollection.arr.length;
+        for (int i = 0; i < maxElem; ++i) {
+            if (thumbCollection.arr[i] == null) {
+                // damit Vorgaben nicht verschwinden!
+                thumbCollection.arr[i] = "";
+            }
+        }
+        try {
+            while (parser.hasNext()) {
+                final int event = parser.next();
+
+                if (event == XMLStreamConstants.START_ELEMENT && parser.getLocalName() == Thumb.TAG) {
+                    final Thumb thumb = new Thumb();
+                    if (get(parser, Thumb.TAG, Thumb.XML_NAMES, thumb.arr)) {
+                        thumb.setPropsFromXml();
+                        thumbCollection.getThumbList().add(thumb);
+                    }
+                    continue;
+                }
+
+                if (event == XMLStreamConstants.END_ELEMENT) {
+                    if (parser.getLocalName().equals(ThumbCollectionXml.TAG)) {
+                        break;
+                    }
+                }
+
+                if (event == XMLStreamConstants.START_ELEMENT) {
+                    for (int i = 0; i < maxElem; ++i) {
+                        if (parser.getLocalName().equals(ThumbCollectionXml.XML_NAMES[i])) {
+                            thumbCollection.arr[i] = parser.getElementText();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            thumbCollection.setPropsFromXml();
+            progData.thumbCollectionList.add(thumbCollection);
+
         } catch (final Exception ex) {
             ret = false;
             Log.errorLog(739530149, ex);

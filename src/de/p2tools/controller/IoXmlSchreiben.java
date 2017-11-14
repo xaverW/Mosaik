@@ -22,7 +22,9 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.download.Download;
 import de.p2tools.controller.data.download.DownloadXml;
+import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.controller.data.thumb.ThumbList;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.SysMsg;
 
@@ -65,8 +67,6 @@ public class IoXmlSchreiben implements AutoCloseable {
             writer.writeCharacters("\n");
 
             writer.writeCharacters("\n\n");
-            writer.writeComment("FotoCollections");
-            writer.writeCharacters("\n");
             xmlWriteFotoCollection();
 
             writer.writeCharacters("\n\n");
@@ -95,13 +95,6 @@ public class IoXmlSchreiben implements AutoCloseable {
     }
 
 
-    private void xmlWriteFotoCollection() {
-        for (final ThumbCollection thumbCollection : progData.thumbCollectionList) {
-            thumbCollection.setXmlFromProps();
-            xmlSchreibenDaten(ThumbCollection.TAG, ThumbCollection.XML_NAMES, thumbCollection.arr, false);
-        }
-    }
-
     private void xmlSchreibenDownloads() {
         // Downloads schreiben
         for (final Download download : progData.downloadList) {
@@ -110,10 +103,53 @@ public class IoXmlSchreiben implements AutoCloseable {
         }
     }
 
+    private void xmlWriteFotoCollection() throws XMLStreamException {
+        // Filter schreiben,
+        for (ThumbCollection thumbCollection : progData.thumbCollectionList) {
+            thumbCollection.setXmlFromProps();
+            writer.writeComment("ThumbCollection: " + thumbCollection.getName());
+            writer.writeCharacters("\n");
+
+            try {
+                writer.writeStartElement(ThumbCollection.TAG);
+                writer.writeCharacters("\n"); // neue Zeile
+                for (int i = 0; i < ThumbCollection.MAX_ELEM; ++i) {
+                    if (!thumbCollection.arr[i].isEmpty()) {
+                        writer.writeCharacters("\t"); // Tab
+                        writer.writeStartElement(ThumbCollection.XML_NAMES[i]);
+                        writer.writeCharacters(thumbCollection.arr[i]);
+                        writer.writeEndElement();
+                        writer.writeCharacters("\n"); // neue Zeile
+                    }
+                }
+                writer.writeCharacters("\n"); // neue Zeile
+                ThumbList thumbList = thumbCollection.getThumbList();
+                for (Thumb thumb : thumbList) {
+                    thumb.setXmlFromProps();
+                    xmlSchreibenDaten(Thumb.TAG, Thumb.XML_NAMES, thumb.arr, false, 1);
+                }
+
+                writer.writeEndElement();
+                writer.writeCharacters("\n"); // neue Zeile
+            } catch (final Exception ex) {
+                Log.errorLog(198325017, ex);
+            }
+
+
+        }
+    }
+
 
     private void xmlSchreibenDaten(String xmlName, String[] xmlSpalten, String[] datenArray, boolean newLine) {
+        xmlSchreibenDaten(xmlName, xmlSpalten, datenArray, newLine, 0);
+    }
+
+    private void xmlSchreibenDaten(String xmlName, String[] xmlSpalten, String[] datenArray, boolean newLine, int tab) {
         final int xmlMax = datenArray.length;
         try {
+            for (int t = 0; t < tab; ++t) {
+                writer.writeCharacters("\t"); // Tab
+            }
             writer.writeStartElement(xmlName);
             if (newLine) {
                 writer.writeCharacters("\n"); // neue Zeile
@@ -138,15 +174,13 @@ public class IoXmlSchreiben implements AutoCloseable {
         }
     }
 
+
     private void xmlSchreibenConfig(String xmlName, String[][] xmlSpalten) {
         try {
             writer.writeStartElement(xmlName);
             writer.writeCharacters("\n"); // neue Zeile
 
             for (final String[] xmlSpalte : xmlSpalten) {
-//                if (!Config.find(xmlSpalte[0])) {
-//                    continue; // nur Configs schreiben die es noch gibt
-//                }
                 writer.writeCharacters("\t"); // Tab
                 writer.writeStartElement(xmlSpalte[0]);
                 writer.writeCharacters(xmlSpalte[1]);
