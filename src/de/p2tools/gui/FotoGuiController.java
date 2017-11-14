@@ -32,10 +32,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -174,19 +171,19 @@ public class FotoGuiController extends AnchorPane {
 
 
     private void setContPane() {
+        table.getItems().clear();
+
         if (thumbCollection != null) {
             txtName.textProperty().unbindBidirectional(thumbCollection.nameProperty());
             txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglSquare.selectedProperty().unbindBidirectional(thumbCollection.squareProperty());
             tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
 
-            table.getItems().clear();
         }
         thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
 
         if (thumbCollection == null) {
             contPane.setDisable(true);
-            table.getItems().clear();
         } else {
             contPane.setDisable(false);
             txtName.textProperty().bindBidirectional(thumbCollection.nameProperty());
@@ -194,9 +191,8 @@ public class FotoGuiController extends AnchorPane {
             tglSquare.selectedProperty().bindBidirectional(thumbCollection.squareProperty());
             tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
 
-            table.getItems().clear();
             table.setItems(thumbCollection.getThumbList());
-
+            new GenThumbList(thumbCollection).read();
         }
     }
 
@@ -266,7 +262,6 @@ public class FotoGuiController extends AnchorPane {
         colorColumn.setCellFactory(cellFactoryColor);
 
         tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-
         tableView.getColumns().addAll(nrColumn, colorColumn);
     }
 
@@ -286,8 +281,8 @@ public class FotoGuiController extends AnchorPane {
                     return;
                 }
                 Thumb thumb = getTableView().getItems().get(getIndex());
-                setStyle("-fx-background-color: rgb(" + thumb.getRed() + "," + thumb.getGreen() + ", " + thumb.getBlue() + ");");
-//                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+//                setStyle("-fx-background-color: rgb(" + thumb.getRed() + "," + thumb.getGreen() + ", " + thumb.getBlue() + ");");
+                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
             }
 
         };
