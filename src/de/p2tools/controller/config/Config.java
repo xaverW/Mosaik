@@ -18,8 +18,9 @@
 package de.p2tools.controller.config;
 
 import com.jidesoft.utils.SystemInfo;
-import de.p2tools.mLib.tools.*;
-import javafx.beans.property.BooleanProperty;
+import de.p2tools.mLib.tools.Log;
+import de.p2tools.mLib.tools.MLConfig;
+import de.p2tools.mLib.tools.MLConfigs;
 
 public class Config extends MLConfig {
 
@@ -47,7 +48,7 @@ public class Config extends MLConfig {
 
     // Einstellungen zum Erstellen der Fotolisten
     public static MLConfigs FOTO_SIZE = addNewKey("foto-size", 600);
-    public static MLConfigs FOTO_RECT = addNewKey("foto-rect", Boolean.TRUE.toString());
+    public static MLConfigs FOTO_SQUARE = addNewKey("foto-square", Boolean.TRUE.toString());
     public static MLConfigs FOTO_FORMAT = addNewKey("foto-format", Const.IMAGE_FORMAT_JPG);
 
 

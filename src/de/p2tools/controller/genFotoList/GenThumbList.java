@@ -68,11 +68,12 @@ public class GenThumbList {
         listeners.add(BildListener.class, listener);
     }
 
-    public void create(String srcDir, String destDir, boolean rekursiv) {
+    public void create() {
         progress = 0;
         stopAll = false;
         filesCreateThumb.clear();
-        CreateListOfThumbs thumbs = new CreateListOfThumbs(srcDir, destDir, rekursiv);
+        CreateListOfThumbs thumbs = new CreateListOfThumbs(thumbCollection.getFotoSrcDir(),
+                thumbCollection.getThumbDir(), thumbCollection.isRecursive());
         Thread thread = new Thread(thumbs);
         thread.setDaemon(true);
         thread.start();

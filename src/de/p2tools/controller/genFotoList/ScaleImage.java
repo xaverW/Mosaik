@@ -19,6 +19,7 @@ package de.p2tools.controller.genFotoList;
 
 import de.p2tools.controller.config.Config;
 import de.p2tools.controller.data.thumb.Thumb;
+import de.p2tools.mLib.tools.Log;
 import mosaik.Funktionen;
 
 import javax.imageio.ImageIO;
@@ -39,9 +40,14 @@ public class ScaleImage {
      */
     public static void scale(File source, File dest) throws IOException {
         try {
-            source = new File("/mnt/lager/mosaik/1970er/1971/1971_015.jpg");
+//            source = new File("/mnt/lager/mosaik/1970er/1971/1971_015.jpg"); // ist SW
             BufferedImage img = Funktionen.getBufferedImage(source);
-            if (Config.FOTO_RECT.getBool()) {
+            if (img == null) {
+                Log.errorLog(465323107, "Image==null");
+                return;
+            }
+
+            if (Config.FOTO_SQUARE.getBool()) {
                 int h = img.getHeight(), w = img.getWidth(), x, y;
                 int widthNew = (h > w) ? w : h;
                 if (w > h) {
@@ -51,27 +57,38 @@ public class ScaleImage {
                     y = (h - w) / 2;
                     x = 0;
                 }
-                BufferedImage imgOut = new BufferedImage(widthNew, widthNew, BufferedImage.TYPE_INT_RGB);
-                Raster raster1 = img.getRaster();
-                WritableRaster raster2 = imgOut.getRaster();
-                for (int i = 0; i < widthNew; i++) {
-                    for (int k = 0; k < widthNew; k++) {
-                        raster2.setSample(i, k, 0, raster1.getSample(i + x, k + y, 0));
-                        raster2.setSample(i, k, 1, raster1.getSample(i + x, k + y, 1));
-                        raster2.setSample(i, k, 2, raster1.getSample(i + x, k + y, 2));
+                int imgType = img.getType();
+                BufferedImage imgOut = new BufferedImage(widthNew, widthNew, imgType);
+
+                Raster rasterSrc = img.getRaster();
+                WritableRaster rasterDest = imgOut.getRaster();
+                int bands = rasterSrc.getNumBands();
+
+                for (int xx = 0; xx < widthNew; xx++) {
+                    for (int yy = 0; yy < widthNew; yy++) {
+                        for (int band = 0; band < bands; ++band) {
+                            rasterDest.setSample(xx, yy, band, rasterSrc.getSample(xx + x, yy + y, band));
+                        }
                     }
                 }
                 img = imgOut;
             }
+
             int width = Config.FOTO_SIZE.getInt();
             Image scaledImage = img.getScaledInstance(width, width, Image.SCALE_SMOOTH);
+
             BufferedImage outImg = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
-            Graphics g = outImg.getGraphics();
+            Graphics2D g = outImg.createGraphics();
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
             g.drawImage(scaledImage, 0, 0, null);
             g.dispose();
+
             ImageIO.write(outImg, Config.FOTO_FORMAT.get(), dest);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            Log.errorLog(701402586, ex);
         }
     }
 
@@ -79,6 +96,7 @@ public class ScaleImage {
      * @param source
      * @param rechts
      */
+
     public static void rotate(File source, boolean rechts) {
         try {
             BufferedImage img = Funktionen.getBufferedImage(source);

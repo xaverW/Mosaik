@@ -26,6 +26,7 @@ import de.p2tools.controller.genFotoList.GenThumbList;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.Table;
 import de.p2tools.mLib.tools.DirFileChooser;
+import de.p2tools.mLib.tools.Log;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -38,6 +39,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import org.apache.commons.io.FileUtils;
+import org.controlsfx.control.ToggleSwitch;
+
+import java.io.File;
 
 public class FotoGuiController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
@@ -51,7 +56,10 @@ public class FotoGuiController extends AnchorPane {
     ComboBox<ThumbCollection> cbCollection = new ComboBox<>();
     TextField txtName = new TextField("");
     TextField txtDir = new TextField("");
+    ToggleSwitch tglSquare = new ToggleSwitch("Fotos quadratisch zuschneiden");
+    ToggleSwitch tglRecursive = new ToggleSwitch("Ordner rekursiv durchsuchen");
     Button btnLod = new Button("Fotos hinzufügen");
+    Button btnClear = new Button("Liste Löschen");
 
     private final ProgData progData;
     DoubleProperty splitPaneProperty = Config.FILM_GUI_DIVIDER.getDoubleProperty();
@@ -151,17 +159,17 @@ public class FotoGuiController extends AnchorPane {
             }
         });
 
-        VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10));
-        vBox.setSpacing(10);
-        vBox.getChildren().add(cbCollection);
-
         HBox hBox = new HBox();
+        hBox.setStyle("-fx-border-color: black;");
+        AnchorPane.setTopAnchor(hBox, 5.0);
+        AnchorPane.setLeftAnchor(hBox, 5.0);
+        AnchorPane.setBottomAnchor(hBox, 5.0);
+        AnchorPane.setRightAnchor(hBox, 5.0);
         hBox.setPadding(new Insets(10));
         hBox.setSpacing(10);
-        hBox.getChildren().addAll(btnNew, btnDel);
-        vBox.getChildren().add(hBox);
-        collectPane.getChildren().add(vBox);
+        HBox.setHgrow(cbCollection, Priority.ALWAYS);
+        hBox.getChildren().addAll(cbCollection, btnNew, btnDel);
+        collectPane.getChildren().add(hBox);
     }
 
 
@@ -169,6 +177,9 @@ public class FotoGuiController extends AnchorPane {
         if (thumbCollection != null) {
             txtName.textProperty().unbindBidirectional(thumbCollection.nameProperty());
             txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
+            tglSquare.selectedProperty().unbindBidirectional(thumbCollection.squareProperty());
+            tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
+
             table.getItems().clear();
         }
         thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
@@ -180,6 +191,9 @@ public class FotoGuiController extends AnchorPane {
             contPane.setDisable(false);
             txtName.textProperty().bindBidirectional(thumbCollection.nameProperty());
             txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
+            tglSquare.selectedProperty().bindBidirectional(thumbCollection.squareProperty());
+            tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
+
             table.getItems().clear();
             table.setItems(thumbCollection.getThumbList());
 
@@ -187,13 +201,8 @@ public class FotoGuiController extends AnchorPane {
     }
 
     private void initCont() {
-        VBox vBox = new VBox();
-        vBox.setSpacing(10);
-        vBox.setPadding(new Insets(10));
-        HBox hBox = new HBox();
-        hBox.setSpacing(10);
-
-        Label lblTitle = new Label("Ordner mit Fotos auswählen");
+        Label lblName = new Label("Name der Sammlung");
+        Label lblDir = new Label("Ordner mit Fotos auswählen");
 
         txtDir.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDir, Priority.ALWAYS);
@@ -217,19 +226,33 @@ public class FotoGuiController extends AnchorPane {
             String destDir = ProgInfos.getFotoCollectionsDirectory_String(thumbCollection.getName());
             thumbCollection.setThumbDir(destDir);
 
-            new GenThumbList(thumbCollection).create(txtDir.getText(),
-                    destDir,
-                    true);
+            new GenThumbList(thumbCollection).create();
+        });
+        btnClear.setOnAction(a -> {
+            try {
+                FileUtils.deleteDirectory(new File(thumbCollection.getThumbDir()));
+            } catch (Exception ex) {
+                Log.errorLog(945121254, ex);
+            }
+            thumbCollection.getThumbList().clear();
         });
 
+        HBox hBoxDir = new HBox();
+        hBoxDir.setSpacing(10);
+        hBoxDir.getChildren().addAll(txtDir, btnDir, btnHelp);
 
-        hBox.getChildren().addAll(txtDir, btnDir, btnHelp);
-        vBox.getChildren().addAll(txtName, lblTitle, hBox, btnLod);
+        HBox hBoxButon = new HBox(10);
+        hBoxButon.getChildren().addAll(btnLod, btnClear);
 
-        AnchorPane.setTopAnchor(vBox, 0.0);
-        AnchorPane.setLeftAnchor(vBox, 0.0);
-        AnchorPane.setBottomAnchor(vBox, 0.0);
-        AnchorPane.setRightAnchor(vBox, 0.0);
+        VBox vBox = new VBox(10);
+        vBox.setPadding(new Insets(10));
+        vBox.getChildren().addAll(lblName, txtName, lblDir, hBoxDir, tglSquare, tglRecursive, hBoxButon);
+
+        AnchorPane.setTopAnchor(vBox, 5.0);
+        AnchorPane.setLeftAnchor(vBox, 5.0);
+        AnchorPane.setBottomAnchor(vBox, 5.0);
+        AnchorPane.setRightAnchor(vBox, 5.0);
+        vBox.setStyle("-fx-border-color: black;");
         contPane.getChildren().add(vBox);
     }
 
