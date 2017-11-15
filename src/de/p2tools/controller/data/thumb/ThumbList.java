@@ -46,15 +46,19 @@ public class ThumbList extends SimpleListProperty<Thumb> {
         return fotoListChanged;
     }
 
+    public void clear() {
+        nr = 1;
+        super.clear();
+    }
 
     public void sort() {
         Collections.sort(this);
     }
 
 
-    public synchronized boolean add(Thumb d) {
-        d.setNr(nr++);
-        return super.add(d);
+    public synchronized boolean add(Thumb thumb) {
+        thumb.setNr(nr++);
+        return super.add(thumb);
     }
 
 

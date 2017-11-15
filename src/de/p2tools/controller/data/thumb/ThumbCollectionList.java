@@ -50,9 +50,9 @@ public class ThumbCollectionList extends SimpleListProperty<ThumbCollection> {
     }
 
 
-    public synchronized boolean add(ThumbCollection element) {
-        element.setNr(nr++);
-        return super.add(element);
+    public synchronized boolean add(ThumbCollection thumbCollection) {
+        thumbCollection.setNr(nr++);
+        return super.add(thumbCollection);
     }
 
 

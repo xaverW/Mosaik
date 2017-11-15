@@ -22,7 +22,7 @@ import de.p2tools.controller.data.Data;
 public class ThumbXml extends Data<Thumb> {
 
 
-    public static final int FOTO_NR = 0;
+    public static final int NR = 0;
     public static final int COLOR_RED = 1;
     public static final int COLOR_GREEN = 2;
     public static final int COLOR_BLUE = 3;

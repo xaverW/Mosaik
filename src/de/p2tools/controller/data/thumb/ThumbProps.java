@@ -27,11 +27,10 @@ public class ThumbProps extends ThumbXml {
     private final IntegerProperty green = new SimpleIntegerProperty(0);
     private final IntegerProperty blue = new SimpleIntegerProperty(0);
     private final IntegerProperty sum = new SimpleIntegerProperty(0);
-    private final StringProperty filename = new SimpleStringProperty("");
-
+    private final StringProperty fileName = new SimpleStringProperty("");
     private Color color = Color.rgb(0, 0, 0);
 
-    public final Property[] properties = {nr, red, green, blue, filename};
+    public final Property[] properties = {nr, red, green, blue, sum, fileName};
 
 
     public int getNr() {
@@ -97,16 +96,16 @@ public class ThumbProps extends ThumbXml {
         this.sum.set(sum);
     }
 
-    public String getFilename() {
-        return filename.get();
+    public String getFileName() {
+        return fileName.get();
     }
 
-    public StringProperty filenameProperty() {
-        return filename;
+    public StringProperty fileNameProperty() {
+        return fileName;
     }
 
-    public void setFilename(String filename) {
-        this.filename.set(filename);
+    public void setFileName(String fileName) {
+        this.fileName.set(fileName);
     }
 
     public Color getColor() {
@@ -122,6 +121,7 @@ public class ThumbProps extends ThumbXml {
         setGreen(Integer.parseInt(arr[COLOR_GREEN]));
         setBlue(Integer.parseInt(arr[COLOR_BLUE]));
         setSum(getRed() + getGreen() + getBlue());
+        setFileName(arr[FILENAME]);
     }
 
 
@@ -130,6 +130,7 @@ public class ThumbProps extends ThumbXml {
         arr[COLOR_GREEN] = String.valueOf(getGreen());
         arr[COLOR_BLUE] = String.valueOf(getBlue());
         arr[COLOR_SUM] = String.valueOf(getSum());
+        arr[FILENAME] = getFileName();
     }
 
 

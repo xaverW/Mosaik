@@ -26,6 +26,7 @@ public final class Thumb extends ThumbProps {
         setRed(r);
         setGreen(g);
         setBlue(b);
+        setFileName(path);
     }
 
     public Thumb getCopy() {

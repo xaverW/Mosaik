@@ -56,6 +56,7 @@ public class FotoGuiController extends AnchorPane {
     ToggleSwitch tglSquare = new ToggleSwitch("Fotos quadratisch zuschneiden");
     ToggleSwitch tglRecursive = new ToggleSwitch("Ordner rekursiv durchsuchen");
     Button btnLod = new Button("Fotos hinzufügen");
+    Button btnReload = new Button("Liste neu einlesen");
     Button btnClear = new Button("Liste Löschen");
 
     private final ProgData progData;
@@ -178,7 +179,6 @@ public class FotoGuiController extends AnchorPane {
             txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglSquare.selectedProperty().unbindBidirectional(thumbCollection.squareProperty());
             tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
-
         }
         thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
 
@@ -186,6 +186,7 @@ public class FotoGuiController extends AnchorPane {
             contPane.setDisable(true);
         } else {
             contPane.setDisable(false);
+
             txtName.textProperty().bindBidirectional(thumbCollection.nameProperty());
             txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglSquare.selectedProperty().bindBidirectional(thumbCollection.squareProperty());
@@ -224,6 +225,9 @@ public class FotoGuiController extends AnchorPane {
 
             new GenThumbList(thumbCollection).create();
         });
+        btnReload.setOnAction(a -> {
+            new GenThumbList(thumbCollection).read();
+        });
         btnClear.setOnAction(a -> {
             try {
                 FileUtils.deleteDirectory(new File(thumbCollection.getThumbDir()));
@@ -238,7 +242,7 @@ public class FotoGuiController extends AnchorPane {
         hBoxDir.getChildren().addAll(txtDir, btnDir, btnHelp);
 
         HBox hBoxButon = new HBox(10);
-        hBoxButon.getChildren().addAll(btnLod, btnClear);
+        hBoxButon.getChildren().addAll(btnLod, btnReload, btnClear);
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
@@ -254,15 +258,18 @@ public class FotoGuiController extends AnchorPane {
 
     private void initTableColor(TableView<Thumb> tableView) {
 
-        final TableColumn<Thumb, String> nrColumn = new TableColumn<>("Nr");
-        nrColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
+        final TableColumn<Thumb, Integer> nrColumn = new TableColumn<>("Nr");
+        nrColumn.setCellValueFactory(new PropertyValueFactory<>("nr"));
 
         final TableColumn<Thumb, Color> colorColumn = new TableColumn<>("Farbe");
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         colorColumn.setCellFactory(cellFactoryColor);
 
+        final TableColumn<Thumb, String> nameColumn = new TableColumn<>("Dateiname");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
+
         tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        tableView.getColumns().addAll(nrColumn, colorColumn);
+        tableView.getColumns().addAll(nrColumn, colorColumn, nameColumn);
     }
 
     private Callback<TableColumn<Thumb, Color>, TableCell<Thumb, Color>> cellFactoryColor

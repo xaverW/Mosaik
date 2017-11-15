@@ -83,6 +83,7 @@ public class GenThumbList {
         progress = 0;
         stopAll = false;
         fileListeEinlesen.clear();
+        thumbCollection.getThumbList().clear();
         Einlesen einl = new Einlesen(thumbCollection.getThumbDir());
         Thread tErst = new Thread(einl);
         tErst.setDaemon(true);
