@@ -172,7 +172,7 @@ public class FotoGuiController extends AnchorPane {
 
 
     private void setContPane() {
-        table.getItems().clear();
+        table.setItems(null);
 
         if (thumbCollection != null) {
             txtName.textProperty().unbindBidirectional(thumbCollection.nameProperty());
@@ -193,7 +193,7 @@ public class FotoGuiController extends AnchorPane {
             tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
 
             table.setItems(thumbCollection.getThumbList());
-            new GenThumbList(thumbCollection).read();
+//            new GenThumbList(thumbCollection).read();
         }
     }
 
