@@ -17,23 +17,19 @@
 
 package mosaik.bild;
 
+import mosaik.daten.Daten;
+import mosaik.daten.DatenFarbe_;
+import mosaik.daten.Konstanten;
+
+import javax.imageio.*;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Iterator;
 import java.util.Locale;
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
-import javax.imageio.stream.ImageInputStream;
-import javax.imageio.stream.ImageOutputStream;
-import javax.swing.JOptionPane;
-
-import mosaik.daten.Daten;
-import mosaik.daten.DatenFarbe;
-import mosaik.daten.Konstanten;
 
 public class TapeteErstellen {
 
@@ -49,27 +45,27 @@ public class TapeteErstellen {
 
     public void tus(int spalten) {
         if (dest.equals("")) {
-          daten.fehler.fehlermeldung("Keine Zieldatei angegeben!");
+            daten.fehler.fehlermeldung("Keine Zieldatei angegeben!");
         } else {
             final int AUFLOESUNG = Integer.parseInt(daten.datenProjekt.arr[Konstanten.PROJEKT_AUFLOESUNG_ZIEL_NR]);
             boolean weiter = true;
             int l = daten.listeFarben.size();
             if (new File(dest).exists()) {
                 if (JOptionPane.showConfirmDialog(null, "Trotzdem anlegen und \u00fcberschreiben?",
-                                                  "Datei existiert bereits!", JOptionPane.YES_NO_OPTION) != JOptionPane.OK_OPTION) {
+                        "Datei existiert bereits!", JOptionPane.YES_NO_OPTION) != JOptionPane.OK_OPTION) {
                     weiter = false;
                 }
             }
             if (weiter && l > 0) {
                 int h = l / spalten * AUFLOESUNG,
-                    b = spalten * AUFLOESUNG;
+                        b = spalten * AUFLOESUNG;
                 if (l % spalten != 0) {
                     h += Integer.parseInt(daten.datenProjekt.arr[Konstanten.PROJEKT_AUFLOESUNG_ZIEL_NR]);
                 }
                 BufferedImage imgOut = new BufferedImage(b, h, BufferedImage.TYPE_INT_RGB);
                 int hh = 0, bb = 0;
                 for (int i = 0; i < l; ++i) {
-                    DatenFarbe farbe = daten.listeFarben.get(i);
+                    DatenFarbe_ farbe = daten.listeFarben.get(i);
                     BufferedImage img = getBufferedImage(new File(farbe.arr[Konstanten.FARBEN_PFAD_NR]));
                     ////        try {
                     ////                if (img.getWidth() != Integer.parseInt(progData.datenProjekt.arr[Konstanten.PROJEKT_AUFLOESUNG_ZIEL_NR])) {
@@ -86,9 +82,9 @@ public class TapeteErstellen {
                         ++hh;
                     }
                 }
-                while (bb < spalten ) {
+                while (bb < spalten) {
                     for (int i = 0; i < l; ++i) {
-                        DatenFarbe farbe = daten.listeFarben.get(i);
+                        DatenFarbe_ farbe = daten.listeFarben.get(i);
                         BufferedImage img = getBufferedImage(new File(farbe.arr[Konstanten.FARBEN_PFAD_NR]));
                         imgOut.getRaster().setRect(bb * AUFLOESUNG, hh * AUFLOESUNG, img.getData());
                         ++bb;
@@ -103,7 +99,7 @@ public class TapeteErstellen {
     }
 
     public BufferedImage getBufferedImage(
-        File source) {
+            File source) {
         BufferedImage img = null;
         ImageReader reader = getReader(source);
         try {

@@ -14,38 +14,16 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.gui;
+package de.p2tools.controller.data.createMosaik;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.layout.VBox;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 
-public class MenuController extends VBox {
+public class CreateMosaikList extends SimpleListProperty<CreateMosaik> {
 
-    public enum StartupMode {
 
-        Film, DOWNLOAD, ABO
+    public CreateMosaikList() {
+        super(FXCollections.observableArrayList());
     }
-
-
-    private final StartupMode startupMode;
-
-    public MenuController(StartupMode sm) {
-        startupMode = sm;
-
-        setPadding(new Insets(20, 10, 10, 10));
-        setSpacing(20);
-        setAlignment(Pos.TOP_CENTER);
-
-        switch (startupMode) {
-            case Film:
-                new FilmMenu(this).init();
-                break;
-            case DOWNLOAD:
-                new DownloadMenu(this).init();
-                break;
-        }
-    }
-
 
 }

@@ -8,7 +8,7 @@ package mosaik.daten;
 import mosaik.BeobAenderung;
 import mosaik.Fehler;
 import mosaik.bild.BildArchiv_;
-import mosaik.bild.MosaikErstellen;
+import mosaik.bild.MosaikErstellen_;
 import mosaik.gui.Mosaik;
 import mosaik.io.IoXml;
 
@@ -24,10 +24,10 @@ public class Daten {
     public String[] system;
     public DatenProjekt datenProjekt = new DatenProjekt();
     public ListeFarben listeFarben = new ListeFarben(this);
-    //    public Farbraum farbraum = new Farbraum(this);
+    //    public Farbraum_ farbraum = new Farbraum_(this);
     public IoXml ioXml = new IoXml(this);
     public BildArchiv_ bildArchiv = new BildArchiv_(this);
-    public MosaikErstellen mosaikErstellen = new MosaikErstellen(this);
+    public MosaikErstellen_ mosaikErstellen = new MosaikErstellen_(this);
     public Random random = new Random();
     public Dimension groesseBild;
     public Mosaik mosaik;

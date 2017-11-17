@@ -74,7 +74,6 @@ public class ProgStart {
 
     private void clearKonfig() {
         ProgData progData = ProgData.getInstance();
-        progData.downloadList.clear();
     }
 
     private boolean load() {

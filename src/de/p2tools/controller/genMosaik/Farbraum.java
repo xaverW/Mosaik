@@ -15,24 +15,27 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mosaik.bild;
+package de.p2tools.controller.genMosaik;
 
-import java.awt.Color;
+import de.p2tools.controller.config.ProgData;
+import de.p2tools.controller.data.thumb.Thumb;
+import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.mLib.tools.Log;
+
+import java.awt.*;
 import java.util.Iterator;
-import mosaik.daten.Daten;
-import mosaik.daten.DatenFarbe;
-import mosaik.daten.Konstanten;
 
 public class Farbraum {
 
     public final int FARBEN = 256;
     public boolean[][][] suchraum = new boolean[FARBEN][FARBEN][FARBEN];
-    //private
-    private Daten daten;
-//    int doppelte = 0;
+    private final ProgData progData;
+    private final ThumbCollection thumbCollection;
 
-    public Farbraum(Daten ddaten) {
-        daten = ddaten;
+    public Farbraum(ThumbCollection thumbCollection) {
+        progData = ProgData.getInstance();
+        this.thumbCollection = thumbCollection;
+
         for (int i = 0; i < FARBEN - 1; ++i) {
             for (int k = 0; k < FARBEN - 1; ++k) {
                 for (int l = 0; l < FARBEN - 1; ++l) {
@@ -40,26 +43,21 @@ public class Farbraum {
                 }
             }
         }
-        Iterator<DatenFarbe> it = daten.listeFarben.iterator();
+        Iterator<Thumb> it = thumbCollection.getThumbList().iterator();
         while (it.hasNext()) {
             addFarbe(it.next());
         }
-//        JOptionPane.showMessageDialog(null, "Anzahl doppelte Farben: " + doppelte);
     }
-    ///////////////////////////////////
-    // public
-    ///////////////////////////////////
+
     /**
-     * 
      * @param c
      * @param anz
      * @return
      */
-    public DatenFarbe getFarbe(Color c, int anz) {
-        DatenFarbe farbe;
+    public Thumb getFarbe(Color c, int anz) {
+        Thumb farbe;
         int sprung = 0;
         int max = 10;
-//        int abs = 0;
         int r = c.getRed();
         int g = c.getGreen();
         int b = c.getBlue();
@@ -93,7 +91,7 @@ public class Farbraum {
                 for (int k = gMin; k <= gMax; ++k) {
                     for (int l = bMin; l <= bMax; ++l) {
                         if (suchraum[i][k][l] == true) {
-                            farbe = daten.listeFarben.getFarbe(i, k, l, anz);
+                            farbe = thumbCollection.getThumbList().getThumb(i, k, l, anz);
                             if (farbe != null) {
                                 return farbe;
                             } else {
@@ -103,43 +101,23 @@ public class Farbraum {
                     }
                 }
             }
-//            abs += 1;
             sprung += 2;
             if (sprung > max) {
                 sprung = max;
             }
         }
-        daten.fehler.fehlermeldung("Farbraum.getFarbe - keine Farbe!!");
-//        new Fehler().fehlermeldung("zu wenig Farben im Archiv!!", false);
+        Log.errorLog(987120365, "Farbraum.getFarbe - keine Farbe!!");
         return null;
     }
-    /////////////////////////////////
-    // private
-    /////////////////////////////////
-    private void addFarbe(DatenFarbe farbe) {
-        if (Boolean.parseBoolean(farbe.arr[Konstanten.FARBEN_BENUTZEN_NR])) {
 
-
-
-
-
-
-
-
-
-
-
-
-            int r, g, b;
-            r = Integer.parseInt(farbe.arr[Konstanten.FARBEN_R_NR]);
-            g = Integer.parseInt(farbe.arr[Konstanten.FARBEN_G_NR]);
-            b = Integer.parseInt(farbe.arr[Konstanten.FARBEN_B_NR]);
-//            if (suchraum[r][g][b]) {
-//                doppelte++;
-//            } else {
-            suchraum[r][g][b] = true;
-//            }
-        }
+    private void addFarbe(Thumb thumb) {
+//        if (Boolean.parseBoolean(thumb.arr[Konstanten.FARBEN_BENUTZEN_NR])) {
+        int r, g, b;
+        r = thumb.getRed();
+        g = thumb.getGreen();
+        b = thumb.getBlue();
+        suchraum[r][g][b] = true;
+//        }
     }
 
 }

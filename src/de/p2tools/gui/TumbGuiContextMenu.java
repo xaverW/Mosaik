@@ -22,15 +22,15 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
 
-public class FilmGuiContextMenu {
+public class TumbGuiContextMenu {
 
     private final ProgData progData;
-    private final FotoGuiController fotoGuiController;
+    private final ThumbGuiController thumbGuiController;
     private final TableView tableView;
 
-    public FilmGuiContextMenu(ProgData progData, FotoGuiController fotoGuiController, TableView tableView) {
+    public TumbGuiContextMenu(ProgData progData, ThumbGuiController thumbGuiController, TableView tableView) {
         this.progData = progData;
-        this.fotoGuiController = fotoGuiController;
+        this.thumbGuiController = thumbGuiController;
         this.tableView = tableView;
     }
 

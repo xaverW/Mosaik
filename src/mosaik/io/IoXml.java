@@ -17,21 +17,14 @@
 
 package mosaik.io;
 
-import java.io.File;
 import mosaik.daten.Daten;
-import mosaik.daten.Konstanten;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Iterator;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-import mosaik.daten.DatenFarbe;
+import mosaik.daten.DatenFarbe_;
 import mosaik.daten.DatenProjekt;
+import mosaik.daten.Konstanten;
+
+import javax.xml.stream.*;
+import java.io.*;
+import java.util.Iterator;
 
 public class IoXml {
 
@@ -57,7 +50,7 @@ public class IoXml {
             inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
             XMLStreamReader parser = null;
             parser = inFactory.createXMLStreamReader(
-                new InputStreamReader(new FileInputStream(daten.getBasisVerzeichnis() + Konstanten.KONST_XML_DATEI), Konstanten.KONST_KODIERUNG_UTF));
+                    new InputStreamReader(new FileInputStream(daten.getBasisVerzeichnis() + Konstanten.KONST_XML_DATEI), Konstanten.KONST_KODIERUNG_UTF));
             while (parser.hasNext()) {
                 event = parser.next();
                 //System
@@ -82,7 +75,7 @@ public class IoXml {
             inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
             XMLStreamReader parser = null;
             parser = inFactory.createXMLStreamReader(
-                new InputStreamReader(new FileInputStream(daten.system[Konstanten.SYSTEM_PROJECTDATEI_PFAD_NR]), Konstanten.KONST_KODIERUNG_UTF));
+                    new InputStreamReader(new FileInputStream(daten.system[Konstanten.SYSTEM_PROJECTDATEI_PFAD_NR]), Konstanten.KONST_KODIERUNG_UTF));
             while (parser.hasNext()) {
                 event = parser.next();
                 //Projekt
@@ -91,7 +84,7 @@ public class IoXml {
                 }
                 //Farben
                 if (event == XMLStreamConstants.START_ELEMENT && parser.getLocalName().equals(Konstanten.FARBEN)) {
-                    DatenFarbe farbe = new DatenFarbe();
+                    DatenFarbe_ farbe = new DatenFarbe_();
                     get(parser, event, Konstanten.FARBEN, Konstanten.FARBEN_COLUMN_NAMES, farbe.arr);
                     daten.listeFarben.add(farbe);
                 }
@@ -174,7 +167,7 @@ public class IoXml {
                 xmlSchreibenDaten(Konstanten.PROJEKT, Konstanten.PROJEKT_COLUMN_NAMES, daten.datenProjekt.arr);
                 writer.writeCharacters("\n");//neue Zeile
                 //Farben schreiben
-                Iterator<DatenFarbe> it = daten.listeFarben.iterator();
+                Iterator<DatenFarbe_> it = daten.listeFarben.iterator();
                 while (it.hasNext()) {
                     xmlSchreibenDaten(Konstanten.FARBEN, Konstanten.FARBEN_COLUMN_NAMES, it.next().arr);
                     writer.writeCharacters("\n");//neue Zeile

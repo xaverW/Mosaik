@@ -19,8 +19,7 @@ package de.p2tools.controller;
 
 import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.data.download.Download;
-import de.p2tools.controller.data.download.DownloadXml;
+import de.p2tools.controller.data.createMosaik.CreateMosaik;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbCollectionXml;
@@ -66,16 +65,15 @@ public class IoXmlLesen implements AutoCloseable {
                                 // System
                                 getConfig(parser, Config.SYSTEM);
                                 break;
+                            case CreateMosaik.TAG:
+                                final CreateMosaik d = new CreateMosaik();
+                                if (get(parser, CreateMosaik.TAG, CreateMosaik.XML_NAMES, d.arr)) {
+                                    d.setPropsFromXml();
+                                    progData.createMosaikList.add(d);
+                                }
+                                break;
                             case ThumbCollection.TAG:
                                 getThumbCollection(parser);
-                                break;
-                            case DownloadXml.TAG:
-                                // Downloads
-                                final Download d = new Download();
-                                if (get(parser, DownloadXml.TAG, DownloadXml.XML_NAMES, d.arr)) {
-                                    d.setPropsFromXml();
-                                    progData.downloadList.add(d);
-                                }
                                 break;
                         }
                     }
@@ -92,7 +90,9 @@ public class IoXmlLesen implements AutoCloseable {
                 } catch (final Exception ignored) {
                 }
             }
+
             Config.loadSystemParameter();
+
         }
 
         Duration.counterStop("Konfig lesen");

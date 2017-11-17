@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-public class ListeFarben extends LinkedList<DatenFarbe> {
+public class ListeFarben extends LinkedList<DatenFarbe_> {
 
     Daten daten;
 
@@ -31,12 +31,11 @@ public class ListeFarben extends LinkedList<DatenFarbe> {
     }
 
     /**
-     * 
      * @param farbe
      * @return
      */
     @Override
-    public synchronized boolean add(DatenFarbe farbe) {
+    public synchronized boolean add(DatenFarbe_ farbe) {
         boolean ret;
         ret = super.add(farbe);
         daten.setGeaendert();
@@ -44,41 +43,39 @@ public class ListeFarben extends LinkedList<DatenFarbe> {
     }
 
     /**
-     * 
      * @param nr
      * @return
      */
     @Override
-    public DatenFarbe remove(int nr) {
+    public DatenFarbe_ remove(int nr) {
         daten.setGeaendert();
         return super.remove(nr);
     }
 
     /**
-     * 
      * @param i
      * @return
      */
     @Override
-    public DatenFarbe get(int i) {
+    public DatenFarbe_ get(int i) {
         return super.get(i);
     }
 
-    public DatenFarbe getFarbe(int red, int green, int blue, int anz) {
-        Iterator<DatenFarbe> it = this.iterator();
-        DatenFarbe farbe;
+    public DatenFarbe_ getFarbe(int red, int green, int blue, int anz) {
+        Iterator<DatenFarbe_> it = this.iterator();
+        DatenFarbe_ farbe;
         while (it.hasNext()) {
             farbe = it.next();
             if (anz == 0) {
                 if (Integer.parseInt(farbe.arr[Konstanten.FARBEN_R_NR]) == red &&
-                    Integer.parseInt(farbe.arr[Konstanten.FARBEN_G_NR]) == green &&
-                    Integer.parseInt(farbe.arr[Konstanten.FARBEN_B_NR]) == blue) {
+                        Integer.parseInt(farbe.arr[Konstanten.FARBEN_G_NR]) == green &&
+                        Integer.parseInt(farbe.arr[Konstanten.FARBEN_B_NR]) == blue) {
                     return farbe;
                 }
             } else {
                 if (Integer.parseInt(farbe.arr[Konstanten.FARBEN_R_NR]) == red &&
-                    Integer.parseInt(farbe.arr[Konstanten.FARBEN_G_NR]) == green &&
-                    Integer.parseInt(farbe.arr[Konstanten.FARBEN_B_NR]) == blue) {
+                        Integer.parseInt(farbe.arr[Konstanten.FARBEN_G_NR]) == green &&
+                        Integer.parseInt(farbe.arr[Konstanten.FARBEN_B_NR]) == blue) {
                     if (farbe.anz <= anz) {
                         return farbe;
                     }
@@ -89,23 +86,23 @@ public class ListeFarben extends LinkedList<DatenFarbe> {
     }
 
     public void resetAnz() {
-        Iterator<DatenFarbe> it = this.iterator();
-        DatenFarbe farbe;
+        Iterator<DatenFarbe_> it = this.iterator();
+        DatenFarbe_ farbe;
         while (it.hasNext()) {
             it.next().anz = 0;
         }
     }
 
     public void sort() {
-        Collections.<DatenFarbe>sort(this);
+        Collections.<DatenFarbe_>sort(this);
     }
 
     public Object[][] getObjectData() {
         this.sort();
         Object[][] object;
-        DatenFarbe farbe;
+        DatenFarbe_ farbe;
         int i = 0;
-        ListIterator<DatenFarbe> iterator = this.listIterator();
+        ListIterator<DatenFarbe_> iterator = this.listIterator();
         object = new Object[this.size()][Konstanten.FARBEN_MAX_ELEM];
         while (iterator.hasNext()) {
             farbe = iterator.next();

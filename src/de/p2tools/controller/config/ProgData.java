@@ -18,10 +18,10 @@
 package de.p2tools.controller.config;
 
 import de.p2tools.MosaikController;
-import de.p2tools.controller.data.download.DownloadList;
+import de.p2tools.controller.data.createMosaik.CreateMosaikList;
 import de.p2tools.controller.data.thumb.ThumbCollectionList;
-import de.p2tools.gui.DownloadGuiController;
-import de.p2tools.gui.FotoGuiController;
+import de.p2tools.gui.MosaikGuiController;
+import de.p2tools.gui.ThumbGuiController;
 import de.p2tools.gui.tools.Listener;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -44,19 +44,18 @@ public class ProgData {
 
     // zentrale Klassen
     public ThumbCollectionList thumbCollectionList;
+    public CreateMosaikList createMosaikList;
+
     // Gui
     public Stage primaryStage = null;
     public MosaikController mosaikController = null;
-    public FotoGuiController fotoGuiController = null; // Tab mit den Filmen
-    public DownloadGuiController downloadGuiController = null; // Tab mit den Downloads
-
-    // Programmdaten
-    public DownloadList downloadList = null; // Filme die als "Download" geladen werden sollen
+    public ThumbGuiController thumbGuiController = null; // Tab mit den Filmen
+    public MosaikGuiController mosaikGuiController = null; // Tab mit den Downloads
 
 
     private ProgData() {
         thumbCollectionList = new ThumbCollectionList();
-        downloadList = new DownloadList(this);
+        createMosaikList = new CreateMosaikList();
 
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000), ae -> {

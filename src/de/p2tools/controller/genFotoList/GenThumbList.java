@@ -72,8 +72,7 @@ public class GenThumbList {
         progress = 0;
         stopAll = false;
         filesCreateThumb.clear();
-        CreateListOfThumbs thumbs = new CreateListOfThumbs(thumbCollection.getFotoSrcDir(),
-                thumbCollection.getThumbDir(), thumbCollection.isRecursive());
+        CreateListOfThumbs thumbs = new CreateListOfThumbs();
         Thread thread = new Thread(thumbs);
         thread.setDaemon(true);
         thread.start();
@@ -119,10 +118,10 @@ public class GenThumbList {
         private File destDir;
         private boolean rekursiv;
 
-        public CreateListOfThumbs(String srcDir, String destDir, boolean rekursiv) {
-            this.srcDir = new File(srcDir);
-            this.destDir = new File(destDir);
-            this.rekursiv = rekursiv;
+        public CreateListOfThumbs() {
+            srcDir = new File(thumbCollection.getFotoSrcDir());
+            destDir = new File(thumbCollection.getThumbDir());
+            rekursiv = thumbCollection.isRecursive();
         }
 
         public synchronized void run() {
@@ -202,7 +201,7 @@ public class GenThumbList {
                 try {
                     ++progress;
                     notifyEvent(fileCount, progress, fileSrc.getName());
-                    ScaleImage.scale(fileSrc, fileDest);
+                    ScaleImage.scale(fileSrc, fileDest, thumbCollection);
                     Thumb thumb;
                     if ((thumb = ScaleImage.getThumb(fileDest)) != null) {
                         thumbCollection.getThumbList().add(thumb);

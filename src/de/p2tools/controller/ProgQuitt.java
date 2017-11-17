@@ -38,8 +38,7 @@ public class ProgQuitt {
 
     private void writeTabSettings() {
         // Tabelleneinstellungen merken
-        progData.fotoGuiController.saveTable();
-        progData.downloadGuiController.saveTable();
+        progData.thumbGuiController.saveTable();
     }
 
     /**

@@ -59,14 +59,6 @@ public class Table {
                 confOrder = Config.FILM_GUI_TABLE_ORDER;
                 break;
 
-            case DOWNLOAD:
-                confWidth = Config.DOWNLOAD_GUI_TABLE_WIDTH;
-                confSort = Config.DOWNLOAD_GUI_TABLE_SORT;
-                confUpDown = Config.DOWNLOAD_GUI_TABLE_UPDOWN;
-                confVis = Config.DOWNLOAD_GUI_TABLE_VIS;
-                confOrder = Config.DOWNLOAD_GUI_TABLE_ORDER;
-                break;
-
         }
     }
 
@@ -74,10 +66,6 @@ public class Table {
         switch (eTable) {
             case FILM:
                 tArray = TableThumb.initDownloadColumn(table);
-                break;
-
-            case DOWNLOAD:
-                tArray = TableDownload.initDownloadColumn(table);
                 break;
 
         }

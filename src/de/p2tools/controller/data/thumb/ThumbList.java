@@ -23,6 +23,7 @@ import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class ThumbList extends SimpleListProperty<Thumb> {
 
@@ -67,4 +68,31 @@ public class ThumbList extends SimpleListProperty<Thumb> {
         return super.addAll(d);
     }
 
+    public void resetAnz() {
+        this.parallelStream().forEach(thumb -> thumb.setAnz(0));
+    }
+
+    public Thumb getThumb(int red, int green, int blue, int anz) {
+        Iterator<Thumb> it = this.iterator();
+        Thumb thumb;
+        while (it.hasNext()) {
+            thumb = it.next();
+            if (anz == 0) {
+                if (thumb.getRed() == red &&
+                        thumb.getGreen() == green &&
+                        thumb.getBlue() == blue) {
+                    return thumb;
+                }
+            } else {
+                if (thumb.getRed() == red &&
+                        thumb.getGreen() == green &&
+                        thumb.getBlue() == blue) {
+                    if (thumb.getAnz() <= anz) {
+                        return thumb;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

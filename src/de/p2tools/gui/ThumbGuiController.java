@@ -41,7 +41,7 @@ import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
 
-public class FotoGuiController extends AnchorPane {
+public class ThumbGuiController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
     ScrollPane scrollPane = new ScrollPane();
     TableView table = new TableView<>();
@@ -62,7 +62,7 @@ public class FotoGuiController extends AnchorPane {
     private final ProgData progData;
     DoubleProperty splitPaneProperty = Config.FILM_GUI_DIVIDER.getDoubleProperty();
 
-    public FotoGuiController() {
+    public ThumbGuiController() {
         progData = ProgData.getInstance();
 
         AnchorPane.setLeftAnchor(splitPane, 0.0);
@@ -193,7 +193,6 @@ public class FotoGuiController extends AnchorPane {
             tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
 
             table.setItems(thumbCollection.getThumbList());
-//            new GenThumbList(thumbCollection).read();
         }
     }
 
@@ -224,9 +223,11 @@ public class FotoGuiController extends AnchorPane {
             thumbCollection.setThumbDir(destDir);
 
             new GenThumbList(thumbCollection).create();
+            table.refresh();
         });
         btnReload.setOnAction(a -> {
             new GenThumbList(thumbCollection).read();
+            table.refresh();
         });
         btnClear.setOnAction(a -> {
             try {
@@ -235,6 +236,7 @@ public class FotoGuiController extends AnchorPane {
                 Log.errorLog(945121254, ex);
             }
             thumbCollection.getThumbList().clear();
+            table.refresh();
         });
 
         HBox hBoxDir = new HBox();

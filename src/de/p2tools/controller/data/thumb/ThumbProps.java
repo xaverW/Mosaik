@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 
 public class ThumbProps extends ThumbXml {
 
+    private int anz = 0;
     private final IntegerProperty nr = new SimpleIntegerProperty(0);
     private final IntegerProperty red = new SimpleIntegerProperty(0);
     private final IntegerProperty green = new SimpleIntegerProperty(0);
@@ -32,6 +33,17 @@ public class ThumbProps extends ThumbXml {
 
     public final Property[] properties = {nr, red, green, blue, sum, fileName};
 
+    public int getAnz() {
+        return anz;
+    }
+
+    public void setAnz(int anz) {
+        this.anz = anz;
+    }
+
+    public void addAnz() {
+        this.anz = ++anz;
+    }
 
     public int getNr() {
         return nr.get();

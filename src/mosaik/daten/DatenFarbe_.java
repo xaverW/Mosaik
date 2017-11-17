@@ -17,7 +17,7 @@
 
 package mosaik.daten;
 
-public class DatenFarbe implements Comparable<DatenFarbe> {
+public class DatenFarbe_ implements Comparable<DatenFarbe_> {
 
     public String[] arr;
     public int anz = 0;
@@ -25,11 +25,11 @@ public class DatenFarbe implements Comparable<DatenFarbe> {
     public int green = 0;
     public int blue = 0;
 
-    public DatenFarbe() {
+    public DatenFarbe_() {
         makeArr();
     }
 
-    public DatenFarbe(String pfad, String r, String g, String b) {
+    public DatenFarbe_(String pfad, String r, String g, String b) {
         makeArr();
         arr[Konstanten.FARBEN_PFAD_NR] = pfad;
         arr[Konstanten.FARBEN_R_NR] = r;
@@ -49,14 +49,14 @@ public class DatenFarbe implements Comparable<DatenFarbe> {
     }
 
     @Override
-    public int compareTo(DatenFarbe arg0) {
+    public int compareTo(DatenFarbe_ arg0) {
         boolean ret = false;
         if (Integer.parseInt(arr[Konstanten.FARBEN_R_NR]) +
-            Integer.parseInt(arr[Konstanten.FARBEN_G_NR]) +
-            Integer.parseInt(arr[Konstanten.FARBEN_B_NR]) <
-            Integer.parseInt(arg0.arr[Konstanten.FARBEN_R_NR]) +
-            Integer.parseInt(arg0.arr[Konstanten.FARBEN_G_NR]) +
-            Integer.parseInt(arg0.arr[Konstanten.FARBEN_B_NR])) {
+                Integer.parseInt(arr[Konstanten.FARBEN_G_NR]) +
+                Integer.parseInt(arr[Konstanten.FARBEN_B_NR]) <
+                Integer.parseInt(arg0.arr[Konstanten.FARBEN_R_NR]) +
+                        Integer.parseInt(arg0.arr[Konstanten.FARBEN_G_NR]) +
+                        Integer.parseInt(arg0.arr[Konstanten.FARBEN_B_NR])) {
             ret = true;
         }
         return (ret == true) ? 1 : -1;

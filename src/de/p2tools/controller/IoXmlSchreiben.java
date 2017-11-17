@@ -20,8 +20,7 @@ import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
-import de.p2tools.controller.data.download.Download;
-import de.p2tools.controller.data.download.DownloadXml;
+import de.p2tools.controller.data.createMosaik.CreateMosaik;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbList;
@@ -67,12 +66,12 @@ public class IoXmlSchreiben implements AutoCloseable {
             writer.writeCharacters("\n");
 
             writer.writeCharacters("\n\n");
-            xmlWriteFotoCollection();
+            for (CreateMosaik createMosaik : progData.createMosaikList) {
+                createMosaik.setXmlFromProps();
+                xmlSchreibenDaten(CreateMosaik.TAG, CreateMosaik.XML_NAMES, createMosaik.arr, true);
+            }
 
-            writer.writeCharacters("\n\n");
-            writer.writeComment("Downloads");
-            writer.writeCharacters("\n");
-            xmlSchreibenDownloads();
+            xmlWriteThumbCollection();
 
             writer.writeCharacters("\n\n");
             xmlSchreibenEnde();
@@ -95,16 +94,7 @@ public class IoXmlSchreiben implements AutoCloseable {
     }
 
 
-    private void xmlSchreibenDownloads() {
-        // Downloads schreiben
-        for (final Download download : progData.downloadList) {
-            download.setXmlFromProps();
-            xmlSchreibenDaten(DownloadXml.TAG, DownloadXml.XML_NAMES, download.arr, false);
-        }
-    }
-
-    private void xmlWriteFotoCollection() throws XMLStreamException {
-        // Filter schreiben,
+    private void xmlWriteThumbCollection() throws XMLStreamException {
         for (ThumbCollection thumbCollection : progData.thumbCollectionList) {
             thumbCollection.setXmlFromProps();
             writer.writeComment("ThumbCollection: " + thumbCollection.getName());

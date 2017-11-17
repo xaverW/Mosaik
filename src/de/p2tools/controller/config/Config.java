@@ -51,7 +51,6 @@ public class Config extends MLConfig {
     public static MLConfigs FOTO_SQUARE = addNewKey("foto-square", Boolean.TRUE.toString());
     public static MLConfigs FOTO_FORMAT = addNewKey("foto-format", Const.IMAGE_FORMAT_JPG);
 
-
     // GuiFoto
     public static MLConfigs FILM_GUI_DIVIDER = addNewKey("Film-Gui-Divider", Const.GUI_FILME_DIVIDER_LOCATION);
     public static MLConfigs FILM_GUI_TABLE_WIDTH = addNewKey("Film-Gui-Table-Width");

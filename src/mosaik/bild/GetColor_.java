@@ -17,21 +17,21 @@
 
 package mosaik.bild;
 
-import java.awt.image.Raster;
-import java.io.File;
 import mosaik.Funktionen;
 import mosaik.daten.Daten;
-import mosaik.daten.DatenFarbe;
+import mosaik.daten.DatenFarbe_;
+
+import java.awt.image.Raster;
+import java.io.File;
 
 public class GetColor_ {
 
     /**
-     * 
      * @param daten
      * @param img
      */
     public static void getColor(Daten daten, File img) {
-        Raster rast = Funktionen.getRenderedImage( img).getData();
+        Raster rast = Funktionen.getRenderedImage(img).getData();
         long r = 0, g = 0, b = 0;
         long count = 0;
         if (rast != null) {
@@ -43,10 +43,10 @@ public class GetColor_ {
                     ++count;
                 }
             }
-            DatenFarbe farbe = new DatenFarbe(img.getAbsolutePath(),
-                                              Long.toString(r / count),
-                                              Long.toString(g / count),
-                                              Long.toString(b / count));
+            DatenFarbe_ farbe = new DatenFarbe_(img.getAbsolutePath(),
+                    Long.toString(r / count),
+                    Long.toString(g / count),
+                    Long.toString(b / count));
             daten.listeFarben.add(farbe);
         }
     }

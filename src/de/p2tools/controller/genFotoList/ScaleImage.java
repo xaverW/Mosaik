@@ -19,6 +19,7 @@ package de.p2tools.controller.genFotoList;
 
 import de.p2tools.controller.config.Config;
 import de.p2tools.controller.data.thumb.Thumb;
+import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.Log;
 import mosaik.Funktionen;
 
@@ -38,7 +39,7 @@ public class ScaleImage {
      * @param dest
      * @throws IOException
      */
-    public static void scale(File source, File dest) throws IOException {
+    public static void scale(File source, File dest, ThumbCollection thumbCollection) throws IOException {
         try {
 //            source = new File("/mnt/lager/mosaik/1970er/1971/1971_015.jpg"); // ist SW
             BufferedImage img = Funktionen.getBufferedImage(source);
@@ -47,7 +48,7 @@ public class ScaleImage {
                 return;
             }
 
-            if (Config.FOTO_SQUARE.getBool()) {
+            if (thumbCollection.isSquare()) {
                 int h = img.getHeight(), w = img.getWidth(), x, y;
                 int widthNew = (h > w) ? w : h;
                 if (w > h) {
@@ -74,7 +75,7 @@ public class ScaleImage {
                 img = imgOut;
             }
 
-            int width = Config.FOTO_SIZE.getInt();
+            int width = thumbCollection.getResolution();
             Image scaledImage = img.getScaledInstance(width, width, Image.SCALE_SMOOTH);
 
             BufferedImage outImg = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
