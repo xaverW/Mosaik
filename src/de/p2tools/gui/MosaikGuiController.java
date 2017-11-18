@@ -19,19 +19,24 @@ package de.p2tools.gui;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.createMosaik.CreateMosaik;
+import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.genMosaik.MosaikErstellen;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
+
+import java.text.DecimalFormat;
 
 public class MosaikGuiController extends AnchorPane {
 
@@ -43,8 +48,11 @@ public class MosaikGuiController extends AnchorPane {
     Button btnSrc = new Button("");
     Label lblDesst = new Label("Mosaik speichern");
     TextField txtDest = new TextField();
+    TextField txtNumThumb = new TextField("25");
     Button btnDest = new Button("");
     Button btnCreate = new Button("Mosaik erstellen");
+    ComboBox<ThumbCollection> cbCollection = new ComboBox<>();
+
     StringProperty srcProp;
     StringProperty destProp;
     CreateMosaik createMosaik;
@@ -54,8 +62,8 @@ public class MosaikGuiController extends AnchorPane {
         if (progData.createMosaikList.isEmpty()) {
             progData.createMosaikList.add(new CreateMosaik());
         }
+        createMosaik = progData.createMosaikList.get(0); // todo
 
-        createMosaik = progData.createMosaikList.get(0);
 
         srcProp = createMosaik.fotoSrcProperty();
         destProp = createMosaik.fotoDestProperty();
@@ -116,10 +124,49 @@ public class MosaikGuiController extends AnchorPane {
         HBox hBoxDest = new HBox(10);
         hBoxDest.getChildren().addAll(txtDest, btnDest, btnHelpDest);
 
+        Label lblNum = new Label("Anzahl Thumbs:");
+
+        final StringProperty sp = txtNumThumb.textProperty();
+        final IntegerProperty ip = createMosaik.numberThumbsWidthProperty();
+        try {
+            sp.setValue(String.valueOf(ip.get()));
+        } catch (final Exception ex) {
+            sp.setValue("25");
+            ip.setValue(25);
+        }
+        final StringConverter<Number> converterNum = new NumberStringConverter(new DecimalFormat("##"));
+        Bindings.bindBidirectional(sp, ip, converterNum);
+
+        HBox hBoxNum = new HBox(10);
+        hBoxNum.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(txtNumThumb, Priority.ALWAYS);
+        hBoxNum.getChildren().addAll(lblNum, txtNumThumb);
+
+        cbCollection.setItems(progData.thumbCollectionList);
+        cbCollection.getSelectionModel().selectFirst();
+        final StringConverter<ThumbCollection> converter = new StringConverter<ThumbCollection>() {
+            @Override
+            public String toString(ThumbCollection fc) {
+                return fc == null ? "" : fc.getName();
+            }
+
+            @Override
+            public ThumbCollection fromString(String id) {
+                final int i = cbCollection.getSelectionModel().getSelectedIndex();
+                return progData.thumbCollectionList.get(i);
+            }
+        };
+        cbCollection.setConverter(converter);
+        cbCollection.setMaxWidth(Double.MAX_VALUE);
+        cbCollection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            ThumbCollection thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
+            createMosaik.setThumbCollectionId(thumbCollection == null ? 0 : thumbCollection.getId());
+        });
+
         vBoxCont.setSpacing(10);
         vBoxCont.setPadding(new Insets(10));
-        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, btnCreate);
+        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, hBoxNum, cbCollection, btnCreate);
+
 
     }
-
 }

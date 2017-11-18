@@ -21,7 +21,7 @@ import javafx.beans.property.*;
 
 public class ThumbCollectionProps extends ThumbCollectionXml {
 
-    private final IntegerProperty nr = new SimpleIntegerProperty(0);
+    private final IntegerProperty id = new SimpleIntegerProperty(0);
     private final StringProperty name = new SimpleStringProperty("");
     private final IntegerProperty resolution = new SimpleIntegerProperty(600);
     private final BooleanProperty square = new SimpleBooleanProperty(true);
@@ -31,18 +31,18 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
     private final StringProperty fotoSrcDir = new SimpleStringProperty("");
 
 
-    public final Property[] properties = {nr, name, resolution, format};
+    public final Property[] properties = {id, name, resolution, format};
 
-    public int getNr() {
-        return nr.get();
+    public int getId() {
+        return id.get();
     }
 
-    public IntegerProperty nrProperty() {
-        return nr;
+    public IntegerProperty idProperty() {
+        return id;
     }
 
-    public void setNr(int nr) {
-        this.nr.set(nr);
+    public void setId(int id) {
+        this.id.set(id);
     }
 
     public String getName() {

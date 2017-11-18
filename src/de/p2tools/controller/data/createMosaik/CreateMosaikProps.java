@@ -25,11 +25,11 @@ public class CreateMosaikProps extends CreateMosaikXml {
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
-    private final IntegerProperty destSizeW = new SimpleIntegerProperty(1000); // Anzahl Thumbs in der Breite des Dest
+    private final IntegerProperty numberThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
     private final IntegerProperty thumbCount = new SimpleIntegerProperty(5); // Anzahl wie oft ein Thumbs verwendet werden kann
-    private final StringProperty thumbCollectionId = new SimpleStringProperty(""); // ID der ThumbCollection
+    private final IntegerProperty thumbCollectionId = new SimpleIntegerProperty(0); // ID der ThumbCollection
 
-    public final Property[] properties = {format, fotoSrc, fotoDest, thumbSize, destSizeW, thumbCount, thumbCollectionId};
+    public final Property[] properties = {format, fotoSrc, fotoDest, thumbSize, numberThumbsWidth, thumbCount, thumbCollectionId};
 
 
     public String getFormat() {
@@ -80,16 +80,16 @@ public class CreateMosaikProps extends CreateMosaikXml {
         this.thumbSize.set(thumbSize);
     }
 
-    public int getDestSizeW() {
-        return destSizeW.get();
+    public int getNumberThumbsWidth() {
+        return numberThumbsWidth.get();
     }
 
-    public IntegerProperty destSizeWProperty() {
-        return destSizeW;
+    public IntegerProperty numberThumbsWidthProperty() {
+        return numberThumbsWidth;
     }
 
-    public void setDestSizeW(int destSizeW) {
-        this.destSizeW.set(destSizeW);
+    public void setNumberThumbsWidth(int numberThumbsWidth) {
+        this.numberThumbsWidth.set(numberThumbsWidth);
     }
 
     public int getThumbCount() {
@@ -104,15 +104,15 @@ public class CreateMosaikProps extends CreateMosaikXml {
         this.thumbCount.set(thumbCount);
     }
 
-    public String getThumbCollectionId() {
+    public int getThumbCollectionId() {
         return thumbCollectionId.get();
     }
 
-    public StringProperty thumbCollectionIdProperty() {
+    public IntegerProperty thumbCollectionIdProperty() {
         return thumbCollectionId;
     }
 
-    public void setThumbCollectionId(String thumbCollectionId) {
+    public void setThumbCollectionId(int thumbCollectionId) {
         this.thumbCollectionId.set(thumbCollectionId);
     }
 
@@ -121,9 +121,9 @@ public class CreateMosaikProps extends CreateMosaikXml {
         setFotoSrc(arr[FOTO_SRC]);
         setFotoDest(arr[FOTO_DEST]);
         setThumbSize(Integer.parseInt(arr[THUMB_SIZE]));
-        setDestSizeW(Integer.parseInt(arr[DEST_SIZE_W]));
+        setNumberThumbsWidth(Integer.parseInt(arr[DEST_SIZE_W]));
         setThumbCount(Integer.parseInt(arr[THUMB_COUNT]));
-        setThumbCollectionId(arr[THUMB_COLLECTION_ID]);
+        setThumbCollectionId(Integer.parseInt(arr[THUMB_COLLECTION_ID]));
     }
 
 
@@ -132,8 +132,8 @@ public class CreateMosaikProps extends CreateMosaikXml {
         arr[FOTO_SRC] = getFotoSrc();
         arr[FOTO_DEST] = getFotoDest();
         arr[THUMB_SIZE] = String.valueOf(getThumbSize());
-        arr[DEST_SIZE_W] = String.valueOf(getDestSizeW());
+        arr[DEST_SIZE_W] = String.valueOf(getNumberThumbsWidth());
         arr[THUMB_COUNT] = String.valueOf(getThumbCount());
-        arr[THUMB_COLLECTION_ID] = getThumbCollectionId();
+        arr[THUMB_COLLECTION_ID] = String.valueOf(getThumbCollectionId());
     }
 }

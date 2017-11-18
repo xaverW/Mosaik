@@ -36,7 +36,6 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.ImageOutputStream;
-import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -62,7 +61,7 @@ public class MosaikErstellen {
     public MosaikErstellen(CreateMosaik createMosaik) {
         progData = ProgData.getInstance();
         this.createMosaik = createMosaik;
-        this.thumbCollection = progData.thumbCollectionList.get(0);//todo
+        this.thumbCollection = progData.thumbCollectionList.getThumbCollection(createMosaik.getThumbCollectionId());
     }
 
     /**
@@ -87,7 +86,6 @@ public class MosaikErstellen {
         anz = createMosaik.getThumbCount();
         progress = 0;
         stopAll = false;
-//        farbraum = new Farbraum_(progData);
         Tus tus = new Tus();
         Thread startenThread = new Thread(tus);
         startenThread.setDaemon(true);
@@ -136,27 +134,34 @@ public class MosaikErstellen {
             }
 
             thumbCollection.getThumbList().resetAnz();
-            BufferedImage imgOut = null;
-            int width = createMosaik.getDestSizeW();
+            BufferedImage imgOut;
             BufferedImage srcImg = Funktionen.getBufferedImage(new File(src));
-            int h = srcImg.getRaster().getHeight();
-            int w = srcImg.getRaster().getWidth();
-            int anzThumbs = createMosaik.getThumbSize();//todo??
-            int anzPixelProBild = h / anzThumbs;
-            int anzW = w / anzPixelProBild;
-            imgOut = new BufferedImage(width * anzW, width * anzThumbs, BufferedImage.TYPE_INT_RGB);
+
+            int srcHeight = srcImg.getRaster().getHeight();
+            int srcWidth = srcImg.getRaster().getWidth();
+            int sizeThumb = thumbCollection.getResolution();
+
+            int numThumbsWidth = createMosaik.getNumberThumbsWidth();
+            int numPixelProThumb = srcWidth / numThumbsWidth;
+            int numThumbsHeight = srcHeight / numPixelProThumb;
+
+            int destWidth = numThumbsWidth * sizeThumb;
+            int destHeight = numThumbsHeight * sizeThumb;
+
+            imgOut = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
+
             Thumb thumb;
             //Bild zusammenbauen
             Color c;
-            notifyEvent(anzW * anzThumbs, 0, "");
+            notifyEvent(numThumbsWidth * numThumbsHeight, 0, "");
             Farbraum farbraum = new Farbraum(thumbCollection);
             File file;
             BufferedImage buffImg;
-            for (int yy = 0; yy < anzThumbs && !stopAll; ++yy) {
-                for (int xx = 0; xx < anzW && !stopAll; ++xx) {
+            for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
+                for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
                     ++progress;
-                    notifyEvent(anzW * anzThumbs, progress, "Zeilen: " + yy);
-                    c = getColor(srcImg.getSubimage(xx * anzPixelProBild, yy * anzPixelProBild, anzPixelProBild, anzPixelProBild));
+                    notifyEvent(yy * xx, progress, "Zeilen: " + yy);
+                    c = getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb, numPixelProThumb, numPixelProThumb));
                     thumb = farbraum.getFarbe(c, anz);
                     if (thumb != null) {
                         thumb.addAnz();
@@ -169,19 +174,18 @@ public class MosaikErstellen {
                                 this.wait(500);
                             } catch (InterruptedException ex) {
                             }
-                            JOptionPane.showMessageDialog(null, "Kann Bild nicht laden!",
-                                    "??", JOptionPane.INFORMATION_MESSAGE);
+                            new MLAlert().showErrorAlert(src, "Kann Bild nicht laden!");
                             System.out.println("buffImg == null  -  " + thumb.arr[Konstanten.FARBEN_PFAD_NR]);
                             buffImg = Funktionen.getBufferedImage(file);
                         }
-                        imgOut.getRaster().setRect(xx * width, yy * width, buffImg.getData());
+                        imgOut.getRaster().setRect(xx * numThumbsWidth, yy * numThumbsWidth, buffImg.getData());
                     } else {
                         Log.errorLog(981021036, "MosaikErstellen_.tus-Farbe fehlt!!");
                     }
                 }
 
                 //fertig
-                notifyEvent(anzW * anzThumbs, progress, "Speichern");
+                notifyEvent(numThumbsHeight * numThumbsWidth, progress, "Speichern");
                 writeImage(imgOut);
                 notifyEvent(0, 0, "");
             }

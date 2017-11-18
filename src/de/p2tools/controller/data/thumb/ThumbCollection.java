@@ -16,11 +16,15 @@
 
 package de.p2tools.controller.data.thumb;
 
+import de.p2tools.controller.config.ProgData;
+
 public final class ThumbCollection extends ThumbCollectionProps {
 
     private ThumbList thumbList = new ThumbList();
 
     public ThumbCollection() {
+        ProgData progData = ProgData.getInstance();
+        setId(progData.random.nextInt());
     }
 
     public ThumbCollection(String name) {

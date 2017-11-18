@@ -27,6 +27,7 @@ import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.Table;
 import de.p2tools.mLib.tools.DirFileChooser;
 import de.p2tools.mLib.tools.Log;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -53,6 +54,7 @@ public class ThumbGuiController extends AnchorPane {
     ComboBox<ThumbCollection> cbCollection = new ComboBox<>();
     TextField txtName = new TextField("");
     TextField txtDir = new TextField("");
+    Slider slider = new Slider();
     ToggleSwitch tglSquare = new ToggleSwitch("Fotos quadratisch zuschneiden");
     ToggleSwitch tglRecursive = new ToggleSwitch("Ordner rekursiv durchsuchen");
     Button btnLod = new Button("Fotos hinzufügen");
@@ -179,6 +181,7 @@ public class ThumbGuiController extends AnchorPane {
             txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglSquare.selectedProperty().unbindBidirectional(thumbCollection.squareProperty());
             tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
+            slider.valueProperty().unbindBidirectional(thumbCollection.resolutionProperty());
         }
         thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
 
@@ -191,6 +194,7 @@ public class ThumbGuiController extends AnchorPane {
             txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglSquare.selectedProperty().bindBidirectional(thumbCollection.squareProperty());
             tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
+            slider.valueProperty().bindBidirectional(thumbCollection.resolutionProperty());
 
             table.setItems(thumbCollection.getThumbList());
         }
@@ -213,6 +217,19 @@ public class ThumbGuiController extends AnchorPane {
         final Button btnHelp = new Button("");
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+
+
+        final Button btnHelpSlider = new Button("");
+        btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
+        btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+
+        Label lblSlider = new Label("");
+        lblSlider.textProperty().bind(
+                Bindings.format("%.0f", slider.valueProperty())
+        );
+        slider.setMin(25);
+        slider.setMax(500);
+        HBox.setHgrow(slider, Priority.ALWAYS);
 
         btnLod.setOnAction(a -> {
             if (txtDir.getText().isEmpty()) {
@@ -243,12 +260,16 @@ public class ThumbGuiController extends AnchorPane {
         hBoxDir.setSpacing(10);
         hBoxDir.getChildren().addAll(txtDir, btnDir, btnHelp);
 
+        HBox hBoxSlider = new HBox();
+        hBoxSlider.setSpacing(10);
+        hBoxSlider.getChildren().addAll(slider, lblSlider, btnHelpSlider);
+
         HBox hBoxButon = new HBox(10);
         hBoxButon.getChildren().addAll(btnLod, btnReload, btnClear);
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
-        vBox.getChildren().addAll(lblName, txtName, lblDir, hBoxDir, tglSquare, tglRecursive, hBoxButon);
+        vBox.getChildren().addAll(lblName, txtName, lblDir, hBoxDir, hBoxSlider, tglSquare, tglRecursive, hBoxButon);
 
         AnchorPane.setTopAnchor(vBox, 5.0);
         AnchorPane.setLeftAnchor(vBox, 5.0);

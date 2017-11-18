@@ -28,7 +28,6 @@ import java.util.Collections;
 
 public class ThumbCollectionList extends SimpleListProperty<ThumbCollection> {
 
-    private int nr = 1;
     private BooleanProperty listChanged = new SimpleBooleanProperty(true);
 
 
@@ -51,14 +50,27 @@ public class ThumbCollectionList extends SimpleListProperty<ThumbCollection> {
 
 
     public synchronized boolean add(ThumbCollection thumbCollection) {
-        thumbCollection.setNr(nr++);
-        return super.add(thumbCollection);
+        boolean ret = super.add(thumbCollection);
+        setListChanged();
+        return ret;
     }
 
 
     public synchronized boolean addAll(ArrayList<ThumbCollection> thumbCollections) {
-        thumbCollections.forEach(fotoCollection -> fotoCollection.setNr(nr++));
-        return super.addAll(thumbCollections);
+        boolean ret = super.addAll(thumbCollections);
+        setListChanged();
+        return ret;
+    }
+
+    public ThumbCollection getThumbCollection(int id) {
+        ThumbCollection thumbCollection;
+
+        thumbCollection = this.stream().filter(th -> th.getId() == id).findFirst().orElse(null);
+
+        if (thumbCollection == null && !this.isEmpty()) {
+            thumbCollection = this.get(0);
+        }
+        return thumbCollection;
     }
 
     public ObservableList<String> getListNames() {
