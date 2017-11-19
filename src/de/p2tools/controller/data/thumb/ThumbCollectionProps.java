@@ -23,15 +23,13 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
 
     private final IntegerProperty id = new SimpleIntegerProperty(0);
     private final StringProperty name = new SimpleStringProperty("");
-    private final IntegerProperty resolution = new SimpleIntegerProperty(600);
-    private final BooleanProperty square = new SimpleBooleanProperty(true);
     private final BooleanProperty recursive = new SimpleBooleanProperty(true);
     private final StringProperty format = new SimpleStringProperty(Const.IMAGE_FORMAT_JPG);
     private final StringProperty thumbDir = new SimpleStringProperty("");
     private final StringProperty fotoSrcDir = new SimpleStringProperty("");
 
 
-    public final Property[] properties = {id, name, resolution, format};
+    public final Property[] properties = {id, name, format};
 
     public int getId() {
         return id.get();
@@ -55,30 +53,6 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
 
     public void setName(String name) {
         this.name.set(name);
-    }
-
-    public int getResolution() {
-        return resolution.get();
-    }
-
-    public IntegerProperty resolutionProperty() {
-        return resolution;
-    }
-
-    public void setResolution(int resolution) {
-        this.resolution.set(resolution);
-    }
-
-    public boolean isSquare() {
-        return square.get();
-    }
-
-    public BooleanProperty squareProperty() {
-        return square;
-    }
-
-    public void setSquare(boolean square) {
-        this.square.set(square);
     }
 
     public boolean isRecursive() {
@@ -131,8 +105,6 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
 
     public void setPropsFromXml() {
         setName(arr[NAME]);
-        setResolution(Integer.parseInt(arr[RESOLUTION]));
-        setSquare(Boolean.parseBoolean(arr[SQUARE]));
         setRecursive(Boolean.parseBoolean(arr[RECURSIV]));
         setFormat(arr[FOTO_FORMAT]);
         setThumbDir(arr[DIR_THUMB]);
@@ -142,8 +114,6 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
 
     public void setXmlFromProps() {
         arr[NAME] = getName();
-        arr[RESOLUTION] = String.valueOf(getResolution());
-        arr[SQUARE] = String.valueOf(isSquare());
         arr[RECURSIV] = String.valueOf(isRecursive());
         arr[FOTO_FORMAT] = getFormat();
         arr[DIR_THUMB] = getThumbDir();

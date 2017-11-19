@@ -24,7 +24,9 @@ import de.p2tools.controller.genMosaik.MosaikErstellen;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -151,13 +153,22 @@ public class MosaikGuiController extends AnchorPane {
         btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
         Slider slider = new Slider();
-        slider.valueProperty().bindBidirectional(createMosaik.thumbSizeProperty());
+        slider.setMin(5);
+        slider.setMax(25);
+
+        slider.setValue(createMosaik.getThumbSize() / 10);
+
+        IntegerProperty iProp = new SimpleIntegerProperty();
+        iProp.bind(slider.valueProperty());
+
+        NumberBinding nb = Bindings.multiply(iProp, 10);
+        createMosaik.thumbSizeProperty().bind(nb);
+
         Label lblSlider = new Label("");
         lblSlider.textProperty().bind(
-                Bindings.format("%.0f", slider.valueProperty())
+                Bindings.format("%d", createMosaik.thumbSizeProperty())
         );
-        slider.setMin(50);
-        slider.setMax(250);
+
         HBox.setHgrow(slider, Priority.ALWAYS);
         HBox hBoxSlider = new HBox(10);
         hBoxSlider.setAlignment(Pos.CENTER_LEFT);

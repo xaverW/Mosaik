@@ -23,19 +23,14 @@ public class ThumbCollectionXml extends Data<ThumbCollection> {
 
     public static final int NR = 0;
     public static final int NAME = 1;
-    public static final int RESOLUTION = 2;
-    public static final int SQUARE = 3;
-    public static final int RECURSIV = 4;
-
-    public static final int FOTO_FORMAT = 5;
-    public static final int DIR_THUMB = 6;
-    public static final int DIR_FOTO_SRC = 7;
+    public static final int RECURSIV = 2;
+    public static final int FOTO_FORMAT = 3;
+    public static final int DIR_THUMB = 4;
+    public static final int DIR_FOTO_SRC = 5;
 
     public static final String[] XML_NAMES = {"Nr",
             "name",
-            "square",
             "recursiv",
-            "resolution",
             "foto-format",
             "dir-thumb",
             "dir-foto-src"};

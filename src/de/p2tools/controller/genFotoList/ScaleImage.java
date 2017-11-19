@@ -18,6 +18,7 @@
 package de.p2tools.controller.genFotoList;
 
 import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.Const;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.Log;
@@ -73,10 +74,8 @@ public class ScaleImage {
                 }
             }
 
-            int thumbSize = thumbCollection.getResolution();
-            Image scaledImage = imgRect.getScaledInstance(thumbSize, thumbSize, Image.SCALE_SMOOTH);
-
-            BufferedImage outImg = new BufferedImage(thumbSize, thumbSize, BufferedImage.TYPE_INT_RGB);
+            Image scaledImage = imgRect.getScaledInstance(Const.THUMB_RESOLUTION, Const.THUMB_RESOLUTION, Image.SCALE_SMOOTH);
+            BufferedImage outImg = new BufferedImage(Const.THUMB_RESOLUTION, Const.THUMB_RESOLUTION, BufferedImage.TYPE_INT_RGB);
 
             Graphics2D g = outImg.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
