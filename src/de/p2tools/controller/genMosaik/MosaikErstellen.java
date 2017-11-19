@@ -25,11 +25,9 @@ import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
-import javafx.application.Platform;
 import mosaik.BildEvent;
 import mosaik.BildListener;
 import mosaik.Funktionen;
-import mosaik.bild.ScaleImage_;
 import mosaik.daten.Konstanten;
 
 import javax.imageio.IIOImage;
@@ -49,8 +47,6 @@ public class MosaikErstellen {
 
     String dest;
     String src;
-    ScaleImage_ scaleImage;
-    //    Farbraum_ farbraum;
     private int anz = 5;
     private EventListenerList listeners = new EventListenerList();
     private int progress = 0;
@@ -143,7 +139,7 @@ public class MosaikErstellen {
 
                 int srcHeight = srcImg.getRaster().getHeight();
                 int srcWidth = srcImg.getRaster().getWidth();
-                int sizeThumb = thumbCollection.getResolution();
+                int sizeThumb = createMosaik.getThumbSize();
 
                 int numThumbsWidth = createMosaik.getNumberThumbsWidth();
                 int numPixelProThumb = srcWidth / numThumbsWidth;
@@ -165,27 +161,18 @@ public class MosaikErstellen {
                     System.out.println("yy " + yy + " von " + numThumbsHeight);
 
                     for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
-//                        System.out.println("xx " + xx + "von " + numThumbsWidth);
 
                         ++progress;
                         notifyEvent(yy * xx, progress, "Zeilen: " + yy);
-                        c = getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb, numPixelProThumb, numPixelProThumb));
+                        c = getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb,
+                                numPixelProThumb, numPixelProThumb));
+
                         thumb = farbraum.getThumb(c, anz);
                         if (thumb != null) {
                             thumb.addAnz();
                             file = new File(thumb.getFileName());
                             buffImg = Funktionen.getBufferedImage(file);
-                            int count = 0;
-                            while (buffImg == null && count < 5) {
-                                ++count;
-                                try {
-                                    this.wait(500);
-                                } catch (InterruptedException ex) {
-                                }
-                                Platform.runLater(() -> new MLAlert().showErrorAlert(src, "Kann Bild nicht laden!"));
-                                System.out.println("buffImg == null  -  " + thumb.arr[Konstanten.FARBEN_PFAD_NR]);
-                                buffImg = Funktionen.getBufferedImage(file);
-                            }
+                            buffImg = scale(buffImg, sizeThumb, sizeThumb);
                             imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
                         } else {
                             Log.errorLog(981021036, "MosaikErstellen_.tus-Farbe fehlt!!");
@@ -200,9 +187,23 @@ public class MosaikErstellen {
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
-            
+
             Duration.counterStop("Mosaik erstellen");
 
+        }
+
+        BufferedImage scale(BufferedImage src, int w, int h) {
+            BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            int x, y;
+            int ww = src.getWidth();
+            int hh = src.getHeight();
+            for (x = 0; x < w; x++) {
+                for (y = 0; y < h; y++) {
+                    int col = src.getRGB(x * ww / w, y * hh / h);
+                    img.setRGB(x, y, col);
+                }
+            }
+            return img;
         }
 
         private Color getColor(BufferedImage img) {

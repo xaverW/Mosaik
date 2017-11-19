@@ -53,8 +53,9 @@ public class MosaikGuiController extends AnchorPane {
     Button btnCreate = new Button("Mosaik erstellen");
     ComboBox<ThumbCollection> cbCollection = new ComboBox<>();
 
-    StringProperty srcProp;
-    StringProperty destProp;
+    //    StringProperty srcProp;
+//    StringProperty destProp;
+//    IntegerProperty thumbSizeProp;
     CreateMosaik createMosaik;
 
     public MosaikGuiController() {
@@ -64,9 +65,10 @@ public class MosaikGuiController extends AnchorPane {
         }
         createMosaik = progData.createMosaikList.get(0); // todo
 
-
-        srcProp = createMosaik.fotoSrcProperty();
-        destProp = createMosaik.fotoDestProperty();
+//
+//        srcProp = createMosaik.fotoSrcProperty();
+//        destProp = createMosaik.fotoDestProperty();
+//        thumbSizeProp = createMosaik.thumbSizeProperty();
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
@@ -87,6 +89,7 @@ public class MosaikGuiController extends AnchorPane {
 
 
     private void initCont() {
+        // SRC
         btnSrc.setOnAction(event -> {
             DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtSrc);
         });
@@ -96,9 +99,15 @@ public class MosaikGuiController extends AnchorPane {
         btnHelpSrc.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpSrc.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
+        txtSrc.textProperty().bindBidirectional(createMosaik.fotoSrcProperty());
+        txtSrc.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(txtSrc, Priority.ALWAYS);
+
         HBox hBoxSrc = new HBox(10);
         hBoxSrc.getChildren().addAll(txtSrc, btnSrc, btnHelpSrc);
 
+
+        // DEST
         btnDest.setOnAction(event -> {
             DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtDest);
         });
@@ -108,22 +117,15 @@ public class MosaikGuiController extends AnchorPane {
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        btnCreate.setOnAction(a -> {
-            if (!txtSrc.getText().isEmpty() && !txtDest.getText().isEmpty()) {
-                new MosaikErstellen(createMosaik).erstellen();
-            }
-        });
-
-        txtSrc.textProperty().bindBidirectional(srcProp);
-        txtSrc.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(txtSrc, Priority.ALWAYS);
-
-        txtDest.textProperty().bindBidirectional(destProp);
+        txtDest.textProperty().bindBidirectional(createMosaik.fotoDestProperty());
         txtDest.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDest, Priority.ALWAYS);
+
         HBox hBoxDest = new HBox(10);
         hBoxDest.getChildren().addAll(txtDest, btnDest, btnHelpDest);
 
+
+        // Anzahl Thumbs
         Label lblNum = new Label("Anzahl Thumbs:");
 
         final StringProperty sp = txtNumThumb.textProperty();
@@ -142,6 +144,27 @@ public class MosaikGuiController extends AnchorPane {
         HBox.setHgrow(txtNumThumb, Priority.ALWAYS);
         hBoxNum.getChildren().addAll(lblNum, txtNumThumb);
 
+
+        // Thumbsize
+        final Button btnHelpSlider = new Button("");
+        btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
+        btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+
+        Slider slider = new Slider();
+        slider.valueProperty().bindBidirectional(createMosaik.thumbSizeProperty());
+        Label lblSlider = new Label("");
+        lblSlider.textProperty().bind(
+                Bindings.format("%.0f", slider.valueProperty())
+        );
+        slider.setMin(50);
+        slider.setMax(250);
+        HBox.setHgrow(slider, Priority.ALWAYS);
+        HBox hBoxSlider = new HBox(10);
+        hBoxSlider.setAlignment(Pos.CENTER_LEFT);
+        hBoxSlider.getChildren().addAll(slider, lblSlider, btnHelpSlider);
+
+
+        // Thumbcollection
         cbCollection.setItems(progData.thumbCollectionList);
         cbCollection.getSelectionModel().selectFirst();
         final StringConverter<ThumbCollection> converter = new StringConverter<ThumbCollection>() {
@@ -163,10 +186,18 @@ public class MosaikGuiController extends AnchorPane {
             createMosaik.setThumbCollectionId(thumbCollection == null ? 0 : thumbCollection.getId());
         });
 
+
+        // import all
         vBoxCont.setSpacing(10);
         vBoxCont.setPadding(new Insets(10));
-        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, hBoxNum, cbCollection, btnCreate);
+        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, hBoxSlider, hBoxNum, cbCollection, btnCreate);
 
+
+        btnCreate.setOnAction(a -> {
+            if (!txtSrc.getText().isEmpty() && !txtDest.getText().isEmpty()) {
+                new MosaikErstellen(createMosaik).erstellen();
+            }
+        });
 
     }
 }

@@ -25,7 +25,6 @@ import mosaik.Funktionen;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
@@ -41,44 +40,44 @@ public class ScaleImage {
      */
     public static void scale(File source, File dest, ThumbCollection thumbCollection) throws IOException {
         try {
-//            source = new File("/mnt/lager/mosaik/1970er/1971/1971_015.jpg"); // ist SW
-            BufferedImage img = Funktionen.getBufferedImage(source);
-            if (img == null) {
+            BufferedImage imgSrc = Funktionen.getBufferedImage(source);
+
+            if (imgSrc == null) {
                 Log.errorLog(465323107, "Image==null");
                 return;
             }
 
-            if (thumbCollection.isSquare()) {
-                int h = img.getHeight(), w = img.getWidth(), x, y;
-                int widthNew = (h > w) ? w : h;
-                if (w > h) {
-                    y = 0;
-                    x = (w - h) / 2;
-                } else {
-                    y = (h - w) / 2;
-                    x = 0;
-                }
-                int imgType = img.getType();
-                BufferedImage imgOut = new BufferedImage(widthNew, widthNew, imgType);
+            int h = imgSrc.getHeight(), w = imgSrc.getWidth(), x, y;
+            int newSize = (h > w) ? w : h;
 
-                Raster rasterSrc = img.getRaster();
-                WritableRaster rasterDest = imgOut.getRaster();
-                int bands = rasterSrc.getNumBands();
-
-                for (int xx = 0; xx < widthNew; xx++) {
-                    for (int yy = 0; yy < widthNew; yy++) {
-                        for (int band = 0; band < bands; ++band) {
-                            rasterDest.setSample(xx, yy, band, rasterSrc.getSample(xx + x, yy + y, band));
-                        }
-                    }
-                }
-                img = imgOut;
+            if (w > h) {
+                y = 0;
+                x = (w - h) / 2;
+            } else {
+                y = (h - w) / 2;
+                x = 0;
             }
 
-            int width = thumbCollection.getResolution();
-            Image scaledImage = img.getScaledInstance(width, width, Image.SCALE_SMOOTH);
+            int imgType = imgSrc.getType();
+            BufferedImage imgRect = new BufferedImage(newSize, newSize, imgType);
 
-            BufferedImage outImg = new BufferedImage(width, width, BufferedImage.TYPE_INT_RGB);
+            Raster rasterSrc = imgSrc.getRaster();
+            WritableRaster rasterDest = imgRect.getRaster();
+            int bands = rasterSrc.getNumBands();
+
+            for (int xx = 0; xx < newSize; xx++) {
+                for (int yy = 0; yy < newSize; yy++) {
+                    for (int band = 0; band < bands; ++band) {
+                        rasterDest.setSample(xx, yy, band, rasterSrc.getSample(xx + x, yy + y, band));
+                    }
+                }
+            }
+
+            int thumbSize = thumbCollection.getResolution();
+            Image scaledImage = imgRect.getScaledInstance(thumbSize, thumbSize, Image.SCALE_SMOOTH);
+
+            BufferedImage outImg = new BufferedImage(thumbSize, thumbSize, BufferedImage.TYPE_INT_RGB);
+
             Graphics2D g = outImg.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -93,30 +92,30 @@ public class ScaleImage {
         }
     }
 
-    /**
-     * @param source
-     * @param rechts
-     */
-
-    public static void rotate(File source, boolean rechts) {
-        try {
-            BufferedImage img = Funktionen.getBufferedImage(source);
-            BufferedImage rImg = rotateImage(img, (rechts) ? 1 : -1);
-            ImageIO.write(rImg, Funktionen.fileType(source), source);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage() + "\n" + "ScaleImage_.drehen");
-        }
-    }
-
-    private static BufferedImage rotateImage(BufferedImage src, int degrees) {
-        AffineTransform affineTransform = AffineTransform.getQuadrantRotateInstance(
-                degrees, src.getWidth() / 2, src.getHeight() / 2);
-        BufferedImage rotatedImage = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = (Graphics2D) rotatedImage.getGraphics();
-        g.setTransform(affineTransform);
-        g.drawImage(src, 0, 0, null);
-        return rotatedImage;
-    }
+//    /**
+//     * @param source
+//     * @param rechts
+//     */
+//
+//    public static void rotate(File source, boolean rechts) {
+//        try {
+//            BufferedImage img = Funktionen.getBufferedImage(source);
+//            BufferedImage rImg = rotateImage(img, (rechts) ? 1 : -1);
+//            ImageIO.write(rImg, Funktionen.fileType(source), source);
+//        } catch (Exception ex) {
+//            System.out.println(ex.getMessage() + "\n" + "ScaleImage_.drehen");
+//        }
+//    }
+//
+//    private static BufferedImage rotateImage(BufferedImage src, int degrees) {
+//        AffineTransform affineTransform = AffineTransform.getQuadrantRotateInstance(
+//                degrees, src.getWidth() / 2, src.getHeight() / 2);
+//        BufferedImage rotatedImage = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_INT_RGB);
+//        Graphics2D g = (Graphics2D) rotatedImage.getGraphics();
+//        g.setTransform(affineTransform);
+//        g.drawImage(src, 0, 0, null);
+//        return rotatedImage;
+//    }
 
     /**
      * @param img

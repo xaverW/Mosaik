@@ -55,7 +55,7 @@ public class Farbraum {
      * @return
      */
     public Thumb getThumb(Color c, int anz) {
-        Thumb farbe;
+        Thumb thumb;
         int sprung = 0;
         int max = 10;
         int r = c.getRed();
@@ -91,9 +91,9 @@ public class Farbraum {
                 for (int k = gMin; k <= gMax; ++k) {
                     for (int l = bMin; l <= bMax; ++l) {
                         if (suchraum[i][k][l] == true) {
-                            farbe = thumbCollection.getThumbList().getThumb(i, k, l, anz);
-                            if (farbe != null) {
-                                return farbe;
+                            thumb = thumbCollection.getThumbList().getThumb(i, k, l, anz);
+                            if (thumb != null) {
+                                return thumb;
                             } else {
                                 suchraum[i][k][l] = false;
                             }
@@ -111,13 +111,11 @@ public class Farbraum {
     }
 
     private void addFarbe(Thumb thumb) {
-//        if (Boolean.parseBoolean(thumb.arr[Konstanten.FARBEN_BENUTZEN_NR])) {
         int r, g, b;
         r = thumb.getRed();
         g = thumb.getGreen();
         b = thumb.getBlue();
         suchraum[r][g][b] = true;
-//        }
     }
 
 }

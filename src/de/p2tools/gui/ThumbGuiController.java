@@ -227,8 +227,8 @@ public class ThumbGuiController extends AnchorPane {
         lblSlider.textProperty().bind(
                 Bindings.format("%.0f", slider.valueProperty())
         );
-        slider.setMin(25);
-        slider.setMax(500);
+        slider.setMin(250);
+        slider.setMax(1000);
         HBox.setHgrow(slider, Priority.ALWAYS);
 
         btnLod.setOnAction(a -> {
