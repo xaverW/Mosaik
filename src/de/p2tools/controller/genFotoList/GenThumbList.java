@@ -21,6 +21,7 @@ import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.FileUtils;
 import mosaik.BildEvent;
 import mosaik.BildListener;
@@ -69,6 +70,7 @@ public class GenThumbList {
     }
 
     public void create() {
+        Duration.counterStart("Thumb erstellen");
         progress = 0;
         stopAll = false;
         filesCreateThumb.clear();
@@ -194,6 +196,7 @@ public class GenThumbList {
                 --threads;
                 if (threads <= 0) {
                     notifyEvent(0, 0, "");
+                    Duration.counterStop("Thumb erstellen");
                 }
             }
 

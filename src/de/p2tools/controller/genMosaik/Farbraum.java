@@ -54,7 +54,7 @@ public class Farbraum {
      * @param anz
      * @return
      */
-    public Thumb getFarbe(Color c, int anz) {
+    public Thumb getThumb(Color c, int anz) {
         Thumb farbe;
         int sprung = 0;
         int max = 10;
@@ -106,7 +106,7 @@ public class Farbraum {
                 sprung = max;
             }
         }
-        Log.errorLog(987120365, "Farbraum.getFarbe - keine Farbe!!");
+        Log.errorLog(987120365, "Farbraum.getThumb - keine Farbe!!");
         return null;
     }
 

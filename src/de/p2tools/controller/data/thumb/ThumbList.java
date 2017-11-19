@@ -77,21 +77,21 @@ public class ThumbList extends SimpleListProperty<Thumb> {
         Thumb thumb;
         while (it.hasNext()) {
             thumb = it.next();
-            if (anz == 0) {
-                if (thumb.getRed() == red &&
-                        thumb.getGreen() == green &&
-                        thumb.getBlue() == blue) {
-                    return thumb;
-                }
-            } else {
-                if (thumb.getRed() == red &&
-                        thumb.getGreen() == green &&
-                        thumb.getBlue() == blue) {
-                    if (thumb.getAnz() <= anz) {
-                        return thumb;
-                    }
-                }
+//            if (anz == 0) {
+            if (thumb.getRed() == red &&
+                    thumb.getGreen() == green &&
+                    thumb.getBlue() == blue) {
+                return thumb;
             }
+//            } else {
+//                if (thumb.getRed() == red &&
+//                        thumb.getGreen() == green &&
+//                        thumb.getBlue() == blue) {
+//                    if (thumb.getAnz() <= anz) {
+//                        return thumb;
+//                    }
+//                }
+//            }
         }
         return null;
     }

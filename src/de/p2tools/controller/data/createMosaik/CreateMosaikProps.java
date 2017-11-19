@@ -26,7 +26,7 @@ public class CreateMosaikProps extends CreateMosaikXml {
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
     private final IntegerProperty numberThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
-    private final IntegerProperty thumbCount = new SimpleIntegerProperty(5); // Anzahl wie oft ein Thumbs verwendet werden kann
+    private final IntegerProperty thumbCount = new SimpleIntegerProperty(0); // Anzahl wie oft ein Thumbs verwendet werden kann
     private final IntegerProperty thumbCollectionId = new SimpleIntegerProperty(0); // ID der ThumbCollection
 
     public final Property[] properties = {format, fotoSrc, fotoDest, thumbSize, numberThumbsWidth, thumbCount, thumbCollectionId};

@@ -22,8 +22,10 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.createMosaik.CreateMosaik;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
+import javafx.application.Platform;
 import mosaik.BildEvent;
 import mosaik.BildListener;
 import mosaik.Funktionen;
@@ -86,6 +88,35 @@ public class MosaikErstellen {
         anz = createMosaik.getThumbCount();
         progress = 0;
         stopAll = false;
+
+        if (dest.equals("")) {
+            Log.errorLog(945120365, "Keine Zieldatei angegeben!");
+            return;
+        }
+
+        if (createMosaik.getFormat().equals(Konstanten.IMAGE_FORMAT_PNG)) {
+            if (!dest.endsWith("." + Const.IMAGE_FORMAT_JPG)) {
+                dest += "." + Const.IMAGE_FORMAT_PNG;
+            }
+        } else {
+            if (!dest.endsWith("." + Const.IMAGE_FORMAT_JPG)) {
+                dest += "." + Const.IMAGE_FORMAT_JPG;
+            }
+        }
+
+        boolean weiter = true;
+        if (new File(dest).exists()) {
+            if (!new MLAlert().showAlert_yes_no("Ziel existiert", dest,
+                    "Soll die bereits vorhandene Datei überschrieben werden?").equals(MLAlert.BUTTON.YES)) {
+                weiter = false;
+            }
+        }
+
+        int len = thumbCollection.getThumbList().getSize();
+        if (!weiter || len <= 0) {
+            return;
+        }
+
         Tus tus = new Tus();
         Thread startenThread = new Thread(tus);
         startenThread.setDaemon(true);
@@ -94,7 +125,6 @@ public class MosaikErstellen {
 
     private void notifyEvent(int max, int progress, String text) {
         BildEvent event;
-        ///////////////////////threads
         event = new BildEvent(this, progress, max, text, 1);
         for (BildListener l : listeners.getListeners(BildListener.class)) {
             l.tus(event);
@@ -104,83 +134,62 @@ public class MosaikErstellen {
     private class Tus implements Runnable {
 
         public synchronized void run() {
-            if (dest.equals("")) {
-                Log.errorLog(945120365, "Keine Zieldatei angegeben!");
-                return;
-            }
 
+            Duration.counterStart("Mosaik erstellen");
+            try {
+                thumbCollection.getThumbList().resetAnz();
+                BufferedImage imgOut;
+                BufferedImage srcImg = Funktionen.getBufferedImage(new File(src));
 
-            if (createMosaik.getFormat().equals(Konstanten.IMAGE_FORMAT_PNG)) {
-                if (!dest.endsWith("." + Const.IMAGE_FORMAT_JPG)) {
-                    dest += "." + Const.IMAGE_FORMAT_PNG;
-                }
-            } else {
-                if (!dest.endsWith("." + Const.IMAGE_FORMAT_JPG)) {
-                    dest += "." + Const.IMAGE_FORMAT_JPG;
-                }
-            }
+                int srcHeight = srcImg.getRaster().getHeight();
+                int srcWidth = srcImg.getRaster().getWidth();
+                int sizeThumb = thumbCollection.getResolution();
 
-            boolean weiter = true;
-            if (new File(dest).exists()) {
-                if (!new MLAlert().showAlert_yes_no("Ziel existiert", dest,
-                        "Soll die bereits vorhandene Datei überschrieben werden?").equals(MLAlert.BUTTON.YES)) {
-                    weiter = false;
-                }
-            }
+                int numThumbsWidth = createMosaik.getNumberThumbsWidth();
+                int numPixelProThumb = srcWidth / numThumbsWidth;
+                int numThumbsHeight = srcHeight / numPixelProThumb;
 
-            int len = thumbCollection.getThumbList().getSize();
-            if (!weiter || len <= 0) {
-                return;
-            }
+                int destWidth = numThumbsWidth * sizeThumb;
+                int destHeight = numThumbsHeight * sizeThumb;
 
-            thumbCollection.getThumbList().resetAnz();
-            BufferedImage imgOut;
-            BufferedImage srcImg = Funktionen.getBufferedImage(new File(src));
+                imgOut = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
 
-            int srcHeight = srcImg.getRaster().getHeight();
-            int srcWidth = srcImg.getRaster().getWidth();
-            int sizeThumb = thumbCollection.getResolution();
+                Thumb thumb;
+                //Bild zusammenbauen
+                Color c;
+                notifyEvent(numThumbsWidth * numThumbsHeight, 0, "");
+                Farbraum farbraum = new Farbraum(thumbCollection);
+                File file;
+                BufferedImage buffImg;
+                for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
+                    System.out.println("yy " + yy + " von " + numThumbsHeight);
 
-            int numThumbsWidth = createMosaik.getNumberThumbsWidth();
-            int numPixelProThumb = srcWidth / numThumbsWidth;
-            int numThumbsHeight = srcHeight / numPixelProThumb;
+                    for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
+//                        System.out.println("xx " + xx + "von " + numThumbsWidth);
 
-            int destWidth = numThumbsWidth * sizeThumb;
-            int destHeight = numThumbsHeight * sizeThumb;
-
-            imgOut = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
-
-            Thumb thumb;
-            //Bild zusammenbauen
-            Color c;
-            notifyEvent(numThumbsWidth * numThumbsHeight, 0, "");
-            Farbraum farbraum = new Farbraum(thumbCollection);
-            File file;
-            BufferedImage buffImg;
-            for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
-                for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
-                    ++progress;
-                    notifyEvent(yy * xx, progress, "Zeilen: " + yy);
-                    c = getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb, numPixelProThumb, numPixelProThumb));
-                    thumb = farbraum.getFarbe(c, anz);
-                    if (thumb != null) {
-                        thumb.addAnz();
-                        file = new File(thumb.getFileName());
-                        buffImg = Funktionen.getBufferedImage(file);
-                        int count = 0;
-                        while (buffImg == null && count < 5) {
-                            ++count;
-                            try {
-                                this.wait(500);
-                            } catch (InterruptedException ex) {
-                            }
-                            new MLAlert().showErrorAlert(src, "Kann Bild nicht laden!");
-                            System.out.println("buffImg == null  -  " + thumb.arr[Konstanten.FARBEN_PFAD_NR]);
+                        ++progress;
+                        notifyEvent(yy * xx, progress, "Zeilen: " + yy);
+                        c = getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb, numPixelProThumb, numPixelProThumb));
+                        thumb = farbraum.getThumb(c, anz);
+                        if (thumb != null) {
+                            thumb.addAnz();
+                            file = new File(thumb.getFileName());
                             buffImg = Funktionen.getBufferedImage(file);
+                            int count = 0;
+                            while (buffImg == null && count < 5) {
+                                ++count;
+                                try {
+                                    this.wait(500);
+                                } catch (InterruptedException ex) {
+                                }
+                                Platform.runLater(() -> new MLAlert().showErrorAlert(src, "Kann Bild nicht laden!"));
+                                System.out.println("buffImg == null  -  " + thumb.arr[Konstanten.FARBEN_PFAD_NR]);
+                                buffImg = Funktionen.getBufferedImage(file);
+                            }
+                            imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
+                        } else {
+                            Log.errorLog(981021036, "MosaikErstellen_.tus-Farbe fehlt!!");
                         }
-                        imgOut.getRaster().setRect(xx * numThumbsWidth, yy * numThumbsWidth, buffImg.getData());
-                    } else {
-                        Log.errorLog(981021036, "MosaikErstellen_.tus-Farbe fehlt!!");
                     }
                 }
 
@@ -188,7 +197,12 @@ public class MosaikErstellen {
                 notifyEvent(numThumbsHeight * numThumbsWidth, progress, "Speichern");
                 writeImage(imgOut);
                 notifyEvent(0, 0, "");
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
             }
+            
+            Duration.counterStop("Mosaik erstellen");
+
         }
 
         private Color getColor(BufferedImage img) {
@@ -207,12 +221,7 @@ public class MosaikErstellen {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            int rr =
-
-                    (int) (r / count), gg = (int) (g / count), bb = (
-
-
-                    int) (b / count);
+            int rr = (int) (r / count), gg = (int) (g / count), bb = (int) (b / count);
             Color ret = new Color(rr, gg, bb);
             return ret;
         }
