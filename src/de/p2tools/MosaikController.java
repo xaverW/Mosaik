@@ -37,6 +37,8 @@ public class MosaikController extends StackPane {
 
     Button btnThumbNail = new Button("Miniaturbilder");
     Button btnMosaik = new Button("Mosaik");
+    Button btnPrev = new Button("");
+    Button btnNext = new Button("");
 
     MenuButton menuButton = new MenuButton("");
 
@@ -45,7 +47,7 @@ public class MosaikController extends StackPane {
     private MaskerPane maskerPane = new MaskerPane();
     private StatusBarController statusBarController;
 
-    private AnchorPane paneFoto;
+    private AnchorPane paneThumb;
     private AnchorPane paneMosaik;
 
     private final ProgData progData;
@@ -59,11 +61,12 @@ public class MosaikController extends StackPane {
 
     private void init() {
         try {
-            HBox hBoxTop = new HBox();
-            hBoxTop.setPadding(new Insets(10));
-            hBoxTop.setSpacing(20);
-            hBoxTop.setAlignment(Pos.CENTER);
-            HBox.setHgrow(hBoxTop, Priority.ALWAYS);
+            // Menübutton
+            HBox hBoxMenueButton = new HBox();
+            hBoxMenueButton.setPadding(new Insets(10));
+            hBoxMenueButton.setSpacing(20);
+            hBoxMenueButton.setAlignment(Pos.CENTER);
+            HBox.setHgrow(hBoxMenueButton, Priority.ALWAYS);
 
             TilePane tilePane = new TilePane();
             tilePane.setHgap(20);
@@ -71,30 +74,7 @@ public class MosaikController extends StackPane {
             HBox.setHgrow(tilePane, Priority.ALWAYS);
 
             tilePane.getChildren().addAll(btnThumbNail, btnMosaik);
-            hBoxTop.getChildren().addAll(tilePane, menuButton);
-
-
-            progData.thumbGuiController = new ThumbGuiController();
-            paneFoto = progData.thumbGuiController;
-            progData.mosaikGuiController = new MosaikGuiController();
-            paneMosaik = progData.mosaikGuiController;
-            stackPaneCont.getChildren().addAll(paneFoto, paneMosaik);
-
-            statusBarController = new StatusBarController(progData);
-
-            VBox.setVgrow(hBoxTop, Priority.NEVER);
-            VBox.setVgrow(statusBarController, Priority.NEVER);
-
-            borderPane.setTop(hBoxTop);
-            borderPane.setCenter(stackPaneCont);
-            borderPane.setBottom(statusBarController);
-
-            this.setPadding(new Insets(0));
-            maskerPane.setPadding(new Insets(3, 1, 1, 1));
-            this.getChildren().addAll(borderPane, maskerPane);
-            StackPane.setAlignment(maskerPane, Pos.CENTER);
-            maskerPane.toFront();
-            maskerPane.setVisible(false);
+            hBoxMenueButton.getChildren().addAll(tilePane, menuButton);
 
             btnThumbNail.getStyleClass().add("btnFoto");
             btnThumbNail.setOnAction(e -> selPanelFoto());
@@ -118,11 +98,58 @@ public class MosaikController extends StackPane {
 
             menuButton.getStyleClass().add("btnFunction");
             menuButton.setText("");
+            javafx.scene.image.ImageView iv = new Icons().FX_ICON_TOOLBAR_MENUE_TOP;
             menuButton.setGraphic(new Icons().FX_ICON_TOOLBAR_MENUE_TOP);
             menuButton.getItems().addAll(miConfig, mHelp, new SeparatorMenuItem(), miQuitt);
 
-            selPanelFoto();
 
+            // Panes
+            progData.thumbGuiController = new ThumbGuiController();
+            paneThumb = progData.thumbGuiController;
+
+            progData.mosaikGuiController = new MosaikGuiController();
+            paneMosaik = progData.mosaikGuiController;
+
+            stackPaneCont.getChildren().addAll(paneThumb, paneMosaik);
+
+
+            // Statusbar
+            statusBarController = new StatusBarController(progData);
+
+
+            // MaskerPane
+            maskerPane.setPadding(new Insets(3, 1, 1, 1));
+            StackPane.setAlignment(maskerPane, Pos.CENTER);
+            maskerPane.setVisible(false);
+
+            // Button NEXT-PREV
+            HBox hBoxPrev = new HBox();
+            hBoxPrev.getChildren().addAll(btnPrev);
+            hBoxPrev.setAlignment(Pos.CENTER);
+            btnPrev.setMaxHeight(Double.MAX_VALUE);
+            btnPrev.setGraphic(new Icons().ICON_BUTTON_GUI_PREV);
+            btnPrev.setOnAction(a -> selPanelFoto());
+            HBox.setHgrow(btnPrev, Priority.ALWAYS);
+
+            HBox hBoxNext = new HBox();
+            hBoxNext.getChildren().addAll(btnNext);
+            hBoxNext.setAlignment(Pos.CENTER);
+            btnNext.setMaxHeight(Double.MAX_VALUE);
+            btnNext.setGraphic(new Icons().ICON_BUTTON_GUI_NEXT);
+            btnNext.setOnAction(a -> selPanelDownload());
+            HBox.setHgrow(btnNext, Priority.ALWAYS);
+
+            // ProgGUI
+            borderPane.setTop(hBoxMenueButton);
+            borderPane.setCenter(stackPaneCont);
+            borderPane.setBottom(statusBarController);
+            borderPane.setLeft(hBoxPrev);
+            borderPane.setRight(hBoxNext);
+
+            this.setPadding(new Insets(0));
+            this.getChildren().addAll(borderPane, maskerPane);
+
+            selPanelFoto();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -132,6 +159,8 @@ public class MosaikController extends StackPane {
         if (maskerPane.isVisible()) {
             return;
         }
+        btnPrev.setDisable(true);
+        btnNext.setDisable(false);
 
         btnThumbNail.getStyleClass().clear();
         btnMosaik.getStyleClass().clear();
@@ -139,7 +168,7 @@ public class MosaikController extends StackPane {
         btnThumbNail.getStyleClass().add("btnTab-sel");
         btnMosaik.getStyleClass().add("btnTab");
 
-        paneFoto.toFront();
+        paneThumb.toFront();
         progData.thumbGuiController.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.FILME);
     }
@@ -148,6 +177,8 @@ public class MosaikController extends StackPane {
         if (maskerPane.isVisible()) {
             return;
         }
+        btnPrev.setDisable(false);
+        btnNext.setDisable(true);
 
         btnThumbNail.getStyleClass().clear();
         btnMosaik.getStyleClass().clear();
