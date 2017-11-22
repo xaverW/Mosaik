@@ -27,11 +27,12 @@ public class ThumbProps extends ThumbXml {
     private final IntegerProperty red = new SimpleIntegerProperty(0);
     private final IntegerProperty green = new SimpleIntegerProperty(0);
     private final IntegerProperty blue = new SimpleIntegerProperty(0);
-    private final IntegerProperty sum = new SimpleIntegerProperty(0);
     private final StringProperty fileName = new SimpleStringProperty("");
+
+    private int sum = 0;
     private Color color = Color.rgb(0, 0, 0);
 
-    public final Property[] properties = {nr, red, green, blue, sum, fileName};
+    public final Property[] properties = {nr, red, green, blue, fileName};
 
     public int getAnz() {
         return anz;
@@ -96,18 +97,6 @@ public class ThumbProps extends ThumbXml {
         setColor();
     }
 
-    public int getSum() {
-        return sum.get();
-    }
-
-    public IntegerProperty sumProperty() {
-        return sum;
-    }
-
-    public void setSum(int sum) {
-        this.sum.set(sum);
-    }
-
     public String getFileName() {
         return fileName.get();
     }
@@ -118,6 +107,15 @@ public class ThumbProps extends ThumbXml {
 
     public void setFileName(String fileName) {
         this.fileName.set(fileName);
+    }
+
+
+    public int getSum() {
+        return sum;
+    }
+
+    public void setSum() {
+        sum = getGreen() + getBlue() + getRed();
     }
 
     public Color getColor() {
@@ -132,7 +130,8 @@ public class ThumbProps extends ThumbXml {
         setRed(Integer.parseInt(arr[COLOR_RED]));
         setGreen(Integer.parseInt(arr[COLOR_GREEN]));
         setBlue(Integer.parseInt(arr[COLOR_BLUE]));
-        setSum(getRed() + getGreen() + getBlue());
+        setSum();
+        setColor();
         setFileName(arr[FILENAME]);
     }
 
@@ -141,7 +140,6 @@ public class ThumbProps extends ThumbXml {
         arr[COLOR_RED] = String.valueOf(getRed());
         arr[COLOR_GREEN] = String.valueOf(getGreen());
         arr[COLOR_BLUE] = String.valueOf(getBlue());
-        arr[COLOR_SUM] = String.valueOf(getSum());
         arr[FILENAME] = getFileName();
     }
 

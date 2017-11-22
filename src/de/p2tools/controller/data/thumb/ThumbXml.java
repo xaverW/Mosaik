@@ -26,14 +26,12 @@ public class ThumbXml extends Data<Thumb> {
     public static final int COLOR_RED = 1;
     public static final int COLOR_GREEN = 2;
     public static final int COLOR_BLUE = 3;
-    public static final int COLOR_SUM = 4;
-    public static final int FILENAME = 5;
+    public static final int FILENAME = 4;
 
     public static final String[] XML_NAMES = {"Nr",
             "red",
             "green",
             "blue",
-            "sum",
             "filename"};
     public static final String TAG = "Thumb";
     public static int MAX_ELEM = XML_NAMES.length;

@@ -32,12 +32,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.apache.commons.io.FileUtils;
 import org.controlsfx.control.ToggleSwitch;
+import org.controlsfx.control.table.TableRowExpanderColumn;
 
 import java.io.File;
 
@@ -261,15 +264,16 @@ public class ChangeThumbGuiController extends AnchorPane {
         final TableColumn<Thumb, Integer> nrColumn = new TableColumn<>("Nr");
         nrColumn.setCellValueFactory(new PropertyValueFactory<>("nr"));
 
+        final TableColumn<Thumb, String> imageColumn = new TableColumn<>("Foto");
+        imageColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
+        imageColumn.setCellFactory(cellFactoryImage);
+
         final TableColumn<Thumb, Color> colorColumn = new TableColumn<>("Farbe");
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         colorColumn.setCellFactory(cellFactoryColor);
 
-        final TableColumn<Thumb, String> nameColumn = new TableColumn<>("Dateiname");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
-
         tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        tableView.getColumns().addAll(nrColumn, colorColumn, nameColumn);
+        tableView.getColumns().addAll(expander, nrColumn, imageColumn, colorColumn);
     }
 
     private Callback<TableColumn<Thumb, Color>, TableCell<Thumb, Color>> cellFactoryColor
@@ -296,4 +300,59 @@ public class ChangeThumbGuiController extends AnchorPane {
 
         return cell;
     };
+
+    private Callback<TableColumn<Thumb, String>, TableCell<Thumb, String>> cellFactoryImage
+            = (final TableColumn<Thumb, String> param) -> {
+
+        final TableCell<Thumb, String> cell = new TableCell<Thumb, String>() {
+
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    setText(null);
+                    return;
+                }
+                Image i = new Image(new File(item).toURI().toString(),
+                        200, 200, true, true);
+                ImageView imageview = new ImageView(i);
+                setGraphic(imageview);
+            }
+
+        };
+
+        return cell;
+    };
+
+    TableRowExpanderColumn<Thumb> expander = new TableRowExpanderColumn<>(param -> {
+        final Thumb thumb = param.getValue();
+        final GridPane gridPane = new GridPane();
+        gridPane.setStyle("-fx-background-color: #E0E0E0;");
+
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20, 20, 20, 20));
+        gridPane.setMinWidth(Control.USE_PREF_SIZE);
+        gridPane.setMaxWidth(Double.MAX_VALUE);
+
+        Label lblFile = new Label();
+        lblFile.textProperty().bind(thumb.fileNameProperty());
+        Button btnDel = new Button("Foto löschen");
+        btnDel.setOnAction(a -> {
+            if (de.p2tools.mLib.tools.FileUtils.deleteFile(thumb.getFileName())) {
+                thumbCollection.getThumbList().remove(thumb);
+            }
+        });
+
+        gridPane.add(new Label("Datei:"), 0, 0);
+        gridPane.add(lblFile, 1, 0);
+
+        gridPane.add(btnDel, 1, 1);
+
+        return gridPane;
+    });
+
+
 }
