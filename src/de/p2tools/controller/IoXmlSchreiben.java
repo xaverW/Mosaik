@@ -66,10 +66,8 @@ public class IoXmlSchreiben implements AutoCloseable {
             writer.writeCharacters("\n");
 
             writer.writeCharacters("\n\n");
-            for (CreateMosaik createMosaik : progData.createMosaikList) {
-                createMosaik.setXmlFromProps();
-                xmlSchreibenDaten(CreateMosaik.TAG, CreateMosaik.XML_NAMES, createMosaik.arr, true);
-            }
+            progData.createMosaik.setXmlFromProps();
+            xmlSchreibenDaten(CreateMosaik.TAG, CreateMosaik.XML_NAMES, progData.createMosaik.arr, true);
 
             xmlWriteThumbCollection();
 

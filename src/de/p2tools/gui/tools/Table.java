@@ -25,7 +25,7 @@ import javafx.scene.control.TableView;
 
 public class Table {
     public static enum TABLE {
-        FILM, DOWNLOAD
+        THUMB, CHANGE_THUMB
     }
 
     private static final String SORT_ASCENDING = "ASCENDING";
@@ -51,12 +51,20 @@ public class Table {
     private void initConf(TABLE eTable) {
         switch (eTable) {
 
-            case FILM:
-                confWidth = Config.FILM_GUI_TABLE_WIDTH;
-                confSort = Config.FILM_GUI_TABLE_SORT;
-                confUpDown = Config.FILM_GUI_TABLE_UPDOWN;
-                confVis = Config.FILM_GUI_TABLE_VIS;
-                confOrder = Config.FILM_GUI_TABLE_ORDER;
+            case THUMB:
+                confWidth = Config.THUMB_GUI_TABLE_WIDTH;
+                confSort = Config.THUMB_GUI_TABLE_SORT;
+                confUpDown = Config.THUMB_GUI_TABLE_UPDOWN;
+                confVis = Config.THUMB_GUI_TABLE_VIS;
+                confOrder = Config.THUMB_GUI_TABLE_ORDER;
+                break;
+
+            case CHANGE_THUMB:
+                confWidth = Config.CHANGE_THUMB_GUI_TABLE_WIDTH;
+                confSort = Config.CHANGE_THUMB_GUI_TABLE_SORT;
+                confUpDown = Config.CHANGE_THUMB_GUI_TABLE_UPDOWN;
+                confVis = Config.CHANGE_THUMB_GUI_TABLE_VIS;
+                confOrder = Config.CHANGE_THUMB_GUI_TABLE_ORDER;
                 break;
 
         }
@@ -64,7 +72,10 @@ public class Table {
 
     private void initColumn(TABLE eTable, TableView<Data> table) {
         switch (eTable) {
-            case FILM:
+            case THUMB:
+                tArray = TableThumb.initDownloadColumn(table);
+                break;
+            case CHANGE_THUMB:
                 tArray = TableThumb.initDownloadColumn(table);
                 break;
 
@@ -139,12 +150,12 @@ public class Table {
         initConf(eTable);
         maxSpalten = ta.getColumns().size();
         switch (eTable) {
-            case FILM:
-                resetFilm();
+            case THUMB:
+                resetThumb();
                 break;
 
-            case DOWNLOAD:
-                resetDownload();
+            case CHANGE_THUMB:
+                resetChangeThumb();
                 break;
 
         }
@@ -277,7 +288,7 @@ public class Table {
         return arr;
     }
 
-    private void resetFilm() {
+    private void resetThumb() {
         String[] visArray = new String[maxSpalten];
         String set = "";
 
@@ -296,7 +307,7 @@ public class Table {
         confOrder.setValue("");
     }
 
-    private void resetDownload() {
+    private void resetChangeThumb() {
         String[] visArray = new String[maxSpalten];
         String set = "";
 

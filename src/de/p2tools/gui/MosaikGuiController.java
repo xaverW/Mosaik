@@ -62,10 +62,7 @@ public class MosaikGuiController extends AnchorPane {
 
     public MosaikGuiController() {
         progData = ProgData.getInstance();
-        if (progData.createMosaikList.isEmpty()) {
-            progData.createMosaikList.add(new CreateMosaik());
-        }
-        createMosaik = progData.createMosaikList.get(0); // todo
+        createMosaik = progData.createMosaik;
 
 //
 //        srcProp = createMosaik.fotoSrcProperty();

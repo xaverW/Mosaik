@@ -66,10 +66,8 @@ public class IoXmlLesen implements AutoCloseable {
                                 getConfig(parser, Config.SYSTEM);
                                 break;
                             case CreateMosaik.TAG:
-                                final CreateMosaik d = new CreateMosaik();
-                                if (get(parser, CreateMosaik.TAG, CreateMosaik.XML_NAMES, d.arr)) {
-                                    d.setPropsFromXml();
-                                    progData.createMosaikList.add(d);
+                                if (get(parser, CreateMosaik.TAG, CreateMosaik.XML_NAMES, progData.createMosaik.arr)) {
+                                    progData.createMosaik.setPropsFromXml();
                                 }
                                 break;
                             case ThumbCollection.TAG:

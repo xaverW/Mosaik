@@ -41,7 +41,7 @@ import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
 
-public class ThumbGuiController extends AnchorPane {
+public class ChangeThumbGuiController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
     ScrollPane scrollPane = new ScrollPane();
     TableView table = new TableView<>();
@@ -59,9 +59,9 @@ public class ThumbGuiController extends AnchorPane {
     Button btnClear = new Button("Liste Löschen");
 
     private final ProgData progData;
-    DoubleProperty splitPaneProperty = Config.THUMB_GUI_DIVIDER.getDoubleProperty();
+    DoubleProperty splitPaneProperty = Config.CHANGE_THUMB_GUI_DIVIDER.getDoubleProperty();
 
-    public ThumbGuiController() {
+    public ChangeThumbGuiController() {
         progData = ProgData.getInstance();
 
         AnchorPane.setLeftAnchor(splitPane, 0.0);

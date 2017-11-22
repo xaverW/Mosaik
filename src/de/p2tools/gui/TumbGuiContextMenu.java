@@ -50,7 +50,7 @@ public class TumbGuiContextMenu {
 
 
         MenuItem resetTable = new MenuItem("Tabelle zurücksetzen");
-        resetTable.setOnAction(a -> new Table().resetTable(tableView, Table.TABLE.FILM));
+        resetTable.setOnAction(a -> new Table().resetTable(tableView, Table.TABLE.THUMB));
         contextMenu.getItems().add(resetTable);
     }
 

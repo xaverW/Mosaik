@@ -51,26 +51,21 @@ public class Config extends MLConfig {
     public static MLConfigs FOTO_SQUARE = addNewKey("foto-square", Boolean.TRUE.toString());
     public static MLConfigs FOTO_FORMAT = addNewKey("foto-format", Const.IMAGE_FORMAT_JPG);
 
-    // GuiFoto
-    public static MLConfigs FILM_GUI_DIVIDER = addNewKey("Film-Gui-Divider", Const.GUI_FILME_DIVIDER_LOCATION);
-    public static MLConfigs FILM_GUI_TABLE_WIDTH = addNewKey("Film-Gui-Table-Width");
-    public static MLConfigs FILM_GUI_TABLE_SORT = addNewKey("Film-Gui-Table-Sort");
-    public static MLConfigs FILM_GUI_TABLE_UPDOWN = addNewKey("Film-Gui-Table-UpDown");
-    public static MLConfigs FILM_GUI_TABLE_VIS = addNewKey("Film-Gui-Table-Vis");
-    public static MLConfigs FILM_GUI_TABLE_ORDER = addNewKey("Film-Gui-Table-Order");
+    // GuiThumb
+    public static MLConfigs THUMB_GUI_DIVIDER = addNewKey("Thumb-Gui-Divider", Const.GUI_FILME_DIVIDER_LOCATION);
+    public static MLConfigs THUMB_GUI_TABLE_WIDTH = addNewKey("Thumb-Gui-Table-Width");
+    public static MLConfigs THUMB_GUI_TABLE_SORT = addNewKey("Thumb-Gui-Table-Sort");
+    public static MLConfigs THUMB_GUI_TABLE_UPDOWN = addNewKey("Thumb-Gui-Table-UpDown");
+    public static MLConfigs THUMB_GUI_TABLE_VIS = addNewKey("Thumb-Gui-Table-Vis");
+    public static MLConfigs THUMB_GUI_TABLE_ORDER = addNewKey("Thumb-Gui-Table-Order");
 
-    // Download
-    public static MLConfigs DOWNLOAD_GUI_FILTER_DIVIDER = addNewKey("Download-Gui-Filter-Divider", Const.GUI_DOWNLOAD_FILTER_DIVIDER_LOCATION);
-    public static MLConfigs DOWNLOAD_GUI_FILTER_DIVIDER_ON = addNewKey("Download-Gui-Filter-Divider-On", Boolean.TRUE.toString());
-    public static MLConfigs DOWNLOAD_GUI_DIVIDER = addNewKey("Download-Gui-Divider", Const.GUI_DOWNLOAD_DIVIDER_LOCATION);
-    public static MLConfigs DOWNLOAD_GUI_DIVIDER_ON = addNewKey("Download-Gui-Divider-On", Boolean.TRUE.toString());
-    public static MLConfigs DOWNLOAD_GUI_TABLE_WIDTH = addNewKey("Download-Gui-Table-Width");
-    public static MLConfigs DOWNLOAD_GUI_TABLE_SORT = addNewKey("Download-Gui-Table-Sort");
-    public static MLConfigs DOWNLOAD_GUI_TABLE_UPDOWN = addNewKey("Download-Gui-Table-UpDown");
-    public static MLConfigs DOWNLOAD_GUI_TABLE_VIS = addNewKey("Download-Gui-Table-Vis");
-    public static MLConfigs DOWNLOAD_GUI_TABLE_ORDER = addNewKey("Download-Gui-Table-Order");
-    public static MLConfigs DOWNLOAD_NOTIFICATION = addNewKey("Download-Notification-anzeigen", Boolean.TRUE.toString());
-
+    // GuiChangeThumb
+    public static MLConfigs CHANGE_THUMB_GUI_DIVIDER = addNewKey("Change-Thumb-Gui-Divider", Const.GUI_FILME_DIVIDER_LOCATION);
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_WIDTH = addNewKey("Change-Thumb-Gui-Table-Width");
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_SORT = addNewKey("Change-Thumb-Gui-Table-Sort");
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_UPDOWN = addNewKey("Change-Thumb-Gui-Table-UpDown");
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_VIS = addNewKey("Change-Thumb-Gui-Table-Vis");
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_ORDER = addNewKey("Change-Thumb-Gui-Table-Order");
 
     // Meldungen
     public static MLConfigs MSG_VISIBLE = addNewKey("Meldungen-anzeigen", Boolean.FALSE.toString());

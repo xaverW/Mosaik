@@ -18,8 +18,9 @@
 package de.p2tools.controller.config;
 
 import de.p2tools.MosaikController;
-import de.p2tools.controller.data.createMosaik.CreateMosaikList;
+import de.p2tools.controller.data.createMosaik.CreateMosaik;
 import de.p2tools.controller.data.thumb.ThumbCollectionList;
+import de.p2tools.gui.ChangeThumbGuiController;
 import de.p2tools.gui.MosaikGuiController;
 import de.p2tools.gui.ThumbGuiController;
 import de.p2tools.gui.tools.Listener;
@@ -44,18 +45,19 @@ public class ProgData {
 
     // zentrale Klassen
     public ThumbCollectionList thumbCollectionList;
-    public CreateMosaikList createMosaikList;
+    public CreateMosaik createMosaik;
 
     // Gui
     public Stage primaryStage = null;
     public MosaikController mosaikController = null;
     public ThumbGuiController thumbGuiController = null; // Tab mit den Filmen
+    public ChangeThumbGuiController changeThumbGuiController = null; // Tab mit den Filmen
     public MosaikGuiController mosaikGuiController = null; // Tab mit den Downloads
 
 
     private ProgData() {
         thumbCollectionList = new ThumbCollectionList();
-        createMosaikList = new CreateMosaikList();
+        createMosaik = new CreateMosaik();
 
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000), ae -> {
