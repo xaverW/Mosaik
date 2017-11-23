@@ -186,6 +186,21 @@ public class FileUtils {
         return ret;
     }
 
+    public static String getPath(String pfad) {
+        // Pfad aus Pfad/File extrahieren
+        String ret = "";
+        if (pfad != null) {
+            if (!pfad.isEmpty() && pfad.contains(File.separator)) {
+                ret = pfad.substring(0, pfad.lastIndexOf(File.separator));
+            }
+        }
+        if (ret.isEmpty()) {
+            ret = pfad;
+            Log.errorLog(945120365, pfad);
+        }
+        return ret;
+    }
+
     /**
      * Get the free disk space for a selected path.
      *

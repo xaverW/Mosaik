@@ -243,10 +243,6 @@ public class GenThumbList {
                 }
             } catch (Exception ex) {
                 System.out.println(ex.getMessage() + "BildArchiv_.Einlesen.start");
-            } finally {
-                try {
-                } catch (Exception ex) {
-                }
             }
             EinlesenGetColor gColor;
             Thread t;

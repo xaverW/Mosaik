@@ -19,6 +19,7 @@ package de.p2tools.controller.config;
 
 import de.p2tools.MosaikController;
 import de.p2tools.controller.data.createMosaik.CreateMosaik;
+import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbCollectionList;
 import de.p2tools.gui.ChangeThumbGuiController;
 import de.p2tools.gui.MosaikGuiController;
@@ -46,10 +47,12 @@ public class ProgData {
     // zentrale Klassen
     public ThumbCollectionList thumbCollectionList;
     public CreateMosaik createMosaik;
+    public ThumbCollection selectedThumbCollection = null;
 
     // Gui
     public Stage primaryStage = null;
     public MosaikController mosaikController = null;
+
     public ThumbGuiController thumbGuiController = null; // Tab mit den Filmen
     public ChangeThumbGuiController changeThumbGuiController = null; // Tab mit den Filmen
     public MosaikGuiController mosaikGuiController = null; // Tab mit den Downloads

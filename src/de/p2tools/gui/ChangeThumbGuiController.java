@@ -18,15 +18,13 @@ package de.p2tools.gui;
 
 import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.genFotoList.GenThumbList;
-import de.p2tools.gui.dialog.MTAlert;
+import de.p2tools.controller.genFotoList.ScaleImage;
+import de.p2tools.gui.tools.MTOpen;
 import de.p2tools.gui.tools.Table;
-import de.p2tools.mLib.tools.DirFileChooser;
-import de.p2tools.mLib.tools.Log;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -37,9 +35,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
-import org.apache.commons.io.FileUtils;
-import org.controlsfx.control.ToggleSwitch;
 import org.controlsfx.control.table.TableRowExpanderColumn;
 
 import java.io.File;
@@ -53,13 +48,8 @@ public class ChangeThumbGuiController extends AnchorPane {
 
 
     ThumbCollection thumbCollection = null;
-    ComboBox<ThumbCollection> cbCollection = new ComboBox<>();
     TextField txtName = new TextField("");
-    TextField txtDir = new TextField("");
-    ToggleSwitch tglRecursive = new ToggleSwitch("Ordner rekursiv durchsuchen");
-    Button btnLod = new Button("Fotos hinzufügen");
     Button btnReload = new Button("Liste neu einlesen");
-    Button btnClear = new Button("Liste Löschen");
 
     private final ProgData progData;
     DoubleProperty splitPaneProperty = Config.CHANGE_THUMB_GUI_DIVIDER.getDoubleProperty();
@@ -81,9 +71,8 @@ public class ChangeThumbGuiController extends AnchorPane {
         SplitPane.setResizableWithParent(scrollPane, Boolean.FALSE);
         initTable();
 
-        initCollection();
         initCont();
-        setContPane();
+        selectThumbCollection();
 
         VBox vBox = new VBox();
         vBox.setSpacing(10);
@@ -96,6 +85,9 @@ public class ChangeThumbGuiController extends AnchorPane {
     }
 
     public void isShown() {
+        if (!thumbCollection.equals(progData.selectedThumbCollection)) {
+            selectThumbCollection();
+        }
     }
 
 
@@ -116,140 +108,38 @@ public class ChangeThumbGuiController extends AnchorPane {
         initTableColor(table);
     }
 
-    private void initCollection() {
-        cbCollection.setItems(progData.thumbCollectionList);
-        cbCollection.getSelectionModel().selectFirst();
-        final StringConverter<ThumbCollection> converter = new StringConverter<ThumbCollection>() {
-            @Override
-            public String toString(ThumbCollection fc) {
-                return fc == null ? "" : fc.getName();
-            }
 
-            @Override
-            public ThumbCollection fromString(String id) {
-                final int i = cbCollection.getSelectionModel().getSelectedIndex();
-                return progData.thumbCollectionList.get(i);
-            }
-        };
-        cbCollection.setConverter(converter);
-        cbCollection.setMaxWidth(Double.MAX_VALUE);
-        cbCollection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            setContPane();
-        });
-
-        Button btnNew = new Button("");
-        btnNew.setGraphic(new Icons().ICON_BUTTON_ADD);
-        btnNew.setOnAction(event -> {
-            ThumbCollection fc = new ThumbCollection("Neu-" + progData.thumbCollectionList.size());
-            progData.thumbCollectionList.add(fc);
-            cbCollection.getSelectionModel().select(fc);
-        });
-
-        Button btnDel = new Button("");
-        btnDel.setGraphic(new Icons().ICON_BUTTON_REMOVE);
-        btnDel.setOnAction(event -> {
-            int i = cbCollection.getSelectionModel().getSelectedIndex();
-            if (i < 0) {
-                return;
-            }
-            ThumbCollection fc = progData.thumbCollectionList.get(i);
-            if (fc != null) {
-                progData.thumbCollectionList.remove(fc);
-                cbCollection.getSelectionModel().selectFirst();
-            }
-        });
-
-        HBox hBox = new HBox();
-        hBox.setStyle("-fx-border-color: black;");
-        AnchorPane.setTopAnchor(hBox, 5.0);
-        AnchorPane.setLeftAnchor(hBox, 5.0);
-        AnchorPane.setBottomAnchor(hBox, 5.0);
-        AnchorPane.setRightAnchor(hBox, 5.0);
-        hBox.setPadding(new Insets(10));
-        hBox.setSpacing(10);
-        HBox.setHgrow(cbCollection, Priority.ALWAYS);
-        hBox.getChildren().addAll(cbCollection, btnNew, btnDel);
-        collectPane.getChildren().add(hBox);
-    }
-
-
-    private void setContPane() {
+    private void selectThumbCollection() {
         table.setItems(null);
 
         if (thumbCollection != null) {
-            txtName.textProperty().unbindBidirectional(thumbCollection.nameProperty());
-            txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
-            tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
+            txtName.setText("");
         }
-        thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
+        thumbCollection = progData.selectedThumbCollection;
 
         if (thumbCollection == null) {
             contPane.setDisable(true);
         } else {
             contPane.setDisable(false);
-
-            txtName.textProperty().bindBidirectional(thumbCollection.nameProperty());
-            txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
-            tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
-
+            txtName.setText(thumbCollection.getName());
             table.setItems(thumbCollection.getThumbList());
         }
     }
 
     private void initCont() {
         Label lblName = new Label("Name der Sammlung");
-        Label lblDir = new Label("Ordner mit Fotos auswählen");
 
-        txtDir.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(txtDir, Priority.ALWAYS);
+        txtName.setEditable(false);
         txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.thumbCollectionList.setListChanged());
 
-        final Button btnDir = new Button();
-        btnDir.setOnAction(event -> {
-            DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir);
-        });
-        btnDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
-
-        final Button btnHelp = new Button("");
-        btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
-
-
-        btnLod.setOnAction(a -> {
-            if (txtDir.getText().isEmpty()) {
-                return;
-            }
-            // todo destDir ist leer
-            String destDir = ProgInfos.getFotoCollectionsDirectory_String(thumbCollection.getName());
-            thumbCollection.setThumbDir(destDir);
-
-            new GenThumbList(thumbCollection).create();
-            table.refresh();
-        });
         btnReload.setOnAction(a -> {
             new GenThumbList(thumbCollection).read();
             table.refresh();
         });
-        btnClear.setOnAction(a -> {
-            try {
-                FileUtils.deleteDirectory(new File(thumbCollection.getThumbDir()));
-            } catch (Exception ex) {
-                Log.errorLog(945121254, ex);
-            }
-            thumbCollection.getThumbList().clear();
-            table.refresh();
-        });
-
-        HBox hBoxDir = new HBox();
-        hBoxDir.setSpacing(10);
-        hBoxDir.getChildren().addAll(txtDir, btnDir, btnHelp);
-
-        HBox hBoxButon = new HBox(10);
-        hBoxButon.getChildren().addAll(btnLod, btnReload, btnClear);
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
-        vBox.getChildren().addAll(lblName, txtName, lblDir, hBoxDir, tglRecursive, hBoxButon);
+        vBox.getChildren().addAll(lblName, txtName, btnReload);
 
         AnchorPane.setTopAnchor(vBox, 5.0);
         AnchorPane.setLeftAnchor(vBox, 5.0);
@@ -346,10 +236,33 @@ public class ChangeThumbGuiController extends AnchorPane {
             }
         });
 
+        Button btnOpenDir = new Button("Ordner öffnen");
+        btnOpenDir.setOnAction(a -> MTOpen.openDestDir(de.p2tools.mLib.tools.FileUtils.getPath(thumb.getFileName())));
+
+        Button rotateLeft = new Button("");
+        rotateLeft.setGraphic(new Icons().ICON_BUTTON_ROTATE_LEFT);
+        Button rotateRight = new Button("");
+        rotateRight.setGraphic(new Icons().ICON_BUTTON_ROTATE_RIGHT);
+        rotateLeft.setOnAction(a -> {
+            try {
+                ScaleImage.printMetaData(new File(thumb.getFileName()));
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+            ScaleImage.rotate(new File(thumb.getFileName()), false);
+            table.refresh();
+        });
+        rotateRight.setOnAction(a -> {
+            ScaleImage.rotate(new File(thumb.getFileName()), true);
+            table.refresh();
+        });
+
         gridPane.add(new Label("Datei:"), 0, 0);
         gridPane.add(lblFile, 1, 0);
 
-        gridPane.add(btnDel, 1, 1);
+        HBox hBoxButton = new HBox(10);
+        hBoxButton.getChildren().addAll(btnDel, btnOpenDir, rotateLeft, rotateRight);
+        gridPane.add(hBoxButton, 1, 1);
 
         return gridPane;
     });

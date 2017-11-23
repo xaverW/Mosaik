@@ -80,7 +80,7 @@ public class ThumbGuiController extends AnchorPane {
 
         initCollection();
         initCont();
-        setContPane();
+        selectThumbCollection();
 
         VBox vBox = new VBox();
         vBox.setSpacing(10);
@@ -131,7 +131,7 @@ public class ThumbGuiController extends AnchorPane {
         cbCollection.setConverter(converter);
         cbCollection.setMaxWidth(Double.MAX_VALUE);
         cbCollection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            setContPane();
+            selectThumbCollection();
         });
 
         Button btnNew = new Button("");
@@ -170,7 +170,7 @@ public class ThumbGuiController extends AnchorPane {
     }
 
 
-    private void setContPane() {
+    private void selectThumbCollection() {
         table.setItems(null);
 
         if (thumbCollection != null) {
@@ -179,6 +179,7 @@ public class ThumbGuiController extends AnchorPane {
             tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
         }
         thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
+        progData.selectedThumbCollection = thumbCollection;
 
         if (thumbCollection == null) {
             contPane.setDisable(true);

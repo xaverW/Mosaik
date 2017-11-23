@@ -38,6 +38,9 @@ public class Icons {
     public final ImageView ICON_BUTTON_GUI_NEXT = GetIcon.getImageView("button-gui-next.png", 16, 16);
     public final ImageView ICON_BUTTON_GUI_PREV = GetIcon.getImageView("button-gui-prev.png", 16, 16);
 
+    public final ImageView ICON_BUTTON_ROTATE_LEFT = GetIcon.getImageView("button-rotate-left.png", 16, 16);
+    public final ImageView ICON_BUTTON_ROTATE_RIGHT = GetIcon.getImageView("button-rotate-right.png", 16, 16);
+
     public final ImageView ICON_DIALOG_QUITT = GetIcon.getImageView("dialog-quitt.png", 64, 64);
 
 
