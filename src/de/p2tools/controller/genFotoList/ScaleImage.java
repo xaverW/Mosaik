@@ -17,12 +17,12 @@
 
 package de.p2tools.controller.genFotoList;
 
+import de.p2tools.controller.Funktionen;
 import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.Log;
-import mosaik.Funktionen;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

@@ -16,6 +16,8 @@
 
 package de.p2tools.gui;
 
+import de.p2tools.controller.BildEvent;
+import de.p2tools.controller.BildListener;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.tools.Listener;
@@ -30,8 +32,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
-import mosaik.BildEvent;
-import mosaik.BildListener;
 
 public class StatusBarController extends AnchorPane {
 

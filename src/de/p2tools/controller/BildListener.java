@@ -15,16 +15,15 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mosaik;
+package de.p2tools.controller;
 
 import java.util.EventListener;
 
 public interface BildListener extends EventListener {
 
     /**
-     * 
      * @param e
      */
-    void tus (BildEvent e);
+    void tus(BildEvent e);
 
 }

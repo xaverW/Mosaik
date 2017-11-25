@@ -17,15 +17,14 @@
 
 package de.p2tools.controller.genFotoList;
 
+import de.p2tools.controller.BildEvent;
+import de.p2tools.controller.BildListener;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.FileUtils;
-import mosaik.BildEvent;
-import mosaik.BildListener;
-import mosaik.daten.Konstanten;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;
@@ -285,9 +284,9 @@ public class GenThumbList {
 
     public boolean checkSuffix(File file) {
         boolean ret = false;
-        if (file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(Konstanten.IMAGE_FORMAT_JPG) ||
+        if (file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(Const.IMAGE_FORMAT_JPG) ||
                 file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase("jpeg") ||
-                file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(Konstanten.IMAGE_FORMAT_PNG)) {
+                file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(Const.IMAGE_FORMAT_PNG)) {
             ret = true;
         }
         return ret;

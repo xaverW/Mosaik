@@ -15,35 +15,43 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mosaik;
+package de.p2tools.controller;
 
 import java.util.EventObject;
-import javax.swing.event.EventListenerList;
 
-public class BeobAenderung {
+public class BildEvent extends EventObject {
+    // meldet eine Änderung
+    private int progress;
+    private int max;
+    private int threads;
+    private String text;
 
-    private EventListenerList listeners = new EventListenerList();
-
-    /////////////////////////
-    // public
-    /////////////////////////
-    /**
-     * 
-     * @param listener
-     */
-    public void addAdListener(AenderungsListener listener) {
-        listeners.add(AenderungsListener.class, listener);
+    public BildEvent(Object source, int prog, int m, String ttext, int tthreads) {
+        super(source);
+        progress = prog;
+        max = m;
+        text = ttext;
+        threads = tthreads;
     }
 
-    public void notifyEvent() {
-        EventObject event;
-        event = new EventObject(this);
-        for (AenderungsListener l : listeners.getListeners(AenderungsListener.class)) {
-            l.tus(event);
-        }
+    public String getText() {
+        return text;
     }
 
-    ////////////////////////
-    // private
-    ////////////////////////
+    public int getProgress() {
+        return progress;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public int getThreads() {
+        return threads;
+    }
+
+    public boolean nixLos() {
+        return max == 0;
+    }
+
 }

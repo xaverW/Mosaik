@@ -15,10 +15,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mosaik;
+package de.p2tools.controller;
 
-import mosaik.daten.Daten;
-import mosaik.daten.Konstanten;
+import de.p2tools.controller.config.Const;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -39,15 +38,6 @@ public class Funktionen {
         }
         reader.dispose();
         return img;
-    }
-
-    public static String getPfadProjektOrdner(Daten daten) {
-        String ret = daten.system[Konstanten.SYSTEM_PROJECTDATEI_PFAD_NR];
-        ret = new File(ret).getParent();
-        if (ret == null) {
-            ret = "";
-        }
-        return ret;
     }
 
     public static RenderedImage getRenderedImage(File file) {
@@ -87,11 +77,11 @@ public class Funktionen {
         if (i > 0 && i < n.length() - 1) {
             suffix = n.substring(i + 1).toLowerCase();
         }
-        if (suffix.equals("jpeg") || suffix.equals(Konstanten.IMAGE_FORMAT_JPG)) {
-            return Konstanten.IMAGE_FORMAT_JPG;
+        if (suffix.equals("jpeg") || suffix.equals(Const.IMAGE_FORMAT_JPG)) {
+            return Const.IMAGE_FORMAT_JPG;
         }
-        if (suffix.equals(Konstanten.IMAGE_FORMAT_PNG)) {
-            return Konstanten.IMAGE_FORMAT_PNG;
+        if (suffix.equals(Const.IMAGE_FORMAT_PNG)) {
+            return Const.IMAGE_FORMAT_PNG;
         }
         return "";
     }

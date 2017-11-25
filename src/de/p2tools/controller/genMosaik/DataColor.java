@@ -17,8 +17,6 @@
 
 package de.p2tools.controller.genMosaik;
 
-import mosaik.daten.Konstanten;
-
 public class DataColor implements Comparable<DataColor> {
 
     public String[] arr;
@@ -27,38 +25,55 @@ public class DataColor implements Comparable<DataColor> {
     public int green = 0;
     public int blue = 0;
 
+    public static final String FARBEN = "Farben";
+    public static final int FARBEN_MAX_ELEM = 6;
+    public static final String FARBEN_PFAD = "Pfad";
+    public static final int FARBEN_PFAD_NR = 0;
+    public static final String FARBEN_R = "Rot";
+    public static final int FARBEN_R_NR = 1;
+    public static final String FARBEN_G = "Grün";
+    public static final int FARBEN_G_NR = 2;
+    public static final String FARBEN_B = "Blau";
+    public static final int FARBEN_B_NR = 3;
+    public static final String FARBEN_FARBE = "Farbe";
+    public static final int FARBEN_FARBE_NR = 4;
+    public static final String FARBEN_BENUTZEN = "Benutzen";
+    public static final int FARBEN_BENUTZEN_NR = 5;
+    public static final String[] FARBEN_COLUMN_NAMES = {FARBEN_PFAD, FARBEN_R, FARBEN_G, FARBEN_B, FARBEN_FARBE,
+            FARBEN_BENUTZEN};
+
     public DataColor() {
         makeArr();
     }
 
     public DataColor(String pfad, String r, String g, String b) {
         makeArr();
-        arr[Konstanten.FARBEN_PFAD_NR] = pfad;
-        arr[Konstanten.FARBEN_R_NR] = r;
-        arr[Konstanten.FARBEN_G_NR] = g;
-        arr[Konstanten.FARBEN_B_NR] = b;
+        arr[FARBEN_PFAD_NR] = pfad;
+        arr[FARBEN_R_NR] = r;
+        arr[FARBEN_G_NR] = g;
+        arr[FARBEN_B_NR] = b;
         red = Integer.parseInt(r);
         green = Integer.parseInt(g);
         blue = Integer.parseInt(b);
     }
 
     private void makeArr() {
-        arr = new String[Konstanten.FARBEN_MAX_ELEM];
+        arr = new String[FARBEN_MAX_ELEM];
         for (int i = 0; i < arr.length; ++i) {
             arr[i] = new String("");
         }
-        arr[Konstanten.FARBEN_BENUTZEN_NR] = Boolean.toString(true);
+        arr[FARBEN_BENUTZEN_NR] = Boolean.toString(true);
     }
 
     @Override
     public int compareTo(DataColor arg0) {
         boolean ret = false;
-        if (Integer.parseInt(arr[Konstanten.FARBEN_R_NR]) +
-                Integer.parseInt(arr[Konstanten.FARBEN_G_NR]) +
-                Integer.parseInt(arr[Konstanten.FARBEN_B_NR]) <
-                Integer.parseInt(arg0.arr[Konstanten.FARBEN_R_NR]) +
-                        Integer.parseInt(arg0.arr[Konstanten.FARBEN_G_NR]) +
-                        Integer.parseInt(arg0.arr[Konstanten.FARBEN_B_NR])) {
+        if (Integer.parseInt(arr[FARBEN_R_NR]) +
+                Integer.parseInt(arr[FARBEN_G_NR]) +
+                Integer.parseInt(arr[FARBEN_B_NR]) <
+                Integer.parseInt(arg0.arr[FARBEN_R_NR]) +
+                        Integer.parseInt(arg0.arr[FARBEN_G_NR]) +
+                        Integer.parseInt(arg0.arr[FARBEN_B_NR])) {
             ret = true;
         }
         return (ret == true) ? 1 : -1;

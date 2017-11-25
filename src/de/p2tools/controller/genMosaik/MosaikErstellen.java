@@ -17,6 +17,9 @@
 
 package de.p2tools.controller.genMosaik;
 
+import de.p2tools.controller.BildEvent;
+import de.p2tools.controller.BildListener;
+import de.p2tools.controller.Funktionen;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.createMosaik.CreateMosaik;
@@ -25,10 +28,6 @@ import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
-import mosaik.BildEvent;
-import mosaik.BildListener;
-import mosaik.Funktionen;
-import mosaik.daten.Konstanten;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -90,7 +89,7 @@ public class MosaikErstellen {
             return;
         }
 
-        if (createMosaik.getFormat().equals(Konstanten.IMAGE_FORMAT_PNG)) {
+        if (createMosaik.getFormat().equals(Const.IMAGE_FORMAT_PNG)) {
             if (!dest.endsWith("." + Const.IMAGE_FORMAT_JPG)) {
                 dest += "." + Const.IMAGE_FORMAT_PNG;
             }
