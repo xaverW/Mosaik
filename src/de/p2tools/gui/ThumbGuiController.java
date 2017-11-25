@@ -22,7 +22,6 @@ import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.controller.genFotoList.GenThumbList;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.Table;
 import de.p2tools.mLib.tools.DirFileChooser;
@@ -221,11 +220,11 @@ public class ThumbGuiController extends AnchorPane {
             String destDir = ProgInfos.getFotoCollectionsDirectory_String(thumbCollection.getName());
             thumbCollection.setThumbDir(destDir);
 
-            new GenThumbList(thumbCollection).create();
+            progData.genThumbList.create(thumbCollection);
             table.refresh();
         });
         btnReload.setOnAction(a -> {
-            new GenThumbList(thumbCollection).read();
+            progData.genThumbList.read(thumbCollection);
             table.refresh();
         });
         btnClear.setOnAction(a -> {

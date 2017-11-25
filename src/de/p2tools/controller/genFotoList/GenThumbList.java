@@ -29,7 +29,6 @@ import mosaik.daten.Konstanten;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 
 public class GenThumbList {
@@ -48,9 +47,8 @@ public class GenThumbList {
 
     /**
      */
-    public GenThumbList(ThumbCollection thumbCollection) {
-        this.thumbCollection = thumbCollection;
-        progData = ProgData.getInstance();
+    public GenThumbList(ProgData progData) {
+        this.progData = progData;
         anzThread = Runtime.getRuntime().availableProcessors();
     }
 
@@ -69,7 +67,8 @@ public class GenThumbList {
         listeners.add(BildListener.class, listener);
     }
 
-    public void create() {
+    public void create(ThumbCollection thumbCollection) {
+        this.thumbCollection = thumbCollection;
         Duration.counterStart("Thumb erstellen");
         progress = 0;
         stopAll = false;
@@ -80,7 +79,8 @@ public class GenThumbList {
         thread.start();
     }
 
-    public void read() {
+    public void read(ThumbCollection thumbCollection) {
+        this.thumbCollection = thumbCollection;
         progress = 0;
         stopAll = false;
         fileListeEinlesen.clear();
@@ -201,22 +201,10 @@ public class GenThumbList {
             }
 
             private void create(File fileSrc, File fileDest) {
-                try {
-                    ++progress;
-                    notifyEvent(fileCount, progress, fileSrc.getName());
-                    ScaleImage.scale(fileSrc, fileDest, thumbCollection);
-                    Thumb thumb;
-                    if ((thumb = ScaleImage.getThumb(fileDest)) != null) {
-                        thumbCollection.getThumbList().add(thumb);
-                    }
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage() + "MakeThumb.thumb");
-                    System.out.println("----------------------------------");
-                    System.out.println("Fehler - Src: " + fileSrc.getAbsolutePath());
-                    System.out.println("Fehler - Dest: " + fileDest.getAbsolutePath());
-                }
+                ++progress;
+                notifyEvent(fileCount, progress, fileSrc.getName());
+                ScaleImage.getScaledThumb(fileSrc, fileDest, thumbCollection);
             }
-
         }
 
     }

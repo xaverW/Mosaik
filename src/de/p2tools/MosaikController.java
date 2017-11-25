@@ -205,7 +205,7 @@ public class MosaikController extends StackPane {
 
         paneThumb.toFront();
         progData.thumbGuiController.isShown();
-        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.FILME);
+        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Thumb);
     }
 
     private void selPanelChangeTumb() {
@@ -225,7 +225,7 @@ public class MosaikController extends StackPane {
 
         paneChangeThumb.toFront();
         progData.changeThumbGuiController.isShown();
-        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.FILME);
+        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Thumb);
     }
 
     private void selPanelMosaik() {
@@ -245,7 +245,7 @@ public class MosaikController extends StackPane {
 
         progData.mosaikGuiController.isShown();
         paneMosaik.toFront();
-        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.DOWNLOAD);
+        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Mosaik);
     }
 
     public void setMasker() {

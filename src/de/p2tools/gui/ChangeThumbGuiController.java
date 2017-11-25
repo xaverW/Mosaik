@@ -21,7 +21,6 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.controller.genFotoList.GenThumbList;
 import de.p2tools.controller.genFotoList.ScaleImage;
 import de.p2tools.gui.tools.MTOpen;
 import de.p2tools.gui.tools.Table;
@@ -35,7 +34,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-import org.controlsfx.control.table.TableRowExpanderColumn;
 
 import java.io.File;
 
@@ -48,7 +46,7 @@ public class ChangeThumbGuiController extends AnchorPane {
 
 
     ThumbCollection thumbCollection = null;
-    TextField txtName = new TextField("");
+    Label lblName = new Label("");
     Button btnReload = new Button("Liste neu einlesen");
 
     private final ProgData progData;
@@ -99,21 +97,11 @@ public class ChangeThumbGuiController extends AnchorPane {
     }
 
 
-    private void initTable() {
-        table.setTableMenuButtonVisible(true);
-        table.setEditable(false);
-        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-
-        initTableColor(table);
-    }
-
-
     private void selectThumbCollection() {
         table.setItems(null);
 
         if (thumbCollection != null) {
-            txtName.setText("");
+            lblName.setText("");
         }
         thumbCollection = progData.selectedThumbCollection;
 
@@ -121,25 +109,24 @@ public class ChangeThumbGuiController extends AnchorPane {
             contPane.setDisable(true);
         } else {
             contPane.setDisable(false);
-            txtName.setText(thumbCollection.getName());
+            lblName.setText(thumbCollection.getName());
             table.setItems(thumbCollection.getThumbList());
         }
     }
 
     private void initCont() {
-        Label lblName = new Label("Name der Sammlung");
-
-        txtName.setEditable(false);
-        txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.thumbCollectionList.setListChanged());
+        lblName.textProperty().addListener((observable, oldValue, newValue) -> progData.thumbCollectionList.setListChanged());
 
         btnReload.setOnAction(a -> {
-            new GenThumbList(thumbCollection).read();
+            progData.genThumbList.read(thumbCollection);
             table.refresh();
         });
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
-        vBox.getChildren().addAll(lblName, txtName, btnReload);
+        HBox hBox = new HBox(10);
+        hBox.getChildren().addAll(new Label("Sammlung:"), lblName);
+        vBox.getChildren().addAll(hBox, btnReload);
 
         AnchorPane.setTopAnchor(vBox, 5.0);
         AnchorPane.setLeftAnchor(vBox, 5.0);
@@ -147,6 +134,15 @@ public class ChangeThumbGuiController extends AnchorPane {
         AnchorPane.setRightAnchor(vBox, 5.0);
         vBox.setStyle("-fx-border-color: black;");
         contPane.getChildren().add(vBox);
+    }
+
+    private void initTable() {
+        table.setTableMenuButtonVisible(true);
+        table.setEditable(false);
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+
+        initTableColor(table);
     }
 
     private void initTableColor(TableView<Thumb> tableView) {
@@ -162,8 +158,12 @@ public class ChangeThumbGuiController extends AnchorPane {
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         colorColumn.setCellFactory(cellFactoryColor);
 
+        final TableColumn<Thumb, String> changeColumn = new TableColumn<>("Bearbeiten");
+        changeColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
+        changeColumn.setCellFactory(cellFactoryChange);
+
         tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        tableView.getColumns().addAll(expander, nrColumn, imageColumn, colorColumn);
+        tableView.getColumns().addAll(nrColumn, imageColumn, colorColumn, changeColumn);
     }
 
     private Callback<TableColumn<Thumb, Color>, TableCell<Thumb, Color>> cellFactoryColor
@@ -206,7 +206,7 @@ public class ChangeThumbGuiController extends AnchorPane {
                     return;
                 }
                 Image i = new Image(new File(item).toURI().toString(),
-                        200, 200, true, true);
+                        150, 150, true, true);
                 ImageView imageview = new ImageView(i);
                 setGraphic(imageview);
             }
@@ -216,56 +216,69 @@ public class ChangeThumbGuiController extends AnchorPane {
         return cell;
     };
 
-    TableRowExpanderColumn<Thumb> expander = new TableRowExpanderColumn<>(param -> {
-        final Thumb thumb = param.getValue();
-        final GridPane gridPane = new GridPane();
-        gridPane.setStyle("-fx-background-color: #E0E0E0;");
+    private Callback<TableColumn<Thumb, String>, TableCell<Thumb, String>> cellFactoryChange
+            = (final TableColumn<Thumb, String> param) -> {
 
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(20, 20, 20, 20));
-        gridPane.setMinWidth(Control.USE_PREF_SIZE);
-        gridPane.setMaxWidth(Double.MAX_VALUE);
+        final TableCell<Thumb, String> cell = new TableCell<Thumb, String>() {
 
-        Label lblFile = new Label();
-        lblFile.textProperty().bind(thumb.fileNameProperty());
-        Button btnDel = new Button("Foto löschen");
-        btnDel.setOnAction(a -> {
-            if (de.p2tools.mLib.tools.FileUtils.deleteFile(thumb.getFileName())) {
-                thumbCollection.getThumbList().remove(thumb);
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                    setText(null);
+                    return;
+                }
+                Thumb thumb = getTableView().getItems().get(getIndex());
+                final GridPane gridPane = new GridPane();
+                gridPane.setStyle("-fx-background-color: #E0E0E0;");
+
+                gridPane.setHgap(10);
+                gridPane.setVgap(10);
+                gridPane.setPadding(new Insets(20, 20, 20, 20));
+                gridPane.setMinWidth(Control.USE_PREF_SIZE);
+                gridPane.setMaxWidth(Double.MAX_VALUE);
+
+                Label lblFile = new Label();
+                lblFile.textProperty().bind(thumb.fileNameProperty());
+                Button btnDel = new Button("Foto löschen");
+                btnDel.setOnAction(a -> {
+                    if (de.p2tools.mLib.tools.FileUtils.deleteFile(thumb.getFileName())) {
+                        thumbCollection.getThumbList().remove(thumb);
+                    }
+                });
+
+                Button btnOpenDir = new Button("Ordner öffnen");
+                btnOpenDir.setOnAction(a -> MTOpen.openDestDir(de.p2tools.mLib.tools.FileUtils.getPath(thumb.getFileName())));
+
+                Button rotateLeft = new Button("");
+                rotateLeft.setGraphic(new Icons().ICON_BUTTON_ROTATE_LEFT);
+                Button rotateRight = new Button("");
+                rotateRight.setGraphic(new Icons().ICON_BUTTON_ROTATE_RIGHT);
+                rotateLeft.setOnAction(a -> {
+                    ScaleImage.rotate(new File(thumb.getFileName()), false);
+                    table.refresh();
+                });
+                rotateRight.setOnAction(a -> {
+                    ScaleImage.rotate(new File(thumb.getFileName()), true);
+                    table.refresh();
+                });
+
+                gridPane.add(new Label("Datei:"), 0, 0);
+                gridPane.add(lblFile, 1, 0);
+
+                HBox hBoxButton = new HBox(10);
+                hBoxButton.getChildren().addAll(btnDel, btnOpenDir, rotateLeft, rotateRight);
+                gridPane.add(hBoxButton, 0, 1, 2, 1);
+
+
+                setGraphic(gridPane);
             }
-        });
 
-        Button btnOpenDir = new Button("Ordner öffnen");
-        btnOpenDir.setOnAction(a -> MTOpen.openDestDir(de.p2tools.mLib.tools.FileUtils.getPath(thumb.getFileName())));
+        };
 
-        Button rotateLeft = new Button("");
-        rotateLeft.setGraphic(new Icons().ICON_BUTTON_ROTATE_LEFT);
-        Button rotateRight = new Button("");
-        rotateRight.setGraphic(new Icons().ICON_BUTTON_ROTATE_RIGHT);
-        rotateLeft.setOnAction(a -> {
-            try {
-                ScaleImage.printMetaData(new File(thumb.getFileName()));
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
-            ScaleImage.rotate(new File(thumb.getFileName()), false);
-            table.refresh();
-        });
-        rotateRight.setOnAction(a -> {
-            ScaleImage.rotate(new File(thumb.getFileName()), true);
-            table.refresh();
-        });
-
-        gridPane.add(new Label("Datei:"), 0, 0);
-        gridPane.add(lblFile, 1, 0);
-
-        HBox hBoxButton = new HBox(10);
-        hBoxButton.getChildren().addAll(btnDel, btnOpenDir, rotateLeft, rotateRight);
-        gridPane.add(hBoxButton, 1, 1);
-
-        return gridPane;
-    });
-
+        return cell;
+    };
 
 }
