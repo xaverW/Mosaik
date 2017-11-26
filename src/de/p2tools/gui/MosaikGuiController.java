@@ -19,7 +19,6 @@ package de.p2tools.gui;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.createMosaik.CreateMosaik;
-import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.genMosaik.MosaikErstellen;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
@@ -45,29 +44,20 @@ public class MosaikGuiController extends AnchorPane {
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox vBoxCont = new VBox();
-    Label lblSrc = new Label("Foto zum Erstellen des Mosaik");
-    TextField txtSrc = new TextField();
-    Button btnSrc = new Button("");
-    Label lblDesst = new Label("Mosaik speichern");
-    TextField txtDest = new TextField();
-    TextField txtNumThumb = new TextField("25");
-    Button btnDest = new Button("");
-    Button btnCreate = new Button("Mosaik erstellen");
-    ComboBox<ThumbCollection> cbCollection = new ComboBox<>();
+    private final Label lblSrc = new Label("Foto zum Erstellen des Mosaik");
+    private final TextField txtSrc = new TextField();
+    private final Button btnSrc = new Button("");
+    private final Label lblDesst = new Label("Mosaik speichern");
+    private final TextField txtDest = new TextField();
+    private final TextField txtNumThumb = new TextField("25");
+    private final Button btnDest = new Button("");
+    private final Button btnCreate = new Button("Mosaik erstellen");
 
-    //    StringProperty srcProp;
-//    StringProperty destProp;
-//    IntegerProperty thumbSizeProp;
     CreateMosaik createMosaik;
 
     public MosaikGuiController() {
         progData = ProgData.getInstance();
         createMosaik = progData.createMosaik;
-
-//
-//        srcProp = createMosaik.fotoSrcProperty();
-//        destProp = createMosaik.fotoDestProperty();
-//        thumbSizeProp = createMosaik.thumbSizeProperty();
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
@@ -171,38 +161,15 @@ public class MosaikGuiController extends AnchorPane {
         hBoxSlider.setAlignment(Pos.CENTER_LEFT);
         hBoxSlider.getChildren().addAll(slider, lblSlider, btnHelpSlider);
 
-
-        // Thumbcollection
-        cbCollection.setItems(progData.thumbCollectionList);
-        cbCollection.getSelectionModel().selectFirst();
-        final StringConverter<ThumbCollection> converter = new StringConverter<ThumbCollection>() {
-            @Override
-            public String toString(ThumbCollection fc) {
-                return fc == null ? "" : fc.getName();
-            }
-
-            @Override
-            public ThumbCollection fromString(String id) {
-                final int i = cbCollection.getSelectionModel().getSelectedIndex();
-                return progData.thumbCollectionList.get(i);
-            }
-        };
-        cbCollection.setConverter(converter);
-        cbCollection.setMaxWidth(Double.MAX_VALUE);
-        cbCollection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            ThumbCollection thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
-            createMosaik.setThumbCollectionId(thumbCollection == null ? 0 : thumbCollection.getId());
-        });
-
-
         // import all
         vBoxCont.setSpacing(10);
         vBoxCont.setPadding(new Insets(10));
-        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, hBoxSlider, hBoxNum, cbCollection, btnCreate);
+        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, hBoxSlider, hBoxNum, btnCreate);
 
 
         btnCreate.setOnAction(a -> {
             if (!txtSrc.getText().isEmpty() && !txtDest.getText().isEmpty()) {
+                createMosaik.setThumbCollectionId(progData.selectedThumbCollection.getId());
                 new MosaikErstellen(createMosaik).erstellen();
             }
         });

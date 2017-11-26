@@ -242,7 +242,7 @@ public class ChangeThumbGuiController extends AnchorPane {
 
                 Label lblFile = new Label();
                 lblFile.textProperty().bind(thumb.fileNameProperty());
-                Button btnDel = new Button("Foto löschen");
+                Button btnDel = new Button("Bild löschen");
                 btnDel.setOnAction(a -> {
                     if (de.p2tools.mLib.tools.FileUtils.deleteFile(thumb.getFileName())) {
                         thumbCollection.getThumbList().remove(thumb);

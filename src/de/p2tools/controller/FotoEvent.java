@@ -17,13 +17,41 @@
 
 package de.p2tools.controller;
 
-import java.util.EventListener;
+import java.util.EventObject;
 
-public interface BildListener extends EventListener {
+public class FotoEvent extends EventObject {
+    // meldet eine Änderung
+    private int progress;
+    private int max;
+    private int threads;
+    private String text;
 
-    /**
-     * @param e
-     */
-    void tus(BildEvent e);
+    public FotoEvent(Object source, int progress, int max, String text, int threads) {
+        super(source);
+        this.progress = progress;
+        this.max = max;
+        this.text = text;
+        this.threads = threads;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public int getThreads() {
+        return threads;
+    }
+
+    public boolean nixLos() {
+        return max == 0;
+    }
 
 }

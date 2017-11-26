@@ -53,13 +53,11 @@ public class Listener implements EventListener {
     public static synchronized void notify(int eventNotify, String eventClass) {
 
         listeners.stream().forEach(listener -> {
-
             for (final int event : listener.event) {
 
                 if (event == eventNotify && !listener.eventClass.equals(eventClass)) {
                     // um einen Kreislauf zu verhindern
                     try {
-                        //System.out.println("Ping: " + ereignis);
                         listener.pingen();
                     } catch (final Exception ex) {
                         Log.errorLog(512021043, ex);
@@ -67,8 +65,6 @@ public class Listener implements EventListener {
                 }
 
             }
-
-
         });
 
     }

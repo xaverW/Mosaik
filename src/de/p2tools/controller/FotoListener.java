@@ -17,41 +17,20 @@
 
 package de.p2tools.controller;
 
-import java.util.EventObject;
+import javafx.application.Platform;
 
-public class BildEvent extends EventObject {
-    // meldet eine Änderung
-    private int progress;
-    private int max;
-    private int threads;
-    private String text;
+import java.util.EventListener;
 
-    public BildEvent(Object source, int prog, int m, String ttext, int tthreads) {
-        super(source);
-        progress = prog;
-        max = m;
-        text = ttext;
-        threads = tthreads;
+public class FotoListener implements EventListener {
+
+    public synchronized void notify(FotoEvent fotoEvent) {
+        Platform.runLater(() -> ping(fotoEvent));
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
-
-    public int getMax() {
-        return max;
-    }
-
-    public int getThreads() {
-        return threads;
-    }
-
-    public boolean nixLos() {
-        return max == 0;
+    /**
+     * @param fotoEvent
+     */
+    public void ping(FotoEvent fotoEvent) {
     }
 
 }

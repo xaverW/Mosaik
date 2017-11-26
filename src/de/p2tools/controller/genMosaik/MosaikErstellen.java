@@ -17,8 +17,8 @@
 
 package de.p2tools.controller.genMosaik;
 
-import de.p2tools.controller.BildEvent;
-import de.p2tools.controller.BildListener;
+import de.p2tools.controller.FotoEvent;
+import de.p2tools.controller.FotoListener;
 import de.p2tools.controller.Funktionen;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
@@ -58,7 +58,8 @@ public class MosaikErstellen {
     public MosaikErstellen(CreateMosaik createMosaik) {
         progData = ProgData.getInstance();
         this.createMosaik = createMosaik;
-        this.thumbCollection = progData.thumbCollectionList.getThumbCollection(createMosaik.getThumbCollectionId());
+//        this.thumbCollection = progData.thumbCollectionList.getThumbCollection(createMosaik.getThumbCollectionId());
+        this.thumbCollection = progData.selectedThumbCollection;
     }
 
     /**
@@ -71,8 +72,8 @@ public class MosaikErstellen {
     /**
      * @param listener
      */
-    public void addAdListener(BildListener listener) {
-        listeners.add(BildListener.class, listener);
+    public void addAdListener(FotoListener listener) {
+        listeners.add(FotoListener.class, listener);
     }
 
     /**
@@ -119,10 +120,10 @@ public class MosaikErstellen {
     }
 
     private void notifyEvent(int max, int progress, String text) {
-        BildEvent event;
-        event = new BildEvent(this, progress, max, text, 1);
-        for (BildListener l : listeners.getListeners(BildListener.class)) {
-            l.tus(event);
+        FotoEvent event;
+        event = new FotoEvent(this, progress, max, text, 1);
+        for (FotoListener l : listeners.getListeners(FotoListener.class)) {
+            l.notify(event);
         }
     }
 
@@ -174,7 +175,7 @@ public class MosaikErstellen {
                             buffImg = scale(buffImg, sizeThumb, sizeThumb);
                             imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
                         } else {
-                            Log.errorLog(981021036, "MosaikErstellen_.tus-Farbe fehlt!!");
+                            Log.errorLog(981021036, "MosaikErstellen.tus-Farbe fehlt!!");
                         }
                     }
                 }
@@ -250,7 +251,7 @@ public class MosaikErstellen {
                     ios.flush();
                 }
             } catch (Exception e) {
-                Log.errorLog(784520369, e, "MosaikErstellen_.Tus.writeImage");
+                Log.errorLog(784520369, e, "MosaikErstellen.Tus.writeImage");
             } finally {
                 try {
                     ios.close();

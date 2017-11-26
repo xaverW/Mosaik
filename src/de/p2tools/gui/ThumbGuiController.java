@@ -31,7 +31,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -257,19 +260,12 @@ public class ThumbGuiController extends AnchorPane {
     }
 
     private void initTableColor(TableView<Thumb> tableView) {
-
-        final TableColumn<Thumb, Integer> nrColumn = new TableColumn<>("Nr");
-        nrColumn.setCellValueFactory(new PropertyValueFactory<>("nr"));
-
         final TableColumn<Thumb, Color> colorColumn = new TableColumn<>("Farbe");
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         colorColumn.setCellFactory(cellFactoryColor);
 
-        final TableColumn<Thumb, String> nameColumn = new TableColumn<>("Dateiname");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
-
-        tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        tableView.getColumns().addAll(nrColumn, colorColumn, nameColumn);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.getColumns().addAll(colorColumn);
     }
 
     private Callback<TableColumn<Thumb, Color>, TableCell<Thumb, Color>> cellFactoryColor
@@ -288,8 +284,8 @@ public class ThumbGuiController extends AnchorPane {
                     return;
                 }
                 Thumb thumb = getTableView().getItems().get(getIndex());
-//                setStyle("-fx-background-color: rgb(" + thumb.getRed() + "," + thumb.getGreen() + ", " + thumb.getBlue() + ");");
-                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+                setStyle("-fx-background-color: rgb(" + thumb.getRed() + "," + thumb.getGreen() + ", " + thumb.getBlue() + ");");
+//                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
             }
 
         };

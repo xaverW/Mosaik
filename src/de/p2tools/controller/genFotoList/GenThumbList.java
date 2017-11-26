@@ -17,8 +17,8 @@
 
 package de.p2tools.controller.genFotoList;
 
-import de.p2tools.controller.BildEvent;
-import de.p2tools.controller.BildListener;
+import de.p2tools.controller.FotoEvent;
+import de.p2tools.controller.FotoListener;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.thumb.Thumb;
@@ -29,6 +29,7 @@ import de.p2tools.mLib.tools.FileUtils;
 import javax.swing.event.EventListenerList;
 import java.io.File;
 import java.util.LinkedList;
+import java.util.TreeSet;
 
 public class GenThumbList {
 
@@ -62,8 +63,8 @@ public class GenThumbList {
     /**
      * @param listener
      */
-    public void addAdListener(BildListener listener) {
-        listeners.add(BildListener.class, listener);
+    public void addAdListener(FotoListener listener) {
+        listeners.add(FotoListener.class, listener);
     }
 
     public void create(ThumbCollection thumbCollection) {
@@ -91,10 +92,10 @@ public class GenThumbList {
     }
 
     private void notifyEvent(int max, int progress, String text) {
-        BildEvent event;
-        event = new BildEvent(this, progress, max, text, threads);
-        for (BildListener l : listeners.getListeners(BildListener.class)) {
-            l.tus(event);
+        FotoEvent event;
+        event = new FotoEvent(this, progress, max, text, threads);
+        for (FotoListener l : listeners.getListeners(FotoListener.class)) {
+            l.notify(event);
         }
     }
 
@@ -194,6 +195,7 @@ public class GenThumbList {
                 }
                 --threads;
                 if (threads <= 0) {
+                    thumbCollection.getThumbList().sort();
                     notifyEvent(0, 0, "");
                     Duration.counterStop("Thumb erstellen");
                 }
@@ -233,6 +235,7 @@ public class GenThumbList {
             }
             EinlesenGetColor gColor;
             Thread t;
+            treeSet.clear();
             for (int i = 0; i < anzThread; ++i) {
                 ++threads;
                 gColor = new EinlesenGetColor();
@@ -259,13 +262,17 @@ public class GenThumbList {
 
         }
 
+        TreeSet<Thumb> treeSet = new TreeSet<>();
+
         private class EinlesenGetColor implements Runnable {
+
 
             public void run() {
                 File file;
                 while (!stopAll && (file = getFileEinlesen()) != null) {
                     Thumb thumb;
                     if ((thumb = ScaleImage.getThumb(file)) != null) {
+//                        treeSet.add(thumb);
                         thumbCollection.getThumbList().add(thumb);
                     }
 
@@ -274,6 +281,8 @@ public class GenThumbList {
                 }
                 --threads;
                 if (threads <= 0) {
+//                    thumbCollection.getThumbList().addAll(treeSet);
+                    thumbCollection.getThumbList().sort();
                     notifyEvent(0, 0, "");
                 }
             }

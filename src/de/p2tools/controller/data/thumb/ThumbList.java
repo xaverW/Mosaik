@@ -53,6 +53,8 @@ public class ThumbList extends SimpleListProperty<Thumb> {
 
     public void sort() {
         Collections.sort(this);
+        nr = 1;
+        stream().forEach(foto -> foto.setNr(nr++));
     }
 
 

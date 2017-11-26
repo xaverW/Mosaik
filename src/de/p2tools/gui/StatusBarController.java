@@ -16,13 +16,12 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.BildEvent;
-import de.p2tools.controller.BildListener;
+import de.p2tools.controller.FotoEvent;
+import de.p2tools.controller.FotoListener;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.tools.Listener;
 import de.p2tools.mLib.tools.Log;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -66,11 +65,9 @@ public class StatusBarController extends AnchorPane {
     }
 
     private StatusbarIndex statusbarIndex = StatusbarIndex.NONE;
-    private boolean loadList = false;
+    private boolean loadFoto = false;
 
     private final ProgData progData;
-    private boolean stopTimer = false;
-    private static final String TRENNER = "  ||  ";
 
     public StatusBarController(ProgData progData) {
         this.progData = progData;
@@ -130,27 +127,23 @@ public class StatusBarController extends AnchorPane {
         stackPane.getChildren().addAll(nonePane, loadPane, thumbPane, mosaikPane);
         nonePane.toFront();
 
-        progData.genThumbList.addAdListener(new BildListener() {
+        progData.genThumbList.addAdListener(new FotoListener() {
             @Override
-            public void tus(BildEvent e) {
-                Platform.runLater(() -> {
-                    if (e.nixLos()) {
-                        stopTimer = true;
-                        loadList = false;
-                    } else {
-                        stopTimer = false;
-                        loadList = true;
-                    }
-                    updateProgressBar(e);
-                    setStatusbar();
-                });
+            public void ping(FotoEvent fotoEvent) {
+                if (fotoEvent.nixLos()) {
+                    loadFoto = false;
+                } else {
+                    loadFoto = true;
+                }
+                updateProgressBar(fotoEvent);
+                setStatusbar();
             }
         });
         Listener.addListener(new Listener(Listener.EREIGNIS_TIMER, StatusBarController.class.getSimpleName()) {
             @Override
             public void ping() {
                 try {
-                    if (!stopTimer) {
+                    if (!loadFoto) {
                         setStatusbar();
                     }
                 } catch (final Exception ex) {
@@ -160,7 +153,7 @@ public class StatusBarController extends AnchorPane {
         });
     }
 
-    private void updateProgressBar(BildEvent event) {
+    private void updateProgressBar(FotoEvent event) {
         int max = event.getMax();
         int progress = event.getProgress();
         double prog = 1.0;
@@ -178,7 +171,7 @@ public class StatusBarController extends AnchorPane {
 
     public void setStatusbarIndex(StatusbarIndex statusbarIndex) {
         this.statusbarIndex = statusbarIndex;
-        if (loadList) {
+        if (loadFoto) {
             loadPane.toFront();
             return;
         }
@@ -186,12 +179,12 @@ public class StatusBarController extends AnchorPane {
         switch (statusbarIndex) {
             case Thumb:
                 thumbPane.toFront();
-                setInfoFilme();
+                setInfoThumb();
                 setTextForRightDisplay();
                 break;
             case Mosaik:
                 mosaikPane.toFront();
-                setInfoDownload();
+                setInfoMosaik();
                 setTextForRightDisplay();
                 break;
             case NONE:
@@ -208,20 +201,19 @@ public class StatusBarController extends AnchorPane {
         lblLeftNone.setText("Anzahl Filme: " + 0);
     }
 
-    private void setInfoFilme() {
-        String textLinks = "Film";
+    private void setInfoThumb() {
+        String textLinks = "Miniaturbilder: " + progData.selectedThumbCollection.getName();
         lblLeftThumb.setText(textLinks);
     }
 
-    private void setInfoDownload() {
-        final String textLinks = "Download";
+    private void setInfoMosaik() {
+        String textLinks = "Miniaturbilder: " + progData.selectedThumbCollection.getName();
         lblLeftMosaik.setText(textLinks);
     }
 
-
     private void setTextForRightDisplay() {
         // Text rechts: alter/neuladenIn anzeigen
-        String strText = "Filmliste erstellt: ";
+        String strText = progData.selectedThumbCollection.getThumbList().size() + " Bilder";
         // Infopanel setzen
         lblRightThumb.setText(strText);
         lblRightMosaik.setText(strText);

@@ -146,13 +146,18 @@ public class ThumbProps extends ThumbXml {
 
     @Override
     public int compareTo(Thumb arg0) {
-        if (arg0.getSum() == getSum()) {
-            return 0;
-        } else if (arg0.getSum() < getSum()) {
+        if (getColor().getBrightness() > arg0.getColor().getBrightness()) {
             return -1;
         } else {
             return 1;
         }
+//        if (arg0.getSum() == getSum()) {
+//            return 0;
+//        } else if (arg0.getSum() < getSum()) {
+//            return -1;
+//        } else {
+//            return 1;
+//        }
     }
 
 }
