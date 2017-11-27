@@ -17,7 +17,6 @@
 
 package de.p2tools.controller.config;
 
-import com.jidesoft.utils.SystemInfo;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLConfig;
 import de.p2tools.mLib.tools.MLConfigs;
@@ -32,9 +31,6 @@ public class Config extends MLConfig {
     public static MLConfigs SYSTEM_UPDATE_DATE = addNewKey("Update-Datum");
 
     // wegen des Problems mit ext. Programmaufrufen und Leerzeichen
-    public static MLConfigs SYSTEM_USE_REPLACETABLE = addNewKey("Ersetzungstabelle-verwenden", SystemInfo.isLinux() || SystemInfo.isMacOSX() ? Boolean.TRUE.toString() : Boolean.FALSE.toString());
-    public static MLConfigs SYSTEM_ONLY_ASCII = addNewKey("nur-ascii", Boolean.FALSE.toString());
-    public static MLConfigs SYSTEM_INFO_NR_SHOWN = addNewKey("Hinweis-Nr-angezeigt");
     public static MLConfigs SYSTEM_PROG_OPEN_DIR = addNewKey("Programm-Ordner-oeffnen");
     public static MLConfigs SYSTEM_PROG_OPEN_URL = addNewKey("Programm-Url-oeffnen");
     public static MLConfigs SYSTEM_PROG_PLAY_FILE = addNewKey("Programm-zum-Abspielen");
@@ -52,20 +48,21 @@ public class Config extends MLConfig {
     public static MLConfigs FOTO_FORMAT = addNewKey("foto-format", Const.IMAGE_FORMAT_JPG);
 
     // GuiThumb
-    public static MLConfigs THUMB_GUI_DIVIDER = addNewKey("Thumb-Gui-Divider", Const.GUI_FILME_DIVIDER_LOCATION);
-    public static MLConfigs THUMB_GUI_TABLE_WIDTH = addNewKey("Thumb-Gui-Table-Width");
-    public static MLConfigs THUMB_GUI_TABLE_SORT = addNewKey("Thumb-Gui-Table-Sort");
-    public static MLConfigs THUMB_GUI_TABLE_UPDOWN = addNewKey("Thumb-Gui-Table-UpDown");
-    public static MLConfigs THUMB_GUI_TABLE_VIS = addNewKey("Thumb-Gui-Table-Vis");
-    public static MLConfigs THUMB_GUI_TABLE_ORDER = addNewKey("Thumb-Gui-Table-Order");
+    public static MLConfigs THUMB_GUI_DIVIDER = addNewKey("thumb-gui-divider", Const.GUI_FILME_DIVIDER_LOCATION);
+    public static MLConfigs THUMB_GUI_TABLE_WIDTH = addNewKey("thumb-gui-table-width");
+    public static MLConfigs THUMB_GUI_TABLE_SORT = addNewKey("thumb-gui-table-sort");
+    public static MLConfigs THUMB_GUI_TABLE_UPDOWN = addNewKey("thumb-gui-table-upDown");
+    public static MLConfigs THUMB_GUI_TABLE_VIS = addNewKey("thumb-gui-table-vis");
+    public static MLConfigs THUMB_GUI_TABLE_ORDER = addNewKey("thumb-gui-table-order");
+    public static MLConfigs THUMB_GUI_THUMB_COLLECTION = addNewKey("thumb-gui-thumb-collection");
 
     // GuiChangeThumb
-    public static MLConfigs CHANGE_THUMB_GUI_DIVIDER = addNewKey("Change-Thumb-Gui-Divider", Const.GUI_FILME_DIVIDER_LOCATION);
-    public static MLConfigs CHANGE_THUMB_GUI_TABLE_WIDTH = addNewKey("Change-Thumb-Gui-Table-Width");
-    public static MLConfigs CHANGE_THUMB_GUI_TABLE_SORT = addNewKey("Change-Thumb-Gui-Table-Sort");
-    public static MLConfigs CHANGE_THUMB_GUI_TABLE_UPDOWN = addNewKey("Change-Thumb-Gui-Table-UpDown");
-    public static MLConfigs CHANGE_THUMB_GUI_TABLE_VIS = addNewKey("Change-Thumb-Gui-Table-Vis");
-    public static MLConfigs CHANGE_THUMB_GUI_TABLE_ORDER = addNewKey("Change-Thumb-Gui-Table-Order");
+    public static MLConfigs CHANGE_THUMB_GUI_DIVIDER = addNewKey("change-thumb-gui-divider", Const.GUI_FILME_DIVIDER_LOCATION);
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_WIDTH = addNewKey("change-thumb-gui-table-width");
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_SORT = addNewKey("change-thumb-gui-table-sort");
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_UPDOWN = addNewKey("change-thumb-gui-table-upDown");
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_VIS = addNewKey("change-thumb-gui-table-vis");
+    public static MLConfigs CHANGE_THUMB_GUI_TABLE_ORDER = addNewKey("change-thumb-gui-table-order");
 
     // Meldungen
     public static MLConfigs MSG_VISIBLE = addNewKey("Meldungen-anzeigen", Boolean.FALSE.toString());

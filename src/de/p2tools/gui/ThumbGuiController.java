@@ -117,7 +117,14 @@ public class ThumbGuiController extends AnchorPane {
 
     private void initCollection() {
         cbCollection.setItems(progData.thumbCollectionList);
-        cbCollection.getSelectionModel().selectFirst();
+
+        try {
+            String col = Config.THUMB_GUI_THUMB_COLLECTION.get();
+            ThumbCollection thumbCollection = progData.thumbCollectionList.getThumbCollection(Integer.parseInt(col));
+            cbCollection.getSelectionModel().select(thumbCollection);
+        } catch (Exception ex) {
+            cbCollection.getSelectionModel().selectFirst();
+        }
         final StringConverter<ThumbCollection> converter = new StringConverter<ThumbCollection>() {
             @Override
             public String toString(ThumbCollection fc) {
@@ -132,9 +139,9 @@ public class ThumbGuiController extends AnchorPane {
         };
         cbCollection.setConverter(converter);
         cbCollection.setMaxWidth(Double.MAX_VALUE);
-        cbCollection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            selectThumbCollection();
-        });
+        cbCollection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
+                selectThumbCollection()
+        );
 
         Button btnNew = new Button("");
         btnNew.setGraphic(new Icons().ICON_BUTTON_ADD);
@@ -182,6 +189,10 @@ public class ThumbGuiController extends AnchorPane {
         }
         thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
         progData.selectedThumbCollection = thumbCollection;
+        String s = String.valueOf(thumbCollection.getId());
+        
+        Config.THUMB_GUI_THUMB_COLLECTION.setValue(thumbCollection.getId());
+
 
         if (thumbCollection == null) {
             contPane.setDisable(true);

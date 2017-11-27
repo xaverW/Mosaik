@@ -105,14 +105,24 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
 
     public void setPropsFromXml() {
         setName(arr[NAME]);
-        setRecursive(Boolean.parseBoolean(arr[RECURSIV]));
         setFormat(arr[FOTO_FORMAT]);
         setThumbDir(arr[DIR_THUMB]);
         setFotoSrcDir(arr[DIR_FOTO_SRC]);
+        setInt();
     }
 
+    private void setInt() {
+        try {
+            setRecursive(Boolean.parseBoolean(arr[RECURSIV]));
+            setId(Integer.parseInt(arr[ID]));
+        } catch (Exception e) {
+            setRecursive(true);
+            setId(0);
+        }
+    }
 
     public void setXmlFromProps() {
+        arr[ID] = String.valueOf(getId());
         arr[NAME] = getName();
         arr[RECURSIV] = String.valueOf(isRecursive());
         arr[FOTO_FORMAT] = getFormat();

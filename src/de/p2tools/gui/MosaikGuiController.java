@@ -26,18 +26,9 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
-import javafx.util.converter.NumberStringConverter;
-
-import java.text.DecimalFormat;
+import javafx.scene.layout.*;
 
 public class MosaikGuiController extends AnchorPane {
 
@@ -49,7 +40,6 @@ public class MosaikGuiController extends AnchorPane {
     private final Button btnSrc = new Button("");
     private final Label lblDesst = new Label("Mosaik speichern");
     private final TextField txtDest = new TextField();
-    private final TextField txtNumThumb = new TextField("25");
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Mosaik erstellen");
 
@@ -114,57 +104,67 @@ public class MosaikGuiController extends AnchorPane {
         hBoxDest.getChildren().addAll(txtDest, btnDest, btnHelpDest);
 
 
-        // Anzahl Thumbs
-        Label lblNum = new Label("Anzahl Thumbs:");
-
-        final StringProperty sp = txtNumThumb.textProperty();
-        final IntegerProperty ip = createMosaik.numberThumbsWidthProperty();
-        try {
-            sp.setValue(String.valueOf(ip.get()));
-        } catch (final Exception ex) {
-            sp.setValue("25");
-            ip.setValue(25);
-        }
-        final StringConverter<Number> converterNum = new NumberStringConverter(new DecimalFormat("##"));
-        Bindings.bindBidirectional(sp, ip, converterNum);
-
-        HBox hBoxNum = new HBox(10);
-        hBoxNum.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(txtNumThumb, Priority.ALWAYS);
-        hBoxNum.getChildren().addAll(lblNum, txtNumThumb);
-
-
         // Thumbsize
         final Button btnHelpSlider = new Button("");
         btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        Slider slider = new Slider();
-        slider.setMin(5);
-        slider.setMax(25);
+        Slider sliderSize = new Slider();
+        sliderSize.setMin(5);
+        sliderSize.setMax(25);
 
-        slider.setValue(createMosaik.getThumbSize() / 10);
-
+        sliderSize.setValue(createMosaik.getThumbSize() / 10);
         IntegerProperty iProp = new SimpleIntegerProperty();
-        iProp.bind(slider.valueProperty());
+        iProp.bind(sliderSize.valueProperty());
 
         NumberBinding nb = Bindings.multiply(iProp, 10);
         createMosaik.thumbSizeProperty().bind(nb);
 
         Label lblSlider = new Label("");
-        lblSlider.textProperty().bind(
-                Bindings.format("%d", createMosaik.thumbSizeProperty())
-        );
+        lblSlider.textProperty().bind(Bindings.format("%d", createMosaik.thumbSizeProperty()));
 
-        HBox.setHgrow(slider, Priority.ALWAYS);
-        HBox hBoxSlider = new HBox(10);
-        hBoxSlider.setAlignment(Pos.CENTER_LEFT);
-        hBoxSlider.getChildren().addAll(slider, lblSlider, btnHelpSlider);
+
+        // Anzahl Thumbs
+        final Button btnHelpSliderCount = new Button("");
+        btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
+        btnHelpSliderCount.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+
+        Slider sliderCount = new Slider();
+        sliderCount.setMin(1);
+        sliderCount.setMax(100);
+
+        sliderCount.setValue(createMosaik.getNumberThumbsWidth() / 10);
+        IntegerProperty iPropCount = new SimpleIntegerProperty();
+        iPropCount.bind(sliderCount.valueProperty());
+
+        NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
+        createMosaik.numberThumbsWidthProperty().bind(nbCount);
+
+        Label lblSliderCount = new Label("");
+        lblSliderCount.textProperty().bind(Bindings.format("%d", createMosaik.numberThumbsWidthProperty()));
+
+
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(0));
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+
+        GridPane.setHgrow(sliderSize, Priority.ALWAYS);
+        GridPane.setHgrow(sliderCount, Priority.ALWAYS);
+
+        gridPane.add(new Label("Größe der Miniaturbilder (Pixel):"), 0, 0);
+        gridPane.add(sliderSize, 1, 0);
+        gridPane.add(lblSlider, 2, 0);
+        gridPane.add(btnHelpSlider, 3, 0);
+        gridPane.add(new Label("Anzahl Miniaturbilder im Mosaik (Breite):"), 0, 1);
+        gridPane.add(sliderCount, 1, 1);
+        gridPane.add(lblSliderCount, 2, 1);
+        gridPane.add(btnHelpSliderCount, 3, 1);
 
         // import all
         vBoxCont.setSpacing(10);
         vBoxCont.setPadding(new Insets(10));
-        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, hBoxSlider, hBoxNum, btnCreate);
+        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, gridPane, btnCreate);
 
 
         btnCreate.setOnAction(a -> {
