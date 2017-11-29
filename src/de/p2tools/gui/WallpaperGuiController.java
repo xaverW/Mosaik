@@ -16,9 +16,9 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
+import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.genWallpaper.GenWallpaper;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
@@ -32,7 +32,6 @@ import javafx.scene.layout.*;
 
 public class WallpaperGuiController extends AnchorPane {
 
-    private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox vBoxCont = new VBox();
     private final Label lblDesst = new Label("Fototapete speichern");
@@ -40,9 +39,12 @@ public class WallpaperGuiController extends AnchorPane {
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Fototapete erstellen");
 
+    private final ProgData progData;
+    private final WallpaperData wallpaperData;
 
     public WallpaperGuiController() {
-        progData = ProgData.getInstance();
+        this.progData = ProgData.getInstance();
+        this.wallpaperData = progData.wallpaperData;
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
@@ -73,7 +75,7 @@ public class WallpaperGuiController extends AnchorPane {
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        txtDest.textProperty().bindBidirectional(Config.WALLPAPER_DEST_PATH.getStringProperty());
+        txtDest.textProperty().bindBidirectional(wallpaperData.fotoDestProperty());
         txtDest.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDest, Priority.ALWAYS);
 
@@ -90,15 +92,15 @@ public class WallpaperGuiController extends AnchorPane {
         sliderSize.setMin(5);
         sliderSize.setMax(25);
 
-        sliderSize.setValue(Config.WALLPAPER_THUMB_PIXEL.getInt() / 10);
+        sliderSize.setValue(wallpaperData.getThumbSize() / 10);
         IntegerProperty iProp = new SimpleIntegerProperty();
         iProp.bind(sliderSize.valueProperty());
 
         NumberBinding nb = Bindings.multiply(iProp, 10);
-        Config.WALLPAPER_THUMB_PIXEL.getIntegerProperty().bind(nb);
+        wallpaperData.thumbSizeProperty().bind(nb);
 
         Label lblSlider = new Label("");
-        lblSlider.textProperty().bind(Bindings.format("%d", Config.WALLPAPER_THUMB_PIXEL.getIntegerProperty()));
+        lblSlider.textProperty().bind(Bindings.format("%d", wallpaperData.thumbSizeProperty()));
 
 
         // Anzahl Thumbs
@@ -110,15 +112,15 @@ public class WallpaperGuiController extends AnchorPane {
         sliderCount.setMin(1);
         sliderCount.setMax(100);
 
-        sliderCount.setValue(Config.WALLPAPER_NUM_THUMBS_WIDTH.getInt() / 10);
+        sliderCount.setValue(wallpaperData.getNumberThumbsWidth() / 10);
         IntegerProperty iPropCount = new SimpleIntegerProperty();
         iPropCount.bind(sliderCount.valueProperty());
 
         NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
-        Config.WALLPAPER_NUM_THUMBS_WIDTH.getIntegerProperty().bind(nbCount);
+        wallpaperData.numberThumbsWidthProperty().bind(nbCount);
 
         Label lblSliderCount = new Label("");
-        lblSliderCount.textProperty().bind(Bindings.format("%d", Config.WALLPAPER_NUM_THUMBS_WIDTH.getIntegerProperty()));
+        lblSliderCount.textProperty().bind(Bindings.format("%d", wallpaperData.numberThumbsWidthProperty()));
 
 
         GridPane gridPane = new GridPane();
@@ -147,9 +149,7 @@ public class WallpaperGuiController extends AnchorPane {
         btnCreate.setOnAction(a -> {
             if (!txtDest.getText().isEmpty()) {
                 new GenWallpaper(progData.selectedThumbCollection,
-                        txtDest.getText(),
-                        Config.WALLPAPER_NUM_THUMBS_WIDTH.getInt(),
-                        Config.WALLPAPER_THUMB_PIXEL.getInt()).tus();
+                        progData.wallpaperData).gen();
             }
         });
 

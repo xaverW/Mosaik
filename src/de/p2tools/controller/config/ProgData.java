@@ -21,6 +21,7 @@ import de.p2tools.MosaikController;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbCollectionList;
+import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.genThumbList.GenThumbList;
 import de.p2tools.gui.ChangeThumbGuiController;
 import de.p2tools.gui.MosaikGuiController;
@@ -49,6 +50,8 @@ public class ProgData {
     // zentrale Klassen
     public ThumbCollectionList thumbCollectionList;
     public MosaikData mosaikData;
+    public WallpaperData wallpaperData;
+
     public ThumbCollection selectedThumbCollection = null;
 
     public GenThumbList genThumbList = null;
@@ -66,6 +69,8 @@ public class ProgData {
     private ProgData() {
         thumbCollectionList = new ThumbCollectionList();
         mosaikData = new MosaikData();
+        wallpaperData = new WallpaperData();
+
         genThumbList = new GenThumbList(this);
 
         Timeline timeline = new Timeline(new KeyFrame(

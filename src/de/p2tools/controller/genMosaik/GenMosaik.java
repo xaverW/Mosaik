@@ -25,6 +25,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.controller.genThumbList.ScaleImage;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
@@ -100,16 +101,14 @@ public class GenMosaik {
             }
         }
 
-        boolean weiter = true;
-        if (new File(dest).exists()) {
-            if (!new MLAlert().showAlert_yes_no("Ziel existiert", dest,
-                    "Soll die bereits vorhandene Datei überschrieben werden?").equals(MLAlert.BUTTON.YES)) {
-                weiter = false;
-            }
+        if (new File(dest).exists() &&
+                !new MLAlert().showAlert_yes_no("Ziel existiert", dest,
+                        "Soll die bereits vorhandene Datei überschrieben werden?").equals(MLAlert.BUTTON.YES)) {
+            return;
         }
 
         int len = thumbCollection.getThumbList().getSize();
-        if (!weiter || len <= 0) {
+        if (len <= 0) {
             return;
         }
 
@@ -172,7 +171,7 @@ public class GenMosaik {
                             thumb.addAnz();
                             file = new File(thumb.getFileName());
                             buffImg = Funktionen.getBufferedImage(file);
-                            buffImg = scale(buffImg, sizeThumb, sizeThumb);
+                            buffImg = ScaleImage.scaleBufferedImage(buffImg, sizeThumb, sizeThumb);
                             imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
                         } else {
                             Log.errorLog(981021036, "MosaikErstellen.tus-Farbe fehlt!!");
@@ -192,19 +191,6 @@ public class GenMosaik {
 
         }
 
-        BufferedImage scale(BufferedImage src, int w, int h) {
-            BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-            int x, y;
-            int ww = src.getWidth();
-            int hh = src.getHeight();
-            for (x = 0; x < w; x++) {
-                for (y = 0; y < h; y++) {
-                    int col = src.getRGB(x * ww / w, y * hh / h);
-                    img.setRGB(x, y, col);
-                }
-            }
-            return img;
-        }
 
         private Color getColor(BufferedImage img) {
             Raster rast = img.getRaster();

@@ -17,9 +17,9 @@
 
 package de.p2tools.controller.genWallpaper;
 
-import de.p2tools.controller.config.Config;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.genThumbList.ScaleImage;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
@@ -38,77 +38,74 @@ public class GenWallpaper {
     private final ThumbCollection thumbCollection;
     private final String dest;
     private final int numThumbWidth;
-    private final int thumbPixel;
+    private final int thumbSize;
 
-    ScaleImage scaleImage;
 
-    public GenWallpaper(ThumbCollection thumbCollection, String dest, int numThumbWidth, int thumbPixel) {
+    public GenWallpaper(ThumbCollection thumbCollection, WallpaperData wallpaperData) {
         this.thumbCollection = thumbCollection;
-        this.dest = dest;
-        this.numThumbWidth = numThumbWidth;
-        this.thumbPixel = thumbPixel;
 
-        this.scaleImage = new ScaleImage();
+        this.dest = wallpaperData.getFotoDest();
+        this.numThumbWidth = wallpaperData.getNumberThumbsWidth();
+        this.thumbSize = wallpaperData.getThumbSize();
     }
 
-    public void tus() {
-        if (dest.equals("")) {
+    public void gen() {
+        if (dest.isEmpty()) {
             Log.errorLog(945120364, "Keine Zieldatei angegeben!");
-        } else {
-            final int AUFLOESUNG = Config.WALLPAPER_NUM_THUMBS_WIDTH.getInt();
-            boolean weiter = true;
-            if (new File(dest).exists()) {
-                if (!new MLAlert().showAlert_yes_no("Ziel existiert", dest,
-                        "Soll die bereits vorhandene Datei überschrieben werden?").equals(MLAlert.BUTTON.YES)) {
-                    weiter = false;
-                }
-            }
-
-            int len = thumbCollection.getThumbList().getSize();
-            if (!weiter || len <= 0) {
-                return;
-            }
-
-            if (weiter && len > 0) {
-                int h = len / numThumbWidth * AUFLOESUNG,
-                        b = numThumbWidth * AUFLOESUNG;
-                if (len % numThumbWidth != 0) {
-                    h += Config.WALLPAPER_THUMB_PIXEL.getInt();
-                }
-                BufferedImage imgOut = new BufferedImage(b, h, BufferedImage.TYPE_INT_RGB);
-                int hh = 0, bb = 0;
-                for (int i = 0; i < len; ++i) {
-                    Thumb thumb = thumbCollection.getThumbList().get(i);
-                    BufferedImage img = getBufferedImage(new File(thumb.getFileName()));
-                    ////        try {
-                    ////                if (img.getWidth() != Integer.parseInt(daten.datenProjekt.arr[Konstanten.PROJEKT_AUFLOESUNG_ZIEL_NR])) {
-                    ////                    File file = File.createTempFile("mosaik", null);
-                    ////                    scaleImage.tus(new File(farbe.arr[Konstanten.FARBEN_PFAD_NR]), file);
-                    ////                    img = getBufferedImage(file);
-                    ////                }
-                    ////        } catch (IOException ex) {
-                    ////        }
-                    imgOut.getRaster().setRect(bb * AUFLOESUNG, hh * AUFLOESUNG, img.getData());
-                    ++bb;
-                    if (bb >= numThumbWidth) {
-                        bb = 0;
-                        ++hh;
-                    }
-                }
-                while (bb < numThumbWidth) {
-                    for (int i = 0; i < len; ++i) {
-                        Thumb thumb = thumbCollection.getThumbList().get(i);
-                        BufferedImage img = getBufferedImage(new File(thumb.getFileName()));
-                        imgOut.getRaster().setRect(bb * AUFLOESUNG, hh * AUFLOESUNG, img.getData());
-                        ++bb;
-                        if (bb >= numThumbWidth) {
-                            break;
-                        }
-                    }
-                }
-                writeImage(imgOut);
-            }
+            return;
         }
+
+        if (new File(dest).exists() &&
+                !new MLAlert().showAlert_yes_no("Ziel existiert", dest,
+                        "Soll die bereits vorhandene Datei überschrieben werden?").equals(MLAlert.BUTTON.YES)) {
+            return;
+        }
+
+        final int thumbListSize = thumbCollection.getThumbList().getSize();
+        if (thumbListSize <= 0) {
+            return;
+        }
+
+        int height = (thumbListSize / numThumbWidth) * thumbSize;
+        int width = numThumbWidth * thumbSize;
+
+        if (thumbListSize % numThumbWidth != 0) {
+            height += thumbSize;
+        }
+
+        BufferedImage imgOut = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        int hh = 0, ww = 0;
+        for (int i = 0; i < thumbListSize; ++i) {
+            Thumb thumb = thumbCollection.getThumbList().get(i);
+            BufferedImage img = getBufferedImage(new File(thumb.getFileName()));
+
+            if (img.getWidth() != thumbSize) {
+                img = ScaleImage.scaleBufferedImage(img, thumbSize, thumbSize);
+            }
+
+            imgOut.getRaster().setRect(ww * numThumbWidth, hh * numThumbWidth, img.getData());
+
+            ++ww;
+            if (ww >= numThumbWidth) {
+                ww = 0;
+                ++hh;
+            }
+
+        }
+
+//        while (ww < numThumbWidth) {
+//            for (int i = 0; i < thumbListSize; ++i) {
+//                Thumb thumb = thumbCollection.getThumbList().get(i);
+//                BufferedImage img = getBufferedImage(new File(thumb.getFileName()));
+//                imgOut.getRaster().setRect(ww * numThumbWidth, hh * numThumbWidth, img.getData());
+//                ++ww;
+//                if (ww >= numThumbWidth) {
+//                    break;
+//                }
+//            }
+//        }
+        writeImage(imgOut);
     }
 
     public BufferedImage getBufferedImage(File source) {

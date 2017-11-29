@@ -23,6 +23,7 @@ import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbCollectionXml;
+import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLConfigs;
@@ -68,6 +69,11 @@ public class IoXmlLesen implements AutoCloseable {
                             case MosaikData.TAG:
                                 if (get(parser, MosaikData.TAG, MosaikData.XML_NAMES, progData.mosaikData.arr)) {
                                     progData.mosaikData.setPropsFromXml();
+                                }
+                                break;
+                            case WallpaperData.TAG:
+                                if (get(parser, WallpaperData.TAG, WallpaperData.XML_NAMES, progData.wallpaperData.arr)) {
+                                    progData.wallpaperData.setPropsFromXml();
                                 }
                                 break;
                             case ThumbCollection.TAG:
