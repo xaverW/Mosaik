@@ -35,21 +35,13 @@ public class Icons {
     public final ImageView ICON_BUTTON_FILE_OPEN = GetIcon.getImageView("button-file-open.png", 16, 16);
     public final ImageView ICON_BUTTON_PLAY = GetIcon.getImageView("button-play.png", 16, 16);
 
-    public final ImageView ICON_BUTTON_GUI_NEXT = GetIcon.getImageView("button-gui-next.png", 16, 16);
-    public final ImageView ICON_BUTTON_GUI_PREV = GetIcon.getImageView("button-gui-prev.png", 16, 16);
+    public final ImageView ICON_BUTTON_GUI_NEXT = GetIcon.getImageView("button-gui-next_.png", 40, 100);
+    public final ImageView ICON_BUTTON_GUI_PREV = GetIcon.getImageView("button-gui-prev_.png", 40, 100);
 
     public final ImageView ICON_BUTTON_ROTATE_LEFT = GetIcon.getImageView("button-rotate-left.png", 16, 16);
     public final ImageView ICON_BUTTON_ROTATE_RIGHT = GetIcon.getImageView("button-rotate-right.png", 16, 16);
 
     public final ImageView ICON_DIALOG_QUITT = GetIcon.getImageView("dialog-quitt.png", 64, 64);
-
-
-    // table
-//    public static final Image IMAGE_TABLE_FILM_PLAY = GetIcon.getImage("table-film-play.png", 16, 16);
-//    public static final Image IMAGE_TABLE_FILM_SAVE = GetIcon.getImage("table-film-save.png", 16, 16);
-//    public static final Image IMAGE_TABLE_DOWNLOAD_START = GetIcon.getImage("table-download-start.png", 16, 16);
-//    public static final Image IMAGE_TABLE_DOWNLOAD_DEL = GetIcon.getImage("table-download-del.png", 16, 16);
-//    public static final Image IMAGE_TABLE_DOWNLOAD_STOP = GetIcon.getImage("table-download-stop.png", 16, 16);
 
     public final ImageView ICON_BUTTON_STOP = GetIcon.getImageView("button-stop.png", 16, 16);
     public final ImageView ICON_BUTTON_NEXT = GetIcon.getImageView("button-next.png", 16, 16);
@@ -61,26 +53,6 @@ public class Icons {
 
     public final ImageView FX_ICON_TOOLBAR_MENUE = GetIcon.getImageView("menue.png", 18, 15);
     public final ImageView FX_ICON_TOOLBAR_MENUE_TOP = GetIcon.getImageView("menue-top.png", 32, 18);
-
-    public final ImageView FX_ICON_TOOLBAR_DOWNLOAD_CLEAR = GetIcon.getImageView("toolbar-download-clear.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_DOWNLOAD_STARTEN = GetIcon.getImageView("toolbar-download-starten.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_DOWNLOAD_DEL = GetIcon.getImageView("toolbar-download-del.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_DOWNLOAD_UNDO = GetIcon.getImageView("toolbar-download-undo.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_DOWNLOAD_FILM_START = GetIcon.getImageView("toolbar-download-film-start.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_DOWNLOAD_REFRESH = GetIcon.getImageView("toolbar-download-refresh.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_DOWNLOAD_ALLE_STARTEN = GetIcon.getImageView("toolbar-download-alle-starten.png", 32, 32);
-
-    public final ImageView FX_ICON_TOOLBAR_FILME_START = GetIcon.getImageView("toolbar-filme-start.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_FILME_REC = GetIcon.getImageView("toolbar-filme-rec.png", 32, 32);
-
-    public final ImageView FX_ICON_TOOLBAR_ABO_EIN = GetIcon.getImageView("toolbar-abo-ein.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_ABO_AUS = GetIcon.getImageView("toolbar-abo-aus.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_ABO_DEL = GetIcon.getImageView("toolbar-abo-del.png", 32, 32);
-    public final ImageView FX_ICON_TOOLBAR_ABO_CONFIG = GetIcon.getImageView("toolbar-abo-config.png", 32, 32);
-
-    public final ImageView FX_ICON_FILTER_FILM_LOAD = GetIcon.getImageView("filter-film-load.png", 22, 22);
-    public final ImageView FX_ICON_FILTER_FILM_SAVE = GetIcon.getImageView("filter-film-save.png", 22, 22);
-    public final ImageView FX_ICON_FILTER_FILM_NEW = GetIcon.getImageView("filter-film-new.png", 22, 22);
 
 
 }

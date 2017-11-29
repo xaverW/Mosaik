@@ -15,11 +15,11 @@
  */
 
 
-package de.p2tools.controller.data.createMosaik;
+package de.p2tools.controller.data.mosaikData;
 
 import de.p2tools.controller.data.Data;
 
-public class CreateMosaikXml extends Data<CreateMosaik> {
+public class MosaikDataXml extends Data<MosaikData> {
 
     public static final int FORMAT = 0;
     public static final int FOTO_SRC = 1;
@@ -37,10 +37,10 @@ public class CreateMosaikXml extends Data<CreateMosaik> {
             "filename",
             "thumb-count",
             "thumb-collection-id"};
-    public static final String TAG = "CreateMosaik";
+    public static final String TAG = "MosaikData";
     public static int MAX_ELEM = XML_NAMES.length;
 
-    public CreateMosaikXml() {
+    public MosaikDataXml() {
         arr = makeArr(MAX_ELEM);
     }
 

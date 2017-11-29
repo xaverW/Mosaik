@@ -20,7 +20,7 @@ import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
-import de.p2tools.controller.data.createMosaik.CreateMosaik;
+import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbList;
@@ -66,8 +66,8 @@ public class IoXmlSchreiben implements AutoCloseable {
             writer.writeCharacters("\n");
 
             writer.writeCharacters("\n\n");
-            progData.createMosaik.setXmlFromProps();
-            xmlSchreibenDaten(CreateMosaik.TAG, CreateMosaik.XML_NAMES, progData.createMosaik.arr, true);
+            progData.mosaikData.setXmlFromProps();
+            xmlSchreibenDaten(MosaikData.TAG, MosaikData.XML_NAMES, progData.mosaikData.arr, true);
 
             xmlWriteThumbCollection();
 

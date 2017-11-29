@@ -15,7 +15,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.genFotoList;
+package de.p2tools.controller.genThumbList;
 
 import de.p2tools.controller.Funktionen;
 import de.p2tools.controller.config.Config;

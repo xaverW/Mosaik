@@ -22,7 +22,7 @@ import de.p2tools.controller.FotoListener;
 import de.p2tools.controller.Funktionen;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.data.createMosaik.CreateMosaik;
+import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.Duration;
@@ -42,7 +42,7 @@ import java.awt.image.Raster;
 import java.io.File;
 import java.util.Locale;
 
-public class MosaikErstellen {
+public class GenMosaik {
 
     String dest;
     String src;
@@ -52,13 +52,13 @@ public class MosaikErstellen {
     private boolean stopAll = false;
 
     private final ProgData progData;
-    private final CreateMosaik createMosaik;
+    private final MosaikData mosaikData;
     private final ThumbCollection thumbCollection;
 
-    public MosaikErstellen(CreateMosaik createMosaik) {
+    public GenMosaik(MosaikData mosaikData) {
         progData = ProgData.getInstance();
-        this.createMosaik = createMosaik;
-//        this.thumbCollection = progData.thumbCollectionList.getThumbCollection(createMosaik.getThumbCollectionId());
+        this.mosaikData = mosaikData;
+//        this.thumbCollection = progData.thumbCollectionList.getThumbCollection(mosaikDataDataData.getThumbCollectionId());
         this.thumbCollection = progData.selectedThumbCollection;
     }
 
@@ -79,9 +79,9 @@ public class MosaikErstellen {
     /**
      */
     public void erstellen() {
-        dest = createMosaik.getFotoDest();
-        src = createMosaik.getFotoSrc();
-        anz = createMosaik.getThumbCount();
+        dest = mosaikData.getFotoDest();
+        src = mosaikData.getFotoSrc();
+        anz = mosaikData.getThumbCount();
         progress = 0;
         stopAll = false;
 
@@ -90,7 +90,7 @@ public class MosaikErstellen {
             return;
         }
 
-        if (createMosaik.getFormat().equals(Const.IMAGE_FORMAT_PNG)) {
+        if (mosaikData.getFormat().equals(Const.IMAGE_FORMAT_PNG)) {
             if (!dest.endsWith("." + Const.IMAGE_FORMAT_JPG)) {
                 dest += "." + Const.IMAGE_FORMAT_PNG;
             }
@@ -139,9 +139,9 @@ public class MosaikErstellen {
 
                 int srcHeight = srcImg.getRaster().getHeight();
                 int srcWidth = srcImg.getRaster().getWidth();
-                int sizeThumb = createMosaik.getThumbSize();
+                int sizeThumb = mosaikData.getThumbSize();
 
-                int numThumbsWidth = createMosaik.getNumberThumbsWidth();
+                int numThumbsWidth = mosaikData.getNumberThumbsWidth();
                 int numPixelProThumb = srcWidth / numThumbsWidth;
                 int numThumbsHeight = srcHeight / numPixelProThumb;
 
@@ -231,7 +231,7 @@ public class MosaikErstellen {
             ImageOutputStream ios = null;
             ImageWriter writer = null;
             try {
-                if (createMosaik.getFormat().equals(Const.IMAGE_FORMAT_PNG)) {
+                if (mosaikData.getFormat().equals(Const.IMAGE_FORMAT_PNG)) {
                     writer = ImageIO.getImageWritersBySuffix(Const.IMAGE_FORMAT_PNG).next();
                     ios = ImageIO.createImageOutputStream(new File(dest));
                     writer.setOutput(ios);

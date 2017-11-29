@@ -15,7 +15,7 @@
  */
 
 
-package de.p2tools.controller.data.createMosaik;
+package de.p2tools.controller.data.mosaikData;
 
-public class CreateMosaik extends CreateMosaikProps {
+public class MosaikData extends MosaikDataProps {
 }

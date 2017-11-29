@@ -64,6 +64,12 @@ public class Config extends MLConfig {
     public static MLConfigs CHANGE_THUMB_GUI_TABLE_VIS = addNewKey("change-thumb-gui-table-vis");
     public static MLConfigs CHANGE_THUMB_GUI_TABLE_ORDER = addNewKey("change-thumb-gui-table-order");
 
+    // Wallpaper
+    public static MLConfigs WALLPAPER_DEST_PATH = addNewKey("wallpaper-dest-path");
+    public static MLConfigs WALLPAPER_NUM_THUMBS_WIDTH = addNewKey("wallpaper-num-thumbs-width", 20);
+    public static MLConfigs WALLPAPER_THUMB_PIXEL = addNewKey("wallpaper-thumb-pixel", 100);
+
+
     // Meldungen
     public static MLConfigs MSG_VISIBLE = addNewKey("Meldungen-anzeigen", Boolean.FALSE.toString());
     public static MLConfigs MSG_PANEL_LOGS_DIVIDER = addNewKey("Meldungen-Panel-Logs-Divider", Const.GUI_MSG_LOG_DIVIDER_LOCATION);

@@ -21,7 +21,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.controller.genFotoList.ScaleImage;
+import de.p2tools.controller.genThumbList.ScaleImage;
 import de.p2tools.gui.tools.MTOpen;
 import de.p2tools.gui.tools.Table;
 import javafx.beans.property.DoubleProperty;

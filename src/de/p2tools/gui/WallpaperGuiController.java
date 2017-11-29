@@ -16,10 +16,10 @@
 
 package de.p2tools.gui;
 
+import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
-import de.p2tools.controller.data.mosaikData.MosaikData;
-import de.p2tools.controller.genMosaik.GenMosaik;
+import de.p2tools.controller.genWallpaper.GenWallpaper;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
 import javafx.beans.binding.Bindings;
@@ -30,24 +30,19 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-public class MosaikGuiController extends AnchorPane {
+public class WallpaperGuiController extends AnchorPane {
 
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox vBoxCont = new VBox();
-    private final Label lblSrc = new Label("Foto zum Erstellen des Mosaik");
-    private final TextField txtSrc = new TextField();
-    private final Button btnSrc = new Button("");
-    private final Label lblDesst = new Label("Mosaik speichern");
+    private final Label lblDesst = new Label("Fototapete speichern");
     private final TextField txtDest = new TextField();
     private final Button btnDest = new Button("");
-    private final Button btnCreate = new Button("Mosaik erstellen");
+    private final Button btnCreate = new Button("Fototapete erstellen");
 
-    MosaikData mosaikData;
 
-    public MosaikGuiController() {
+    public WallpaperGuiController() {
         progData = ProgData.getInstance();
-        mosaikData = progData.mosaikData;
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
@@ -68,24 +63,6 @@ public class MosaikGuiController extends AnchorPane {
 
 
     private void initCont() {
-        // SRC
-        btnSrc.setOnAction(event -> {
-            DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtSrc);
-        });
-        btnSrc.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
-
-        final Button btnHelpSrc = new Button("");
-        btnHelpSrc.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSrc.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
-
-        txtSrc.textProperty().bindBidirectional(mosaikData.fotoSrcProperty());
-        txtSrc.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(txtSrc, Priority.ALWAYS);
-
-        HBox hBoxSrc = new HBox(10);
-        hBoxSrc.getChildren().addAll(txtSrc, btnSrc, btnHelpSrc);
-
-
         // DEST
         btnDest.setOnAction(event -> {
             DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtDest);
@@ -96,7 +73,7 @@ public class MosaikGuiController extends AnchorPane {
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        txtDest.textProperty().bindBidirectional(mosaikData.fotoDestProperty());
+        txtDest.textProperty().bindBidirectional(Config.WALLPAPER_DEST_PATH.getStringProperty());
         txtDest.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDest, Priority.ALWAYS);
 
@@ -113,15 +90,15 @@ public class MosaikGuiController extends AnchorPane {
         sliderSize.setMin(5);
         sliderSize.setMax(25);
 
-        sliderSize.setValue(mosaikData.getThumbSize() / 10);
+        sliderSize.setValue(Config.WALLPAPER_THUMB_PIXEL.getInt() / 10);
         IntegerProperty iProp = new SimpleIntegerProperty();
         iProp.bind(sliderSize.valueProperty());
 
         NumberBinding nb = Bindings.multiply(iProp, 10);
-        mosaikData.thumbSizeProperty().bind(nb);
+        Config.WALLPAPER_THUMB_PIXEL.getIntegerProperty().bind(nb);
 
         Label lblSlider = new Label("");
-        lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.thumbSizeProperty()));
+        lblSlider.textProperty().bind(Bindings.format("%d", Config.WALLPAPER_THUMB_PIXEL.getIntegerProperty()));
 
 
         // Anzahl Thumbs
@@ -133,15 +110,15 @@ public class MosaikGuiController extends AnchorPane {
         sliderCount.setMin(1);
         sliderCount.setMax(100);
 
-        sliderCount.setValue(mosaikData.getNumberThumbsWidth() / 10);
+        sliderCount.setValue(Config.WALLPAPER_NUM_THUMBS_WIDTH.getInt() / 10);
         IntegerProperty iPropCount = new SimpleIntegerProperty();
         iPropCount.bind(sliderCount.valueProperty());
 
         NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
-        mosaikData.numberThumbsWidthProperty().bind(nbCount);
+        Config.WALLPAPER_NUM_THUMBS_WIDTH.getIntegerProperty().bind(nbCount);
 
         Label lblSliderCount = new Label("");
-        lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
+        lblSliderCount.textProperty().bind(Bindings.format("%d", Config.WALLPAPER_NUM_THUMBS_WIDTH.getIntegerProperty()));
 
 
         GridPane gridPane = new GridPane();
@@ -164,13 +141,15 @@ public class MosaikGuiController extends AnchorPane {
         // import all
         vBoxCont.setSpacing(10);
         vBoxCont.setPadding(new Insets(10));
-        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, gridPane, btnCreate);
+        vBoxCont.getChildren().addAll(lblDesst, hBoxDest, gridPane, btnCreate);
 
 
         btnCreate.setOnAction(a -> {
-            if (!txtSrc.getText().isEmpty() && !txtDest.getText().isEmpty()) {
-                mosaikData.setThumbCollectionId(progData.selectedThumbCollection.getId());
-                new GenMosaik(mosaikData).erstellen();
+            if (!txtDest.getText().isEmpty()) {
+                new GenWallpaper(progData.selectedThumbCollection,
+                        txtDest.getText(),
+                        Config.WALLPAPER_NUM_THUMBS_WIDTH.getInt(),
+                        Config.WALLPAPER_THUMB_PIXEL.getInt()).tus();
             }
         });
 

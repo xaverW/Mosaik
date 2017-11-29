@@ -18,13 +18,14 @@
 package de.p2tools.controller.config;
 
 import de.p2tools.MosaikController;
-import de.p2tools.controller.data.createMosaik.CreateMosaik;
+import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbCollectionList;
-import de.p2tools.controller.genFotoList.GenThumbList;
+import de.p2tools.controller.genThumbList.GenThumbList;
 import de.p2tools.gui.ChangeThumbGuiController;
 import de.p2tools.gui.MosaikGuiController;
 import de.p2tools.gui.ThumbGuiController;
+import de.p2tools.gui.WallpaperGuiController;
 import de.p2tools.gui.tools.Listener;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -47,7 +48,7 @@ public class ProgData {
 
     // zentrale Klassen
     public ThumbCollectionList thumbCollectionList;
-    public CreateMosaik createMosaik;
+    public MosaikData mosaikData;
     public ThumbCollection selectedThumbCollection = null;
 
     public GenThumbList genThumbList = null;
@@ -59,11 +60,12 @@ public class ProgData {
     public ThumbGuiController thumbGuiController = null; // Tab mit den Filmen
     public ChangeThumbGuiController changeThumbGuiController = null; // Tab mit den Filmen
     public MosaikGuiController mosaikGuiController = null; // Tab mit den Downloads
+    public WallpaperGuiController wallpaperGuiController = null; // Tab mit den Downloads
 
 
     private ProgData() {
         thumbCollectionList = new ThumbCollectionList();
-        createMosaik = new CreateMosaik();
+        mosaikData = new MosaikData();
         genThumbList = new GenThumbList(this);
 
         Timeline timeline = new Timeline(new KeyFrame(

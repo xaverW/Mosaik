@@ -15,12 +15,12 @@
  */
 
 
-package de.p2tools.controller.data.createMosaik;
+package de.p2tools.controller.data.mosaikData;
 
 import de.p2tools.controller.config.Const;
 import javafx.beans.property.*;
 
-public class CreateMosaikProps extends CreateMosaikXml {
+public class MosaikDataProps extends MosaikDataXml {
     private final StringProperty format = new SimpleStringProperty(Const.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest

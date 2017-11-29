@@ -49,6 +49,10 @@ public class StatusBarController extends AnchorPane {
     Label lblLeftMosaik = new Label();
     Label lblRightMosaik = new Label();
 
+    //Wallpaper
+    Label lblLeftWallpaper = new Label();
+    Label lblRightWallpaper = new Label();
+
     //nonePane
     Label lblLeftNone = new Label();
     Label lblRightNone = new Label();
@@ -57,11 +61,12 @@ public class StatusBarController extends AnchorPane {
     AnchorPane nonePane = new AnchorPane();
     AnchorPane thumbPane = new AnchorPane();
     AnchorPane mosaikPane = new AnchorPane();
+    AnchorPane wallpaperPane = new AnchorPane();
 
 
     public enum StatusbarIndex {
 
-        NONE, Thumb, Mosaik
+        NONE, Thumb, Mosaik, Wallpaper
     }
 
     private StatusbarIndex statusbarIndex = StatusbarIndex.NONE;
@@ -106,6 +111,13 @@ public class StatusBarController extends AnchorPane {
         hBox.getChildren().addAll(lblLeftMosaik, lblRightMosaik);
         mosaikPane.getChildren().add(hBox);
         mosaikPane.setStyle("-fx-background-color: -fx-background ;");
+
+        hBox = getHbox();
+        lblLeftWallpaper.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(lblLeftWallpaper, Priority.ALWAYS);
+        hBox.getChildren().addAll(lblLeftWallpaper, lblRightWallpaper);
+        wallpaperPane.getChildren().add(hBox);
+        wallpaperPane.setStyle("-fx-background-color: -fx-background ;");
 
         make();
     }
@@ -187,6 +199,11 @@ public class StatusBarController extends AnchorPane {
                 setInfoMosaik();
                 setTextForRightDisplay();
                 break;
+            case Wallpaper:
+                wallpaperPane.toFront();
+                setInfoWallpaper();
+                setTextForRightDisplay();
+                break;
             case NONE:
             default:
                 nonePane.toFront();
@@ -209,6 +226,11 @@ public class StatusBarController extends AnchorPane {
     private void setInfoMosaik() {
         String textLinks = "Miniaturbilder: " + progData.selectedThumbCollection.getName();
         lblLeftMosaik.setText(textLinks);
+    }
+
+    private void setInfoWallpaper() {
+        String textLinks = "Miniaturbilder: " + progData.selectedThumbCollection.getName();
+        lblLeftWallpaper.setText(textLinks);
     }
 
     private void setTextForRightDisplay() {
