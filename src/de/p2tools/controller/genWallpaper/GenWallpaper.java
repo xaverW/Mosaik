@@ -84,7 +84,7 @@ public class GenWallpaper {
                 img = ScaleImage.scaleBufferedImage(img, thumbSize, thumbSize);
             }
 
-            imgOut.getRaster().setRect(ww * numThumbWidth, hh * numThumbWidth, img.getData());
+            imgOut.getRaster().setRect(ww * thumbSize, hh * thumbSize, img.getData());
 
             ++ww;
             if (ww >= numThumbWidth) {
@@ -108,7 +108,7 @@ public class GenWallpaper {
         writeImage(imgOut);
     }
 
-    public BufferedImage getBufferedImage(File source) {
+    private BufferedImage getBufferedImage(File source) {
         BufferedImage img = null;
         ImageReader reader = getReader(source);
         try {
