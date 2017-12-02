@@ -57,6 +57,19 @@ public class MLConfigs {
         aktValue = new SimpleStringProperty(initValue);
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public String getInitValue() {
+        return initValue;
+    }
+
+    public StringProperty getAktValue() {
+        return aktValue;
+    }
+
+    // set value
     public synchronized void setValue(String value) {
         getAktValue().setValue(value == null ? "" : value);
     }
@@ -69,8 +82,13 @@ public class MLConfigs {
         getAktValue().setValue(String.valueOf(value));
     }
 
+    // get value
     public synchronized String get() {
         return aktValue.getValue();
+    }
+
+    public synchronized boolean getBool() {
+        return Boolean.parseBoolean(aktValue.getValue());
     }
 
     public synchronized int getInt() {
@@ -96,10 +114,7 @@ public class MLConfigs {
         return ret;
     }
 
-    public synchronized boolean getBool() {
-        return Boolean.parseBoolean(aktValue.getValue());
-    }
-
+    // get property
     public synchronized StringProperty getStringProperty() {
         return aktValue;
     }
@@ -162,17 +177,6 @@ public class MLConfigs {
 
         return dp;
     }
-
-    public String getKey() {
-        return key;
-    }
-
-    public String getInitValue() {
-        return initValue;
-    }
-
-    public StringProperty getAktValue() {
-        return aktValue;
-    }
 }
+
 

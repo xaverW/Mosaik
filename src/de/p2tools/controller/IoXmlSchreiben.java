@@ -56,6 +56,54 @@ public class IoXmlSchreiben implements AutoCloseable {
         xmlDatenSchreiben();
     }
 
+//    private void prop() {
+//        Properties prop = new Properties();
+//        OutputStream output = null;
+//
+//        try {
+//
+//            output = new FileOutputStream("config.properties");
+//
+//            // set the properties value
+//            prop.setProperty("database", "localhost");
+//            prop.setProperty("dbuser", "mkyong");
+//            prop.setProperty("dbpassword", "password");
+//
+//            // save properties to project root folder
+//            prop.store(output, null);
+//
+//        } catch (IOException io) {
+//            io.printStackTrace();
+//        } finally {
+//            if (output != null) {
+//                try {
+//                    output.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        }
+//    }
+
+//    private void apacheConf() {
+//        Configurations configs = new Configurations();
+//        try {
+//            // obtain the configuration
+//            FileBasedConfigurationBuilder<XMLConfiguration> builder = configs.xmlBuilder("paths.xml");
+//            XMLConfiguration config = builder.getConfiguration();
+//
+//            // update property
+//            config.addProperty("newProperty", "newValue");
+//
+//            // save configuration
+//            builder.save();
+//        } catch (Exception cex) {
+//            System.out.println(cex.getMessage());
+//            // Something went wrong
+//        }
+//    }
+
     private void xmlDatenSchreiben() {
         try {
             xmlSchreibenStart();
