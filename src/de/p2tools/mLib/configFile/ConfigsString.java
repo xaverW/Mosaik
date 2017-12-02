@@ -15,28 +15,29 @@
  */
 
 
-package de.p2tools.controller.data.mosaikData;
+package de.p2tools.mLib.configFile;
 
-import de.p2tools.mLib.configFile.ConfigFile;
-import de.p2tools.mLib.configFile.Configs;
-import de.p2tools.mLib.configFile.ConfigsData;
-import de.p2tools.mLib.configFile.ConfigsString;
+public class ConfigsString extends Configs {
 
-public class MosaikData extends MosaikDataProps implements ConfigsData {
+    private String initValue;
+    private String actValue;
 
-    public String getTagName() {
-        return "TAG";
+    public ConfigsString(String key, String initValue, String actValue) {
+        super(key);
+        this.initValue = initValue;
+        this.actValue = actValue;
     }
 
-    public Configs[] getConfigsArr() {
-        Configs[] arr = new Configs[]{new ConfigsString("key1", "init1", "act1"),
-                new ConfigsString("key2", "init2", "act2")};
-        return arr;
+    public String getInitValue() {
+        return initValue;
     }
 
-    public MosaikData() {
-        ConfigFile configFile = new ConfigFile("/tmp/usb/test");
-        configFile.addConfigs(this);
-        configFile.writeConfigFile();
+    public String getActValue() {
+        return actValue;
     }
+
+    public String getActValueToString() {
+        return actValue;
+    }
+
 }
