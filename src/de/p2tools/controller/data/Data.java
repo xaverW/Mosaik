@@ -16,9 +16,11 @@
 
 package de.p2tools.controller.data;
 
+import de.p2tools.mLib.configFile.Configs;
+import de.p2tools.mLib.configFile.ConfigsData;
 import de.p2tools.mLib.tools.GermanStringSorter;
 
-public class Data<E> implements Comparable<E> {
+public class Data<E> implements ConfigsData, Comparable<E> {
 
     public static String TAG;
     public static String[] COLUMN_NAMES;
@@ -38,6 +40,14 @@ public class Data<E> implements Comparable<E> {
             a[i] = "";
         }
         return a;
+    }
+
+    public String getTagName() {
+        return "";
+    }
+
+    public Configs[] getConfigsArr() {
+        return null;
     }
 
     public void setPropsFromXml() {

@@ -17,24 +17,32 @@
 
 package de.p2tools.mLib.configFile;
 
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 
 public class ConfigFile {
     private final String configFileUrl;
     private final ArrayList<ConfigsData> configsList;
+    private final ArrayList<ObservableList<? extends ConfigsData>> configsListList;
 
     public ConfigFile(String configFileUrl) {
         this.configFileUrl = configFileUrl;
         this.configsList = new ArrayList<>();
+        configsListList = new ArrayList<>();
     }
 
     public void addConfigs(ConfigsData configsData) {
         configsList.add(configsData);
     }
 
+    public void addConfigs(ObservableList<? extends ConfigsData> observableList) {
+        configsListList.add(observableList);
+    }
+
     public boolean writeConfigFile() {
         boolean ret = false;
-        SaveConfigFile saveConfigFile = new SaveConfigFile(configFileUrl, configsList);
+        SaveConfigFile saveConfigFile = new SaveConfigFile(configFileUrl, configsListList, configsList);
         saveConfigFile.write();
         return ret;
     }

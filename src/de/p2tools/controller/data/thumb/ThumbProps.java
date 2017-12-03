@@ -16,6 +16,9 @@
 
 package de.p2tools.controller.data.thumb;
 
+import de.p2tools.mLib.configFile.Configs;
+import de.p2tools.mLib.configFile.ConfigsIntProp;
+import de.p2tools.mLib.configFile.ConfigsStringProp;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
@@ -31,6 +34,22 @@ public class ThumbProps extends ThumbXml {
 
     private int sum = 0;
     private Color color = Color.rgb(0, 0, 0);
+
+
+    public String getTagName() {
+        return TAG;
+    }
+
+    public Configs[] getConfigsArr() {
+        Configs[] arr = new Configs[]{
+                new ConfigsIntProp("nr", 0, nr),
+                new ConfigsIntProp("red", 0, red),
+                new ConfigsIntProp("green", 0, green),
+                new ConfigsIntProp("blue", 0, blue),
+                new ConfigsStringProp("filename", "", fileName),
+        };
+        return arr;
+    }
 
     public final Property[] properties = {nr, red, green, blue, fileName};
 

@@ -20,6 +20,7 @@ import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.SysMsg;
+import javafx.collections.ObservableList;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -42,10 +43,12 @@ class SaveConfigFile implements AutoCloseable {
     private ProgData progData = null;
 
     private final String filePath;
+    private final ArrayList<ObservableList<? extends ConfigsData>> configsListList;
     private final ArrayList<ConfigsData> arrayList;
 
-    SaveConfigFile(String filePath, ArrayList<ConfigsData> arrayList) {
+    SaveConfigFile(String filePath, ArrayList<ObservableList<? extends ConfigsData>> configsListList, ArrayList<ConfigsData> arrayList) {
         this.filePath = filePath;
+        this.configsListList = configsListList;
         this.arrayList = arrayList;
     }
 
@@ -59,6 +62,14 @@ class SaveConfigFile implements AutoCloseable {
     private void xmlDatenSchreiben() {
         try {
             xmlSchreibenStart();
+
+            for (ObservableList<? extends ConfigsData> observableLists : configsListList) {
+                writer.writeCharacters("\n\n");
+                for (ConfigsData configsData : observableLists) {
+                    writer.writeCharacters("\n\n");
+                    xmlSchreibenDaten(configsData, true, 0);
+                }
+            }
 
             for (ConfigsData configsData : arrayList) {
                 writer.writeCharacters("\n\n");

@@ -15,13 +15,34 @@
  */
 
 
-package de.p2tools.controller.data.mosaikData;
+package de.p2tools.mLib.configFile;
 
-public class MosaikData extends MosaikDataProps {
+import javafx.beans.property.BooleanProperty;
 
-    public MosaikData() {
-//        ConfigFile configFile = new ConfigFile("/tmp/usb/test");
-//        configFile.addConfigs(this);
-//        configFile.writeConfigFile();
+public class ConfigsBoolProp extends Configs {
+
+    private boolean initValue;
+    private BooleanProperty actValue;
+
+    public ConfigsBoolProp(String key, boolean initValue, BooleanProperty actValue) {
+        super(key);
+        this.initValue = initValue;
+        this.actValue = actValue;
+    }
+
+    public Boolean getInitValue() {
+        return initValue;
+    }
+
+    public Boolean getActValue() {
+        return actValue.getValue();
+    }
+
+    public String getActValueToString() {
+        return String.valueOf(getActValue());
+    }
+
+    public BooleanProperty getActValueProperty() {
+        return actValue;
     }
 }

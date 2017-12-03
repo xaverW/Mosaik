@@ -18,9 +18,14 @@
 package de.p2tools.controller.data.mosaikData;
 
 import de.p2tools.controller.config.Const;
+import de.p2tools.mLib.configFile.Configs;
+import de.p2tools.mLib.configFile.ConfigsData;
+import de.p2tools.mLib.configFile.ConfigsIntProp;
+import de.p2tools.mLib.configFile.ConfigsStringProp;
 import javafx.beans.property.*;
 
-public class MosaikDataProps extends MosaikDataXml {
+public class MosaikDataProps extends MosaikDataXml implements ConfigsData {
+
     private final StringProperty format = new SimpleStringProperty(Const.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
@@ -30,6 +35,23 @@ public class MosaikDataProps extends MosaikDataXml {
     private final IntegerProperty thumbCollectionId = new SimpleIntegerProperty(0); // ID der ThumbCollection
 
     public final Property[] properties = {format, fotoSrc, fotoDest, thumbSize, numberThumbsWidth, thumbCount, thumbCollectionId};
+
+    public String getTagName() {
+        return TAG;
+    }
+
+    public Configs[] getConfigsArr() {
+        Configs[] arr = new Configs[]{
+                new ConfigsStringProp("format", Const.IMAGE_FORMAT_JPG, format),
+                new ConfigsStringProp("foto-src", "", fotoSrc),
+                new ConfigsStringProp("foto-dest", "", fotoDest),
+                new ConfigsIntProp("thumb-size", 50, thumbSize),
+                new ConfigsIntProp("numberThumbsWidth", 50, numberThumbsWidth),
+                new ConfigsIntProp("thumbCount", 0, thumbCount),
+                new ConfigsIntProp("thumbCollectionId", 0, thumbCollectionId)
+        };
+        return arr;
+    }
 
 
     public String getFormat() {

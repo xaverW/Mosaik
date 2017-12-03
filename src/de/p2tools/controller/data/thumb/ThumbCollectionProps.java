@@ -17,6 +17,10 @@
 package de.p2tools.controller.data.thumb;
 
 import de.p2tools.controller.config.Const;
+import de.p2tools.mLib.configFile.Configs;
+import de.p2tools.mLib.configFile.ConfigsBoolProp;
+import de.p2tools.mLib.configFile.ConfigsIntProp;
+import de.p2tools.mLib.configFile.ConfigsStringProp;
 import javafx.beans.property.*;
 
 public class ThumbCollectionProps extends ThumbCollectionXml {
@@ -28,6 +32,22 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
     private final StringProperty thumbDir = new SimpleStringProperty("");
     private final StringProperty fotoSrcDir = new SimpleStringProperty("");
 
+
+    public String getTagName() {
+        return TAG;
+    }
+
+    public Configs[] getConfigsArr() {
+        Configs[] arr = new Configs[]{
+                new ConfigsIntProp("id", 0, id),
+                new ConfigsStringProp("name", "", name),
+                new ConfigsBoolProp("recursiv", true, recursive),
+                new ConfigsStringProp("foto-format", Const.IMAGE_FORMAT_JPG, format),
+                new ConfigsStringProp("dir-thumb", "", thumbDir),
+                new ConfigsStringProp("dir-foto-src", "", fotoSrcDir)
+        };
+        return arr;
+    }
 
     public final Property[] properties = {id, name, format};
 
