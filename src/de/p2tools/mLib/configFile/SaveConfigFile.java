@@ -90,37 +90,33 @@ class SaveConfigFile implements AutoCloseable {
         final XMLOutputFactory outFactory = XMLOutputFactory.newInstance();
         writer = outFactory.createXMLStreamWriter(out);
         writer.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
-        writer.writeCharacters("\n");// neue Zeile
+        writer.writeCharacters("\n");
         writer.writeStartElement(Const.XML_START);
-        writer.writeCharacters("\n");// neue Zeile
+        writer.writeCharacters("\n");
     }
 
 
-    private void writeConfigsData(ConfigsData configsData, int tab) {
+    private void writeConfigsData(ConfigsData configsData, int tab) throws XMLStreamException {
 
         String xmlName = configsData.getTagName();
 
-        try {
-            for (int t = 0; t < tab; ++t) {
-                writer.writeCharacters("\t"); // Tab
-            }
-            writer.writeStartElement(xmlName);
-            writer.writeCharacters("\n"); // neue Zeile
-
-            ++tab;
-            for (Configs configs : configsData.getConfigsArr()) {
-                writeConfigs(configs, tab);
-            }
-            --tab;
-
-            for (int t = 0; t < tab; ++t) {
-                writer.writeCharacters("\t"); // Tab
-            }
-            writer.writeEndElement();
-            writer.writeCharacters("\n"); // neue Zeile
-        } catch (final Exception ex) {
-            Log.errorLog(198325017, ex);
+        for (int t = 0; t < tab; ++t) {
+            writer.writeCharacters("\t"); // Tab
         }
+        writer.writeStartElement(xmlName);
+        writer.writeCharacters("\n"); // neue Zeile
+
+        ++tab;
+        for (Configs configs : configsData.getConfigsArr()) {
+            writeConfigs(configs, tab);
+        }
+        --tab;
+
+        for (int t = 0; t < tab; ++t) {
+            writer.writeCharacters("\t"); // Tab
+        }
+        writer.writeEndElement();
+        writer.writeCharacters("\n"); // neue Zeile
     }
 
     private void writeConfigs(Configs configs, int tab) throws XMLStreamException {
@@ -145,30 +141,23 @@ class SaveConfigFile implements AutoCloseable {
     }
 
 
-    private void writeConfList(ConfigsList configsData, int tab) {
-        try {
-            ObservableList<? extends ConfigsData> observableList = configsData.getActValue();
-            writer.writeCharacters("\n");
-            for (ConfigsData configs : observableList) {
-                writeConfigsData(configs, tab);
-            }
-            writer.writeCharacters("\n");
-        } catch (final Exception ex) {
-            Log.errorLog(915263654, ex);
+    private void writeConfList(ConfigsList configsData, int tab) throws XMLStreamException {
+        ObservableList<? extends ConfigsData> observableList = configsData.getActValue();
+        for (ConfigsData configs : observableList) {
+            writeConfigsData(configs, tab);
         }
     }
 
 
-    private void xmlSchreibenEnde() throws Exception {
+    private void xmlSchreibenEnde() throws XMLStreamException {
         writer.writeEndElement();
         writer.writeEndDocument();
         writer.flush();
-
         SysMsg.sysMsg("geschrieben!");
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() throws IOException, XMLStreamException {
         writer.close();
         out.close();
         os.close();

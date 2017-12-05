@@ -35,7 +35,6 @@ public class ThumbProps extends ThumbXml {
     private int sum = 0;
     private Color color = Color.rgb(0, 0, 0);
 
-
     public String getTagName() {
         return TAG;
     }
@@ -46,7 +45,7 @@ public class ThumbProps extends ThumbXml {
                 new ConfigsIntProp("red", 0, red),
                 new ConfigsIntProp("green", 0, green),
                 new ConfigsIntProp("blue", 0, blue),
-                new ConfigsStringProp("filename", "", fileName),
+                new ConfigsStringProp("filename", "", fileName)
         };
         return arr;
     }
