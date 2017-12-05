@@ -64,16 +64,15 @@ class SaveConfigFile implements AutoCloseable {
             xmlSchreibenStart();
 
             for (ObservableList<? extends ConfigsData> observableLists : configsListList) {
-                writer.writeCharacters("\n\n");
                 for (ConfigsData configsData : observableLists) {
                     writer.writeCharacters("\n\n");
-                    xmlSchreibenDaten(configsData, true, 0);
+                    writeConfigsData(configsData, 0);
                 }
             }
 
             for (ConfigsData configsData : arrayList) {
                 writer.writeCharacters("\n\n");
-                xmlSchreibenDaten(configsData, true, 0);
+                writeConfigsData(configsData, 0);
             }
 
             writer.writeCharacters("\n\n");
@@ -97,45 +96,65 @@ class SaveConfigFile implements AutoCloseable {
     }
 
 
-    private void xmlSchreibenDaten(ConfigsData configsData, boolean newLine, int tab) {
-        //String xmlName, String[] xmlSpalten, String[] datenArray, boolean newLine, int tab
+    private void writeConfigsData(ConfigsData configsData, int tab) {
 
         String xmlName = configsData.getTagName();
 
-        String[] datenArray = new String[configsData.getConfigsArr().length];
-        String[] xmlSpalten = new String[configsData.getConfigsArr().length];
-
-        for (int i = 0; i < configsData.getConfigsArr().length; ++i) {
-            datenArray[i] = configsData.getConfigsArr()[i].getActValueToString();
-            xmlSpalten[i] = configsData.getConfigsArr()[i].getKey();
-        }
-
-        final int xmlMax = datenArray.length;
         try {
             for (int t = 0; t < tab; ++t) {
                 writer.writeCharacters("\t"); // Tab
             }
             writer.writeStartElement(xmlName);
-            if (newLine) {
-                writer.writeCharacters("\n"); // neue Zeile
+            writer.writeCharacters("\n"); // neue Zeile
+
+            ++tab;
+            for (Configs configs : configsData.getConfigsArr()) {
+                writeConfigs(configs, tab);
             }
-            for (int i = 0; i < xmlMax; ++i) {
-                if (!datenArray[i].isEmpty()) {
-                    if (newLine) {
-                        writer.writeCharacters("\t"); // Tab
-                    }
-                    writer.writeStartElement(xmlSpalten[i]);
-                    writer.writeCharacters(datenArray[i]);
-                    writer.writeEndElement();
-                    if (newLine) {
-                        writer.writeCharacters("\n"); // neue Zeile
-                    }
-                }
+            --tab;
+
+            for (int t = 0; t < tab; ++t) {
+                writer.writeCharacters("\t"); // Tab
             }
             writer.writeEndElement();
             writer.writeCharacters("\n"); // neue Zeile
         } catch (final Exception ex) {
             Log.errorLog(198325017, ex);
+        }
+    }
+
+    private void writeConfigs(Configs configs, int tab) throws XMLStreamException {
+        if (configs.getClass().equals(ConfigsList.class)) {
+            writeConfList((ConfigsList) configs, tab);
+        } else {
+            writeConf(configs, tab);
+        }
+    }
+
+
+    private void writeConf(Configs configs, int tab) throws XMLStreamException {
+        if (!configs.getActValueToString().isEmpty()) {
+            for (int t = 0; t < tab; ++t) {
+                writer.writeCharacters("\t"); // Tab
+            }
+            writer.writeStartElement(configs.getKey());
+            writer.writeCharacters(configs.getActValueToString());
+            writer.writeEndElement();
+            writer.writeCharacters("\n"); // neue Zeile
+        }
+    }
+
+
+    private void writeConfList(ConfigsList configsData, int tab) {
+        try {
+            ObservableList<? extends ConfigsData> observableList = configsData.getActValue();
+            writer.writeCharacters("\n");
+            for (ConfigsData configs : observableList) {
+                writeConfigsData(configs, tab);
+            }
+            writer.writeCharacters("\n");
+        } catch (final Exception ex) {
+            Log.errorLog(915263654, ex);
         }
     }
 

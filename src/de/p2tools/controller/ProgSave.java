@@ -19,7 +19,6 @@ package de.p2tools.controller;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
-import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.configFile.ConfigFile;
 import de.p2tools.mLib.tools.Log;
@@ -52,11 +51,6 @@ public class ProgSave {
         ConfigFile configFile = new ConfigFile("/tmp/usb/test");
         configFile.addConfigs(progData.mosaikData);
         configFile.addConfigs(progData.thumbCollectionList);
-
-        for (ThumbCollection thumbCollection : progData.thumbCollectionList) {
-            configFile.addConfigs(thumbCollection.getThumbList());
-        }
-
         configFile.writeConfigFile();
     }
 
