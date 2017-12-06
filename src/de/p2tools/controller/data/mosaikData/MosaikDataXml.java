@@ -25,7 +25,7 @@ public class MosaikDataXml extends Data<MosaikData> {
     public static final int FOTO_SRC = 1;
     public static final int FOTO_DEST = 2;
     public static final int THUMB_SIZE = 3;
-    public static final int DEST_SIZE_W = 4;
+    public static final int NUMBER_THUMBS_W = 4;
     public static final int THUMB_COUNT = 5;
     public static final int THUMB_COLLECTION_ID = 6;
 
@@ -34,7 +34,6 @@ public class MosaikDataXml extends Data<MosaikData> {
             "foto-dest",
             "thumb-size",
             "dest-size-w",
-            "filename",
             "thumb-count",
             "thumb-collection-id"};
     public static final String TAG = "MosaikData";

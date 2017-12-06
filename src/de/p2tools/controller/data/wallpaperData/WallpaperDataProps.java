@@ -18,9 +18,13 @@
 package de.p2tools.controller.data.wallpaperData;
 
 import de.p2tools.controller.config.Const;
+import de.p2tools.mLib.configFile.Configs;
+import de.p2tools.mLib.configFile.ConfigsData;
+import de.p2tools.mLib.configFile.ConfigsIntProp;
+import de.p2tools.mLib.configFile.ConfigsStringProp;
 import javafx.beans.property.*;
 
-public class WallpaperDataProps extends WallpaperDataXml {
+public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData {
     private final StringProperty format = new SimpleStringProperty(Const.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
@@ -29,6 +33,20 @@ public class WallpaperDataProps extends WallpaperDataXml {
 
     public final Property[] properties = {format, fotoDest, thumbSize, numberThumbsWidth, thumbCollectionId};
 
+    public String getTagName() {
+        return TAG;
+    }
+
+    public Configs[] getConfigsArr() {
+        Configs[] arr = new Configs[]{
+                new ConfigsStringProp("format", Const.IMAGE_FORMAT_JPG, format),
+                new ConfigsStringProp("foto-dest", "", fotoDest),
+                new ConfigsIntProp("thumb-size", 50, thumbSize),
+                new ConfigsIntProp("number-thumbs-width", 50, numberThumbsWidth),
+                new ConfigsIntProp("thumb-collection-id", 0, thumbCollectionId)
+        };
+        return arr;
+    }
 
     public String getFormat() {
         return format.get();
@@ -95,17 +113,26 @@ public class WallpaperDataProps extends WallpaperDataXml {
     public void setPropsFromXml() {
         setFormat(arr[FORMAT]);
         setFotoDest(arr[FOTO_DEST]);
-        setThumbSize(Integer.parseInt(arr[THUMB_SIZE]));
-        setNumberThumbsWidth(Integer.parseInt(arr[DEST_SIZE_W]));
-        setThumbCollectionId(Integer.parseInt(arr[THUMB_COLLECTION_ID]));
+        setInt();
     }
 
+    private void setInt() {
+        try {
+            setThumbSize(Integer.parseInt(arr[THUMB_SIZE]));
+            setNumberThumbsWidth(Integer.parseInt(arr[NUMBER_THUMBS_W]));
+            setThumbCollectionId(Integer.parseInt(arr[THUMB_COLLECTION_ID]));
+        } catch (Exception ex) {
+            setThumbSize(50);
+            setNumberThumbsWidth(50);
+            setThumbCollectionId(0);
+        }
+    }
 
     public void setXmlFromProps() {
         arr[FORMAT] = getFormat();
         arr[FOTO_DEST] = getFotoDest();
         arr[THUMB_SIZE] = String.valueOf(getThumbSize());
-        arr[DEST_SIZE_W] = String.valueOf(getNumberThumbsWidth());
+        arr[NUMBER_THUMBS_W] = String.valueOf(getNumberThumbsWidth());
         arr[THUMB_COLLECTION_ID] = String.valueOf(getThumbCollectionId());
     }
 }

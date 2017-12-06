@@ -15,28 +15,28 @@
  */
 
 
-package de.p2tools.controller.data.wallpaperData;
+package de.p2tools.mLib.configFile;
 
-import de.p2tools.controller.data.Data;
+public class SimpleConfigsData {
 
-public class WallpaperDataXml extends Data<WallpaperData> {
+    private String tag = "";
+    private Configs[] configsArr = new Configs[]{};
 
-    public static final int FORMAT = 0;
-    public static final int FOTO_DEST = 1;
-    public static final int THUMB_SIZE = 2;
-    public static final int NUMBER_THUMBS_W = 3;
-    public static final int THUMB_COLLECTION_ID = 4;
-
-    public static final String[] XML_NAMES = {"format",
-            "foto-dest",
-            "thumb-size",
-            "number-thumbs-width",
-            "thumb-collection-id"};
-    public static final String TAG = "WallpaperData";
-    public static int MAX_ELEM = XML_NAMES.length;
-
-    public WallpaperDataXml() {
-        arr = makeArr(MAX_ELEM);
+    public void setTagName(String tag) {
+        this.tag = tag;
     }
+
+    public String getTagName() {
+        return tag;
+    }
+
+    public void setConfigsArr(Configs[] configsArr) {
+        this.configsArr = configsArr;
+    }
+
+    public Configs[] getConfigsArr() {
+        return configsArr;
+    }
+
 
 }

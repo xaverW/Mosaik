@@ -26,7 +26,6 @@ import de.p2tools.controller.data.thumb.ThumbCollectionXml;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
-import de.p2tools.mLib.tools.MLConfigs;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -36,6 +35,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 class LoadConfigFile implements AutoCloseable {
 
@@ -61,6 +61,7 @@ class LoadConfigFile implements AutoCloseable {
                 while (parser.hasNext()) {
                     final int event = parser.next();
                     if (event == XMLStreamConstants.START_ELEMENT) {
+
                         switch (parser.getLocalName()) {
                             case Config.SYSTEM:
                                 // System
@@ -187,8 +188,11 @@ class LoadConfigFile implements AutoCloseable {
         return ret;
     }
 
-    private boolean getConfig(XMLStreamReader parser, String xmlElem) {
-        boolean ret = true;
+    private SimpleConfigsData getConfig(XMLStreamReader parser, String xmlElem) {
+        SimpleConfigsData configsData = new SimpleConfigsData();
+        configsData.setTagName(xmlElem);
+        ArrayList<Configs> configsArr = new ArrayList<>();
+
         try {
             while (parser.hasNext()) {
                 final int event = parser.next();
@@ -200,17 +204,18 @@ class LoadConfigFile implements AutoCloseable {
                 if (event == XMLStreamConstants.START_ELEMENT) {
                     final String s = parser.getLocalName();
                     final String n = parser.getElementText();
-                    MLConfigs mlConfigs = Config.get(s);
-                    if (mlConfigs != null) {
-                        mlConfigs.setValue(n);
-                    }
+                    Configs configs = new ConfigsString(s, n, n);
+                    configsArr.add(configs);
                 }
             }
+            configsData.setConfigsArr(configsArr.toArray(new Configs[]{}));
+
         } catch (final Exception ex) {
-            ret = false;
-            Log.errorLog(945120369, ex);
+            configsData = null;
+            Log.errorLog(945120367, ex);
         }
-        return ret;
+
+        return configsData;
     }
 
     @Override

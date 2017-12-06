@@ -32,6 +32,21 @@ public class ConfigFile {
         configsListList = new ArrayList<>();
     }
 
+    public void addConfigs(String tag, Configs[] configs) {
+        ConfigsData configsData = new ConfigsData() {
+            @Override
+            public String getTagName() {
+                return tag;
+            }
+
+            @Override
+            public Configs[] getConfigsArr() {
+                return configs;
+            }
+        };
+        configsList.add(configsData);
+    }
+
     public void addConfigs(ConfigsData configsData) {
         configsList.add(configsData);
     }

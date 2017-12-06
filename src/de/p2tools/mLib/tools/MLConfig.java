@@ -17,12 +17,33 @@
 
 package de.p2tools.mLib.tools;
 
+import de.p2tools.mLib.configFile.Configs;
+import de.p2tools.mLib.configFile.ConfigsString;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class MLConfig {
 
     private static final HashMap<String, MLConfigs> HASHMAP = new HashMap<>();
+
+    public static String getTagName() {
+        return "system";
+    }
+
+    public static Configs[] getConfigsArr() {
+        final LinkedList<String[]> liste = new LinkedList<>();
+        for (MLConfigs c : HASHMAP.values()) {
+            liste.add(new String[]{c.getKey(), c.getAktValue().getValueSafe()});
+        }
+        listeSort(liste, 0);
+
+        Configs[] arr = new Configs[HASHMAP.size()];
+        for (int i = 0; i < arr.length; ++i) {
+            arr[i] = new ConfigsString(liste.get(i)[0], liste.get(i)[1], liste.get(i)[1]);
+        }
+        return arr;
+    }
 
     public static MLConfigs get(String key) {
         return HASHMAP.get(key);

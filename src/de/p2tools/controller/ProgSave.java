@@ -16,6 +16,7 @@
 
 package de.p2tools.controller;
 
+import de.p2tools.controller.config.Config;
 import de.p2tools.controller.config.Const;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
@@ -49,7 +50,9 @@ public class ProgSave {
 
     private void save() {
         ConfigFile configFile = new ConfigFile("/tmp/usb/test");
+        configFile.addConfigs(Config.getTagName(), Config.getConfigsArr());
         configFile.addConfigs(progData.mosaikData);
+        configFile.addConfigs(progData.wallpaperData);
         configFile.addConfigs(progData.thumbCollectionList);
         configFile.writeConfigFile();
     }

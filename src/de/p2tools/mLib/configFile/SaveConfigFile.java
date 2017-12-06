@@ -63,16 +63,16 @@ class SaveConfigFile implements AutoCloseable {
         try {
             xmlSchreibenStart();
 
+            for (ConfigsData configsData : arrayList) {
+                writer.writeCharacters("\n\n");
+                writeConfigsData(configsData, 0);
+            }
+
             for (ObservableList<? extends ConfigsData> observableLists : configsListList) {
                 for (ConfigsData configsData : observableLists) {
                     writer.writeCharacters("\n\n");
                     writeConfigsData(configsData, 0);
                 }
-            }
-
-            for (ConfigsData configsData : arrayList) {
-                writer.writeCharacters("\n\n");
-                writeConfigsData(configsData, 0);
             }
 
             writer.writeCharacters("\n\n");

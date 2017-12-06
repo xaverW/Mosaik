@@ -46,9 +46,9 @@ public class MosaikDataProps extends MosaikDataXml implements ConfigsData {
                 new ConfigsStringProp("foto-src", "", fotoSrc),
                 new ConfigsStringProp("foto-dest", "", fotoDest),
                 new ConfigsIntProp("thumb-size", 50, thumbSize),
-                new ConfigsIntProp("numberThumbsWidth", 50, numberThumbsWidth),
-                new ConfigsIntProp("thumbCount", 0, thumbCount),
-                new ConfigsIntProp("thumbCollectionId", 0, thumbCollectionId)
+                new ConfigsIntProp("number-thumbs-width", 50, numberThumbsWidth),
+                new ConfigsIntProp("thumb-count", 0, thumbCount),
+                new ConfigsIntProp("thumb-collection-id", 0, thumbCollectionId)
         };
         return arr;
     }
@@ -142,19 +142,29 @@ public class MosaikDataProps extends MosaikDataXml implements ConfigsData {
         setFormat(arr[FORMAT]);
         setFotoSrc(arr[FOTO_SRC]);
         setFotoDest(arr[FOTO_DEST]);
-        setThumbSize(Integer.parseInt(arr[THUMB_SIZE]));
-        setNumberThumbsWidth(Integer.parseInt(arr[DEST_SIZE_W]));
-        setThumbCount(Integer.parseInt(arr[THUMB_COUNT]));
-        setThumbCollectionId(Integer.parseInt(arr[THUMB_COLLECTION_ID]));
+        setInt();
     }
 
+    private void setInt() {
+        try {
+            setThumbSize(Integer.parseInt(arr[THUMB_SIZE]));
+            setNumberThumbsWidth(Integer.parseInt(arr[NUMBER_THUMBS_W]));
+            setThumbCount(Integer.parseInt(arr[THUMB_COUNT]));
+            setThumbCollectionId(Integer.parseInt(arr[THUMB_COLLECTION_ID]));
+        } catch (Exception ex) {
+            setThumbSize(50);
+            setNumberThumbsWidth(50);
+            setThumbCount(0);
+            setThumbCollectionId(0);
+        }
+    }
 
     public void setXmlFromProps() {
         arr[FORMAT] = getFormat();
         arr[FOTO_SRC] = getFotoSrc();
         arr[FOTO_DEST] = getFotoDest();
         arr[THUMB_SIZE] = String.valueOf(getThumbSize());
-        arr[DEST_SIZE_W] = String.valueOf(getNumberThumbsWidth());
+        arr[NUMBER_THUMBS_W] = String.valueOf(getNumberThumbsWidth());
         arr[THUMB_COUNT] = String.valueOf(getThumbCount());
         arr[THUMB_COLLECTION_ID] = String.valueOf(getThumbCollectionId());
     }
