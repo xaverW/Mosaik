@@ -62,10 +62,7 @@ public class ConfigFile {
         return ret;
     }
 
-    public boolean readConfigFile(ArrayList<String> tagList) {
-        boolean ret = false;
-        LoadConfigFile loadConfigFile = new LoadConfigFile(configFileUrl, tagList);
-        loadConfigFile.readConfiguration();
-        return ret;
+    public boolean readConfigFile(ArrayList<ConfigsData> configsData) {
+        return new LoadConfigFile(configFileUrl, configsData).readConfiguration();
     }
 }

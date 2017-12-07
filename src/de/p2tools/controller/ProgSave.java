@@ -58,7 +58,7 @@ public class ProgSave {
         configFile.addConfigs(progData.thumbCollectionList);
         configFile.writeConfigFile();
 
-        configFile.readConfigFile(new ArrayList<>(Arrays.asList("system", "MosaikData", "WallpaperData")));
+        configFile.readConfigFile(new ArrayList<>(Arrays.asList(progData.mosaikData, progData.wallpaperData)));
     }
 
     public void allesSpeichern() {

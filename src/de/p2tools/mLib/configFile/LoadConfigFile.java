@@ -19,7 +19,6 @@ package de.p2tools.mLib.configFile;
 
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
-import javafx.collections.ObservableList;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -40,54 +39,66 @@ class LoadConfigFile implements AutoCloseable {
     private final String filePath;
     private final ArrayList<ConfigsData> configsDataArr;
 
-    private final ArrayList<String> tagList;
-
-    LoadConfigFile(String filePath, ArrayList<ObservableList<? extends ConfigsData>> configsListList, ArrayList<ConfigsData> configsDataArr) {
+    LoadConfigFile(String filePath, ArrayList<ConfigsData> configsDataArr) {
         this.filePath = filePath;
         this.configsDataArr = configsDataArr;
+
         inFactory = XMLInputFactory.newInstance();
         inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
-
-        tagList = new ArrayList<>();
-        for (ConfigsData configsData : configsDataArr) {
-            tagList.add(configsData.getTagName());
-        }
     }
+
+//    LoadConfigFile(String filePath, ArrayList<ObservableList<? extends ConfigsData>> configsListList) {
+//        this.filePath = filePath;
+//        this.configsDataArr = configsListList.get(0);
+//        inFactory = XMLInputFactory.newInstance();
+//        inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+//
+//        tagList = new ArrayList<>();
+//        for (ConfigsData configsData : configsDataArr) {
+//            tagList.add(configsData.getTagName());
+//        }
+//    }
 
     boolean readConfiguration() {
         Duration.counterStart("Konfig lesen");
         boolean ret = false;
-        String xmlTag = "system";
 
         xmlFilePath = Paths.get(filePath);
-        if (Files.exists(xmlFilePath)) {
-            XMLStreamReader parser = null;
-            try (InputStream is = Files.newInputStream(xmlFilePath);
-                 InputStreamReader in = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-                parser = inFactory.createXMLStreamReader(in);
-                while (parser.hasNext()) {
-                    final int event = parser.next();
-                    if (event == XMLStreamConstants.START_ELEMENT) {
-                        String xmlElem = parser.getLocalName();
-                        if (tagList.contains(xmlElem)) {
-                            getConfig(parser);
+        if (!Files.exists(xmlFilePath)) {
+            Duration.counterStop("Konfig lesen");
+            return ret;
+        }
+
+        XMLStreamReader parser = null;
+        try (InputStream is = Files.newInputStream(xmlFilePath);
+             InputStreamReader in = new InputStreamReader(is, StandardCharsets.UTF_8)) {
+
+            parser = inFactory.createXMLStreamReader(in);
+            while (parser.hasNext()) {
+                final int event = parser.next();
+                if (event == XMLStreamConstants.START_ELEMENT) {
+
+                    String xmlElem = parser.getLocalName();
+                    for (ConfigsData configsData : configsDataArr) {
+                        if (configsData.getTagName().equals(xmlElem)) {
+                            getConfig(parser, configsData);
                         }
                     }
-                }
-                ret = true;
-            } catch (final Exception ex) {
-                ret = false;
-                Log.errorLog(392840096, ex);
-            } finally {
-                try {
-                    if (parser != null) {
-                        parser.close();
-                    }
-                } catch (final Exception ignored) {
+
                 }
             }
+            ret = true;
 
-
+        } catch (final Exception ex) {
+            ret = false;
+            Log.errorLog(732160795, ex);
+        } finally {
+            try {
+                if (parser != null) {
+                    parser.close();
+                }
+            } catch (final Exception ignored) {
+            }
         }
 
         Duration.counterStop("Konfig lesen");
@@ -95,21 +106,9 @@ class LoadConfigFile implements AutoCloseable {
     }
 
 
-    private boolean getConfig(XMLStreamReader parser) {
+    private boolean getConfig(XMLStreamReader parser, ConfigsData configsData) {
         boolean ret = false;
         String xmlElem = parser.getLocalName();
-        ConfigsData configsData = null;
-        Configs[] cArr;
-        for (ConfigsData cd : configsDataArr) {
-            if (cd.getTagName().equals(xmlElem)) {
-                configsData = cd;
-                break;
-            }
-        }
-        if (configsData == null) {
-            return false;
-        }
-        cArr = configsData.getConfigsArr();
 
         try {
             while (parser.hasNext()) {
@@ -124,28 +123,22 @@ class LoadConfigFile implements AutoCloseable {
                     final String n = parser.getElementText();
                     for (Configs configs : configsData.getConfigsArr()) {
                         if (configs.getKey().equals(s)) {
-                            configs.
+                            configs.setActValue(n);
                         }
                     }
-
-                    Configs configs = new ConfigsString(s, n, n);
-                    configsData.getConfigsArr()
-                    configsArr.add(configs);
                 }
             }
-            configsData.setConfigsArr(configsArr.toArray(new Configs[]{}));
+            ret = true;
 
         } catch (final Exception ex) {
-            configsData = null;
-            Log.errorLog(945120367, ex);
+            Log.errorLog(302104541, ex);
         }
 
-        return configsData;
+        return ret;
     }
 
     @Override
     public void close() throws Exception {
-
     }
 
 }
