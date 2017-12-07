@@ -45,4 +45,8 @@ public class ConfigsStringProp extends Configs {
     public StringProperty getActValueProperty() {
         return actValue;
     }
+
+    public void setActValue(String act) {
+        actValue.setValue(act);
+    }
 }

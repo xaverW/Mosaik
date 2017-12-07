@@ -17,15 +17,9 @@
 
 package de.p2tools.mLib.configFile;
 
-import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.data.mosaikData.MosaikData;
-import de.p2tools.controller.data.thumb.Thumb;
-import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.controller.data.thumb.ThumbCollectionXml;
-import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
+import javafx.collections.ObservableList;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -35,24 +29,37 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 class LoadConfigFile implements AutoCloseable {
 
-    private XMLInputFactory inFactory = null;
-    private ProgData progData = null;
+    private XMLInputFactory inFactory;
+    private Path xmlFilePath = null;
 
-    LoadConfigFile(ProgData progData) {
-        this.progData = progData;
+    private final String filePath;
+    private final ArrayList<ConfigsData> configsDataArr;
 
+    private final ArrayList<String> tagList;
+
+    LoadConfigFile(String filePath, ArrayList<ObservableList<? extends ConfigsData>> configsListList, ArrayList<ConfigsData> configsDataArr) {
+        this.filePath = filePath;
+        this.configsDataArr = configsDataArr;
         inFactory = XMLInputFactory.newInstance();
         inFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+
+        tagList = new ArrayList<>();
+        for (ConfigsData configsData : configsDataArr) {
+            tagList.add(configsData.getTagName());
+        }
     }
 
-    boolean readConfiguration(Path xmlFilePath) {
+    boolean readConfiguration() {
         Duration.counterStart("Konfig lesen");
         boolean ret = false;
+        String xmlTag = "system";
 
+        xmlFilePath = Paths.get(filePath);
         if (Files.exists(xmlFilePath)) {
             XMLStreamReader parser = null;
             try (InputStream is = Files.newInputStream(xmlFilePath);
@@ -61,25 +68,9 @@ class LoadConfigFile implements AutoCloseable {
                 while (parser.hasNext()) {
                     final int event = parser.next();
                     if (event == XMLStreamConstants.START_ELEMENT) {
-
-                        switch (parser.getLocalName()) {
-                            case Config.SYSTEM:
-                                // System
-                                getConfig(parser, Config.SYSTEM);
-                                break;
-                            case MosaikData.TAG:
-                                if (get(parser, MosaikData.TAG, MosaikData.XML_NAMES, progData.mosaikData.arr)) {
-                                    progData.mosaikData.setPropsFromXml();
-                                }
-                                break;
-                            case WallpaperData.TAG:
-                                if (get(parser, WallpaperData.TAG, WallpaperData.XML_NAMES, progData.wallpaperData.arr)) {
-                                    progData.wallpaperData.setPropsFromXml();
-                                }
-                                break;
-                            case ThumbCollection.TAG:
-                                getThumbCollection(parser);
-                                break;
+                        String xmlElem = parser.getLocalName();
+                        if (tagList.contains(xmlElem)) {
+                            getConfig(parser);
                         }
                     }
                 }
@@ -96,7 +87,6 @@ class LoadConfigFile implements AutoCloseable {
                 }
             }
 
-            Config.loadSystemParameter();
 
         }
 
@@ -105,93 +95,21 @@ class LoadConfigFile implements AutoCloseable {
     }
 
 
-    private boolean get(XMLStreamReader parser, String xmlElem, String[] xmlNames, String[] strRet) {
-        boolean ret = true;
-        final int maxElem = strRet.length;
-        for (int i = 0; i < maxElem; ++i) {
-            if (strRet[i] == null) {
-                // damit Vorgaben nicht verschwinden!
-                strRet[i] = "";
+    private boolean getConfig(XMLStreamReader parser) {
+        boolean ret = false;
+        String xmlElem = parser.getLocalName();
+        ConfigsData configsData = null;
+        Configs[] cArr;
+        for (ConfigsData cd : configsDataArr) {
+            if (cd.getTagName().equals(xmlElem)) {
+                configsData = cd;
+                break;
             }
         }
-        try {
-            while (parser.hasNext()) {
-                final int event = parser.next();
-                if (event == XMLStreamConstants.END_ELEMENT) {
-                    if (parser.getLocalName().equals(xmlElem)) {
-                        break;
-                    }
-                }
-                if (event == XMLStreamConstants.START_ELEMENT) {
-                    for (int i = 0; i < maxElem; ++i) {
-                        if (parser.getLocalName().equals(xmlNames[i])) {
-                            strRet[i] = parser.getElementText();
-                            break;
-                        }
-                    }
-                }
-            }
-        } catch (final Exception ex) {
-            ret = false;
-            Log.errorLog(739530149, ex);
+        if (configsData == null) {
+            return false;
         }
-        return ret;
-    }
-
-    private boolean getThumbCollection(XMLStreamReader parser) {
-        final ThumbCollection thumbCollection = new ThumbCollection();
-
-        boolean ret = true;
-        final int maxElem = thumbCollection.arr.length;
-        for (int i = 0; i < maxElem; ++i) {
-            if (thumbCollection.arr[i] == null) {
-                // damit Vorgaben nicht verschwinden!
-                thumbCollection.arr[i] = "";
-            }
-        }
-        try {
-            while (parser.hasNext()) {
-                final int event = parser.next();
-
-                if (event == XMLStreamConstants.START_ELEMENT && parser.getLocalName() == Thumb.TAG) {
-                    final Thumb thumb = new Thumb();
-                    if (get(parser, Thumb.TAG, Thumb.XML_NAMES, thumb.arr)) {
-                        thumb.setPropsFromXml();
-                        thumbCollection.getThumbList().add(thumb);
-                    }
-                    continue;
-                }
-
-                if (event == XMLStreamConstants.END_ELEMENT) {
-                    if (parser.getLocalName().equals(ThumbCollectionXml.TAG)) {
-                        break;
-                    }
-                }
-
-                if (event == XMLStreamConstants.START_ELEMENT) {
-                    for (int i = 0; i < maxElem; ++i) {
-                        if (parser.getLocalName().equals(ThumbCollectionXml.XML_NAMES[i])) {
-                            thumbCollection.arr[i] = parser.getElementText();
-                            break;
-                        }
-                    }
-                }
-            }
-
-            thumbCollection.setPropsFromXml();
-            progData.thumbCollectionList.add(thumbCollection);
-
-        } catch (final Exception ex) {
-            ret = false;
-            Log.errorLog(739530149, ex);
-        }
-        return ret;
-    }
-
-    private SimpleConfigsData getConfig(XMLStreamReader parser, String xmlElem) {
-        SimpleConfigsData configsData = new SimpleConfigsData();
-        configsData.setTagName(xmlElem);
-        ArrayList<Configs> configsArr = new ArrayList<>();
+        cArr = configsData.getConfigsArr();
 
         try {
             while (parser.hasNext()) {
@@ -204,7 +122,14 @@ class LoadConfigFile implements AutoCloseable {
                 if (event == XMLStreamConstants.START_ELEMENT) {
                     final String s = parser.getLocalName();
                     final String n = parser.getElementText();
+                    for (Configs configs : configsData.getConfigsArr()) {
+                        if (configs.getKey().equals(s)) {
+                            configs.
+                        }
+                    }
+
                     Configs configs = new ConfigsString(s, n, n);
+                    configsData.getConfigsArr()
                     configsArr.add(configs);
                 }
             }

@@ -40,4 +40,7 @@ public class ConfigsString extends Configs {
         return actValue;
     }
 
+    public void setActValue(String act) {
+        actValue = act;
+    }
 }

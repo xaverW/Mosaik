@@ -61,4 +61,11 @@ public class ConfigFile {
         saveConfigFile.write();
         return ret;
     }
+
+    public boolean readConfigFile(ArrayList<String> tagList) {
+        boolean ret = false;
+        LoadConfigFile loadConfigFile = new LoadConfigFile(configFileUrl, tagList);
+        loadConfigFile.readConfiguration();
+        return ret;
+    }
 }
