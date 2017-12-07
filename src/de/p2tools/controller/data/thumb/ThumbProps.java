@@ -22,6 +22,9 @@ import de.p2tools.mLib.configFile.ConfigsStringProp;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class ThumbProps extends ThumbXml {
 
@@ -39,15 +42,13 @@ public class ThumbProps extends ThumbXml {
         return TAG;
     }
 
-    public Configs[] getConfigsArr() {
-        Configs[] arr = new Configs[]{
+    public ArrayList<Configs> getConfigsArr() {
+        return new ArrayList<Configs>(Arrays.asList(
                 new ConfigsIntProp("nr", 0, nr),
                 new ConfigsIntProp("red", 0, red),
                 new ConfigsIntProp("green", 0, green),
                 new ConfigsIntProp("blue", 0, blue),
-                new ConfigsStringProp("filename", "", fileName)
-        };
-        return arr;
+                new ConfigsStringProp("filename", "", fileName)));
     }
 
     public final Property[] properties = {nr, red, green, blue, fileName};

@@ -45,4 +45,12 @@ public class ConfigsIntProp extends Configs {
     public IntegerProperty getActValueProperty() {
         return actValue;
     }
+
+    public void setActValue(String act) {
+        try {
+            actValue.setValue(Integer.parseInt(act));
+        } catch (Exception ex) {
+            actValue.setValue(0);
+        }
+    }
 }

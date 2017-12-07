@@ -24,6 +24,9 @@ import de.p2tools.mLib.configFile.ConfigsIntProp;
 import de.p2tools.mLib.configFile.ConfigsStringProp;
 import javafx.beans.property.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData {
     private final StringProperty format = new SimpleStringProperty(Const.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
@@ -37,15 +40,14 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
         return TAG;
     }
 
-    public Configs[] getConfigsArr() {
-        Configs[] arr = new Configs[]{
+
+    public ArrayList<Configs> getConfigsArr() {
+        return new ArrayList<Configs>(Arrays.asList(
                 new ConfigsStringProp("format", Const.IMAGE_FORMAT_JPG, format),
                 new ConfigsStringProp("foto-dest", "", fotoDest),
                 new ConfigsIntProp("thumb-size", 50, thumbSize),
                 new ConfigsIntProp("number-thumbs-width", 50, numberThumbsWidth),
-                new ConfigsIntProp("thumb-collection-id", 0, thumbCollectionId)
-        };
-        return arr;
+                new ConfigsIntProp("thumb-collection-id", 0, thumbCollectionId)));
     }
 
     public String getFormat() {

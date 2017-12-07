@@ -121,9 +121,11 @@ class LoadConfigFile implements AutoCloseable {
                 if (event == XMLStreamConstants.START_ELEMENT) {
                     final String s = parser.getLocalName();
                     final String n = parser.getElementText();
+                    ArrayList<Configs> aList = configsData.getConfigsArr();
                     for (Configs configs : configsData.getConfigsArr()) {
                         if (configs.getKey().equals(s)) {
                             configs.setActValue(n);
+                            System.out.println(n + " - " + configs.getActValueToString());
                         }
                     }
                 }

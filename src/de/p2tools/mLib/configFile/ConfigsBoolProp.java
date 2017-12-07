@@ -45,4 +45,11 @@ public class ConfigsBoolProp extends Configs {
     public BooleanProperty getActValueProperty() {
         return actValue;
     }
+
+    public void setActValue(String act) {
+        try {
+            actValue.setValue(Boolean.valueOf(act));
+        } catch (Exception ex) {
+        }
+    }
 }

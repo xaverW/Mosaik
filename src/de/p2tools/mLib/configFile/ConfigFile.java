@@ -32,7 +32,7 @@ public class ConfigFile {
         configsListList = new ArrayList<>();
     }
 
-    public void addConfigs(String tag, Configs[] configs) {
+    public void addConfigs(String tag, ArrayList<Configs> configs) {
         ConfigsData configsData = new ConfigsData() {
             @Override
             public String getTagName() {
@@ -40,7 +40,7 @@ public class ConfigFile {
             }
 
             @Override
-            public Configs[] getConfigsArr() {
+            public ArrayList<Configs> getConfigsArr() {
                 return configs;
             }
         };

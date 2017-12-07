@@ -21,6 +21,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.MLInit;
+import de.p2tools.mLib.configFile.ConfigFile;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
 import de.p2tools.mLib.tools.SysMsg;
@@ -28,6 +29,7 @@ import de.p2tools.mLib.tools.SysMsg;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static de.p2tools.mLib.tools.Log.LILNE;
 
@@ -78,6 +80,9 @@ public class ProgStart {
 
     private boolean load() {
         ProgData progData = ProgData.getInstance();
+
+        ConfigFile configFile = new ConfigFile("/tmp/usb/test");
+        configFile.readConfigFile(new ArrayList<>(Arrays.asList(progData.mosaikData, progData.wallpaperData)));
 
         boolean ret = false;
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();

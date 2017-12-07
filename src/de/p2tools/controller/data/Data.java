@@ -20,6 +20,8 @@ import de.p2tools.mLib.configFile.Configs;
 import de.p2tools.mLib.configFile.ConfigsData;
 import de.p2tools.mLib.tools.GermanStringSorter;
 
+import java.util.ArrayList;
+
 public class Data<E> implements ConfigsData, Comparable<E> {
 
     public static String TAG;
@@ -46,7 +48,7 @@ public class Data<E> implements ConfigsData, Comparable<E> {
         return "";
     }
 
-    public Configs[] getConfigsArr() {
+    public ArrayList<Configs> getConfigsArr() {
         return null;
     }
 

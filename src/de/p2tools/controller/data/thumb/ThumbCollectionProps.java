@@ -20,6 +20,9 @@ import de.p2tools.controller.config.Const;
 import de.p2tools.mLib.configFile.*;
 import javafx.beans.property.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ThumbCollectionProps extends ThumbCollectionXml {
 
     private final IntegerProperty id = new SimpleIntegerProperty(0);
@@ -35,17 +38,15 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
         return TAG;
     }
 
-    public Configs[] getConfigsArr() {
-        Configs[] arr = new Configs[]{
+    public ArrayList<Configs> getConfigsArr() {
+        return new ArrayList<Configs>(Arrays.asList(
                 new ConfigsIntProp("id", 0, id),
                 new ConfigsStringProp("name", "", name),
                 new ConfigsBoolProp("recursiv", true, recursive),
                 new ConfigsStringProp("foto-format", Const.IMAGE_FORMAT_JPG, format),
                 new ConfigsStringProp("dir-thumb", "", thumbDir),
                 new ConfigsStringProp("dir-foto-src", "", fotoSrcDir),
-                new ConfigsList("thumb-list", thumbList)
-        };
-        return arr;
+                new ConfigsList("thumb-list", thumbList)));
     }
 
     public ThumbList getThumbList() {

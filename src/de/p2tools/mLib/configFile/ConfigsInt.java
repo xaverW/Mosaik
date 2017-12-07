@@ -40,4 +40,11 @@ public class ConfigsInt extends Configs {
         return String.valueOf(actValue);
     }
 
+    public void setActValue(String act) {
+        try {
+            actValue = Integer.valueOf(act);
+        } catch (Exception ex) {
+            actValue = 0;
+        }
+    }
 }

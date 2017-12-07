@@ -24,6 +24,9 @@ import de.p2tools.mLib.configFile.ConfigsIntProp;
 import de.p2tools.mLib.configFile.ConfigsStringProp;
 import javafx.beans.property.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MosaikDataProps extends MosaikDataXml implements ConfigsData {
 
     private final StringProperty format = new SimpleStringProperty(Const.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
@@ -40,17 +43,15 @@ public class MosaikDataProps extends MosaikDataXml implements ConfigsData {
         return TAG;
     }
 
-    public Configs[] getConfigsArr() {
-        Configs[] arr = new Configs[]{
+    public ArrayList<Configs> getConfigsArr() {
+        return new ArrayList<Configs>(Arrays.asList(
                 new ConfigsStringProp("format", Const.IMAGE_FORMAT_JPG, format),
                 new ConfigsStringProp("foto-src", "", fotoSrc),
                 new ConfigsStringProp("foto-dest", "", fotoDest),
                 new ConfigsIntProp("thumb-size", 50, thumbSize),
                 new ConfigsIntProp("number-thumbs-width", 50, numberThumbsWidth),
                 new ConfigsIntProp("thumb-count", 0, thumbCount),
-                new ConfigsIntProp("thumb-collection-id", 0, thumbCollectionId)
-        };
-        return arr;
+                new ConfigsIntProp("thumb-collection-id", 0, thumbCollectionId)));
     }
 
 

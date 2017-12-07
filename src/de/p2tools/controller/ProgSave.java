@@ -35,8 +35,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -57,8 +55,6 @@ public class ProgSave {
         configFile.addConfigs(progData.wallpaperData);
         configFile.addConfigs(progData.thumbCollectionList);
         configFile.writeConfigFile();
-
-        configFile.readConfigFile(new ArrayList<>(Arrays.asList(progData.mosaikData, progData.wallpaperData)));
     }
 
     public void allesSpeichern() {

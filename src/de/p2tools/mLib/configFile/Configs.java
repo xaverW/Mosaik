@@ -22,25 +22,25 @@ import javafx.beans.property.ObjectProperty;
 public abstract class Configs {
 
     private final String key;
-    private final Object initValue;
+    private final Object iniValue;
     private Object actValue;
     private ObjectProperty actValueProperty;
 
     public Configs() {
         this.key = "";
-        initValue = "";
+        iniValue = "";
         actValue = "";
     }
 
     public Configs(String key) {
         this.key = key;
-        initValue = "";
+        iniValue = "";
         actValue = "";
     }
 
     public Configs(String key, Object initValue, Object actValue) {
         this.key = key;
-        this.initValue = initValue;
+        this.iniValue = initValue;
         this.actValue = actValue;
     }
 
@@ -61,10 +61,10 @@ public abstract class Configs {
     }
 
     public Object getInitValue() {
-        return initValue;
+        return iniValue;
     }
 
-    public void setActValue(Object act) {
+    public void setActValue(String act) {
         actValue = act;
     }
 }
