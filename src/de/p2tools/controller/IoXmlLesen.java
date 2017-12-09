@@ -17,7 +17,7 @@
 
 package de.p2tools.controller;
 
-import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
@@ -60,10 +60,10 @@ public class IoXmlLesen implements AutoCloseable {
                     final int event = parser.next();
                     if (event == XMLStreamConstants.START_ELEMENT) {
                         switch (parser.getLocalName()) {
-                            case Config.SYSTEM:
-                                // System
-                                getConfig(parser, Config.SYSTEM);
-                                break;
+//                            case ProgConfig.SYSTEM:
+//                                // System
+//                                getConfig(parser, ProgConfig.SYSTEM);
+//                                break;
 //                            case MosaikData.TAG:
 //                                if (get(parser, MosaikData.TAG, MosaikData.XML_NAMES, progData.mosaikData.arr)) {
 //                                    progData.mosaikData.setPropsFromXml();
@@ -93,7 +93,7 @@ public class IoXmlLesen implements AutoCloseable {
                 }
             }
 
-            Config.loadSystemParameter();
+            ProgConfig.loadSystemParameter();
 
         }
 
@@ -198,7 +198,7 @@ public class IoXmlLesen implements AutoCloseable {
                 if (event == XMLStreamConstants.START_ELEMENT) {
                     final String s = parser.getLocalName();
                     final String n = parser.getElementText();
-                    MLConfigs mlConfigs = Config.get(s);
+                    MLConfigs mlConfigs = ProgConfig.get(s);
                     if (mlConfigs != null) {
                         mlConfigs.setValue(n);
                     }

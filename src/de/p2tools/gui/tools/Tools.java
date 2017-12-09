@@ -17,7 +17,7 @@
 
 package de.p2tools.gui.tools;
 
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConst;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -77,11 +77,11 @@ public class Tools {
         if (i > 0 && i < n.length() - 1) {
             suffix = n.substring(i + 1).toLowerCase();
         }
-        if (suffix.equals("jpeg") || suffix.equals(Const.IMAGE_FORMAT_JPG)) {
-            return Const.IMAGE_FORMAT_JPG;
+        if (suffix.equals("jpeg") || suffix.equals(ProgConst.IMAGE_FORMAT_JPG)) {
+            return ProgConst.IMAGE_FORMAT_JPG;
         }
-        if (suffix.equals(Const.IMAGE_FORMAT_PNG)) {
-            return Const.IMAGE_FORMAT_PNG;
+        if (suffix.equals(ProgConst.IMAGE_FORMAT_PNG)) {
+            return ProgConst.IMAGE_FORMAT_PNG;
         }
         return "";
     }

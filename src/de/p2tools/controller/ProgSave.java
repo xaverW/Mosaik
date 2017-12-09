@@ -16,8 +16,8 @@
 
 package de.p2tools.controller;
 
-import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConfig;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.gui.dialog.MTAlert;
@@ -50,7 +50,7 @@ public class ProgSave {
 
     private void save() {
         ConfigFile configFile = new ConfigFile("/tmp/usb/test");
-        configFile.addConfigs(Config.getTagName(), Config.getConfigsArr());
+        configFile.addConfigs(ProgConfig.getConfigsDate());
         configFile.addConfigs(progData.mosaikData);
         configFile.addConfigs(progData.wallpaperData);
         configFile.addConfigs(progData.thumbCollectionList);
@@ -116,7 +116,7 @@ public class ProgSave {
                 final Path xmlFilePath = new ProgInfos().getXmlFilePath();
                 long creatTime = -1;
 
-                Path xmlFilePathCopy_1 = ProgInfos.getSettingsDirectory().resolve(Const.CONFIG_FILE_COPY + 1);
+                Path xmlFilePathCopy_1 = ProgInfos.getSettingsDirectory().resolve(ProgConst.CONFIG_FILE_COPY + 1);
                 if (Files.exists(xmlFilePathCopy_1)) {
                     final BasicFileAttributes attrs = Files.readAttributes(xmlFilePathCopy_1, BasicFileAttributes.class);
                     final FileTime d = attrs.lastModifiedTime();
@@ -125,16 +125,16 @@ public class ProgSave {
 
                 if (creatTime == -1 || creatTime < getHeute_0Uhr()) {
                     // nur dann ist die letzte Kopie älter als einen Tag
-                    for (int i = Const.MAX_COPY_BACKUPFILE; i > 1; --i) {
-                        xmlFilePathCopy_1 = ProgInfos.getSettingsDirectory().resolve(Const.CONFIG_FILE_COPY + (i - 1));
-                        final Path xmlFilePathCopy_2 = ProgInfos.getSettingsDirectory().resolve(Const.CONFIG_FILE_COPY + i);
+                    for (int i = ProgConst.MAX_COPY_BACKUPFILE; i > 1; --i) {
+                        xmlFilePathCopy_1 = ProgInfos.getSettingsDirectory().resolve(ProgConst.CONFIG_FILE_COPY + (i - 1));
+                        final Path xmlFilePathCopy_2 = ProgInfos.getSettingsDirectory().resolve(ProgConst.CONFIG_FILE_COPY + i);
                         if (Files.exists(xmlFilePathCopy_1)) {
                             Files.move(xmlFilePathCopy_1, xmlFilePathCopy_2, StandardCopyOption.REPLACE_EXISTING);
                         }
                     }
                     if (Files.exists(xmlFilePath)) {
                         Files.move(xmlFilePath,
-                                ProgInfos.getSettingsDirectory().resolve(Const.CONFIG_FILE_COPY + 1),
+                                ProgInfos.getSettingsDirectory().resolve(ProgConst.CONFIG_FILE_COPY + 1),
                                 StandardCopyOption.REPLACE_EXISTING);
                     }
                     SysMsg.sysMsg("Einstellungen wurden gesichert");

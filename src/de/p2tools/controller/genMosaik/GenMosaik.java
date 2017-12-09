@@ -20,7 +20,7 @@ package de.p2tools.controller.genMosaik;
 import de.p2tools.controller.FotoEvent;
 import de.p2tools.controller.FotoListener;
 import de.p2tools.controller.Funktionen;
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.Thumb;
@@ -91,13 +91,13 @@ public class GenMosaik {
             return;
         }
 
-        if (mosaikData.getFormat().equals(Const.IMAGE_FORMAT_PNG)) {
-            if (!dest.endsWith("." + Const.IMAGE_FORMAT_JPG)) {
-                dest += "." + Const.IMAGE_FORMAT_PNG;
+        if (mosaikData.getFormat().equals(ProgConst.IMAGE_FORMAT_PNG)) {
+            if (!dest.endsWith("." + ProgConst.IMAGE_FORMAT_JPG)) {
+                dest += "." + ProgConst.IMAGE_FORMAT_PNG;
             }
         } else {
-            if (!dest.endsWith("." + Const.IMAGE_FORMAT_JPG)) {
-                dest += "." + Const.IMAGE_FORMAT_JPG;
+            if (!dest.endsWith("." + ProgConst.IMAGE_FORMAT_JPG)) {
+                dest += "." + ProgConst.IMAGE_FORMAT_JPG;
             }
         }
 
@@ -217,15 +217,15 @@ public class GenMosaik {
             ImageOutputStream ios = null;
             ImageWriter writer = null;
             try {
-                if (mosaikData.getFormat().equals(Const.IMAGE_FORMAT_PNG)) {
-                    writer = ImageIO.getImageWritersBySuffix(Const.IMAGE_FORMAT_PNG).next();
+                if (mosaikData.getFormat().equals(ProgConst.IMAGE_FORMAT_PNG)) {
+                    writer = ImageIO.getImageWritersBySuffix(ProgConst.IMAGE_FORMAT_PNG).next();
                     ios = ImageIO.createImageOutputStream(new File(dest));
                     writer.setOutput(ios);
 
                     writer.write(new IIOImage(img, null, null));
                     ios.flush();
                 } else {
-                    writer = ImageIO.getImageWritersBySuffix(Const.IMAGE_FORMAT_JPG).next();
+                    writer = ImageIO.getImageWritersBySuffix(ProgConst.IMAGE_FORMAT_JPG).next();
                     ios = ImageIO.createImageOutputStream(new File(dest));
                     writer.setOutput(ios);
 

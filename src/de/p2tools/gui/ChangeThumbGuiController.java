@@ -16,7 +16,7 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
@@ -50,7 +50,7 @@ public class ChangeThumbGuiController extends AnchorPane {
     Button btnReload = new Button("Liste neu einlesen");
 
     private final ProgData progData;
-    DoubleProperty splitPaneProperty = Config.CHANGE_THUMB_GUI_DIVIDER.getDoubleProperty();
+    DoubleProperty splitPaneProperty = ProgConfig.CHANGE_THUMB_GUI_DIVIDER.getDoubleProperty();
 
     public ChangeThumbGuiController() {
         progData = ProgData.getInstance();

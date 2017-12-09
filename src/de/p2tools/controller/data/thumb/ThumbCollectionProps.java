@@ -16,7 +16,7 @@
 
 package de.p2tools.controller.data.thumb;
 
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.mLib.configFile.*;
 import javafx.beans.property.*;
 
@@ -28,7 +28,7 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
     private final IntegerProperty id = new SimpleIntegerProperty(0);
     private final StringProperty name = new SimpleStringProperty("");
     private final BooleanProperty recursive = new SimpleBooleanProperty(true);
-    private final StringProperty format = new SimpleStringProperty(Const.IMAGE_FORMAT_JPG);
+    private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG);
     private final StringProperty thumbDir = new SimpleStringProperty("");
     private final StringProperty fotoSrcDir = new SimpleStringProperty("");
 
@@ -43,7 +43,7 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
                 new ConfigsIntProp("id", 0, id),
                 new ConfigsStringProp("name", "", name),
                 new ConfigsBoolProp("recursiv", true, recursive),
-                new ConfigsStringProp("foto-format", Const.IMAGE_FORMAT_JPG, format),
+                new ConfigsStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
                 new ConfigsStringProp("dir-thumb", "", thumbDir),
                 new ConfigsStringProp("dir-foto-src", "", fotoSrcDir),
                 new ConfigsList("thumb-list", thumbList)));

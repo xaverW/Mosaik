@@ -16,7 +16,7 @@
 
 package de.p2tools.mLib.configFile;
 
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.SysMsg;
@@ -91,7 +91,7 @@ class SaveConfigFile implements AutoCloseable {
         writer = outFactory.createXMLStreamWriter(out);
         writer.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
         writer.writeCharacters("\n");
-        writer.writeStartElement(Const.XML_START);
+        writer.writeStartElement(ProgConst.XML_START);
         writer.writeCharacters("\n");
     }
 

@@ -60,11 +60,11 @@ public class ProgInfos {
     }
 
     public static String pathProgramIcons() {
-        return getPathJar() + Const.VERZEICHNIS_PROGRAMM_ICONS;
+        return getPathJar() + ProgConst.VERZEICHNIS_PROGRAMM_ICONS;
     }
 
     public static String pathSenderIcons() {
-        return getPathJar() + Const.VERZEICHNIS_SENDER_ICONS;
+        return getPathJar() + ProgConst.VERZEICHNIS_SENDER_ICONS;
     }
 
 
@@ -74,7 +74,7 @@ public class ProgInfos {
      * @return Path object to p2tools.xml file
      */
     public Path getXmlFilePath() {
-        return ProgInfos.getSettingsDirectory().resolve(Const.CONFIG_FILE);
+        return ProgInfos.getSettingsDirectory().resolve(ProgConst.CONFIG_FILE);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ProgInfos {
     public static Path getSettingsDirectory() throws IllegalStateException {
         final Path baseDirectoryPath;
         if (ProgData.configDir == null || ProgData.configDir.isEmpty()) {
-            baseDirectoryPath = Paths.get(System.getProperty("user.home"), Const.VERZEICHNIS_EINSTELLUNGEN);
+            baseDirectoryPath = Paths.get(System.getProperty("user.home"), ProgConst.VERZEICHNIS_EINSTELLUNGEN);
         } else {
             baseDirectoryPath = Paths.get(ProgData.configDir);
         }
@@ -112,9 +112,9 @@ public class ProgInfos {
     public static String getFotoCollectionsDirectory_String(String destDir) {
         String dir = ProgInfos.getSettingsDirectory_String();
         if (dir.endsWith(File.separator)) {
-            dir += Const.DIR_FOTO_COLLECTIONS;
+            dir += ProgConst.DIR_FOTO_COLLECTIONS;
         } else {
-            dir += File.separator + Const.DIR_FOTO_COLLECTIONS;
+            dir += File.separator + ProgConst.DIR_FOTO_COLLECTIONS;
         }
         dir += File.separator + destDir;
         return dir;
@@ -126,8 +126,8 @@ public class ProgInfos {
      * @param xmlFilePath Path to file.
      */
     public void getMTPlayerXmlCopyFilePath(ArrayList<Path> xmlFilePath) {
-        for (int i = 1; i <= Const.MAX_COPY_BACKUPFILE; ++i) {
-            final Path path = ProgInfos.getSettingsDirectory().resolve(Const.CONFIG_FILE_COPY + i);
+        for (int i = 1; i <= ProgConst.MAX_COPY_BACKUPFILE; ++i) {
+            final Path path = ProgInfos.getSettingsDirectory().resolve(ProgConst.CONFIG_FILE_COPY + i);
             if (Files.exists(path)) {
                 xmlFilePath.add(path);
             }

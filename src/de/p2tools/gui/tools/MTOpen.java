@@ -16,7 +16,7 @@
 
 package de.p2tools.gui.tools;
 
-import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLConfigs;
@@ -45,10 +45,10 @@ public class MTOpen {
         }
 
 
-        if (!Config.SYSTEM_PROG_OPEN_DIR.get().isEmpty()) {
+        if (!ProgConfig.SYSTEM_PROG_OPEN_DIR.get().isEmpty()) {
             Exception exception;
             try {
-                final String programm = Config.SYSTEM_PROG_OPEN_DIR.get();
+                final String programm = ProgConfig.SYSTEM_PROG_OPEN_DIR.get();
                 final String[] arrProgCallArray = {programm, directory.getAbsolutePath()};
                 Runtime.getRuntime().exec(arrProgCallArray);
             } catch (final Exception ex) {
@@ -87,10 +87,10 @@ public class MTOpen {
         }
 
 
-        if (!Config.SYSTEM_PROG_PLAY_FILE.get().isEmpty()) {
+        if (!ProgConfig.SYSTEM_PROG_PLAY_FILE.get().isEmpty()) {
             // dann mit dem vorgegebenen Player starten
             try {
-                final String programm = Config.SYSTEM_PROG_PLAY_FILE.get();
+                final String programm = ProgConfig.SYSTEM_PROG_PLAY_FILE.get();
                 final String[] cmd = {programm, filmFile.getAbsolutePath()};
                 Runtime.getRuntime().exec(cmd);
             } catch (final Exception ex) {
@@ -123,10 +123,10 @@ public class MTOpen {
         }
 
 
-        if (!Config.SYSTEM_PROG_OPEN_URL.get().isEmpty()) {
+        if (!ProgConfig.SYSTEM_PROG_OPEN_URL.get().isEmpty()) {
             // dann mit dem vorgegebenen Player starten
             try {
-                final String programm = Config.SYSTEM_PROG_OPEN_URL.get();
+                final String programm = ProgConfig.SYSTEM_PROG_OPEN_URL.get();
                 final String[] cmd = {programm, url};
                 Runtime.getRuntime().exec(cmd);
             } catch (final Exception ex) {
@@ -166,21 +166,21 @@ public class MTOpen {
                 title = "Kein Videoplayer";
                 header = "Videoplayer auswählen";
                 cont = "Ein Videoplayer zum Abspielen wird nicht gefunden. Videoplayer selbst auswählen.";
-                conf = Config.SYSTEM_PROG_PLAY_FILE;
+                conf = ProgConfig.SYSTEM_PROG_PLAY_FILE;
                 break;
             case DIR:
                 title = "Kein Dateimanager";
                 header = "Dateimanager auswählen";
                 cont = "Der Dateimanager zum Anzeigen des Speicherordners wird nicht gefunden.\n" +
                         "Dateimanager selbst auswählen.";
-                conf = Config.SYSTEM_PROG_OPEN_DIR;
+                conf = ProgConfig.SYSTEM_PROG_OPEN_DIR;
                 break;
             case URL:
                 title = "Kein Browser";
                 header = "Browser auswählen";
                 cont = "Der Browser zum Anzeigen der URL wird nicht gefunden.\n" +
                         "Browser selbst auswählen.";
-                conf = Config.SYSTEM_PROG_OPEN_URL;
+                conf = ProgConfig.SYSTEM_PROG_OPEN_URL;
                 break;
         }
 

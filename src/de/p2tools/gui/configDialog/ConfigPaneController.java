@@ -16,7 +16,7 @@
 
 package de.p2tools.gui.configDialog;
 
-import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.dialog.MTAlert;
@@ -38,8 +38,8 @@ public class ConfigPaneController extends AnchorPane {
     private final HBox hBox = new HBox(0);
     private final CheckBox cbxAccordion = new CheckBox("");
 
-    BooleanProperty accordionProp = Config.CONFIG_DIALOG_ACCORDION.getBooleanProperty();
-    BooleanProperty updateProp = Config.SYSTEM_UPDATE_SEARCH.getBooleanProperty();
+    BooleanProperty accordionProp = ProgConfig.CONFIG_DIALOG_ACCORDION.getBooleanProperty();
+    BooleanProperty updateProp = ProgConfig.SYSTEM_UPDATE_SEARCH.getBooleanProperty();
 
     ScrollPane scrollPane = new ScrollPane();
 

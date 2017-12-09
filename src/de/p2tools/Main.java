@@ -18,7 +18,7 @@ package de.p2tools;
 import com.jidesoft.utils.SystemInfo;
 import de.p2tools.controller.Messages;
 import de.p2tools.controller.ProgStart;
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.mLib.tools.Log;
 import javafx.application.Application;
@@ -54,15 +54,15 @@ public class Main {
         }
     }
 
-  /*
-   * Aufruf: java -jar mosaik [Pfad zur Konfigdatei, sonst homeverzeichnis] [Schalter]
-   *
-   * Programmschalter:
-   *
-   * -d debug
-   * -v Programmversion
-   *
-   */
+    /*
+     * Aufruf: java -jar mosaik [Pfad zur Konfigdatei, sonst homeverzeichnis] [Schalter]
+     *
+     * Programmschalter:
+     *
+     * -d debug
+     * -v Programmversion
+     *
+     */
 
     /**
      * @param args the command line arguments
@@ -102,7 +102,7 @@ public class Main {
             final Toolkit xToolkit = Toolkit.getDefaultToolkit();
             final java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField(X11_AWT_APP_CLASS_NAME);
             awtAppClassNameField.setAccessible(true);
-            awtAppClassNameField.set(xToolkit, Const.PROGRAMMNAME);
+            awtAppClassNameField.set(xToolkit, ProgConst.PROGRAMMNAME);
         } catch (final Exception ignored) {
             System.err.println("Couldn't set awtAppClassName");
         }

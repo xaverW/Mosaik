@@ -16,7 +16,7 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.Icons;
@@ -61,7 +61,7 @@ public class ThumbGuiController extends AnchorPane {
     Button btnClear = new Button("Liste Löschen");
 
     private final ProgData progData;
-    DoubleProperty splitPaneProperty = Config.THUMB_GUI_DIVIDER.getDoubleProperty();
+    DoubleProperty splitPaneProperty = ProgConfig.THUMB_GUI_DIVIDER.getDoubleProperty();
 
     public ThumbGuiController() {
         progData = ProgData.getInstance();
@@ -119,7 +119,7 @@ public class ThumbGuiController extends AnchorPane {
         cbCollection.setItems(progData.thumbCollectionList);
 
         try {
-            String col = Config.THUMB_GUI_THUMB_COLLECTION.get();
+            String col = ProgConfig.THUMB_GUI_THUMB_COLLECTION.get();
             ThumbCollection thumbCollection = progData.thumbCollectionList.getThumbCollection(Integer.parseInt(col));
             cbCollection.getSelectionModel().select(thumbCollection);
         } catch (Exception ex) {
@@ -190,8 +190,8 @@ public class ThumbGuiController extends AnchorPane {
         thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
         progData.selectedThumbCollection = thumbCollection;
         String s = String.valueOf(thumbCollection.getId());
-        
-        Config.THUMB_GUI_THUMB_COLLECTION.setValue(thumbCollection.getId());
+
+        ProgConfig.THUMB_GUI_THUMB_COLLECTION.setValue(thumbCollection.getId());
 
 
         if (thumbCollection == null) {

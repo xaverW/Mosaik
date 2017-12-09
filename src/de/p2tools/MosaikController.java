@@ -17,7 +17,7 @@
 package de.p2tools;
 
 import de.p2tools.controller.ProgQuitt;
-import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.*;
@@ -54,7 +54,7 @@ public class MosaikController extends StackPane {
     private AnchorPane paneWallpaper;
 
     private final ProgData progData;
-    BooleanProperty msgVisProperty = Config.MSG_VISIBLE.getBooleanProperty();
+    BooleanProperty msgVisProperty = ProgConfig.MSG_VISIBLE.getBooleanProperty();
 
 
     public MosaikController() {

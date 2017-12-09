@@ -17,7 +17,7 @@
 
 package de.p2tools.controller.data.wallpaperData;
 
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.mLib.configFile.Configs;
 import de.p2tools.mLib.configFile.ConfigsData;
 import de.p2tools.mLib.configFile.ConfigsIntProp;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData {
-    private final StringProperty format = new SimpleStringProperty(Const.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
+    private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
     private final IntegerProperty numberThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
@@ -43,7 +43,7 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
 
     public ArrayList<Configs> getConfigsArr() {
         return new ArrayList<Configs>(Arrays.asList(
-                new ConfigsStringProp("format", Const.IMAGE_FORMAT_JPG, format),
+                new ConfigsStringProp("format", ProgConst.IMAGE_FORMAT_JPG, format),
                 new ConfigsStringProp("foto-dest", "", fotoDest),
                 new ConfigsIntProp("thumb-size", 50, thumbSize),
                 new ConfigsIntProp("number-thumbs-width", 50, numberThumbsWidth),

@@ -16,7 +16,7 @@
 
 package de.p2tools.gui.dialog;
 
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.mLib.tools.Functions;
@@ -70,7 +70,7 @@ public class AboutDialogController extends MTDialogExtra {
         int row = 0;
 
         // top
-        Text text = new Text(Const.PROGRAMMNAME);
+        Text text = new Text(ProgConst.PROGRAMMNAME);
         text.setFont(Font.font(null, FontWeight.BOLD, 40));
         gridPane.add(text, 0, row, 2, 1);
 

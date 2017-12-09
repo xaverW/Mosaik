@@ -16,8 +16,8 @@
 
 package de.p2tools.controller;
 
-import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConfig;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.mosaikData.MosaikData;
@@ -111,7 +111,7 @@ public class IoXmlSchreiben implements AutoCloseable {
             writer.writeCharacters("\n\n");
             writer.writeComment("Programmeinstellungen");
             writer.writeCharacters("\n");
-            xmlSchreibenConfig(Config.SYSTEM, Config.getAll());
+            xmlSchreibenConfig(ProgConfig.SYSTEM, ProgConfig.getAll());
             writer.writeCharacters("\n");
 
             writer.writeCharacters("\n\n");
@@ -140,7 +140,7 @@ public class IoXmlSchreiben implements AutoCloseable {
         writer = outFactory.createXMLStreamWriter(out);
         writer.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
         writer.writeCharacters("\n");// neue Zeile
-        writer.writeStartElement(Const.XML_START);
+        writer.writeStartElement(ProgConst.XML_START);
         writer.writeCharacters("\n");// neue Zeile
     }
 

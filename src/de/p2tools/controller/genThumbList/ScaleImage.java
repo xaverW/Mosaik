@@ -18,8 +18,8 @@
 package de.p2tools.controller.genThumbList;
 
 import de.p2tools.controller.Funktionen;
-import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConfig;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.tools.Log;
@@ -90,8 +90,8 @@ public class ScaleImage {
                 }
             }
 
-            Image scaledImage = imgRect.getScaledInstance(Const.THUMB_RESOLUTION, Const.THUMB_RESOLUTION, Image.SCALE_SMOOTH);
-            BufferedImage outImg = new BufferedImage(Const.THUMB_RESOLUTION, Const.THUMB_RESOLUTION, BufferedImage.TYPE_INT_RGB);
+            Image scaledImage = imgRect.getScaledInstance(ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION, Image.SCALE_SMOOTH);
+            BufferedImage outImg = new BufferedImage(ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION, BufferedImage.TYPE_INT_RGB);
 
             Graphics2D g = outImg.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -101,7 +101,7 @@ public class ScaleImage {
             g.drawImage(scaledImage, 0, 0, null);
             g.dispose();
 
-            ImageIO.write(outImg, Config.FOTO_FORMAT.get(), dest);
+            ImageIO.write(outImg, ProgConfig.FOTO_FORMAT.get(), dest);
 
 
             Thumb thumb = getThumb(rasterDest, dest);

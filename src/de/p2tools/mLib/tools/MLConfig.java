@@ -18,7 +18,7 @@
 package de.p2tools.mLib.tools;
 
 import de.p2tools.mLib.configFile.Configs;
-import de.p2tools.mLib.configFile.ConfigsString;
+import de.p2tools.mLib.configFile.ConfigsData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,11 +28,26 @@ public class MLConfig {
 
     private static final HashMap<String, MLConfigs> HASHMAP = new HashMap<>();
 
-    public static String getTagName() {
+    static String getTagName() {
         return "system";
     }
 
-    public static ArrayList<Configs> getConfigsArr() {
+    public static ConfigsData getConfigsDate() {
+        ConfigsData cd = new ConfigsData() {
+            @Override
+            public String getTagName() {
+                return MLConfig.getTagName();
+            }
+
+            @Override
+            public ArrayList<Configs> getConfigsArr() {
+                return MLConfig.getConfigsArr();
+            }
+        };
+        return cd;
+    }
+
+    static ArrayList<Configs> getConfigsArr() {
         final LinkedList<String[]> liste = new LinkedList<>();
         for (MLConfigs c : HASHMAP.values()) {
             liste.add(new String[]{c.getKey(), c.getAktValue().getValueSafe()});
@@ -41,10 +56,39 @@ public class MLConfig {
 
         ArrayList<Configs> arr = new ArrayList<>(HASHMAP.size());
         for (String[] sArr : liste) {
-            arr.add(new ConfigsString(sArr[0], sArr[1], sArr[1]));
+            arr.add(new ConfigsProg(sArr[0], sArr[1], sArr[1]));
         }
 
         return arr;
+    }
+
+
+    private static class ConfigsProg extends Configs {
+
+
+        public ConfigsProg(String key, String initValue, String actValue) {
+            super(key, initValue, actValue);
+        }
+
+        public String getActValue() {
+            return super.getActValueToString();
+        }
+
+        public String getActValueToString() {
+            return super.getActValueToString();
+        }
+
+        public void setActValue(String act) {
+            super.setActValue(act);
+
+            for (MLConfigs c : HASHMAP.values()) {
+                if (c.getKey().equals(getKey())) {
+                    c.setValue(getActValueToString());
+                    continue;
+                }
+            }
+
+        }
     }
 
     public static MLConfigs get(String key) {

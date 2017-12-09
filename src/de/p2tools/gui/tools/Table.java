@@ -16,7 +16,7 @@
 
 package de.p2tools.gui.tools;
 
-import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.data.Data;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLConfigs;
@@ -52,19 +52,19 @@ public class Table {
         switch (eTable) {
 
             case THUMB:
-                confWidth = Config.THUMB_GUI_TABLE_WIDTH;
-                confSort = Config.THUMB_GUI_TABLE_SORT;
-                confUpDown = Config.THUMB_GUI_TABLE_UPDOWN;
-                confVis = Config.THUMB_GUI_TABLE_VIS;
-                confOrder = Config.THUMB_GUI_TABLE_ORDER;
+                confWidth = ProgConfig.THUMB_GUI_TABLE_WIDTH;
+                confSort = ProgConfig.THUMB_GUI_TABLE_SORT;
+                confUpDown = ProgConfig.THUMB_GUI_TABLE_UPDOWN;
+                confVis = ProgConfig.THUMB_GUI_TABLE_VIS;
+                confOrder = ProgConfig.THUMB_GUI_TABLE_ORDER;
                 break;
 
             case CHANGE_THUMB:
-                confWidth = Config.CHANGE_THUMB_GUI_TABLE_WIDTH;
-                confSort = Config.CHANGE_THUMB_GUI_TABLE_SORT;
-                confUpDown = Config.CHANGE_THUMB_GUI_TABLE_UPDOWN;
-                confVis = Config.CHANGE_THUMB_GUI_TABLE_VIS;
-                confOrder = Config.CHANGE_THUMB_GUI_TABLE_ORDER;
+                confWidth = ProgConfig.CHANGE_THUMB_GUI_TABLE_WIDTH;
+                confSort = ProgConfig.CHANGE_THUMB_GUI_TABLE_SORT;
+                confUpDown = ProgConfig.CHANGE_THUMB_GUI_TABLE_UPDOWN;
+                confVis = ProgConfig.CHANGE_THUMB_GUI_TABLE_VIS;
+                confOrder = ProgConfig.CHANGE_THUMB_GUI_TABLE_ORDER;
                 break;
 
         }

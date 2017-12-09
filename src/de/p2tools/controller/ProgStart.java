@@ -16,7 +16,8 @@
 
 package de.p2tools.controller;
 
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConfig;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.gui.dialog.MTAlert;
@@ -47,7 +48,7 @@ public class ProgStart {
     }
 
     public static void startMeldungen() {
-        Log.versionMsg(Const.PROGRAMMNAME);
+        Log.versionMsg(ProgConst.PROGRAMMNAME);
         SysMsg.sysMsg("Programmpfad: " + ProgInfos.getPathJar());
         SysMsg.sysMsg("Verzeichnis Einstellungen: " + ProgInfos.getSettingsDirectory_String());
         SysMsg.sysMsg("");
@@ -58,7 +59,7 @@ public class ProgStart {
 
 
     /**
-     * Config beim  Programmstart laden
+     * ProgConfig beim  Programmstart laden
      *
      * @return
      */
@@ -70,7 +71,7 @@ public class ProgStart {
             return false;
         }
         SysMsg.sysMsg("Konfig wurde gelesen!");
-        MLInit.initLib(ProgData.debug, Const.PROGRAMMNAME, ProgInfos.getUserAgent());
+        MLInit.initLib(ProgData.debug, ProgConst.PROGRAMMNAME, ProgInfos.getUserAgent());
         return true;
     }
 
@@ -82,7 +83,7 @@ public class ProgStart {
         ProgData progData = ProgData.getInstance();
 
         ConfigFile configFile = new ConfigFile("/tmp/usb/test");
-        configFile.readConfigFile(new ArrayList<>(Arrays.asList(progData.mosaikData, progData.wallpaperData)));
+        configFile.readConfigFile(new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));
 
         boolean ret = false;
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();
@@ -107,6 +108,7 @@ public class ProgStart {
         if (loadBackup()) {
             ret = true;
         }
+
         return ret;
     }
 

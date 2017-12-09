@@ -16,7 +16,7 @@
 
 package de.p2tools.gui.dialog;
 
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.gui.tools.GuiSize;
 import de.p2tools.mLib.tools.Log;
@@ -98,7 +98,7 @@ public class MTDialog {
 
     public void init(Pane pane, boolean show) {
         setSize(pane);
-        String css = this.getClass().getResource(Const.CSS_FILE).toExternalForm();
+        String css = this.getClass().getResource(ProgConst.CSS_FILE).toExternalForm();
         scene.getStylesheets().add(css);
 
         initDialog();

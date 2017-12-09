@@ -16,7 +16,7 @@
 
 package de.p2tools.controller;
 
-import de.p2tools.controller.config.Config;
+import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.gui.tools.GuiSize;
 import de.p2tools.mLib.tools.Duration;
@@ -33,7 +33,7 @@ public class ProgQuitt {
 
     private void writeWindowSizes() {
         // Hauptfenster
-        GuiSize.getSizeScene(Config.SYSTEM_GROESSE_GUI, progData.primaryStage);
+        GuiSize.getSizeScene(ProgConfig.SYSTEM_GROESSE_GUI, progData.primaryStage);
     }
 
     private void writeTabSettings() {

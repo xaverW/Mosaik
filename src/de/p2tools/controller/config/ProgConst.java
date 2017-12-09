@@ -16,7 +16,7 @@
 
 package de.p2tools.controller.config;
 
-public class Const {
+public class ProgConst {
 
     public static final String PROGRAMMNAME = "Mosaik";
     public static final String CONFIG_FILE = "mosaik.xml";

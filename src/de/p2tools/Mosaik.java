@@ -17,8 +17,8 @@ package de.p2tools;
 
 import de.p2tools.controller.ProgQuitt;
 import de.p2tools.controller.ProgStart;
-import de.p2tools.controller.config.Config;
-import de.p2tools.controller.config.Const;
+import de.p2tools.controller.config.ProgConfig;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.gui.tools.GuiSize;
 import de.p2tools.mLib.tools.Duration;
@@ -66,7 +66,7 @@ public class Mosaik extends Application {
         progData = ProgData.getInstance(pfad);
         progData.primaryStage = primaryStage;
         progStart = new ProgStart(progData);
-        Config.loadSystemParameter();
+        ProgConfig.loadSystemParameter();
 
         loadData();
         initRootLayout();
@@ -78,10 +78,10 @@ public class Mosaik extends Application {
             root = new MosaikController();
             progData.mosaikController = root;
             scene = new Scene(root,
-                    GuiSize.getWidth(Config.SYSTEM_GROESSE_GUI),
-                    GuiSize.getHeight(Config.SYSTEM_GROESSE_GUI));
+                    GuiSize.getWidth(ProgConfig.SYSTEM_GROESSE_GUI),
+                    GuiSize.getHeight(ProgConfig.SYSTEM_GROESSE_GUI));
 
-            String css = this.getClass().getResource(Const.CSS_FILE).toExternalForm();
+            String css = this.getClass().getResource(ProgConst.CSS_FILE).toExternalForm();
             scene.getStylesheets().add(css);
 
             primaryStage.setScene(scene);
@@ -90,7 +90,7 @@ public class Mosaik extends Application {
                 new ProgQuitt().beenden(true);
             });
 
-            GuiSize.setPos(Config.SYSTEM_GROESSE_GUI, primaryStage);
+            GuiSize.setPos(ProgConfig.SYSTEM_GROESSE_GUI, primaryStage);
             primaryStage.show();
 
         } catch (final Exception e) {
@@ -105,7 +105,7 @@ public class Mosaik extends Application {
         progStart.startMeldungen();
 
         Duration.staticPing("Erster Start");
-        primaryStage.setTitle(Const.PROGRAMMNAME);
+        primaryStage.setTitle(ProgConst.PROGRAMMNAME);
 
         Duration.staticPing("Gui steht!");
         progStart.loadDataProgStart();
@@ -117,7 +117,7 @@ public class Mosaik extends Application {
 
             // konnte nicht geladen werden
             Duration.staticPing("Erster Start");
-            Config.loadSystemParameter();
+            ProgConfig.loadSystemParameter();
         }
 
     }

@@ -21,7 +21,7 @@ import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLConfig;
 import de.p2tools.mLib.tools.MLConfigs;
 
-public class Config extends MLConfig {
+public class ProgConfig extends MLConfig {
 
     public static final String SYSTEM = "system";
 
@@ -45,10 +45,10 @@ public class Config extends MLConfig {
     // Einstellungen zum Erstellen der Fotolisten
     public static MLConfigs FOTO_SIZE = addNewKey("foto-size", 600);
     public static MLConfigs FOTO_SQUARE = addNewKey("foto-square", Boolean.TRUE.toString());
-    public static MLConfigs FOTO_FORMAT = addNewKey("foto-format", Const.IMAGE_FORMAT_JPG);
+    public static MLConfigs FOTO_FORMAT = addNewKey("foto-format", ProgConst.IMAGE_FORMAT_JPG);
 
     // GuiThumb
-    public static MLConfigs THUMB_GUI_DIVIDER = addNewKey("thumb-gui-divider", Const.GUI_FILME_DIVIDER_LOCATION);
+    public static MLConfigs THUMB_GUI_DIVIDER = addNewKey("thumb-gui-divider", ProgConst.GUI_FILME_DIVIDER_LOCATION);
     public static MLConfigs THUMB_GUI_TABLE_WIDTH = addNewKey("thumb-gui-table-width");
     public static MLConfigs THUMB_GUI_TABLE_SORT = addNewKey("thumb-gui-table-sort");
     public static MLConfigs THUMB_GUI_TABLE_UPDOWN = addNewKey("thumb-gui-table-upDown");
@@ -57,7 +57,7 @@ public class Config extends MLConfig {
     public static MLConfigs THUMB_GUI_THUMB_COLLECTION = addNewKey("thumb-gui-thumb-collection");
 
     // GuiChangeThumb
-    public static MLConfigs CHANGE_THUMB_GUI_DIVIDER = addNewKey("change-thumb-gui-divider", Const.GUI_FILME_DIVIDER_LOCATION);
+    public static MLConfigs CHANGE_THUMB_GUI_DIVIDER = addNewKey("change-thumb-gui-divider", ProgConst.GUI_FILME_DIVIDER_LOCATION);
     public static MLConfigs CHANGE_THUMB_GUI_TABLE_WIDTH = addNewKey("change-thumb-gui-table-width");
     public static MLConfigs CHANGE_THUMB_GUI_TABLE_SORT = addNewKey("change-thumb-gui-table-sort");
     public static MLConfigs CHANGE_THUMB_GUI_TABLE_UPDOWN = addNewKey("change-thumb-gui-table-upDown");
@@ -67,14 +67,14 @@ public class Config extends MLConfig {
 
     // Meldungen
     public static MLConfigs MSG_VISIBLE = addNewKey("Meldungen-anzeigen", Boolean.FALSE.toString());
-    public static MLConfigs MSG_PANEL_LOGS_DIVIDER = addNewKey("Meldungen-Panel-Logs-Divider", Const.GUI_MSG_LOG_DIVIDER_LOCATION);
-    public static MLConfigs MSG_PANEL_DIVIDER = addNewKey("Meldungen-Panel-Divider", Const.GUI_MSG_DIVIDER_LOCATION);
+    public static MLConfigs MSG_PANEL_LOGS_DIVIDER = addNewKey("Meldungen-Panel-Logs-Divider", ProgConst.GUI_MSG_LOG_DIVIDER_LOCATION);
+    public static MLConfigs MSG_PANEL_DIVIDER = addNewKey("Meldungen-Panel-Divider", ProgConst.GUI_MSG_DIVIDER_LOCATION);
 
 
     // ConfigDialog
     public static MLConfigs CONFIG_DIALOG_SIZE = addNewKey("Config-Dialog-Groesse");
     public static MLConfigs CONFIG_DIALOG_ACCORDION = addNewKey("Config_Dialog-accordion", Boolean.TRUE.toString());
-    public static MLConfigs CONFIG_DIALOG_SET_DIVIDER = addNewKey("Config-Dialog-set-divider", Const.CONFIG_DIALOG_SET_DIVIDER);
+    public static MLConfigs CONFIG_DIALOG_SET_DIVIDER = addNewKey("Config-Dialog-set-divider", ProgConst.CONFIG_DIALOG_SET_DIVIDER);
     public static MLConfigs CONFIG_DIALOG_IMPORT_SET_GROESSE = addNewKey("Config-Dialog-import-set-Groesse", "800:600");
 
     public static void loadSystemParameter() {
