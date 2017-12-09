@@ -83,7 +83,8 @@ public class ProgStart {
         ProgData progData = ProgData.getInstance();
 
         ConfigFile configFile = new ConfigFile("/tmp/usb/test");
-        configFile.readConfigFile(new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));
+        configFile.readConfigFile(new ArrayList<>(Arrays.asList(progData.thumbCollectionList)),
+                new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));
 
         boolean ret = false;
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();

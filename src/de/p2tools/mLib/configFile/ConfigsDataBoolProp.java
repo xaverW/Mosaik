@@ -17,30 +17,39 @@
 
 package de.p2tools.mLib.configFile;
 
-public class ConfigsString extends Configs {
+import javafx.beans.property.BooleanProperty;
 
-    private String initValue;
-    private String actValue;
+public class ConfigsDataBoolProp extends Configs {
 
-    public ConfigsString(String key, String initValue, String actValue) {
+    private boolean initValue;
+    private BooleanProperty actValue;
+
+    public ConfigsDataBoolProp(String key, boolean initValue, BooleanProperty actValue) {
         super(key);
         this.initValue = initValue;
         this.actValue = actValue;
     }
 
-    public String getInitValue() {
+    public Boolean getInitValue() {
         return initValue;
     }
 
-    public String getActValue() {
-        return actValue;
+    public Boolean getActValue() {
+        return actValue.getValue();
     }
 
     public String getActValueToString() {
+        return String.valueOf(getActValue());
+    }
+
+    public BooleanProperty getActValueProperty() {
         return actValue;
     }
 
     public void setActValue(String act) {
-        actValue = act;
+        try {
+            actValue.setValue(Boolean.valueOf(act));
+        } catch (Exception ex) {
+        }
     }
 }

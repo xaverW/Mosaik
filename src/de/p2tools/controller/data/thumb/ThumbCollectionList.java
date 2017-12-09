@@ -16,6 +16,7 @@
 
 package de.p2tools.controller.data.thumb;
 
+import de.p2tools.mLib.configFile.ConfigsList;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,7 +27,7 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ThumbCollectionList extends SimpleListProperty<ThumbCollection> {
+public class ThumbCollectionList extends SimpleListProperty<ThumbCollection> implements ConfigsList {
 
     private BooleanProperty listChanged = new SimpleBooleanProperty(true);
 
@@ -35,6 +36,15 @@ public class ThumbCollectionList extends SimpleListProperty<ThumbCollection> {
         super(FXCollections.observableArrayList(callback ->
                 new Observable[]{callback.nameProperty()}));
     }
+
+    public String getTagName() {
+        return ThumbCollection.TAG;
+    }
+
+    public ThumbCollection getNewItem() {
+        return new ThumbCollection();
+    }
+
 
     public boolean isListChanged() {
         return listChanged.get();

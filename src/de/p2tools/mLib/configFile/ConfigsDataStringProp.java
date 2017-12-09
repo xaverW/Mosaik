@@ -17,34 +17,36 @@
 
 package de.p2tools.mLib.configFile;
 
-public class ConfigsInt extends Configs {
+import javafx.beans.property.StringProperty;
 
-    private int initValue;
-    private int actValue;
+public class ConfigsDataStringProp extends Configs {
 
-    public ConfigsInt(String key, int initValue, int actValue) {
+    private String initValue;
+    private StringProperty actValue;
+
+    public ConfigsDataStringProp(String key, String initValue, StringProperty actValue) {
         super(key);
         this.initValue = initValue;
         this.actValue = actValue;
     }
 
-    public Integer getInitValue() {
+    public String getInitValue() {
         return initValue;
     }
 
-    public Integer getActValue() {
-        return actValue;
+    public String getActValue() {
+        return actValue.getValue();
     }
 
     public String getActValueToString() {
-        return String.valueOf(actValue);
+        return getActValue();
+    }
+
+    public StringProperty getActValueProperty() {
+        return actValue;
     }
 
     public void setActValue(String act) {
-        try {
-            actValue = Integer.valueOf(act);
-        } catch (Exception ex) {
-            actValue = 0;
-        }
+        actValue.setValue(act);
     }
 }

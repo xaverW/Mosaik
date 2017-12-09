@@ -17,10 +17,30 @@
 
 package de.p2tools.mLib.configFile;
 
-public interface ConfigsList<ConfigData> {
+public class ConfigsDataString extends Configs {
 
-    public String getTagName();
+    private String initValue;
+    private String actValue;
 
-    public ConfigsData getNewItem();
+    public ConfigsDataString(String key, String initValue, String actValue) {
+        super(key);
+        this.initValue = initValue;
+        this.actValue = actValue;
+    }
 
+    public String getInitValue() {
+        return initValue;
+    }
+
+    public String getActValue() {
+        return actValue;
+    }
+
+    public String getActValueToString() {
+        return actValue;
+    }
+
+    public void setActValue(String act) {
+        actValue = act;
+    }
 }

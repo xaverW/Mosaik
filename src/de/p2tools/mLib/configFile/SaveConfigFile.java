@@ -120,8 +120,8 @@ class SaveConfigFile implements AutoCloseable {
     }
 
     private void writeConfigs(Configs configs, int tab) throws XMLStreamException {
-        if (configs.getClass().equals(ConfigsList.class)) {
-            writeConfList((ConfigsList) configs, tab);
+        if (configs.getClass().equals(ConfigsDataList.class)) {
+            writeConfList((ConfigsDataList) configs, tab);
         } else {
             writeConf(configs, tab);
         }
@@ -141,7 +141,7 @@ class SaveConfigFile implements AutoCloseable {
     }
 
 
-    private void writeConfList(ConfigsList configsData, int tab) throws XMLStreamException {
+    private void writeConfList(ConfigsDataList configsData, int tab) throws XMLStreamException {
         ObservableList<? extends ConfigsData> observableList = configsData.getActValue();
         for (ConfigsData configs : observableList) {
             writeConfigsData(configs, tab);

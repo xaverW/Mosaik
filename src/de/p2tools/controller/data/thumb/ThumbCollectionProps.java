@@ -40,13 +40,13 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
 
     public ArrayList<Configs> getConfigsArr() {
         return new ArrayList<Configs>(Arrays.asList(
-                new ConfigsIntProp("id", 0, id),
-                new ConfigsStringProp("name", "", name),
-                new ConfigsBoolProp("recursiv", true, recursive),
-                new ConfigsStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
-                new ConfigsStringProp("dir-thumb", "", thumbDir),
-                new ConfigsStringProp("dir-foto-src", "", fotoSrcDir),
-                new ConfigsList("thumb-list", thumbList)));
+                new ConfigsDataIntProp("id", 0, id),
+                new ConfigsDataStringProp("name", "", name),
+                new ConfigsDataBoolProp("recursiv", true, recursive),
+                new ConfigsDataStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
+                new ConfigsDataStringProp("dir-thumb", "", thumbDir),
+                new ConfigsDataStringProp("dir-foto-src", "", fotoSrcDir),
+                new ConfigsDataList("thumb-list", thumbList)));
     }
 
     public ThumbList getThumbList() {

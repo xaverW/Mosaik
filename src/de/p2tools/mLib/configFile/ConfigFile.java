@@ -62,7 +62,7 @@ public class ConfigFile {
         return ret;
     }
 
-    public boolean readConfigFile(ArrayList<ConfigsData> configsData) {
-        return new LoadConfigFile(configFileUrl, configsData).readConfiguration();
+    public boolean readConfigFile(ArrayList<ObservableList<? extends ConfigsData>> configsListList, ArrayList<ConfigsData> configsData) {
+        return new LoadConfigFile(configFileUrl, configsListList, configsData).readConfiguration();
     }
 }
