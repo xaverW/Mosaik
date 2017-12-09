@@ -81,7 +81,7 @@ class LoadConfigFile implements AutoCloseable {
                 }
                 for (ConfigsData configsData : configsDataArr) {
                     if (configsData.getTagName().equals(xmlElem)) {
-                        getConfig(parser, configsData);
+                        getConfigData(parser, configsData);
                         continue nextTag;
                     }
                 }
@@ -107,68 +107,81 @@ class LoadConfigFile implements AutoCloseable {
 
 
     private boolean getConfigList(XMLStreamReader parser, ConfigsList<ConfigsData> list) {
-        boolean ret = false;
         String xmlElem = parser.getLocalName();
-
         if (!list.getTagName().equals(xmlElem)) {
             return false;
         }
 
+        ConfigsData configsData = list.getNewItem();
+        return getConfigData(parser, configsData);
+    }
+
+    private boolean getConfigData(XMLStreamReader parser, ConfigsData configsData) {
+        boolean ret = false;
+        String xmlElem = parser.getLocalName();
+
         try {
             while (parser.hasNext()) {
                 final int event = parser.next();
-                if (event == XMLStreamConstants.END_ELEMENT) {
-                    if (parser.getLocalName().equals(xmlElem)) {
-                        break;
+
+                if (event == XMLStreamConstants.END_ELEMENT && parser.getLocalName().equals(xmlElem)) {
+                    break;
+                }
+                if (event != XMLStreamConstants.START_ELEMENT) {
+                    continue;
+                }
+
+                final String s = parser.getLocalName();
+                final String n = parser.getElementText();
+                for (Configs configs : configsData.getConfigsArr()) {
+                    if (configs.getKey().equals(s) && configs.getClass().equals(ConfigsDataList.class)) {
+                        getConfigDataList(parser, (ConfigsDataList) configs);
+                    } else if (configs.getKey().equals(s)) {
+                        System.out.println(n + " - Configs " + configs.getActValueToString());
+                        configs.setActValue(n);
+                        System.out.println(n + " - Configs " + configs.getActValueToString());
+
                     }
                 }
-                if (event == XMLStreamConstants.START_ELEMENT) {
-                    ConfigsData configsData = list.getNewItem();
-                    final String s = parser.getLocalName();
-                    final String n = parser.getElementText();
-                    ArrayList<Configs> aList = configsData.getConfigsArr();
-                    for (Configs configs : configsData.getConfigsArr()) {
-                        if (configs.getKey().equals(s)) {
-                            System.out.println(n + " - Configs " + configs.getActValueToString());
-                            configs.setActValue(n);
-                            System.out.println(n + " - Configs " + configs.getActValueToString());
-                        }
-                    }
-                }
+
             }
             ret = true;
 
         } catch (final Exception ex) {
-            Log.errorLog(203641970, ex);
+            Log.errorLog(302104541, ex);
         }
 
         return ret;
     }
 
-    private boolean getConfig(XMLStreamReader parser, ConfigsData configsData) {
+    private boolean getConfigDataList(XMLStreamReader parser, ConfigsDataList configsDataList) {
         boolean ret = false;
         String xmlElem = parser.getLocalName();
 
         try {
             while (parser.hasNext()) {
                 final int event = parser.next();
-                if (event == XMLStreamConstants.END_ELEMENT) {
-                    if (parser.getLocalName().equals(xmlElem)) {
-                        break;
+
+                if (event == XMLStreamConstants.END_ELEMENT && parser.getLocalName().equals(xmlElem)) {
+                    break;
+                }
+                if (event != XMLStreamConstants.START_ELEMENT) {
+                    continue;
+                }
+
+                final String s = parser.getLocalName();
+                final String n = parser.getElementText();
+                for (Configs configs : configsDataList.getConfigsArr()) {
+                    if (configs.getKey().equals(s) && configs.getClass().equals(ConfigsDataList.class)) {
+                        getConfigList(parser, (ConfigsDataList) configs);
+                    } else if (configs.getKey().equals(s)) {
+                        System.out.println(n + " - Configs " + configs.getActValueToString());
+                        configs.setActValue(n);
+                        System.out.println(n + " - Configs " + configs.getActValueToString());
+
                     }
                 }
-                if (event == XMLStreamConstants.START_ELEMENT) {
-                    final String s = parser.getLocalName();
-                    final String n = parser.getElementText();
-                    ArrayList<Configs> aList = configsData.getConfigsArr();
-                    for (Configs configs : configsData.getConfigsArr()) {
-                        if (configs.getKey().equals(s)) {
-                            System.out.println(n + " - Configs " + configs.getActValueToString());
-                            configs.setActValue(n);
-                            System.out.println(n + " - Configs " + configs.getActValueToString());
-                        }
-                    }
-                }
+
             }
             ret = true;
 
