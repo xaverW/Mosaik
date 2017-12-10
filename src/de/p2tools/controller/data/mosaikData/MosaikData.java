@@ -20,7 +20,7 @@ package de.p2tools.controller.data.mosaikData;
 public class MosaikData extends MosaikDataProps {
 
     public MosaikData() {
-//        ConfigFile configFile = new ConfigFile("/tmp/usb/test");
+//        ConfFile configFile = new ConfFile("/tmp/usb/test");
 //        configFile.addConfigs(this);
 //        configFile.writeConfigFile();
     }

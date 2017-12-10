@@ -21,7 +21,7 @@ import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.mLib.configFile.ConfigFile;
+import de.p2tools.mLib.configFile.ConfFile;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.SysMsg;
 import javafx.application.Platform;
@@ -49,12 +49,12 @@ public class ProgSave {
 
 
     private void save() {
-        ConfigFile configFile = new ConfigFile("/tmp/usb/test");
-        configFile.addConfigs(ProgConfig.getConfigsDate());
-        configFile.addConfigs(progData.mosaikData);
-        configFile.addConfigs(progData.wallpaperData);
-        configFile.addConfigs(progData.thumbCollectionList);
-        configFile.writeConfigFile();
+        ConfFile confFile = new ConfFile("/tmp/usb/test");
+        confFile.addConfigs(ProgConfig.getConfigsDate());
+        confFile.addConfigs(progData.mosaikData);
+        confFile.addConfigs(progData.wallpaperData);
+        confFile.addConfigs(progData.thumbCollectionList);
+        confFile.writeConfigFile();
     }
 
     public void allesSpeichern() {

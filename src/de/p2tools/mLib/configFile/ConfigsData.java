@@ -17,12 +17,14 @@
 
 package de.p2tools.mLib.configFile;
 
+import de.p2tools.mLib.configFile.config.Config;
+
 import java.util.ArrayList;
 
 public interface ConfigsData {
 
-    public String getTagName();
+    String getTagName();
 
-    public ArrayList<Configs> getConfigsArr();
+    ArrayList<Config> getConfigsArr();
 
 }

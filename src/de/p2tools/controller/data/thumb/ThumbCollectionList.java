@@ -27,7 +27,7 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ThumbCollectionList extends SimpleListProperty<ThumbCollection> implements ConfigsList {
+public class ThumbCollectionList extends SimpleListProperty<ThumbCollection> implements ConfigsList<ThumbCollection> {
 
     private BooleanProperty listChanged = new SimpleBooleanProperty(true);
 
@@ -45,6 +45,11 @@ public class ThumbCollectionList extends SimpleListProperty<ThumbCollection> imp
         return new ThumbCollection();
     }
 
+    public void addNewItem(Object obj) {
+        if (obj.getClass().equals(ThumbCollection.class)) {
+            add((ThumbCollection) obj);
+        }
+    }
 
     public boolean isListChanged() {
         return listChanged.get();

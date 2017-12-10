@@ -18,10 +18,10 @@
 package de.p2tools.controller.data.wallpaperData;
 
 import de.p2tools.controller.config.ProgConst;
-import de.p2tools.mLib.configFile.Configs;
+import de.p2tools.mLib.configFile.config.Config;
 import de.p2tools.mLib.configFile.ConfigsData;
-import de.p2tools.mLib.configFile.ConfigsDataIntProp;
-import de.p2tools.mLib.configFile.ConfigsDataStringProp;
+import de.p2tools.mLib.configFile.config.ConfigIntProp;
+import de.p2tools.mLib.configFile.config.ConfigStringProp;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;
@@ -41,13 +41,13 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
     }
 
 
-    public ArrayList<Configs> getConfigsArr() {
-        return new ArrayList<Configs>(Arrays.asList(
-                new ConfigsDataStringProp("format", ProgConst.IMAGE_FORMAT_JPG, format),
-                new ConfigsDataStringProp("foto-dest", "", fotoDest),
-                new ConfigsDataIntProp("thumb-size", 50, thumbSize),
-                new ConfigsDataIntProp("number-thumbs-width", 50, numberThumbsWidth),
-                new ConfigsDataIntProp("thumb-collection-id", 0, thumbCollectionId)));
+    public ArrayList<Config> getConfigsArr() {
+        return new ArrayList<Config>(Arrays.asList(
+                new ConfigStringProp("format", ProgConst.IMAGE_FORMAT_JPG, format),
+                new ConfigStringProp("foto-dest", "", fotoDest),
+                new ConfigIntProp("thumb-size", 50, thumbSize),
+                new ConfigIntProp("number-thumbs-width", 50, numberThumbsWidth),
+                new ConfigIntProp("thumb-collection-id", 0, thumbCollectionId)));
     }
 
     public String getFormat() {

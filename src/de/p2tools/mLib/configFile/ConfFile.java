@@ -17,22 +17,23 @@
 
 package de.p2tools.mLib.configFile;
 
+import de.p2tools.mLib.configFile.config.Config;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
-public class ConfigFile {
+public class ConfFile {
     private final String configFileUrl;
     private final ArrayList<ConfigsData> configsList;
     private final ArrayList<ObservableList<? extends ConfigsData>> configsListList;
 
-    public ConfigFile(String configFileUrl) {
+    public ConfFile(String configFileUrl) {
         this.configFileUrl = configFileUrl;
         this.configsList = new ArrayList<>();
         configsListList = new ArrayList<>();
     }
 
-    public void addConfigs(String tag, ArrayList<Configs> configs) {
+    public void addConfigs(String tag, ArrayList<Config> configs) {
         ConfigsData configsData = new ConfigsData() {
             @Override
             public String getTagName() {
@@ -40,7 +41,7 @@ public class ConfigFile {
             }
 
             @Override
-            public ArrayList<Configs> getConfigsArr() {
+            public ArrayList<Config> getConfigsArr() {
                 return configs;
             }
         };
@@ -62,7 +63,8 @@ public class ConfigFile {
         return ret;
     }
 
-    public boolean readConfigFile(ArrayList<ObservableList<? extends ConfigsData>> configsListList, ArrayList<ConfigsData> configsData) {
-        return new LoadConfigFile(configFileUrl, configsListList, configsData).readConfiguration();
+    public boolean readConfigFile(ArrayList<ConfigsList> configsListList,
+                                  ArrayList<ConfigsData> configsDataArr) {
+        return new LoadConfigFile(configFileUrl, configsListList, configsDataArr).readConfiguration();
     }
 }

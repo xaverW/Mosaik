@@ -17,8 +17,8 @@
 
 package de.p2tools.mLib.tools;
 
-import de.p2tools.mLib.configFile.Configs;
 import de.p2tools.mLib.configFile.ConfigsData;
+import de.p2tools.mLib.configFile.config.Config;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,21 +40,21 @@ public class MLConfig {
             }
 
             @Override
-            public ArrayList<Configs> getConfigsArr() {
+            public ArrayList<Config> getConfigsArr() {
                 return MLConfig.getConfigsArr();
             }
         };
         return cd;
     }
 
-    static ArrayList<Configs> getConfigsArr() {
+    static ArrayList<Config> getConfigsArr() {
         final LinkedList<String[]> liste = new LinkedList<>();
         for (MLConfigs c : HASHMAP.values()) {
             liste.add(new String[]{c.getKey(), c.getAktValue().getValueSafe()});
         }
         listeSort(liste, 0);
 
-        ArrayList<Configs> arr = new ArrayList<>(HASHMAP.size());
+        ArrayList<Config> arr = new ArrayList<>(HASHMAP.size());
         for (String[] sArr : liste) {
             arr.add(new ConfigsProg(sArr[0], sArr[1], sArr[1]));
         }
@@ -63,7 +63,7 @@ public class MLConfig {
     }
 
 
-    private static class ConfigsProg extends Configs {
+    private static class ConfigsProg extends Config {
 
 
         public ConfigsProg(String key, String initValue, String actValue) {

@@ -15,16 +15,14 @@
  */
 
 
-package de.p2tools.mLib.configFile;
+package de.p2tools.mLib.configFile.config;
 
-import javafx.beans.property.StringProperty;
-
-public class ConfigsDataStringProp extends Configs {
+public class ConfigString extends Config {
 
     private String initValue;
-    private StringProperty actValue;
+    private String actValue;
 
-    public ConfigsDataStringProp(String key, String initValue, StringProperty actValue) {
+    public ConfigString(String key, String initValue, String actValue) {
         super(key);
         this.initValue = initValue;
         this.actValue = actValue;
@@ -35,18 +33,14 @@ public class ConfigsDataStringProp extends Configs {
     }
 
     public String getActValue() {
-        return actValue.getValue();
+        return actValue;
     }
 
     public String getActValueToString() {
-        return getActValue();
-    }
-
-    public StringProperty getActValueProperty() {
         return actValue;
     }
 
     public void setActValue(String act) {
-        actValue.setValue(act);
+        actValue = act;
     }
 }

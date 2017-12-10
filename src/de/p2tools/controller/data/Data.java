@@ -16,8 +16,8 @@
 
 package de.p2tools.controller.data;
 
-import de.p2tools.mLib.configFile.Configs;
 import de.p2tools.mLib.configFile.ConfigsData;
+import de.p2tools.mLib.configFile.config.Config;
 import de.p2tools.mLib.tools.GermanStringSorter;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class Data<E> implements ConfigsData, Comparable<E> {
         return "";
     }
 
-    public ArrayList<Configs> getConfigsArr() {
+    public ArrayList<Config> getConfigsArr() {
         return null;
     }
 

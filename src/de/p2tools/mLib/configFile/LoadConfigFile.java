@@ -17,6 +17,8 @@
 
 package de.p2tools.mLib.configFile;
 
+import de.p2tools.mLib.configFile.config.Config;
+import de.p2tools.mLib.configFile.config.ConfigList;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 
@@ -37,12 +39,12 @@ class LoadConfigFile implements AutoCloseable {
     private Path xmlFilePath = null;
 
     private final String filePath;
-    private final ArrayList<ConfigsList<ConfigsData>> configsListList;
+    private final ArrayList<ConfigsList> configsListArrayList;
     private final ArrayList<ConfigsData> configsDataArr;
 
-    LoadConfigFile(String filePath, ArrayList<ConfigsList<ConfigsData>> configsListList, ArrayList<ConfigsData> configsDataArr) {
+    LoadConfigFile(String filePath, ArrayList<ConfigsList> configsListArrayList, ArrayList<ConfigsData> configsDataArr) {
         this.filePath = filePath;
-        this.configsListList = configsListList;
+        this.configsListArrayList = configsListArrayList;
         this.configsDataArr = configsDataArr;
 
         inFactory = XMLInputFactory.newInstance();
@@ -64,6 +66,7 @@ class LoadConfigFile implements AutoCloseable {
              InputStreamReader in = new InputStreamReader(is, StandardCharsets.UTF_8)) {
 
             parser = inFactory.createXMLStreamReader(in);
+
             nextTag:
             while (parser.hasNext()) {
                 final int event = parser.next();
@@ -72,13 +75,13 @@ class LoadConfigFile implements AutoCloseable {
                 }
 
                 String xmlElem = parser.getLocalName();
-                for (ConfigsList<ConfigsData> list : configsListList) {
-
+                for (ConfigsList list : configsListArrayList) {
                     if (list.getTagName().equals(xmlElem)) {
-                        getConfigList(parser, list);
+                        getConfigsList(parser, list);
                         continue nextTag;
                     }
                 }
+
                 for (ConfigsData configsData : configsDataArr) {
                     if (configsData.getTagName().equals(xmlElem)) {
                         getConfigData(parser, configsData);
@@ -106,14 +109,19 @@ class LoadConfigFile implements AutoCloseable {
     }
 
 
-    private boolean getConfigList(XMLStreamReader parser, ConfigsList<ConfigsData> list) {
+    private boolean getConfigsList(XMLStreamReader parser, ConfigsList configsList) {
         String xmlElem = parser.getLocalName();
-        if (!list.getTagName().equals(xmlElem)) {
+        if (!configsList.getTagName().equals(xmlElem)) {
             return false;
         }
 
-        ConfigsData configsData = list.getNewItem();
-        return getConfigData(parser, configsData);
+        ConfigsData configsData = configsList.getNewItem();
+        if (getConfigData(parser, configsData)) {
+            configsList.add(configsData);
+            return true;
+        }
+
+        return false;
     }
 
     private boolean getConfigData(XMLStreamReader parser, ConfigsData configsData) {
@@ -132,14 +140,15 @@ class LoadConfigFile implements AutoCloseable {
                 }
 
                 final String s = parser.getLocalName();
-                final String n = parser.getElementText();
-                for (Configs configs : configsData.getConfigsArr()) {
-                    if (configs.getKey().equals(s) && configs.getClass().equals(ConfigsDataList.class)) {
-                        getConfigDataList(parser, (ConfigsDataList) configs);
-                    } else if (configs.getKey().equals(s)) {
-                        System.out.println(n + " - Configs " + configs.getActValueToString());
-                        configs.setActValue(n);
-                        System.out.println(n + " - Configs " + configs.getActValueToString());
+                for (Config config : configsData.getConfigsArr()) {
+                    if (config.getKey().equals(s) && config.getClass().equals(ConfigList.class)) {
+                        System.out.println(s + " - Config: " + config.getKey());
+                        getConfigList(parser, (ConfigList) config);
+                    } else if (config.getKey().equals(s)) {
+                        final String n = parser.getElementText();
+                        System.out.println(n + " - Config: " + config.getActValueToString());
+                        config.setActValue(n);
+                        System.out.println(n + " - Config: " + config.getActValueToString());
 
                     }
                 }
@@ -154,9 +163,13 @@ class LoadConfigFile implements AutoCloseable {
         return ret;
     }
 
-    private boolean getConfigDataList(XMLStreamReader parser, ConfigsDataList configsDataList) {
+    private boolean getConfigList(XMLStreamReader parser, ConfigList configList) {
         boolean ret = false;
         String xmlElem = parser.getLocalName();
+
+        ConfigsList<? extends ConfigsData> ol = configList.getActValue();
+        ConfigsData configsData = ol.getNewItem();
+        ol.addNewItem(configsData);
 
         try {
             while (parser.hasNext()) {
@@ -171,21 +184,28 @@ class LoadConfigFile implements AutoCloseable {
 
                 final String s = parser.getLocalName();
                 final String n = parser.getElementText();
-                for (Configs configs : configsDataList.getConfigsArr()) {
-                    if (configs.getKey().equals(s) && configs.getClass().equals(ConfigsDataList.class)) {
-                        getConfigList(parser, (ConfigsDataList) configs);
-                    } else if (configs.getKey().equals(s)) {
-                        System.out.println(n + " - Configs " + configs.getActValueToString());
-                        configs.setActValue(n);
-                        System.out.println(n + " - Configs " + configs.getActValueToString());
 
+                for (Config config : configsData.getConfigsArr()) {
+                    if (config.getKey().equals(s) && config.getClass().equals(ConfigList.class)) {
+
+//                        if (getConfigData(parser, configsData)) {
+//                            ConfigsData cd = ((ConfigList) config).getNewItem();
+//                            ((ConfigList) config).getActValue().add(cd);
+//                        }
+
+                    } else if (config.getKey().equals(s)) {
+                        System.out.println(n + " - Config " + config.getActValueToString());
+                        config.setActValue(n);
+                        System.out.println(n + " - Config " + config.getActValueToString());
                     }
+
                 }
 
             }
             ret = true;
 
-        } catch (final Exception ex) {
+        } catch (
+                final Exception ex) {
             Log.errorLog(302104541, ex);
         }
 

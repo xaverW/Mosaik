@@ -15,26 +15,26 @@
  */
 
 
-package de.p2tools.mLib.configFile;
+package de.p2tools.mLib.configFile.config;
 
-import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 
-public class ConfigsDataBoolProp extends Configs {
+public class ConfigIntProp extends Config {
 
-    private boolean initValue;
-    private BooleanProperty actValue;
+    private int initValue;
+    private IntegerProperty actValue;
 
-    public ConfigsDataBoolProp(String key, boolean initValue, BooleanProperty actValue) {
+    public ConfigIntProp(String key, int initValue, IntegerProperty actValue) {
         super(key);
         this.initValue = initValue;
         this.actValue = actValue;
     }
 
-    public Boolean getInitValue() {
+    public Integer getInitValue() {
         return initValue;
     }
 
-    public Boolean getActValue() {
+    public Integer getActValue() {
         return actValue.getValue();
     }
 
@@ -42,14 +42,15 @@ public class ConfigsDataBoolProp extends Configs {
         return String.valueOf(getActValue());
     }
 
-    public BooleanProperty getActValueProperty() {
+    public IntegerProperty getActValueProperty() {
         return actValue;
     }
 
     public void setActValue(String act) {
         try {
-            actValue.setValue(Boolean.valueOf(act));
+            actValue.setValue(Integer.parseInt(act));
         } catch (Exception ex) {
+            actValue.setValue(0);
         }
     }
 }

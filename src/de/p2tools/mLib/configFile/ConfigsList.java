@@ -17,10 +17,14 @@
 
 package de.p2tools.mLib.configFile;
 
-public interface ConfigsList<ConfigData> {
+import java.util.List;
 
-    public String getTagName();
+public interface ConfigsList<E extends ConfigsData> extends List<E> {
 
-    public ConfigsData getNewItem();
+    String getTagName();
+
+    ConfigsData getNewItem();
+
+    void addNewItem(Object obj);
 
 }

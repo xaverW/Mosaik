@@ -15,14 +15,14 @@
  */
 
 
-package de.p2tools.mLib.configFile;
+package de.p2tools.mLib.configFile.config;
 
-public class ConfigsDataInt extends Configs {
+public class ConfigInt extends Config {
 
     private int initValue;
     private int actValue;
 
-    public ConfigsDataInt(String key, int initValue, int actValue) {
+    public ConfigInt(String key, int initValue, int actValue) {
         super(key);
         this.initValue = initValue;
         this.actValue = actValue;

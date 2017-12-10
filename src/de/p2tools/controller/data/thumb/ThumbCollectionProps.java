@@ -17,7 +17,7 @@
 package de.p2tools.controller.data.thumb;
 
 import de.p2tools.controller.config.ProgConst;
-import de.p2tools.mLib.configFile.*;
+import de.p2tools.mLib.configFile.config.*;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;
@@ -38,15 +38,15 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
         return TAG;
     }
 
-    public ArrayList<Configs> getConfigsArr() {
-        return new ArrayList<Configs>(Arrays.asList(
-                new ConfigsDataIntProp("id", 0, id),
-                new ConfigsDataStringProp("name", "", name),
-                new ConfigsDataBoolProp("recursiv", true, recursive),
-                new ConfigsDataStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
-                new ConfigsDataStringProp("dir-thumb", "", thumbDir),
-                new ConfigsDataStringProp("dir-foto-src", "", fotoSrcDir),
-                new ConfigsDataList("thumb-list", thumbList)));
+    public ArrayList<Config> getConfigsArr() {
+        return new ArrayList<>(Arrays.asList(
+                new ConfigIntProp("id", 0, id),
+                new ConfigStringProp("name", "", name),
+                new ConfigBoolProp("recursiv", true, recursive),
+                new ConfigStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
+                new ConfigStringProp("dir-thumb", "", thumbDir),
+                new ConfigStringProp("dir-foto-src", "", fotoSrcDir),
+                new ConfigList("thumb-list", thumbList)));
     }
 
     public ThumbList getThumbList() {

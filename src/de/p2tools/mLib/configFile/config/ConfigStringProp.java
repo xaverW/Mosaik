@@ -15,35 +15,38 @@
  */
 
 
-package de.p2tools.mLib.configFile;
+package de.p2tools.mLib.configFile.config;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.collections.ObservableList;
+import javafx.beans.property.StringProperty;
 
-public class ConfigsDataList extends Configs {
+public class ConfigStringProp extends Config {
 
-    private int initValue;
-    private ObservableList<? extends ConfigsData> actValue;
+    private String initValue;
+    private StringProperty actValue;
 
-    public ConfigsDataList(String key, ObservableList<? extends ConfigsData> actValue) {
+    public ConfigStringProp(String key, String initValue, StringProperty actValue) {
         super(key);
         this.initValue = initValue;
         this.actValue = actValue;
     }
 
-    public Integer getInitValue() {
+    public String getInitValue() {
         return initValue;
     }
 
-    public ObservableList<? extends ConfigsData> getActValue() {
-        return actValue;
+    public String getActValue() {
+        return actValue.getValue();
     }
 
     public String getActValueToString() {
-        return String.valueOf(getActValue());
+        return getActValue();
     }
 
-    public IntegerProperty getActValueProperty() {
-        return null;
+    public StringProperty getActValueProperty() {
+        return actValue;
+    }
+
+    public void setActValue(String act) {
+        actValue.setValue(act);
     }
 }

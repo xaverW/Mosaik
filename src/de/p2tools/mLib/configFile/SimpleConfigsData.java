@@ -17,10 +17,12 @@
 
 package de.p2tools.mLib.configFile;
 
+import de.p2tools.mLib.configFile.config.Config;
+
 public class SimpleConfigsData {
 
     private String tag = "";
-    private Configs[] configsArr = new Configs[]{};
+    private Config[] configArr = new Config[]{};
 
     public void setTagName(String tag) {
         this.tag = tag;
@@ -30,12 +32,12 @@ public class SimpleConfigsData {
         return tag;
     }
 
-    public void setConfigsArr(Configs[] configsArr) {
-        this.configsArr = configsArr;
+    public void setConfigArr(Config[] configArr) {
+        this.configArr = configArr;
     }
 
-    public Configs[] getConfigsArr() {
-        return configsArr;
+    public Config[] getConfigArr() {
+        return configArr;
     }
 
 

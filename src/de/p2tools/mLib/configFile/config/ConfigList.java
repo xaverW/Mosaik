@@ -15,16 +15,18 @@
  */
 
 
-package de.p2tools.mLib.configFile;
+package de.p2tools.mLib.configFile.config;
 
+import de.p2tools.mLib.configFile.ConfigsData;
+import de.p2tools.mLib.configFile.ConfigsList;
 import javafx.beans.property.IntegerProperty;
 
-public class ConfigsDataIntProp extends Configs {
+public class ConfigList extends Config {
 
     private int initValue;
-    private IntegerProperty actValue;
+    private ConfigsList<? extends ConfigsData> actValue;
 
-    public ConfigsDataIntProp(String key, int initValue, IntegerProperty actValue) {
+    public ConfigList(String key, ConfigsList<? extends ConfigsData> actValue) {
         super(key);
         this.initValue = initValue;
         this.actValue = actValue;
@@ -34,8 +36,8 @@ public class ConfigsDataIntProp extends Configs {
         return initValue;
     }
 
-    public Integer getActValue() {
-        return actValue.getValue();
+    public ConfigsList<? extends ConfigsData> getActValue() {
+        return actValue;
     }
 
     public String getActValueToString() {
@@ -43,14 +45,6 @@ public class ConfigsDataIntProp extends Configs {
     }
 
     public IntegerProperty getActValueProperty() {
-        return actValue;
-    }
-
-    public void setActValue(String act) {
-        try {
-            actValue.setValue(Integer.parseInt(act));
-        } catch (Exception ex) {
-            actValue.setValue(0);
-        }
+        return null;
     }
 }

@@ -22,7 +22,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.MLInit;
-import de.p2tools.mLib.configFile.ConfigFile;
+import de.p2tools.mLib.configFile.ConfFile;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
 import de.p2tools.mLib.tools.SysMsg;
@@ -82,8 +82,9 @@ public class ProgStart {
     private boolean load() {
         ProgData progData = ProgData.getInstance();
 
-        ConfigFile configFile = new ConfigFile("/tmp/usb/test");
-        configFile.readConfigFile(new ArrayList<>(Arrays.asList(progData.thumbCollectionList)),
+        ConfFile confFile = new ConfFile("/tmp/usb/test");
+        confFile.readConfigFile(
+                new ArrayList<>(Arrays.asList(progData.thumbCollectionList, progData.thumbCollectionList)),
                 new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));
 
         boolean ret = false;

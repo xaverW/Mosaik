@@ -16,9 +16,9 @@
 
 package de.p2tools.controller.data.thumb;
 
-import de.p2tools.mLib.configFile.Configs;
-import de.p2tools.mLib.configFile.ConfigsDataIntProp;
-import de.p2tools.mLib.configFile.ConfigsDataStringProp;
+import de.p2tools.mLib.configFile.config.Config;
+import de.p2tools.mLib.configFile.config.ConfigIntProp;
+import de.p2tools.mLib.configFile.config.ConfigStringProp;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
@@ -42,13 +42,13 @@ public class ThumbProps extends ThumbXml {
         return TAG;
     }
 
-    public ArrayList<Configs> getConfigsArr() {
-        return new ArrayList<Configs>(Arrays.asList(
-                new ConfigsDataIntProp("nr", 0, nr),
-                new ConfigsDataIntProp("red", 0, red),
-                new ConfigsDataIntProp("green", 0, green),
-                new ConfigsDataIntProp("blue", 0, blue),
-                new ConfigsDataStringProp("filename", "", fileName)));
+    public ArrayList<Config> getConfigsArr() {
+        return new ArrayList<Config>(Arrays.asList(
+                new ConfigIntProp("nr", 0, nr),
+                new ConfigIntProp("red", 0, red),
+                new ConfigIntProp("green", 0, green),
+                new ConfigIntProp("blue", 0, blue),
+                new ConfigStringProp("filename", "", fileName)));
     }
 
     public final Property[] properties = {nr, red, green, blue, fileName};

@@ -18,6 +18,8 @@ package de.p2tools.mLib.configFile;
 
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
+import de.p2tools.mLib.configFile.config.Config;
+import de.p2tools.mLib.configFile.config.ConfigList;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.SysMsg;
 import javafx.collections.ObservableList;
@@ -107,8 +109,8 @@ class SaveConfigFile implements AutoCloseable {
         writer.writeCharacters("\n"); // neue Zeile
 
         ++tab;
-        for (Configs configs : configsData.getConfigsArr()) {
-            writeConfigs(configs, tab);
+        for (Config config : configsData.getConfigsArr()) {
+            writeConfigs(config, tab);
         }
         --tab;
 
@@ -119,32 +121,31 @@ class SaveConfigFile implements AutoCloseable {
         writer.writeCharacters("\n"); // neue Zeile
     }
 
-    private void writeConfigs(Configs configs, int tab) throws XMLStreamException {
-        if (configs.getClass().equals(ConfigsDataList.class)) {
-            writeConfList((ConfigsDataList) configs, tab);
+    private void writeConfigs(Config config, int tab) throws XMLStreamException {
+        if (config.getClass().equals(ConfigList.class)) {
+            writeConfList((ConfigList) config, tab);
         } else {
-            writeConf(configs, tab);
+            writeConf(config, tab);
         }
     }
 
 
-    private void writeConf(Configs configs, int tab) throws XMLStreamException {
-        if (!configs.getActValueToString().isEmpty()) {
+    private void writeConfList(ConfigList configList, int tab) throws XMLStreamException {
+        ConfigsList<? extends ConfigsData> observableList = configList.getActValue();
+        for (ConfigsData configs : observableList) {
+            writeConfigsData(configs, tab);
+        }
+    }
+
+    private void writeConf(Config config, int tab) throws XMLStreamException {
+        if (!config.getActValueToString().isEmpty()) {
             for (int t = 0; t < tab; ++t) {
                 writer.writeCharacters("\t"); // Tab
             }
-            writer.writeStartElement(configs.getKey());
-            writer.writeCharacters(configs.getActValueToString());
+            writer.writeStartElement(config.getKey());
+            writer.writeCharacters(config.getActValueToString());
             writer.writeEndElement();
             writer.writeCharacters("\n"); // neue Zeile
-        }
-    }
-
-
-    private void writeConfList(ConfigsDataList configsData, int tab) throws XMLStreamException {
-        ObservableList<? extends ConfigsData> observableList = configsData.getActValue();
-        for (ConfigsData configs : observableList) {
-            writeConfigsData(configs, tab);
         }
     }
 

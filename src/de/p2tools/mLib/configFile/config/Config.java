@@ -15,30 +15,30 @@
  */
 
 
-package de.p2tools.mLib.configFile;
+package de.p2tools.mLib.configFile.config;
 
 import javafx.beans.property.ObjectProperty;
 
-public abstract class Configs {
+public abstract class Config {
 
     private final String key;
     private final Object iniValue;
     private Object actValue;
     private ObjectProperty actValueProperty;
 
-    public Configs() {
+    public Config() {
         this.key = "";
         iniValue = "";
         actValue = "";
     }
 
-    public Configs(String key) {
+    public Config(String key) {
         this.key = key;
         iniValue = "";
         actValue = "";
     }
 
-    public Configs(String key, Object initValue, Object actValue) {
+    public Config(String key, Object initValue, Object actValue) {
         this.key = key;
         this.iniValue = initValue;
         this.actValue = actValue;
