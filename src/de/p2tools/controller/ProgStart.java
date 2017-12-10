@@ -27,7 +27,6 @@ import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
 import de.p2tools.mLib.tools.SysMsg;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,26 +89,26 @@ public class ProgStart {
         boolean ret = false;
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();
 
-        try (IoXmlLesen reader = new IoXmlLesen(progData)) {
-            if (Files.exists(xmlFilePath)) {
-                if (reader.readConfiguration(xmlFilePath)) {
-                    return true;
-                } else {
-                    // dann hat das Laden nicht geklappt
-                    SysMsg.sysMsg("Konfig konnte nicht gelesen werden!");
-                }
-            } else {
-                // dann hat das Laden nicht geklappt
-                SysMsg.sysMsg("Konfig existiert nicht!");
-            }
-        } catch (final Exception ex) {
-            ex.printStackTrace();
-        }
-
-        // versuchen das Backup zu laden
-        if (loadBackup()) {
-            ret = true;
-        }
+//        try (IoXmlLesen reader = new IoXmlLesen(progData)) {
+//            if (Files.exists(xmlFilePath)) {
+//                if (reader.readConfiguration(xmlFilePath)) {
+//                    return true;
+//                } else {
+//                    // dann hat das Laden nicht geklappt
+//                    SysMsg.sysMsg("Konfig konnte nicht gelesen werden!");
+//                }
+//            } else {
+//                // dann hat das Laden nicht geklappt
+//                SysMsg.sysMsg("Konfig existiert nicht!");
+//            }
+//        } catch (final Exception ex) {
+//            ex.printStackTrace();
+//        }
+//
+//        // versuchen das Backup zu laden
+//        if (loadBackup()) {
+//            ret = true;
+//        }
 
         return ret;
     }

@@ -143,7 +143,12 @@ class LoadConfigFile implements AutoCloseable {
                 for (Config config : configsData.getConfigsArr()) {
                     if (config.getKey().equals(s) && config.getClass().equals(ConfigList.class)) {
                         System.out.println(s + " - Config: " + config.getKey());
-                        getConfigList(parser, (ConfigList) config);
+
+                        ConfigsList<? extends ConfigsData> ol = ((ConfigList) config).getActValue();
+                        ConfigsData cd = ol.getNewItem();
+                        ol.addNewItem(cd);
+                        getConfigData(parser, cd);
+
                     } else if (config.getKey().equals(s)) {
                         final String n = parser.getElementText();
                         System.out.println(n + " - Config: " + config.getActValueToString());

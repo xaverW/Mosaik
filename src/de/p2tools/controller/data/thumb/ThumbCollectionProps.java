@@ -46,7 +46,7 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
                 new ConfigStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("dir-thumb", "", thumbDir),
                 new ConfigStringProp("dir-foto-src", "", fotoSrcDir),
-                new ConfigList("thumb-list", thumbList)));
+                new ConfigList(Thumb.TAG, thumbList)));
     }
 
     public ThumbList getThumbList() {
