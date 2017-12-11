@@ -17,7 +17,7 @@
 
 package de.p2tools.controller.config;
 
-import de.p2tools.mLib.tools.Log;
+import de.p2tools.mLib.configFile.ConfigsData;
 import de.p2tools.mLib.tools.MLConfig;
 import de.p2tools.mLib.tools.MLConfigs;
 
@@ -77,13 +77,8 @@ public class ProgConfig extends MLConfig {
     public static MLConfigs CONFIG_DIALOG_SET_DIVIDER = addNewKey("Config-Dialog-set-divider", ProgConst.CONFIG_DIALOG_SET_DIVIDER);
     public static MLConfigs CONFIG_DIALOG_IMPORT_SET_GROESSE = addNewKey("Config-Dialog-import-set-Groesse", "800:600");
 
-    public static void loadSystemParameter() {
-        Log.sysLog("");
-        Log.sysLog("=======================================");
-        Log.sysLog("Systemparameter");
-        Log.sysLog("-----------------");
-        Log.sysLog("=======================================");
-        Log.sysLog("");
+    public static ConfigsData getConfigsDate() {
+        return MLConfig.getConfigsDate();
     }
 
 }

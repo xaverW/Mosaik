@@ -30,20 +30,18 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 class LoadConfigFile implements AutoCloseable {
 
     private XMLInputFactory inFactory;
-    private Path xmlFilePath = null;
+    private final Path xmlFilePath;
 
-    private final String filePath;
     private final ArrayList<ConfigsList> configsListArrayList;
     private final ArrayList<ConfigsData> configsDataArr;
 
-    LoadConfigFile(String filePath, ArrayList<ConfigsList> configsListArrayList, ArrayList<ConfigsData> configsDataArr) {
-        this.filePath = filePath;
+    LoadConfigFile(Path filePath, ArrayList<ConfigsList> configsListArrayList, ArrayList<ConfigsData> configsDataArr) {
+        this.xmlFilePath = filePath;
         this.configsListArrayList = configsListArrayList;
         this.configsDataArr = configsDataArr;
 
@@ -55,7 +53,6 @@ class LoadConfigFile implements AutoCloseable {
         Duration.counterStart("Konfig lesen");
         boolean ret = false;
 
-        xmlFilePath = Paths.get(filePath);
         if (!Files.exists(xmlFilePath)) {
             Duration.counterStop("Konfig lesen");
             return ret;

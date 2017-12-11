@@ -47,7 +47,6 @@ public class Mosaik extends Application {
     private static final String ARGUMENT_PREFIX = "-";
 
     protected ProgData progData;
-    ProgStart progStart;
     Scene scene = null;
 
     @Override
@@ -63,12 +62,12 @@ public class Mosaik extends Application {
         final String pfad = readPfadFromArguments(rawArguments.toArray(new String[]{}));
 
         Duration.counterStart(LOG_TEXT_PROGRAMMSTART);
+
         progData = ProgData.getInstance(pfad);
         progData.primaryStage = primaryStage;
-        progStart = new ProgStart(progData);
-        ProgConfig.loadSystemParameter();
 
-        loadData();
+        new ProgStart(progData).loadConfigData();
+
         initRootLayout();
         losGehts();
     }
@@ -102,24 +101,10 @@ public class Mosaik extends Application {
         Duration.counterStop(LOG_TEXT_PROGRAMMSTART);
         primaryStage.getIcons().add(GetIcon.getImage(ICON_NAME, ICON_PATH, ICON_WIDTH, ICON_HEIGHT));
 
-        progStart.startMeldungen();
-
         Duration.staticPing("Erster Start");
         primaryStage.setTitle(ProgConst.PROGRAMMNAME);
 
         Duration.staticPing("Gui steht!");
-        progStart.loadDataProgStart();
-    }
-
-    private void loadData() {
-
-        if (!progStart.allesLaden()) {
-
-            // konnte nicht geladen werden
-            Duration.staticPing("Erster Start");
-            ProgConfig.loadSystemParameter();
-        }
-
     }
 
     private String readPfadFromArguments(final String[] aArguments) {

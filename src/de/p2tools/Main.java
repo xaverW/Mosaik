@@ -114,7 +114,7 @@ public class Main {
             switch (argument) {
                 case ProgramArguments.STARTUPMODE_VERBOSE:
                     EventQueue.invokeLater(() -> {
-                        ProgStart.startMeldungen();
+                        ProgStart.startMsg();
                         Log.endMsg();
                         System.exit(0);
                     });

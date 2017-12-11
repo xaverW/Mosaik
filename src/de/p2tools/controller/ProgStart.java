@@ -38,15 +38,10 @@ public class ProgStart {
 
     public ProgStart(ProgData progData) {
         this.progData = progData;
+        startMsg();
     }
 
-    // #########################################################
-    // Filmliste beim Programmstart!! laden
-    // #########################################################
-    public void loadDataProgStart() {
-    }
-
-    public static void startMeldungen() {
+    public static void startMsg() {
         Log.versionMsg(ProgConst.PROGRAMMNAME);
         SysMsg.sysMsg("Programmpfad: " + ProgInfos.getPathJar());
         SysMsg.sysMsg("Verzeichnis Einstellungen: " + ProgInfos.getSettingsDirectory_String());
@@ -56,13 +51,7 @@ public class ProgStart {
         SysMsg.sysMsg("");
     }
 
-
-    /**
-     * ProgConfig beim  Programmstart laden
-     *
-     * @return
-     */
-    public boolean allesLaden() {
+    public boolean loadConfigData() {
         if (!load()) {
             SysMsg.sysMsg("Weder Konfig noch Backup konnte geladen werden!");
             // teils geladene Reste entfernen
@@ -79,16 +68,7 @@ public class ProgStart {
     }
 
     private boolean load() {
-        ProgData progData = ProgData.getInstance();
-
-        ConfFile confFile = new ConfFile("/tmp/usb/test");
-        confFile.readConfigFile(
-                new ArrayList<>(Arrays.asList(progData.thumbCollectionList, progData.thumbCollectionList)),
-                new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));
-
-        boolean ret = false;
-        final Path xmlFilePath = new ProgInfos().getXmlFilePath();
-
+//        final Path xmlFilePath = new ProgInfos().getXmlFilePath();
 //        try (IoXmlLesen reader = new IoXmlLesen(progData)) {
 //            if (Files.exists(xmlFilePath)) {
 //                if (reader.readConfiguration(xmlFilePath)) {
@@ -105,16 +85,25 @@ public class ProgStart {
 //            ex.printStackTrace();
 //        }
 //
-//        // versuchen das Backup zu laden
-//        if (loadBackup()) {
-//            ret = true;
-//        }
+        // versuchen das Backup zu laden
 
-        return ret;
+
+        if (!loadConnfig(new ProgInfos().getXmlFilePath())) {
+            return loadBackup();
+        }
+
+        return true;
+    }
+
+    private boolean loadConnfig(Path xmlFilePath) {
+        ConfFile confFile = new ConfFile(xmlFilePath);
+        return confFile.readConfigFile(
+                new ArrayList<>(Arrays.asList(progData.thumbCollectionList, progData.thumbCollectionList)),
+                new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));
     }
 
     private boolean loadBackup() {
-        ProgData progData = ProgData.getInstance();
+
         boolean ret = false;
         final ArrayList<Path> path = new ArrayList<>();
         new ProgInfos().getMTPlayerXmlCopyFilePath(path);
@@ -139,21 +128,18 @@ public class ProgStart {
             return false;
         }
 
+
         for (final Path p : path) {
             // teils geladene Reste entfernen
             clearKonfig();
             SysMsg.sysMsg(new String[]{"Versuch Backup zu laden:", p.toString()});
-            try (IoXmlLesen reader = new IoXmlLesen(progData)) {
-                if (reader.readConfiguration(p)) {
-                    SysMsg.sysMsg(new String[]{"Backup hat geklappt:", p.toString()});
-                    ret = true;
-                    break;
-                }
-            } catch (final Exception ex) {
-                ex.printStackTrace();
+            if (loadConnfig(p)) {
+                SysMsg.sysMsg(new String[]{"Backup hat geklappt:", p.toString()});
+                ret = true;
+                break;
             }
-
         }
+
         return ret;
     }
 }

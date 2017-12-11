@@ -33,7 +33,6 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 class SaveConfigFile implements AutoCloseable {
@@ -44,18 +43,16 @@ class SaveConfigFile implements AutoCloseable {
     private OutputStream os = null;
     private ProgData progData = null;
 
-    private final String filePath;
     private final ArrayList<ObservableList<? extends ConfigsData>> configsListList;
     private final ArrayList<ConfigsData> arrayList;
 
-    SaveConfigFile(String filePath, ArrayList<ObservableList<? extends ConfigsData>> configsListList, ArrayList<ConfigsData> arrayList) {
-        this.filePath = filePath;
+    SaveConfigFile(Path filePath, ArrayList<ObservableList<? extends ConfigsData>> configsListList, ArrayList<ConfigsData> arrayList) {
+        xmlFilePath = filePath;
         this.configsListList = configsListList;
         this.arrayList = arrayList;
     }
 
     synchronized void write() {
-        xmlFilePath = Paths.get(filePath);
         SysMsg.sysMsg("ProgData Schreiben nach: " + xmlFilePath.toString());
         xmlDatenSchreiben();
     }

@@ -93,7 +93,7 @@ public class IoXmlLesen implements AutoCloseable {
                 }
             }
 
-            ProgConfig.loadSystemParameter();
+//            ProgConfig.loadSystemParameter();
 
         }
 

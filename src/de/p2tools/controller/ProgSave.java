@@ -49,7 +49,8 @@ public class ProgSave {
 
 
     private void save() {
-        ConfFile confFile = new ConfFile("/tmp/usb/test");
+        final Path xmlFilePath = new ProgInfos().getXmlFilePath();
+        ConfFile confFile = new ConfFile(xmlFilePath);
         confFile.addConfigs(ProgConfig.getConfigsDate());
         confFile.addConfigs(progData.mosaikData);
         confFile.addConfigs(progData.wallpaperData);

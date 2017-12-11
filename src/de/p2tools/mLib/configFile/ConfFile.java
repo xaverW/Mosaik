@@ -20,14 +20,15 @@ package de.p2tools.mLib.configFile;
 import de.p2tools.mLib.configFile.config.Config;
 import javafx.collections.ObservableList;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class ConfFile {
-    private final String configFileUrl;
+    private final Path configFileUrl;
     private final ArrayList<ConfigsData> configsList;
     private final ArrayList<ObservableList<? extends ConfigsData>> configsListList;
 
-    public ConfFile(String configFileUrl) {
+    public ConfFile(Path configFileUrl) {
         this.configFileUrl = configFileUrl;
         this.configsList = new ArrayList<>();
         configsListList = new ArrayList<>();
