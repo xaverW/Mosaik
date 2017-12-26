@@ -78,6 +78,7 @@ public class ProgConfig extends MLConfig {
     public static MLConfigs CONFIG_DIALOG_IMPORT_SET_GROESSE = addNewKey("Config-Dialog-import-set-Groesse", "800:600");
 
     public static ConfigsData getConfigsDate() {
+        // sonst werde die Keys nich vorher angelegt :)
         return MLConfig.getConfigsDate();
     }
 

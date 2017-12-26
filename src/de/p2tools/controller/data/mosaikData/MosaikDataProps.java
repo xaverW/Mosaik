@@ -18,6 +18,7 @@
 package de.p2tools.controller.data.mosaikData;
 
 import de.p2tools.controller.config.ProgConst;
+import de.p2tools.controller.data.Data;
 import de.p2tools.mLib.configFile.config.Config;
 import de.p2tools.mLib.configFile.config.ConfigIntProp;
 import de.p2tools.mLib.configFile.config.ConfigStringProp;
@@ -26,8 +27,9 @@ import javafx.beans.property.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MosaikDataProps extends MosaikDataXml {
-
+public class MosaikDataProps extends Data<MosaikData> {
+    public static final String TAG = "MosaikData";
+    
     private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
@@ -138,34 +140,34 @@ public class MosaikDataProps extends MosaikDataXml {
         this.thumbCollectionId.set(thumbCollectionId);
     }
 
-    public void setPropsFromXml() {
-        setFormat(arr[FORMAT]);
-        setFotoSrc(arr[FOTO_SRC]);
-        setFotoDest(arr[FOTO_DEST]);
-        setInt();
-    }
-
-    private void setInt() {
-        try {
-            setThumbSize(Integer.parseInt(arr[THUMB_SIZE]));
-            setNumberThumbsWidth(Integer.parseInt(arr[NUMBER_THUMBS_W]));
-            setThumbCount(Integer.parseInt(arr[THUMB_COUNT]));
-            setThumbCollectionId(Integer.parseInt(arr[THUMB_COLLECTION_ID]));
-        } catch (Exception ex) {
-            setThumbSize(50);
-            setNumberThumbsWidth(50);
-            setThumbCount(0);
-            setThumbCollectionId(0);
-        }
-    }
-
-    public void setXmlFromProps() {
-        arr[FORMAT] = getFormat();
-        arr[FOTO_SRC] = getFotoSrc();
-        arr[FOTO_DEST] = getFotoDest();
-        arr[THUMB_SIZE] = String.valueOf(getThumbSize());
-        arr[NUMBER_THUMBS_W] = String.valueOf(getNumberThumbsWidth());
-        arr[THUMB_COUNT] = String.valueOf(getThumbCount());
-        arr[THUMB_COLLECTION_ID] = String.valueOf(getThumbCollectionId());
-    }
+//    public void setPropsFromXml() {
+//        setFormat(arr[FORMAT]);
+//        setFotoSrc(arr[FOTO_SRC]);
+//        setFotoDest(arr[FOTO_DEST]);
+//        setInt();
+//    }
+//
+//    private void setInt() {
+//        try {
+//            setThumbSize(Integer.parseInt(arr[THUMB_SIZE]));
+//            setNumberThumbsWidth(Integer.parseInt(arr[NUMBER_THUMBS_W]));
+//            setThumbCount(Integer.parseInt(arr[THUMB_COUNT]));
+//            setThumbCollectionId(Integer.parseInt(arr[THUMB_COLLECTION_ID]));
+//        } catch (Exception ex) {
+//            setThumbSize(50);
+//            setNumberThumbsWidth(50);
+//            setThumbCount(0);
+//            setThumbCollectionId(0);
+//        }
+//    }
+//
+//    public void setXmlFromProps() {
+//        arr[FORMAT] = getFormat();
+//        arr[FOTO_SRC] = getFotoSrc();
+//        arr[FOTO_DEST] = getFotoDest();
+//        arr[THUMB_SIZE] = String.valueOf(getThumbSize());
+//        arr[NUMBER_THUMBS_W] = String.valueOf(getNumberThumbsWidth());
+//        arr[THUMB_COUNT] = String.valueOf(getThumbCount());
+//        arr[THUMB_COLLECTION_ID] = String.valueOf(getThumbCollectionId());
+//    }
 }

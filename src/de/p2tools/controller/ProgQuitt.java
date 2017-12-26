@@ -63,7 +63,7 @@ public class ProgQuitt {
         writeTabSettings();
         writeWindowSizes();
 
-        new ProgSave().allesSpeichern();
+        new ProgSave().save();
 
         Log.endMsg();
         Duration.printCounter();

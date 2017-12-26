@@ -20,8 +20,8 @@ public class ProgConst {
 
     public static final String PROGRAMMNAME = "Mosaik";
     public static final String CONFIG_FILE = "mosaik.xml";
-    public static final String CONFIG_FILE_COPY = "modaik.xml_copy_";
-    public static final String CSS_FILE = "/de/p2tools/mosaik.css";
+    public static final String CONFIG_FILE_COPY = "mosaik.xml_copy_";
+    public static final String CSS_FILE = "/de/p2tools/mosik.css";
     public static final String DIR_FOTO_COLLECTIONS = "Fotos";
 
     public static final String WEBSITE_MOSAIK = "https://www.p2tools.de";

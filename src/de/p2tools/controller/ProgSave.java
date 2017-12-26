@@ -48,7 +48,9 @@ public class ProgSave {
     }
 
 
-    private void save() {
+    public void save() {
+        konfigCopy();
+
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();
         ConfFile confFile = new ConfFile(xmlFilePath);
         confFile.addConfigs(ProgConfig.getConfigsDate());
@@ -59,9 +61,8 @@ public class ProgSave {
     }
 
     public void allesSpeichern() {
-        save();
-
         konfigCopy();
+
         try (IoXmlSchreiben writer = new IoXmlSchreiben(progData)) {
             writer.datenSchreiben();
         } catch (final Exception ex) {

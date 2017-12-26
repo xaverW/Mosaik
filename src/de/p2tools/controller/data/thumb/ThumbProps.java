@@ -16,6 +16,7 @@
 
 package de.p2tools.controller.data.thumb;
 
+import de.p2tools.controller.data.Data;
 import de.p2tools.mLib.configFile.config.Config;
 import de.p2tools.mLib.configFile.config.ConfigIntProp;
 import de.p2tools.mLib.configFile.config.ConfigStringProp;
@@ -26,8 +27,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class ThumbProps extends ThumbXml {
+public class ThumbProps extends Data<Thumb> {
 
+    public static final String TAG = "Thumb";
     private int anz = 0;
     private final IntegerProperty nr = new SimpleIntegerProperty(0);
     private final IntegerProperty red = new SimpleIntegerProperty(0);
@@ -145,22 +147,22 @@ public class ThumbProps extends ThumbXml {
         this.color = Color.rgb(getRed(), getGreen(), getBlue());
     }
 
-    public void setPropsFromXml() {
-        setRed(Integer.parseInt(arr[COLOR_RED]));
-        setGreen(Integer.parseInt(arr[COLOR_GREEN]));
-        setBlue(Integer.parseInt(arr[COLOR_BLUE]));
-        setSum();
-        setColor();
-        setFileName(arr[FILENAME]);
-    }
-
-
-    public void setXmlFromProps() {
-        arr[COLOR_RED] = String.valueOf(getRed());
-        arr[COLOR_GREEN] = String.valueOf(getGreen());
-        arr[COLOR_BLUE] = String.valueOf(getBlue());
-        arr[FILENAME] = getFileName();
-    }
+//    public void setPropsFromXml() {
+//        setRed(Integer.parseInt(arr[COLOR_RED]));
+//        setGreen(Integer.parseInt(arr[COLOR_GREEN]));
+//        setBlue(Integer.parseInt(arr[COLOR_BLUE]));
+//        setSum();
+//        setColor();
+//        setFileName(arr[FILENAME]);
+//    }
+//
+//
+//    public void setXmlFromProps() {
+//        arr[COLOR_RED] = String.valueOf(getRed());
+//        arr[COLOR_GREEN] = String.valueOf(getGreen());
+//        arr[COLOR_BLUE] = String.valueOf(getBlue());
+//        arr[FILENAME] = getFileName();
+//    }
 
 
     @Override

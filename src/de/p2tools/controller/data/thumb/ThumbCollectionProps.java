@@ -17,14 +17,16 @@
 package de.p2tools.controller.data.thumb;
 
 import de.p2tools.controller.config.ProgConst;
+import de.p2tools.controller.data.Data;
 import de.p2tools.mLib.configFile.config.*;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ThumbCollectionProps extends ThumbCollectionXml {
+public class ThumbCollectionProps extends Data<ThumbCollection> {
 
+    public static final String TAG = "ThumbCollection";
     private final IntegerProperty id = new SimpleIntegerProperty(0);
     private final StringProperty name = new SimpleStringProperty("");
     private final BooleanProperty recursive = new SimpleBooleanProperty(true);
@@ -132,32 +134,32 @@ public class ThumbCollectionProps extends ThumbCollectionXml {
         this.fotoSrcDir.set(fotoSrcDir);
     }
 
-    public void setPropsFromXml() {
-        setName(arr[NAME]);
-        setFormat(arr[FOTO_FORMAT]);
-        setThumbDir(arr[DIR_THUMB]);
-        setFotoSrcDir(arr[DIR_FOTO_SRC]);
-        setInt();
-    }
-
-    private void setInt() {
-        try {
-            setRecursive(Boolean.parseBoolean(arr[RECURSIV]));
-            setId(Integer.parseInt(arr[ID]));
-        } catch (Exception e) {
-            setRecursive(true);
-            setId(0);
-        }
-    }
-
-    public void setXmlFromProps() {
-        arr[ID] = String.valueOf(getId());
-        arr[NAME] = getName();
-        arr[RECURSIV] = String.valueOf(isRecursive());
-        arr[FOTO_FORMAT] = getFormat();
-        arr[DIR_THUMB] = getThumbDir();
-        arr[DIR_FOTO_SRC] = getFotoSrcDir();
-    }
+//    public void setPropsFromXml() {
+//        setName(arr[NAME]);
+//        setFormat(arr[FOTO_FORMAT]);
+//        setThumbDir(arr[DIR_THUMB]);
+//        setFotoSrcDir(arr[DIR_FOTO_SRC]);
+//        setInt();
+//    }
+//
+//    private void setInt() {
+//        try {
+//            setRecursive(Boolean.parseBoolean(arr[RECURSIV]));
+//            setId(Integer.parseInt(arr[ID]));
+//        } catch (Exception e) {
+//            setRecursive(true);
+//            setId(0);
+//        }
+//    }
+//
+//    public void setXmlFromProps() {
+//        arr[ID] = String.valueOf(getId());
+//        arr[NAME] = getName();
+//        arr[RECURSIV] = String.valueOf(isRecursive());
+//        arr[FOTO_FORMAT] = getFormat();
+//        arr[DIR_THUMB] = getThumbDir();
+//        arr[DIR_FOTO_SRC] = getFotoSrcDir();
+//    }
 
 
     @Override
