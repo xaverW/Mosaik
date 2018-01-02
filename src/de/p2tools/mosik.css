@@ -65,6 +65,7 @@
 
  .btnTab{
     -fx-font-weight: bold;
+    -fx-text-alignment: center;
     -fx-alignment: center ;
     -fx-background-color: #c3c4c4,
         linear-gradient(from 0% 0% to 100% 100%, #d6d6d6 50%, white 100%),
@@ -107,6 +108,7 @@
 
  .btnTab-sel{
     -fx-font-weight: bold;
+    -fx-text-alignment: center;
     -fx-alignment: center ;
     -fx-background-color: blue,
          linear-gradient(from 0% 0% to 100% 100%, #d6d6d6 50%, white 100%),

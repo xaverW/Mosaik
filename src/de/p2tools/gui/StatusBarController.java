@@ -41,6 +41,10 @@ public class StatusBarController extends AnchorPane {
     ProgressBar progressBar = new ProgressBar();
     Button btnStop = new Button("");
 
+    //Start
+    Label lblLeftStart = new Label();
+    Label lblRightStart = new Label();
+
     //Thumb
     Label lblLeftThumb = new Label();
     Label lblRightThumb = new Label();
@@ -59,6 +63,7 @@ public class StatusBarController extends AnchorPane {
 
     AnchorPane loadPane = new AnchorPane();
     AnchorPane nonePane = new AnchorPane();
+    AnchorPane startPane = new AnchorPane();
     AnchorPane thumbPane = new AnchorPane();
     AnchorPane mosaikPane = new AnchorPane();
     AnchorPane wallpaperPane = new AnchorPane();
@@ -66,7 +71,7 @@ public class StatusBarController extends AnchorPane {
 
     public enum StatusbarIndex {
 
-        NONE, Thumb, Mosaik, Wallpaper
+        NONE, Start, Thumb, Mosaik, Wallpaper
     }
 
     private StatusbarIndex statusbarIndex = StatusbarIndex.NONE;
@@ -97,6 +102,13 @@ public class StatusBarController extends AnchorPane {
         progressBar.setPrefWidth(200);
         loadPane.getChildren().add(hBox);
         loadPane.setStyle("-fx-background-color: -fx-background ;");
+
+        hBox = getHbox();
+        lblLeftStart.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(lblLeftStart, Priority.ALWAYS);
+        hBox.getChildren().addAll(lblLeftStart, lblRightStart);
+        startPane.getChildren().add(hBox);
+        startPane.setStyle("-fx-background-color: -fx-background ;");
 
         hBox = getHbox();
         lblLeftThumb.setMaxWidth(Double.MAX_VALUE);
@@ -189,6 +201,11 @@ public class StatusBarController extends AnchorPane {
         }
 
         switch (statusbarIndex) {
+            case Start:
+                startPane.toFront();
+                setInfoStart();
+                setTextForRightDisplay();
+                break;
             case Thumb:
                 thumbPane.toFront();
                 setInfoThumb();
@@ -218,6 +235,11 @@ public class StatusBarController extends AnchorPane {
         lblLeftNone.setText("Anzahl Filme: " + 0);
     }
 
+    private void setInfoStart() {
+        String textLinks = "";
+        lblLeftStart.setText(textLinks);
+    }
+
     private void setInfoThumb() {
         String textLinks = "Miniaturbilder: " + progData.selectedThumbCollection.getName();
         lblLeftThumb.setText(textLinks);
@@ -237,6 +259,7 @@ public class StatusBarController extends AnchorPane {
         // Text rechts: alter/neuladenIn anzeigen
         String strText = progData.selectedThumbCollection.getThumbList().size() + " Bilder";
         // Infopanel setzen
+        lblRightStart.setText("");
         lblRightThumb.setText(strText);
         lblRightMosaik.setText(strText);
         lblRightNone.setText(strText);

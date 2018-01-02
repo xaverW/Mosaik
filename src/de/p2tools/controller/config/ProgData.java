@@ -23,10 +23,7 @@ import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbCollectionList;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.genThumbList.GenThumbList;
-import de.p2tools.gui.ChangeThumbGuiController;
-import de.p2tools.gui.MosaikGuiController;
-import de.p2tools.gui.ThumbGuiController;
-import de.p2tools.gui.WallpaperGuiController;
+import de.p2tools.gui.*;
 import de.p2tools.gui.tools.Listener;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -60,6 +57,7 @@ public class ProgData {
     public Stage primaryStage = null;
     public MosaikController mosaikController = null;
 
+    public StartGuiController startGuiController = null; // StartTab
     public ThumbGuiController thumbGuiController = null; // Tab mit den Filmen
     public ChangeThumbGuiController changeThumbGuiController = null; // Tab mit den Filmen
     public MosaikGuiController mosaikGuiController = null; // Tab mit den Downloads

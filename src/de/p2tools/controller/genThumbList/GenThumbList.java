@@ -38,7 +38,7 @@ public class GenThumbList {
     private int progress = 0;
     private boolean stopAll = false;
     private int fileCount = 0;
-    private LinkedList<File> fileListeEinlesen = new LinkedList<>();
+    private LinkedList<File> fileListRead = new LinkedList<>();
     private LinkedList<File[]> filesCreateThumb = new LinkedList<>();
     private ThumbCollection thumbCollection;
 
@@ -83,7 +83,7 @@ public class GenThumbList {
         this.thumbCollection = thumbCollection;
         progress = 0;
         stopAll = false;
-        fileListeEinlesen.clear();
+        fileListRead.clear();
         thumbCollection.getThumbList().clear();
         Einlesen einl = new Einlesen(thumbCollection.getThumbDir());
         Thread tErst = new Thread(einl);
@@ -100,11 +100,11 @@ public class GenThumbList {
     }
 
     private synchronized void addFileEinlesen(File file) {
-        fileListeEinlesen.add(file);
+        fileListRead.add(file);
     }
 
     private synchronized File getFileEinlesen() {
-        return fileListeEinlesen.poll();
+        return fileListRead.poll();
     }
 
     private synchronized void addCreationsList(File file1, File file2) {

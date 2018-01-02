@@ -34,10 +34,15 @@ import org.controlsfx.control.MaskerPane;
 
 public class MosaikController extends StackPane {
 
-    Button btnThumbNail = new Button("Miniaturbilder");
-    Button btnChangeThumbNail = new Button("Miniaturbilder bearbeiten");
-    Button btnMosaik = new Button("Mosaik");
-    Button btnWallpaper = new Button("Fototapete");
+    Button btnStart = new Button("Start");
+    Button btnThumbNail = new Button("Miniaturbilder\n" +
+            "erstellen");
+    Button btnChangeThumbNail = new Button("Miniaturbilder\n" +
+            "bearbeiten");
+    Button btnMosaik = new Button("Mosaik\n" +
+            "erstellen");
+    Button btnWallpaper = new Button("Fototapete\n" +
+            "erstellen");
     Button btnPrev = new Button("");
     Button btnNext = new Button("");
 
@@ -48,6 +53,7 @@ public class MosaikController extends StackPane {
     private MaskerPane maskerPane = new MaskerPane();
     private StatusBarController statusBarController;
 
+    private AnchorPane paneStart;
     private AnchorPane paneThumb;
     private AnchorPane paneChangeThumb;
     private AnchorPane paneMosaik;
@@ -76,22 +82,21 @@ public class MosaikController extends StackPane {
             tilePane.setAlignment(Pos.CENTER);
             HBox.setHgrow(tilePane, Priority.ALWAYS);
 
-            tilePane.getChildren().addAll(btnThumbNail, btnChangeThumbNail, btnMosaik, btnWallpaper);
+            tilePane.getChildren().addAll(btnStart, btnThumbNail, btnChangeThumbNail, btnMosaik, btnWallpaper);
             hBoxMenueButton.getChildren().addAll(tilePane, menuButton);
 
-            btnThumbNail.getStyleClass().add("btnFoto");
+            btnStart.setOnAction(e -> selPanelStart());
+            btnStart.setMaxWidth(Double.MAX_VALUE);
+
             btnThumbNail.setOnAction(e -> selPanelTumb());
             btnThumbNail.setMaxWidth(Double.MAX_VALUE);
 
-            btnChangeThumbNail.getStyleClass().add("btnFoto");
             btnChangeThumbNail.setOnAction(e -> selPanelChangeTumb());
             btnChangeThumbNail.setMaxWidth(Double.MAX_VALUE);
 
-            btnMosaik.getStyleClass().add("btnFoto");
             btnMosaik.setOnAction(e -> selPanelMosaik());
             btnMosaik.setMaxWidth(Double.MAX_VALUE);
 
-            btnWallpaper.getStyleClass().add("btnFoto");
             btnWallpaper.setOnAction(e -> selPanelWallpaper());
             btnWallpaper.setMaxWidth(Double.MAX_VALUE);
 
@@ -115,6 +120,9 @@ public class MosaikController extends StackPane {
 
 
             // Panes
+            progData.startGuiController = new StartGuiController();
+            paneStart = progData.startGuiController;
+
             progData.thumbGuiController = new ThumbGuiController();
             paneThumb = progData.thumbGuiController;
 
@@ -127,7 +135,7 @@ public class MosaikController extends StackPane {
             progData.wallpaperGuiController = new WallpaperGuiController();
             paneWallpaper = progData.wallpaperGuiController;
 
-            stackPaneCont.getChildren().addAll(paneThumb, paneChangeThumb, paneMosaik, paneWallpaper);
+            stackPaneCont.getChildren().addAll(paneStart, paneThumb, paneChangeThumb, paneMosaik, paneWallpaper);
 
 
             // Statusbar
@@ -166,7 +174,7 @@ public class MosaikController extends StackPane {
             this.setPadding(new Insets(0));
             this.getChildren().addAll(borderPane, maskerPane);
 
-            selPanelTumb();
+            selPanelStart();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -174,8 +182,10 @@ public class MosaikController extends StackPane {
 
     private void setPrev() {
         Node front = stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1);
-        if (front.equals(paneThumb)) {
+        if (front.equals(paneStart)) {
 
+        } else if (front.equals(paneThumb)) {
+            selPanelStart();
         } else if (front.equals(paneChangeThumb)) {
             selPanelTumb();
         } else if (front.equals(paneMosaik)) {
@@ -187,7 +197,9 @@ public class MosaikController extends StackPane {
 
     private void setNext() {
         Node front = stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1);
-        if (front.equals(paneThumb)) {
+        if (front.equals(paneStart)) {
+            selPanelTumb();
+        } else if (front.equals(paneThumb)) {
             selPanelChangeTumb();
         } else if (front.equals(paneChangeThumb)) {
             selPanelMosaik();
@@ -198,18 +210,44 @@ public class MosaikController extends StackPane {
         }
     }
 
-    private void selPanelTumb() {
+    private void selPanelStart() {
         if (maskerPane.isVisible()) {
             return;
         }
         btnPrev.setDisable(true);
         btnNext.setDisable(false);
 
+        btnStart.getStyleClass().clear();
         btnThumbNail.getStyleClass().clear();
         btnChangeThumbNail.getStyleClass().clear();
         btnMosaik.getStyleClass().clear();
         btnWallpaper.getStyleClass().clear();
 
+        btnStart.getStyleClass().add("btnTab-sel");
+        btnThumbNail.getStyleClass().add("btnTab");
+        btnChangeThumbNail.getStyleClass().add("btnTab");
+        btnMosaik.getStyleClass().add("btnTab");
+        btnWallpaper.getStyleClass().add("btnTab");
+
+        paneStart.toFront();
+        progData.startGuiController.isShown();
+        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Start);
+    }
+
+    private void selPanelTumb() {
+        if (maskerPane.isVisible()) {
+            return;
+        }
+        btnPrev.setDisable(false);
+        btnNext.setDisable(false);
+
+        btnStart.getStyleClass().clear();
+        btnThumbNail.getStyleClass().clear();
+        btnChangeThumbNail.getStyleClass().clear();
+        btnMosaik.getStyleClass().clear();
+        btnWallpaper.getStyleClass().clear();
+
+        btnStart.getStyleClass().add("btnTab");
         btnThumbNail.getStyleClass().add("btnTab-sel");
         btnChangeThumbNail.getStyleClass().add("btnTab");
         btnMosaik.getStyleClass().add("btnTab");
@@ -227,11 +265,13 @@ public class MosaikController extends StackPane {
         btnPrev.setDisable(false);
         btnNext.setDisable(false);
 
+        btnStart.getStyleClass().clear();
         btnThumbNail.getStyleClass().clear();
         btnChangeThumbNail.getStyleClass().clear();
         btnMosaik.getStyleClass().clear();
         btnWallpaper.getStyleClass().clear();
 
+        btnStart.getStyleClass().add("btnTab");
         btnThumbNail.getStyleClass().add("btnTab");
         btnChangeThumbNail.getStyleClass().add("btnTab-sel");
         btnMosaik.getStyleClass().add("btnTab");
@@ -249,11 +289,13 @@ public class MosaikController extends StackPane {
         btnPrev.setDisable(false);
         btnNext.setDisable(false);
 
+        btnStart.getStyleClass().clear();
         btnThumbNail.getStyleClass().clear();
         btnChangeThumbNail.getStyleClass().clear();
         btnMosaik.getStyleClass().clear();
         btnWallpaper.getStyleClass().clear();
 
+        btnStart.getStyleClass().add("btnTab");
         btnThumbNail.getStyleClass().add("btnTab");
         btnChangeThumbNail.getStyleClass().add("btnTab");
         btnMosaik.getStyleClass().add("btnTab-sel");
@@ -271,11 +313,13 @@ public class MosaikController extends StackPane {
         btnPrev.setDisable(false);
         btnNext.setDisable(true);
 
+        btnStart.getStyleClass().clear();
         btnThumbNail.getStyleClass().clear();
         btnChangeThumbNail.getStyleClass().clear();
         btnMosaik.getStyleClass().clear();
         btnWallpaper.getStyleClass().clear();
 
+        btnStart.getStyleClass().add("btnTab");
         btnThumbNail.getStyleClass().add("btnTab");
         btnChangeThumbNail.getStyleClass().add("btnTab");
         btnMosaik.getStyleClass().add("btnTab");
