@@ -29,7 +29,7 @@ import java.util.Arrays;
 
 public class MosaikDataProps extends Data<MosaikData> {
     public static final String TAG = "MosaikData";
-    
+
     private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
@@ -45,7 +45,7 @@ public class MosaikDataProps extends Data<MosaikData> {
     }
 
     public ArrayList<Config> getConfigsArr() {
-        return new ArrayList<Config>(Arrays.asList(
+        return new ArrayList<>(Arrays.asList(
                 new ConfigStringProp("format", ProgConst.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("foto-src", "", fotoSrc),
                 new ConfigStringProp("foto-dest", "", fotoDest),

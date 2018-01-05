@@ -20,11 +20,9 @@ import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
-import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.MLInit;
 import de.p2tools.mLib.configFile.ConfFile;
 import de.p2tools.mLib.tools.Log;
-import de.p2tools.mLib.tools.MLAlert;
 import de.p2tools.mLib.tools.SysMsg;
 
 import java.nio.file.Path;
@@ -52,94 +50,28 @@ public class ProgStart {
     }
 
     public boolean loadConfigData() {
-        if (!load()) {
-            SysMsg.sysMsg("Weder Konfig noch Backup konnte geladen werden!");
-            // teils geladene Reste entfernen
-            clearKonfig();
-            return false;
-        }
-        SysMsg.sysMsg("Konfig wurde gelesen!");
-        MLInit.initLib(ProgData.debug, ProgConst.PROGRAMMNAME, ProgInfos.getUserAgent());
-        return true;
-    }
-
-    private void clearKonfig() {
-        ProgData progData = ProgData.getInstance();
-    }
-
-    private boolean load() {
-//        final Path xmlFilePath = new ProgInfos().getXmlFilePath();
-//        try (IoXmlLesen reader = new IoXmlLesen(progData)) {
-//            if (Files.exists(xmlFilePath)) {
-//                if (reader.readConfiguration(xmlFilePath)) {
-//                    return true;
-//                } else {
-//                    // dann hat das Laden nicht geklappt
-//                    SysMsg.sysMsg("Konfig konnte nicht gelesen werden!");
-//                }
-//            } else {
-//                // dann hat das Laden nicht geklappt
-//                SysMsg.sysMsg("Konfig existiert nicht!");
-//            }
-//        } catch (final Exception ex) {
-//            ex.printStackTrace();
-//        }
-//
-        // versuchen das Backup zu laden
-
-
         if (!loadConnfig(new ProgInfos().getXmlFilePath())) {
-            return loadBackup();
+            // teils geladene Reste entfernen
+            initKonfig();
         }
+        SysMsg.sysMsg("Progstart: Konfig");
 
+        MLInit.initLib(ProgData.debug, ProgConst.PROGRAMMNAME, ProgInfos.getUserAgent());
+        progData.projectDataList.initList();
         return true;
+    }
+
+    private void initKonfig() {
+        ProgData progData = ProgData.getInstance();
+        // ....
     }
 
     private boolean loadConnfig(Path xmlFilePath) {
         ConfFile confFile = new ConfFile(xmlFilePath);
         return confFile.readConfigFile(
-                new ArrayList<>(Arrays.asList(progData.thumbCollectionList, progData.thumbCollectionList)),
+                new ArrayList<>(Arrays.asList(progData.thumbCollectionList, progData.thumbCollectionList,
+                        progData.projectDataList, progData.projectDataList)),
                 new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));
     }
 
-    private boolean loadBackup() {
-
-        boolean ret = false;
-        final ArrayList<Path> path = new ArrayList<>();
-        new ProgInfos().getMTPlayerXmlCopyFilePath(path);
-        if (path.isEmpty()) {
-            SysMsg.sysMsg("Es gibt kein Backup");
-            return false;
-        }
-
-        // dann gibts ein Backup
-        SysMsg.sysMsg("Es gibt ein Backup");
-
-
-        if (MLAlert.BUTTON.YES != new MTAlert().showAlert_yes_no("Gesicherte Einstellungen laden?",
-                "Die Einstellungen sind beschädigt\n" +
-                        "und können nicht geladen werden.",
-                "Soll versucht werden, mit gesicherten\n"
-                        + "Einstellungen zu starten?\n\n"
-                        + "(ansonsten startet das Programm mit\n"
-                        + "Standardeinstellungen)")) {
-
-            SysMsg.sysMsg("User will kein Backup laden.");
-            return false;
-        }
-
-
-        for (final Path p : path) {
-            // teils geladene Reste entfernen
-            clearKonfig();
-            SysMsg.sysMsg(new String[]{"Versuch Backup zu laden:", p.toString()});
-            if (loadConnfig(p)) {
-                SysMsg.sysMsg(new String[]{"Backup hat geklappt:", p.toString()});
-                ret = true;
-                break;
-            }
-        }
-
-        return ret;
-    }
 }

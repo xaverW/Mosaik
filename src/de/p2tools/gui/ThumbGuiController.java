@@ -189,9 +189,7 @@ public class ThumbGuiController extends AnchorPane {
         }
         thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
         progData.selectedThumbCollection = thumbCollection;
-        String s = String.valueOf(thumbCollection.getId());
-
-        ProgConfig.THUMB_GUI_THUMB_COLLECTION.setValue(thumbCollection.getId());
+//        String s = String.valueOf(thumbCollection.getId());
 
 
         if (thumbCollection == null) {
@@ -199,6 +197,7 @@ public class ThumbGuiController extends AnchorPane {
         } else {
             contPane.setDisable(false);
 
+            ProgConfig.THUMB_GUI_THUMB_COLLECTION.setValue(thumbCollection.getId());
             txtName.textProperty().bindBidirectional(thumbCollection.nameProperty());
             txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());

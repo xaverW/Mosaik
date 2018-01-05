@@ -20,7 +20,6 @@ public class ProgConst {
 
     public static final String PROGRAMMNAME = "Mosaik";
     public static final String CONFIG_FILE = "mosaik.xml";
-    public static final String CONFIG_FILE_COPY = "mosaik.xml_copy_";
     public static final String CSS_FILE = "/de/p2tools/mosik.css";
     public static final String DIR_FOTO_COLLECTIONS = "Fotos";
 
@@ -46,7 +45,6 @@ public class ProgConst {
 
     public static final String CONFIG_DIALOG_SET_DIVIDER = "0.2";
 
-    public final static int MAX_COPY_BACKUPFILE = 5; // Maximum number of backup files to be stored.
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public static final int MIN_TABLE_HEIGHT = 250;

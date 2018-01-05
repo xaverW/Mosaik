@@ -25,7 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.CodeSource;
-import java.util.ArrayList;
 
 public class ProgInfos {
 
@@ -120,17 +119,5 @@ public class ProgInfos {
         return dir;
     }
 
-    /**
-     * Return the path to "p2tools.xml_copy_" first copy exists
-     *
-     * @param xmlFilePath Path to file.
-     */
-    public void getMTPlayerXmlCopyFilePath(ArrayList<Path> xmlFilePath) {
-        for (int i = 1; i <= ProgConst.MAX_COPY_BACKUPFILE; ++i) {
-            final Path path = ProgInfos.getSettingsDirectory().resolve(ProgConst.CONFIG_FILE_COPY + i);
-            if (Files.exists(path)) {
-                xmlFilePath.add(path);
-            }
-        }
-    }
+
 }

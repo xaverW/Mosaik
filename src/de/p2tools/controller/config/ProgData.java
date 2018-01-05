@@ -18,6 +18,7 @@
 package de.p2tools.controller.config;
 
 import de.p2tools.MosaikController;
+import de.p2tools.controller.data.destData.ProjectDataList;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.thumb.ThumbCollectionList;
@@ -46,6 +47,7 @@ public class ProgData {
 
     // zentrale Klassen
     public ThumbCollectionList thumbCollectionList;
+    public ProjectDataList projectDataList = null;
     public MosaikData mosaikData;
     public WallpaperData wallpaperData;
 
@@ -66,6 +68,8 @@ public class ProgData {
 
     private ProgData() {
         thumbCollectionList = new ThumbCollectionList();
+        projectDataList = new ProjectDataList();
+
         mosaikData = new MosaikData();
         wallpaperData = new WallpaperData();
 

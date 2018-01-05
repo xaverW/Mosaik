@@ -241,23 +241,23 @@ public class StatusBarController extends AnchorPane {
     }
 
     private void setInfoThumb() {
-        String textLinks = "Miniaturbilder: " + progData.selectedThumbCollection.getName();
+        String textLinks = "Miniaturbilder: " + (progData.selectedThumbCollection != null ? progData.selectedThumbCollection.getName() : "");
         lblLeftThumb.setText(textLinks);
     }
 
     private void setInfoMosaik() {
-        String textLinks = "Miniaturbilder: " + progData.selectedThumbCollection.getName();
+        String textLinks = "Miniaturbilder: " + (progData.selectedThumbCollection != null ? progData.selectedThumbCollection.getName() : "");
         lblLeftMosaik.setText(textLinks);
     }
 
     private void setInfoWallpaper() {
-        String textLinks = "Miniaturbilder: " + progData.selectedThumbCollection.getName();
+        String textLinks = "Miniaturbilder: " + (progData.selectedThumbCollection != null ? progData.selectedThumbCollection.getName() : "");
         lblLeftWallpaper.setText(textLinks);
     }
 
     private void setTextForRightDisplay() {
         // Text rechts: alter/neuladenIn anzeigen
-        String strText = progData.selectedThumbCollection.getThumbList().size() + " Bilder";
+        String strText = progData.selectedThumbCollection != null ? progData.selectedThumbCollection.getThumbList().size() + " Bilder" : "";
         // Infopanel setzen
         lblRightStart.setText("");
         lblRightThumb.setText(strText);

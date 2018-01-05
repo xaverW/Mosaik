@@ -83,7 +83,8 @@ public class ChangeThumbGuiController extends AnchorPane {
     }
 
     public void isShown() {
-        if (!thumbCollection.equals(progData.selectedThumbCollection)) {
+        if (progData.selectedThumbCollection == null ||
+                !thumbCollection.equals(progData.selectedThumbCollection)) {
             selectThumbCollection();
         }
     }

@@ -17,36 +17,49 @@
 
 package de.p2tools.mLib.configFile;
 
-import de.p2tools.mLib.configFile.config.Config;
+import de.p2tools.mLib.tools.SysMsg;
 import javafx.collections.ObservableList;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class ConfFile {
-    private final Path configFileUrl;
+    public static final int MAX_COPY_BACKUPFILE = 5; // Maximum number of backup files to be stored.
+
+    private final Path configFile;
     private final ArrayList<ConfigsData> configsList;
     private final ArrayList<ObservableList<? extends ConfigsData>> configsListList;
 
-    public ConfFile(Path configFileUrl) {
-        this.configFileUrl = configFileUrl;
+    private int maxCopyBackupfile = MAX_COPY_BACKUPFILE;
+
+
+    public ConfFile(Path configFile) {
+        this.configFile = configFile;
         this.configsList = new ArrayList<>();
         configsListList = new ArrayList<>();
     }
 
-    public void addConfigs(String tag, ArrayList<Config> configs) {
-        ConfigsData configsData = new ConfigsData() {
-            @Override
-            public String getTagName() {
-                return tag;
-            }
+//    public void addConfigs(String tag, ArrayList<Config> configs) {
+//        ConfigsData configsData = new ConfigsData() {
+//            @Override
+//            public String getTagName() {
+//                return tag;
+//            }
+//
+//            @Override
+//            public ArrayList<Config> getConfigsArr() {
+//                return configs;
+//            }
+//        };
+//        configsList.add(configsData);
+//    }
 
-            @Override
-            public ArrayList<Config> getConfigsArr() {
-                return configs;
-            }
-        };
-        configsList.add(configsData);
+    public int getMaxCopyBackupfile() {
+        return maxCopyBackupfile;
+    }
+
+    public void setMaxCopyBackupfile(int maxCopyBackupfile) {
+        this.maxCopyBackupfile = maxCopyBackupfile;
     }
 
     public void addConfigs(ConfigsData configsData) {
@@ -59,13 +72,24 @@ public class ConfFile {
 
     public boolean writeConfigFile() {
         boolean ret = false;
-        SaveConfigFile saveConfigFile = new SaveConfigFile(configFileUrl, configsListList, configsList);
+        new BackupConfigFile(maxCopyBackupfile, configFile).konfigCopy(configFile);
+
+        SaveConfigFile saveConfigFile = new SaveConfigFile(configFile, configsListList, configsList);
         saveConfigFile.write();
         return ret;
     }
 
     public boolean readConfigFile(ArrayList<ConfigsList> configsListList,
                                   ArrayList<ConfigsData> configsDataArr) {
-        return new LoadConfigFile(configFileUrl, configsListList, configsDataArr).readConfiguration();
+        if (new LoadConfigFile(configFile, configsListList, configsDataArr).readConfiguration()) {
+            SysMsg.sysMsg("Config geladen");
+            return true;
+
+        } else if (new BackupConfigFile(maxCopyBackupfile, configFile).loadBackup(configFile, configsListList, configsDataArr)) {
+            SysMsg.sysMsg("Config-Backup geladen");
+            return true;
+        }
+
+        return false;
     }
 }
