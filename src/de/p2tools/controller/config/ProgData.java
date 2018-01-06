@@ -18,6 +18,7 @@
 package de.p2tools.controller.config;
 
 import de.p2tools.MosaikController;
+import de.p2tools.controller.data.destData.ProjectData;
 import de.p2tools.controller.data.destData.ProjectDataList;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
@@ -52,6 +53,7 @@ public class ProgData {
     public WallpaperData wallpaperData;
 
     public ThumbCollection selectedThumbCollection = null;
+    public ProjectData selectedProjectData = null;
 
     public GenThumbList genThumbList = null;
 

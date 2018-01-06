@@ -18,6 +18,10 @@ package de.p2tools.gui;
 
 public class HelpText {
 
+    public static final String PROJECT_PATH = "Hier wird der Ordner ausgewählt, " +
+            "in dem das Mosaik erstellt werd. In dem Ordner werden auch die " +
+            "erstellten Vorschaubilder zum Bauen des Mosaik gespeichert.";
+
     public static final String SEARCH_MEDIA_DIALOG = "Ein Filterwort kann auch Leerzeichen enthalten, " +
             "z.B.: \"Hallo ich\". Es wird dann nach Dateien " +
             "gesucht, die im Namen \"Hallo ich\" an beliebiger " +

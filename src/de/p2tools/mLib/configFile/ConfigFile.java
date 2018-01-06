@@ -23,7 +23,7 @@ import javafx.collections.ObservableList;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-public class ConfFile {
+public class ConfigFile {
     public static final int MAX_COPY_BACKUPFILE = 5; // Maximum number of backup files to be stored.
 
     private final Path configFile;
@@ -33,7 +33,7 @@ public class ConfFile {
     private int maxCopyBackupfile = MAX_COPY_BACKUPFILE;
 
 
-    public ConfFile(Path configFile) {
+    public ConfigFile(Path configFile) {
         this.configFile = configFile;
         this.configsList = new ArrayList<>();
         configsListList = new ArrayList<>();
@@ -72,7 +72,7 @@ public class ConfFile {
 
     public boolean writeConfigFile() {
         boolean ret = false;
-        new BackupConfigFile(maxCopyBackupfile, configFile).konfigCopy(configFile);
+        new BackupConfigFile(maxCopyBackupfile, configFile).konfigCopy();
 
         SaveConfigFile saveConfigFile = new SaveConfigFile(configFile, configsListList, configsList);
         saveConfigFile.write();
@@ -85,7 +85,7 @@ public class ConfFile {
             SysMsg.sysMsg("Config geladen");
             return true;
 
-        } else if (new BackupConfigFile(maxCopyBackupfile, configFile).loadBackup(configFile, configsListList, configsDataArr)) {
+        } else if (new BackupConfigFile(maxCopyBackupfile, configFile).loadBackup(configsListList, configsDataArr)) {
             SysMsg.sysMsg("Config-Backup geladen");
             return true;
         }

@@ -22,13 +22,13 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
 
-public class TumbGuiContextMenu {
+public class ThumbGuiContextMenu {
 
     private final ProgData progData;
     private final ThumbGuiController thumbGuiController;
     private final TableView tableView;
 
-    public TumbGuiContextMenu(ProgData progData, ThumbGuiController thumbGuiController, TableView tableView) {
+    public ThumbGuiContextMenu(ProgData progData, ThumbGuiController thumbGuiController, TableView tableView) {
         this.progData = progData;
         this.thumbGuiController = thumbGuiController;
         this.tableView = tableView;

@@ -31,7 +31,7 @@ import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class BackupConfigFile {
+class BackupConfigFile {
     private static final String CONFIG_FILE_COPY_ADDON = "_copy_";
 
     private boolean alreadyMadeBackup = false;
@@ -39,7 +39,7 @@ public class BackupConfigFile {
     private final String backupFileName;
     private final Path filePath;
 
-    public BackupConfigFile(int maxCopyBackup, Path filePath) {
+    BackupConfigFile(int maxCopyBackup, Path filePath) {
         this.maxCopyBackup = maxCopyBackup;
         this.filePath = filePath;
         this.backupFileName = filePath.getFileName().toString() + CONFIG_FILE_COPY_ADDON;
@@ -48,7 +48,7 @@ public class BackupConfigFile {
     /**
      * Create backup copies of settings file.
      */
-    void konfigCopy(Path xmlFilePath) {
+    void konfigCopy() {
         if (!alreadyMadeBackup) {
             // nur einmal pro Programmstart machen
             SysMsg.sysMsg("-------------------------------------------------------");
@@ -68,13 +68,13 @@ public class BackupConfigFile {
                     // nur dann ist die letzte Kopie älter als einen Tag
                     for (int i = maxCopyBackup; i > 1; --i) {
                         confFileCopy = filePath.getParent().resolve(backupFileName + (i - 1));
-                        final Path xmlFilePathCopy_2 = filePath.getParent().resolve(backupFileName + i);
+                        final Path confFileCopy_2 = filePath.getParent().resolve(backupFileName + i);
                         if (Files.exists(confFileCopy)) {
-                            Files.move(confFileCopy, xmlFilePathCopy_2, StandardCopyOption.REPLACE_EXISTING);
+                            Files.move(confFileCopy, confFileCopy_2, StandardCopyOption.REPLACE_EXISTING);
                         }
                     }
-                    if (Files.exists(xmlFilePath)) {
-                        Files.move(xmlFilePath,
+                    if (Files.exists(filePath)) {
+                        Files.move(filePath,
                                 filePath.getParent().resolve(backupFileName + 1),
                                 StandardCopyOption.REPLACE_EXISTING);
                     }
@@ -92,7 +92,7 @@ public class BackupConfigFile {
         }
     }
 
-    boolean loadBackup(Path filePath, ArrayList<ConfigsList> configsListArrayList, ArrayList<ConfigsData> configsDataArr) {
+    boolean loadBackup(ArrayList<ConfigsList> configsListArrayList, ArrayList<ConfigsData> configsDataArr) {
 
         boolean ret = false;
         final ArrayList<Path> path = new ArrayList<>();
@@ -122,7 +122,7 @@ public class BackupConfigFile {
         for (final Path p : path) {
             // teils geladene Reste entfernen
             SysMsg.sysMsg(new String[]{"Versuch Backup zu laden:", p.toString()});
-            if (new LoadConfigFile(filePath, configsListArrayList, configsDataArr).readConfiguration()) {
+            if (new LoadConfigFile(p, configsListArrayList, configsDataArr).readConfiguration()) {
                 SysMsg.sysMsg(new String[]{"Backup hat geklappt:", p.toString()});
                 ret = true;
                 break;

@@ -19,7 +19,7 @@ package de.p2tools.controller;
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
-import de.p2tools.mLib.configFile.ConfFile;
+import de.p2tools.mLib.configFile.ConfigFile;
 
 import java.nio.file.Path;
 
@@ -35,13 +35,13 @@ public class ProgSave {
 
     public void save() {
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();
-        ConfFile confFile = new ConfFile(xmlFilePath);
-        confFile.addConfigs(ProgConfig.getConfigsDate());
-        confFile.addConfigs(progData.mosaikData);
-        confFile.addConfigs(progData.wallpaperData);
-        confFile.addConfigs(progData.thumbCollectionList);
-        confFile.addConfigs(progData.projectDataList);
-        confFile.writeConfigFile();
+        ConfigFile configFile = new ConfigFile(xmlFilePath);
+        configFile.addConfigs(ProgConfig.getConfigsDate());
+        configFile.addConfigs(progData.mosaikData);
+        configFile.addConfigs(progData.wallpaperData);
+        configFile.addConfigs(progData.thumbCollectionList);
+        configFile.addConfigs(progData.projectDataList);
+        configFile.writeConfigFile();
     }
 
 //    public void allesSpeichern() {

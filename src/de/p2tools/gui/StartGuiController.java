@@ -19,9 +19,8 @@ package de.p2tools.gui;
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
-import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.controller.data.destData.ProjectData;
 import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.gui.tools.Table;
 import de.p2tools.mLib.tools.DirFileChooser;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -33,13 +32,12 @@ import javafx.util.StringConverter;
 
 public class StartGuiController extends AnchorPane {
     ScrollPane scrollPane = new ScrollPane();
-    TableView table = new TableView<>();
     AnchorPane contPane = new AnchorPane();
     AnchorPane collectPane = new AnchorPane();
 
 
-    ThumbCollection thumbCollection = null;
-    ComboBox<ThumbCollection> cbCollection = new ComboBox<>();
+    ProjectData projectData = null;
+    ComboBox<ProjectData> cbProjectDataList = new ComboBox<>();
     TextField txtName = new TextField("");
     TextField txtDir = new TextField("");
 
@@ -56,12 +54,11 @@ public class StartGuiController extends AnchorPane {
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setContent(table);
 
 
         initCollection();
         initCont();
-        selectThumbCollection();
+        selectProjectData();
 
         VBox vBox = new VBox();
         vBox.setSpacing(10);
@@ -76,61 +73,59 @@ public class StartGuiController extends AnchorPane {
     }
 
 
-    public void saveTable() {
-        new Table().saveTable(table, Table.TABLE.THUMB);
-    }
-
     private void initListener() {
     }
 
 
     private void initCollection() {
-        cbCollection.setItems(progData.thumbCollectionList);
+        cbProjectDataList.setItems(progData.projectDataList);
 
         try {
-            String col = ProgConfig.THUMB_GUI_THUMB_COLLECTION.get();
-            ThumbCollection thumbCollection = progData.thumbCollectionList.getThumbCollection(Integer.parseInt(col));
-            cbCollection.getSelectionModel().select(thumbCollection);
+            String col = ProgConfig.START_GUI_PROJECT_DATA.get();
+            ProjectData projectData = progData.projectDataList.get(Integer.parseInt(col));
+            cbProjectDataList.getSelectionModel().select(projectData);
         } catch (Exception ex) {
-            cbCollection.getSelectionModel().selectFirst();
+            cbProjectDataList.getSelectionModel().selectFirst();
         }
-        final StringConverter<ThumbCollection> converter = new StringConverter<ThumbCollection>() {
+
+        final StringConverter<ProjectData> converter = new StringConverter<ProjectData>() {
             @Override
-            public String toString(ThumbCollection fc) {
-                return fc == null ? "" : fc.getName();
+            public String toString(ProjectData pd) {
+                return pd == null ? "" : pd.getName();
             }
 
             @Override
-            public ThumbCollection fromString(String id) {
-                final int i = cbCollection.getSelectionModel().getSelectedIndex();
-                return progData.thumbCollectionList.get(i);
+            public ProjectData fromString(String id) {
+                final int i = cbProjectDataList.getSelectionModel().getSelectedIndex();
+                return progData.projectDataList.get(i);
             }
         };
-        cbCollection.setConverter(converter);
-        cbCollection.setMaxWidth(Double.MAX_VALUE);
-        cbCollection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
-                selectThumbCollection()
+
+        cbProjectDataList.setConverter(converter);
+        cbProjectDataList.setMaxWidth(Double.MAX_VALUE);
+        cbProjectDataList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
+                selectProjectData()
         );
 
         Button btnNew = new Button("");
         btnNew.setGraphic(new Icons().ICON_BUTTON_ADD);
         btnNew.setOnAction(event -> {
-            ThumbCollection fc = new ThumbCollection("Neu-" + progData.thumbCollectionList.size());
-            progData.thumbCollectionList.add(fc);
-            cbCollection.getSelectionModel().select(fc);
+            ProjectData pd = new ProjectData("Neu-" + progData.projectDataList.size());
+            progData.projectDataList.add(pd);
+            cbProjectDataList.getSelectionModel().select(pd);
         });
 
         Button btnDel = new Button("");
         btnDel.setGraphic(new Icons().ICON_BUTTON_REMOVE);
         btnDel.setOnAction(event -> {
-            int i = cbCollection.getSelectionModel().getSelectedIndex();
+            int i = cbProjectDataList.getSelectionModel().getSelectedIndex();
             if (i < 0) {
                 return;
             }
-            ThumbCollection fc = progData.thumbCollectionList.get(i);
-            if (fc != null) {
-                progData.thumbCollectionList.remove(fc);
-                cbCollection.getSelectionModel().selectFirst();
+            ProjectData pd = progData.projectDataList.get(i);
+            if (pd != null) {
+                progData.projectDataList.remove(pd);
+                cbProjectDataList.getSelectionModel().selectFirst();
             }
         });
 
@@ -142,39 +137,35 @@ public class StartGuiController extends AnchorPane {
         AnchorPane.setRightAnchor(hBox, 5.0);
         hBox.setPadding(new Insets(10));
         hBox.setSpacing(10);
-        HBox.setHgrow(cbCollection, Priority.ALWAYS);
-        hBox.getChildren().addAll(cbCollection, btnNew, btnDel);
+        HBox.setHgrow(cbProjectDataList, Priority.ALWAYS);
+        hBox.getChildren().addAll(cbProjectDataList, btnNew, btnDel);
         collectPane.getChildren().add(hBox);
     }
 
 
-    private void selectThumbCollection() {
-        table.setItems(null);
-
-        if (thumbCollection != null) {
-            txtName.textProperty().unbindBidirectional(thumbCollection.nameProperty());
-            txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
+    private void selectProjectData() {
+        if (projectData != null) {
+            txtName.textProperty().unbindBidirectional(projectData.nameProperty());
+            txtDir.textProperty().unbindBidirectional(projectData.destDirProperty());
         }
-        thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
-        progData.selectedThumbCollection = thumbCollection;
 
+        projectData = cbProjectDataList.getSelectionModel().getSelectedItem();
+        progData.selectedProjectData = projectData;
 
-        if (thumbCollection == null) {
+        if (projectData == null) {
             contPane.setDisable(true);
         } else {
             contPane.setDisable(false);
 
-            ProgConfig.THUMB_GUI_THUMB_COLLECTION.setValue(thumbCollection.getId());
-            txtName.textProperty().bindBidirectional(thumbCollection.nameProperty());
-            txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
-
-            table.setItems(thumbCollection.getThumbList());
+            ProgConfig.START_GUI_PROJECT_DATA.setValue(cbProjectDataList.getSelectionModel().getSelectedIndex());
+            txtName.textProperty().bindBidirectional(projectData.nameProperty());
+            txtDir.textProperty().bindBidirectional(projectData.destDirProperty());
         }
     }
 
     private void initCont() {
-        Label lblName = new Label("Name der Sammlung");
-        Label lblDir = new Label("Ordner mit Fotos auswählen");
+        Label lblName = new Label("Name des Mosaik");
+        Label lblDir = new Label("Ordner in dem das Mosaik erstellt wird");
 
         txtDir.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDir, Priority.ALWAYS);
@@ -188,7 +179,7 @@ public class StartGuiController extends AnchorPane {
 
         final Button btnHelp = new Button("");
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+        btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROG_PATHS));
 
 
         HBox hBoxDir = new HBox();

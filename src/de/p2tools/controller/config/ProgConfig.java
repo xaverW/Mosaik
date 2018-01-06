@@ -47,6 +47,9 @@ public class ProgConfig extends MLConfig {
     public static MLConfigs FOTO_SQUARE = addNewKey("foto-square", Boolean.TRUE.toString());
     public static MLConfigs FOTO_FORMAT = addNewKey("foto-format", ProgConst.IMAGE_FORMAT_JPG);
 
+    // GuiStart
+    public static MLConfigs START_GUI_PROJECT_DATA = addNewKey("start-gui-project-data");
+
     // GuiThumb
     public static MLConfigs THUMB_GUI_DIVIDER = addNewKey("thumb-gui-divider", ProgConst.GUI_FILME_DIVIDER_LOCATION);
     public static MLConfigs THUMB_GUI_TABLE_WIDTH = addNewKey("thumb-gui-table-width");

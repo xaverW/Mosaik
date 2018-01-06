@@ -21,7 +21,7 @@ import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.mLib.MLInit;
-import de.p2tools.mLib.configFile.ConfFile;
+import de.p2tools.mLib.configFile.ConfigFile;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.SysMsg;
 
@@ -67,8 +67,8 @@ public class ProgStart {
     }
 
     private boolean loadConnfig(Path xmlFilePath) {
-        ConfFile confFile = new ConfFile(xmlFilePath);
-        return confFile.readConfigFile(
+        ConfigFile configFile = new ConfigFile(xmlFilePath);
+        return configFile.readConfigFile(
                 new ArrayList<>(Arrays.asList(progData.thumbCollectionList, progData.thumbCollectionList,
                         progData.projectDataList, progData.projectDataList)),
                 new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));

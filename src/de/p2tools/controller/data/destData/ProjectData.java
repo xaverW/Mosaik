@@ -21,4 +21,8 @@ public class ProjectData extends ProjectDataProps {
 
     public ProjectData() {
     }
+
+    public ProjectData(String name) {
+        setName(name);
+    }
 }
