@@ -20,6 +20,11 @@ package de.p2tools.mLib.configFile.config;
 import de.p2tools.mLib.configFile.ConfigsData;
 import de.p2tools.mLib.configFile.ConfigsList;
 
+/**
+ * its a pseudo CONFIG, it contains a
+ * CONFIGSLIST, also a list of ConfigData
+ * and that contains a array of Config
+ */
 public class ConfigConfigsList extends Config {
 
     private ConfigsList<? extends ConfigsData> actValue;

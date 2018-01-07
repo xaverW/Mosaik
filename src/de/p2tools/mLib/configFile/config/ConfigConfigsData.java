@@ -19,6 +19,10 @@ package de.p2tools.mLib.configFile.config;
 
 import java.util.ArrayList;
 
+/**
+ * its a pseudo CONFIG, it contains a CONFIGDATA, also
+ * a array of config
+ */
 public class ConfigConfigsData extends Config {
 
     private ArrayList<Config> actValue;
