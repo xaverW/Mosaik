@@ -38,6 +38,7 @@ public class ProgSave {
         configFile.addConfigs(progData.mosaikData);
         configFile.addConfigs(progData.wallpaperData);
         configFile.addConfigs(progData.projectDataList);
+        configFile.addConfigs(progData.thumbCollection);
         configFile.writeConfigFile();
     }
 

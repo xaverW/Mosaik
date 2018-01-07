@@ -19,8 +19,8 @@ package de.p2tools.mLib.configFile;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.mLib.configFile.config.Config;
-import de.p2tools.mLib.configFile.config.ConfigList;
-import de.p2tools.mLib.configFile.config.ConfigProp;
+import de.p2tools.mLib.configFile.config.ConfigConfigsData;
+import de.p2tools.mLib.configFile.config.ConfigConfigsList;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.SysMsg;
 
@@ -65,8 +65,8 @@ class SaveConfigFile implements AutoCloseable {
             for (ConfigsData configsData : configsData) {
                 writer.writeCharacters("\n\n");
 
-                if (configsData.getClass().equals(ConfigProp.class)) {
-                    writeConfProp((ConfigProp) configsData, 1);
+                if (configsData.getClass().equals(ConfigConfigsData.class)) {
+                    writeConfProp((ConfigConfigsData) configsData, 1);
                 } else {
                     writeConfigsData(configsData, 0);
                 }
@@ -151,23 +151,23 @@ class SaveConfigFile implements AutoCloseable {
     }
 
     private void writeConfigs(Config config, int tab) throws XMLStreamException {
-        if (config.getClass().equals(ConfigList.class)) {
-            writeConfList((ConfigList) config, tab);
+        if (config.getClass().equals(ConfigConfigsList.class)) {
+            writeConfList((ConfigConfigsList) config, tab);
         } else {
             writeConf(config, tab);
         }
     }
 
 
-    private void writeConfProp(ConfigProp configProp, int tab) throws XMLStreamException {
-        ArrayList<Config> arrayList = configProp.getActValue();
+    private void writeConfProp(ConfigConfigsData configConfigsData, int tab) throws XMLStreamException {
+        ArrayList<Config> arrayList = configConfigsData.getActValue();
         for (Config configs : arrayList) {
             writeConf(configs, tab);
         }
     }
 
-    private void writeConfList(ConfigList configList, int tab) throws XMLStreamException {
-        ConfigsList<? extends ConfigsData> observableList = configList.getActValue();
+    private void writeConfList(ConfigConfigsList configConfigsList, int tab) throws XMLStreamException {
+        ConfigsList<? extends ConfigsData> observableList = configConfigsList.getActValue();
         for (ConfigsData configs : observableList) {
             writeConfigsData(configs, tab);
         }

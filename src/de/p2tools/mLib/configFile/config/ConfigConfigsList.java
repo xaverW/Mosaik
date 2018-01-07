@@ -17,18 +17,19 @@
 
 package de.p2tools.mLib.configFile.config;
 
-import java.util.ArrayList;
+import de.p2tools.mLib.configFile.ConfigsData;
+import de.p2tools.mLib.configFile.ConfigsList;
 
-public class ConfigProp extends Config {
+public class ConfigConfigsList extends Config {
 
-    private ArrayList<Config> actValue;
+    private ConfigsList<? extends ConfigsData> actValue;
 
-    public ConfigProp(String key, ArrayList<Config> actValue) {
+    public ConfigConfigsList(String key, ConfigsList<? extends ConfigsData> actValue) {
         super(key);
         this.actValue = actValue;
     }
 
-    public ArrayList<Config> getActValue() {
+    public ConfigsList<? extends ConfigsData> getActValue() {
         return actValue;
     }
 

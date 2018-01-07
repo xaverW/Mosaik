@@ -47,6 +47,8 @@ public class ProgData {
 
     // zentrale Klassen
     public ProjectDataList projectDataList = null;
+    public ThumbCollection thumbCollection = null;
+
     public MosaikData mosaikData;
     public WallpaperData wallpaperData;
 
@@ -68,6 +70,7 @@ public class ProgData {
 
     private ProgData() {
         projectDataList = new ProjectDataList();
+        thumbCollection = new ThumbCollection(this);
 
         mosaikData = new MosaikData();
         wallpaperData = new WallpaperData();

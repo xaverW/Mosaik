@@ -20,8 +20,7 @@ import de.p2tools.controller.config.ProgData;
 
 public final class ThumbCollection extends ThumbCollectionProps {
 
-    public ThumbCollection() {
-        ProgData progData = ProgData.getInstance();
+    public ThumbCollection(ProgData progData) {
         setId(progData.random.nextInt());
     }
 
@@ -30,7 +29,7 @@ public final class ThumbCollection extends ThumbCollectionProps {
     }
 
     public ThumbCollection getCopy() {
-        final ThumbCollection ret = new ThumbCollection();
+        final ThumbCollection ret = new ThumbCollection(ProgData.getInstance());
         for (int i = 0; i < properties.length; ++i) {
             ret.properties[i].setValue(this.properties[i].getValue());
         }

@@ -41,6 +41,10 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
     }
 
     public ArrayList<Config> getConfigsArr() {
+        // todo: wieder weg
+        thumbList.add(new Thumb(1, 2, 3, "pp"));
+        thumbList.add(new Thumb(2, 2, 2, "aaa"));
+
         return new ArrayList<>(Arrays.asList(
                 new ConfigIntProp("id", 0, id),
                 new ConfigStringProp("name", "", name),
@@ -48,7 +52,7 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
                 new ConfigStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("dir-thumb", "", thumbDir),
                 new ConfigStringProp("dir-foto-src", "", fotoSrcDir),
-                new ConfigList(Thumb.TAG, thumbList)));
+                new ConfigConfigsList(Thumb.TAG, thumbList)));
     }
 
     public ThumbList getThumbList() {

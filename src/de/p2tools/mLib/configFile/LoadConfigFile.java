@@ -18,7 +18,7 @@
 package de.p2tools.mLib.configFile;
 
 import de.p2tools.mLib.configFile.config.Config;
-import de.p2tools.mLib.configFile.config.ConfigList;
+import de.p2tools.mLib.configFile.config.ConfigConfigsList;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 
@@ -108,26 +108,22 @@ class LoadConfigFile implements AutoCloseable {
 
     private boolean getConfigsList(XMLStreamReader parser, ConfigsList configsList) {
         boolean ret = false;
-
-        String xmlElem = parser.getLocalName();
-        if (!configsList.getTagName().equals(xmlElem)) {
-            return false;
-        }
+        final String configsListTagName = configsList.getTagName();
 
         try {
             ConfigsData configsData = configsList.getNewItem();
             while (parser.hasNext()) {
                 final int event = parser.next();
 
-                if (event == XMLStreamConstants.END_ELEMENT && parser.getLocalName().equals(xmlElem)) {
+                if (event == XMLStreamConstants.END_ELEMENT && parser.getLocalName().equals(configsListTagName)) {
                     break;
                 }
                 if (event != XMLStreamConstants.START_ELEMENT) {
                     continue;
                 }
 
-                xmlElem = parser.getLocalName();
-                if (!configsData.getTagName().equals(xmlElem)) {
+                String s = parser.getLocalName();
+                if (!configsData.getTagName().equals(s)) {
                     continue;
                 }
                 if (getConfigData(parser, configsData)) {
@@ -161,10 +157,10 @@ class LoadConfigFile implements AutoCloseable {
 
                 final String s = parser.getLocalName();
                 for (Config config : configsData.getConfigsArr()) {
-                    if (config.getKey().equals(s) && config.getClass().equals(ConfigList.class)) {
+                    if (config.getKey().equals(s) && config.getClass().equals(ConfigConfigsList.class)) {
                         System.out.println(s + " - Config: " + config.getKey());
 
-                        ConfigsList<? extends ConfigsData> ol = ((ConfigList) config).getActValue();
+                        ConfigsList<? extends ConfigsData> ol = ((ConfigConfigsList) config).getActValue();
                         ConfigsData cd = ol.getNewItem();
                         ol.addNewItem(cd);
                         getConfigData(parser, cd);
@@ -188,7 +184,7 @@ class LoadConfigFile implements AutoCloseable {
         return ret;
     }
 
-//    private boolean getConfigList(XMLStreamReader parser, ConfigList configList) {
+//    private boolean getConfigList(XMLStreamReader parser, ConfigConfigsList configList) {
 //        boolean ret = false;
 //        String xmlElem = parser.getLocalName();
 //
@@ -211,11 +207,11 @@ class LoadConfigFile implements AutoCloseable {
 //                final String n = parser.getElementText();
 //
 //                for (Config config : configsData.getConfigsArr()) {
-//                    if (config.getKey().equals(s) && config.getClass().equals(ConfigList.class)) {
+//                    if (config.getKey().equals(s) && config.getClass().equals(ConfigConfigsList.class)) {
 //
 ////                        if (getConfigData(parser, configsData)) {
-////                            ConfigsData cd = ((ConfigList) config).getNewItem();
-////                            ((ConfigList) config).getActValue().add(cd);
+////                            ConfigsData cd = ((ConfigConfigsList) config).getNewItem();
+////                            ((ConfigConfigsList) config).getActValue().add(cd);
 ////                        }
 //
 //                    } else if (config.getKey().equals(s)) {
