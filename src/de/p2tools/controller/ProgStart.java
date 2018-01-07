@@ -69,8 +69,7 @@ public class ProgStart {
     private boolean loadConnfig(Path xmlFilePath) {
         ConfigFile configFile = new ConfigFile(xmlFilePath);
         return configFile.readConfigFile(
-                new ArrayList<>(Arrays.asList(progData.thumbCollectionList, progData.thumbCollectionList,
-                        progData.projectDataList, progData.projectDataList)),
+                new ArrayList<>(Arrays.asList(progData.projectDataList)),
                 new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));
     }
 

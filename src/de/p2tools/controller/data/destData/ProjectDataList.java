@@ -29,6 +29,7 @@ import java.util.Collections;
 
 public class ProjectDataList extends SimpleListProperty<ProjectData> implements ConfigsList<ProjectData> {
 
+    public static final String TAG = "ProjectDataList";
     private BooleanProperty listChanged = new SimpleBooleanProperty(true);
 
 
@@ -44,7 +45,7 @@ public class ProjectDataList extends SimpleListProperty<ProjectData> implements 
     }
 
     public String getTagName() {
-        return ProjectData.TAG;
+        return TAG;
     }
 
     public ProjectData getNewItem() {

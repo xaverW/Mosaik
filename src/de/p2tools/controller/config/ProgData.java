@@ -22,7 +22,6 @@ import de.p2tools.controller.data.destData.ProjectData;
 import de.p2tools.controller.data.destData.ProjectDataList;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.controller.data.thumb.ThumbCollectionList;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.genThumbList.GenThumbList;
 import de.p2tools.gui.*;
@@ -47,7 +46,6 @@ public class ProgData {
     public static String configDir; // Verzeichnis zum Speichern der Programmeinstellungen
 
     // zentrale Klassen
-    public ThumbCollectionList thumbCollectionList;
     public ProjectDataList projectDataList = null;
     public MosaikData mosaikData;
     public WallpaperData wallpaperData;
@@ -69,7 +67,6 @@ public class ProgData {
 
 
     private ProgData() {
-        thumbCollectionList = new ThumbCollectionList();
         projectDataList = new ProjectDataList();
 
         mosaikData = new MosaikData();

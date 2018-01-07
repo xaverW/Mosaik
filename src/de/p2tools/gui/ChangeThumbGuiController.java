@@ -116,7 +116,7 @@ public class ChangeThumbGuiController extends AnchorPane {
     }
 
     private void initCont() {
-        lblName.textProperty().addListener((observable, oldValue, newValue) -> progData.thumbCollectionList.setListChanged());
+//        lblName.textProperty().addListener((observable, oldValue, newValue) -> progData.s.thumbCollectionList.setListChanged());
 
         btnReload.setOnAction(a -> {
             progData.genThumbList.read(thumbCollection);

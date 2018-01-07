@@ -169,7 +169,7 @@ public class StartGuiController extends AnchorPane {
 
         txtDir.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDir, Priority.ALWAYS);
-        txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.thumbCollectionList.setListChanged());
+        txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.projectDataList.setListChanged());
 
         final Button btnDir = new Button();
         btnDir.setOnAction(event -> {

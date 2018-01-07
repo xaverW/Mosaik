@@ -36,7 +36,7 @@ public class ConfigInt extends Config {
         return actValue;
     }
 
-    public String getActValueToString() {
+    public String getActValueString() {
         return String.valueOf(actValue);
     }
 

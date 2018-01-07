@@ -19,28 +19,35 @@ package de.p2tools.mLib.configFile.config;
 
 import javafx.beans.property.ObjectProperty;
 
+/**
+ * this is the class for one configuration
+ * for example: the configsData for a USER(name,age,size)
+ * then it has 3 Config: one for the "name", "age", "size"
+ * a config can store the info in a STRING or a PROPERTY
+ */
+
 public abstract class Config {
 
     private final String key;
-    private final Object iniValue;
+    private final Object initValue;
     private Object actValue;
-    private ObjectProperty actValueProperty;
+    private ObjectProperty actValueProperty = null;
 
     public Config() {
         this.key = "";
-        iniValue = "";
+        initValue = "";
         actValue = "";
     }
 
     public Config(String key) {
         this.key = key;
-        iniValue = "";
+        initValue = "";
         actValue = "";
     }
 
     public Config(String key, Object initValue, Object actValue) {
         this.key = key;
-        this.iniValue = initValue;
+        this.initValue = initValue;
         this.actValue = actValue;
     }
 
@@ -48,11 +55,15 @@ public abstract class Config {
         return key;
     }
 
+    public void setActValue(String act) {
+        actValue = act;
+    }
+
     public Object getActValue() {
         return actValue;
     }
 
-    public String getActValueToString() {
+    public String getActValueString() {
         return actValue.toString();
     }
 
@@ -61,11 +72,7 @@ public abstract class Config {
     }
 
     public Object getInitValue() {
-        return iniValue;
-    }
-
-    public void setActValue(String act) {
-        actValue = act;
+        return initValue;
     }
 }
 

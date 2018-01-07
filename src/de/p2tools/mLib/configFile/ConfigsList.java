@@ -19,6 +19,12 @@ package de.p2tools.mLib.configFile;
 
 import java.util.List;
 
+/**
+ * this is a list of the "same" configurationdata
+ * for example a list of users
+ *
+ * @param <E>
+ */
 public interface ConfigsList<E extends ConfigsData> extends List<E> {
 
     String getTagName();

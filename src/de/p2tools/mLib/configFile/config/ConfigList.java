@@ -19,32 +19,18 @@ package de.p2tools.mLib.configFile.config;
 
 import de.p2tools.mLib.configFile.ConfigsData;
 import de.p2tools.mLib.configFile.ConfigsList;
-import javafx.beans.property.IntegerProperty;
 
 public class ConfigList extends Config {
 
-    private int initValue;
     private ConfigsList<? extends ConfigsData> actValue;
 
     public ConfigList(String key, ConfigsList<? extends ConfigsData> actValue) {
         super(key);
-        this.initValue = initValue;
         this.actValue = actValue;
-    }
-
-    public Integer getInitValue() {
-        return initValue;
     }
 
     public ConfigsList<? extends ConfigsData> getActValue() {
         return actValue;
     }
 
-    public String getActValueToString() {
-        return String.valueOf(getActValue());
-    }
-
-    public IntegerProperty getActValueProperty() {
-        return null;
-    }
 }

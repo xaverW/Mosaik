@@ -18,9 +18,10 @@
 package de.p2tools.controller.data.destData;
 
 import de.p2tools.controller.data.Data;
+import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.mLib.configFile.config.Config;
+import de.p2tools.mLib.configFile.config.ConfigProp;
 import de.p2tools.mLib.configFile.config.ConfigStringProp;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -33,17 +34,21 @@ public class ProjectDataProps extends Data<ProjectData> {
     private final StringProperty name = new SimpleStringProperty("Neues Mosaik");
     private final StringProperty destDir = new SimpleStringProperty(""); // project dir
 
-    public final Property[] properties = {destDir};
+    private final ThumbCollection thumbCollection = new ThumbCollection();
 
     public String getTagName() {
         return TAG;
     }
 
     public ArrayList<Config> getConfigsArr() {
-        return new ArrayList<Config>(Arrays.asList(
+        return new ArrayList<>(Arrays.asList(
                 new ConfigStringProp("dest-dir", "", destDir),
-                new ConfigStringProp("name", "Neues Mosaik", name)
-        ));
+                new ConfigStringProp("name", "Neues Mosaik", name),
+                new ConfigProp(ThumbCollection.TAG, thumbCollection.getConfigsArr())));
+    }
+
+    public ThumbCollection getThumbCollection() {
+        return thumbCollection;
     }
 
     public String getName() {

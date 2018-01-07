@@ -18,7 +18,6 @@
 package de.p2tools.mLib.configFile;
 
 import de.p2tools.mLib.tools.SysMsg;
-import javafx.collections.ObservableList;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -27,8 +26,8 @@ public class ConfigFile {
     public static final int MAX_COPY_BACKUPFILE = 5; // Maximum number of backup files to be stored.
 
     private final Path configFile;
-    private final ArrayList<ConfigsData> configsList;
-    private final ArrayList<ObservableList<? extends ConfigsData>> configsListList;
+    private final ArrayList<ConfigsData> configsData;
+    private final ArrayList<ConfigsList> configsList;
 
     private int maxCopyBackupfile = MAX_COPY_BACKUPFILE;
 
@@ -36,7 +35,7 @@ public class ConfigFile {
     public ConfigFile(Path configFile) {
         this.configFile = configFile;
         this.configsList = new ArrayList<>();
-        configsListList = new ArrayList<>();
+        this.configsData = new ArrayList<>();
     }
 
 //    public void addConfigs(String tag, ArrayList<Config> configs) {
@@ -62,30 +61,30 @@ public class ConfigFile {
         this.maxCopyBackupfile = maxCopyBackupfile;
     }
 
-    public void addConfigs(ConfigsData configsData) {
+    public void addConfigs(ConfigsList configsData) {
         configsList.add(configsData);
     }
 
-    public void addConfigs(ObservableList<? extends ConfigsData> observableList) {
-        configsListList.add(observableList);
+    public void addConfigs(ConfigsData configsData) {
+        this.configsData.add(configsData);
     }
 
     public boolean writeConfigFile() {
         boolean ret = false;
         new BackupConfigFile(maxCopyBackupfile, configFile).konfigCopy();
 
-        SaveConfigFile saveConfigFile = new SaveConfigFile(configFile, configsListList, configsList);
+        SaveConfigFile saveConfigFile = new SaveConfigFile(configFile, configsList, configsData);
         saveConfigFile.write();
         return ret;
     }
 
-    public boolean readConfigFile(ArrayList<ConfigsList> configsListList,
-                                  ArrayList<ConfigsData> configsDataArr) {
-        if (new LoadConfigFile(configFile, configsListList, configsDataArr).readConfiguration()) {
+    public boolean readConfigFile(ArrayList<ConfigsList> configsList,
+                                  ArrayList<ConfigsData> configsData) {
+        if (new LoadConfigFile(configFile, configsList, configsData).readConfiguration()) {
             SysMsg.sysMsg("Config geladen");
             return true;
 
-        } else if (new BackupConfigFile(maxCopyBackupfile, configFile).loadBackup(configsListList, configsDataArr)) {
+        } else if (new BackupConfigFile(maxCopyBackupfile, configFile).loadBackup(configsList, configsData)) {
             SysMsg.sysMsg("Config-Backup geladen");
             return true;
         }

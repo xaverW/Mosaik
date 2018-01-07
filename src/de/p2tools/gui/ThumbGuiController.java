@@ -37,7 +37,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 import org.apache.commons.io.FileUtils;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -52,7 +51,6 @@ public class ThumbGuiController extends AnchorPane {
 
 
     ThumbCollection thumbCollection = null;
-    ComboBox<ThumbCollection> cbCollection = new ComboBox<>();
     TextField txtName = new TextField("");
     TextField txtDir = new TextField("");
     ToggleSwitch tglRecursive = new ToggleSwitch("Ordner rekursiv durchsuchen");
@@ -80,7 +78,6 @@ public class ThumbGuiController extends AnchorPane {
         SplitPane.setResizableWithParent(scrollPane, Boolean.FALSE);
         initTable();
 
-        initCollection();
         initCont();
         selectThumbCollection();
 
@@ -115,69 +112,6 @@ public class ThumbGuiController extends AnchorPane {
         initTableColor(table);
     }
 
-    private void initCollection() {
-        cbCollection.setItems(progData.thumbCollectionList);
-
-        try {
-            String col = ProgConfig.THUMB_GUI_THUMB_COLLECTION.get();
-            ThumbCollection thumbCollection = progData.thumbCollectionList.getThumbCollection(Integer.parseInt(col));
-            cbCollection.getSelectionModel().select(thumbCollection);
-        } catch (Exception ex) {
-            cbCollection.getSelectionModel().selectFirst();
-        }
-        final StringConverter<ThumbCollection> converter = new StringConverter<ThumbCollection>() {
-            @Override
-            public String toString(ThumbCollection fc) {
-                return fc == null ? "" : fc.getName();
-            }
-
-            @Override
-            public ThumbCollection fromString(String id) {
-                final int i = cbCollection.getSelectionModel().getSelectedIndex();
-                return progData.thumbCollectionList.get(i);
-            }
-        };
-        cbCollection.setConverter(converter);
-        cbCollection.setMaxWidth(Double.MAX_VALUE);
-        cbCollection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
-                selectThumbCollection()
-        );
-
-        Button btnNew = new Button("");
-        btnNew.setGraphic(new Icons().ICON_BUTTON_ADD);
-        btnNew.setOnAction(event -> {
-            ThumbCollection fc = new ThumbCollection("Neu-" + progData.thumbCollectionList.size());
-            progData.thumbCollectionList.add(fc);
-            cbCollection.getSelectionModel().select(fc);
-        });
-
-        Button btnDel = new Button("");
-        btnDel.setGraphic(new Icons().ICON_BUTTON_REMOVE);
-        btnDel.setOnAction(event -> {
-            int i = cbCollection.getSelectionModel().getSelectedIndex();
-            if (i < 0) {
-                return;
-            }
-            ThumbCollection fc = progData.thumbCollectionList.get(i);
-            if (fc != null) {
-                progData.thumbCollectionList.remove(fc);
-                cbCollection.getSelectionModel().selectFirst();
-            }
-        });
-
-        HBox hBox = new HBox();
-        hBox.setStyle("-fx-border-color: black;");
-        AnchorPane.setTopAnchor(hBox, 5.0);
-        AnchorPane.setLeftAnchor(hBox, 5.0);
-        AnchorPane.setBottomAnchor(hBox, 5.0);
-        AnchorPane.setRightAnchor(hBox, 5.0);
-        hBox.setPadding(new Insets(10));
-        hBox.setSpacing(10);
-        HBox.setHgrow(cbCollection, Priority.ALWAYS);
-        hBox.getChildren().addAll(cbCollection, btnNew, btnDel);
-        collectPane.getChildren().add(hBox);
-    }
-
 
     private void selectThumbCollection() {
         table.setItems(null);
@@ -187,10 +121,8 @@ public class ThumbGuiController extends AnchorPane {
             txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
         }
-        thumbCollection = cbCollection.getSelectionModel().getSelectedItem();
+        thumbCollection = progData.selectedThumbCollection;
         progData.selectedThumbCollection = thumbCollection;
-//        String s = String.valueOf(thumbCollection.getId());
-
 
         if (thumbCollection == null) {
             contPane.setDisable(true);
@@ -212,7 +144,6 @@ public class ThumbGuiController extends AnchorPane {
 
         txtDir.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDir, Priority.ALWAYS);
-        txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.thumbCollectionList.setListChanged());
 
         final Button btnDir = new Button();
         btnDir.setOnAction(event -> {

@@ -38,7 +38,7 @@ public class ConfigIntProp extends Config {
         return actValue.getValue();
     }
 
-    public String getActValueToString() {
+    public String getActValueString() {
         return String.valueOf(getActValue());
     }
 

@@ -71,11 +71,11 @@ public class MLConfig {
         }
 
         public String getActValue() {
-            return super.getActValueToString();
+            return super.getActValueString();
         }
 
-        public String getActValueToString() {
-            return super.getActValueToString();
+        public String getActValueString() {
+            return super.getActValueString();
         }
 
         public void setActValue(String act) {
@@ -83,7 +83,7 @@ public class MLConfig {
 
             for (MLConfigs c : HASHMAP.values()) {
                 if (c.getKey().equals(getKey())) {
-                    c.setValue(getActValueToString());
+                    c.setValue(getActValueString());
                     continue;
                 }
             }

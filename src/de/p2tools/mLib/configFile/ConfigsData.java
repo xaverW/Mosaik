@@ -21,6 +21,12 @@ import de.p2tools.mLib.configFile.config.Config;
 
 import java.util.ArrayList;
 
+/**
+ * this are the Classes in witch the configurationdata are stored
+ * the configurationdata has a *TAG*, which is tha name of the XML-TAG
+ * in the config-file and a array with the *DATA*, property in which the
+ * infos are stored
+ */
 public interface ConfigsData {
 
     String getTagName();

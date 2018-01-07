@@ -44,7 +44,7 @@ public class ThumbList extends SimpleListProperty<Thumb> implements ConfigsList<
     }
 
     public void addNewItem(Object obj) {
-        if (obj.getClass().equals(Thumb.class)) {
+        if (obj != null && obj.getClass().equals(Thumb.class)) {
             add((Thumb) obj);
         }
     }

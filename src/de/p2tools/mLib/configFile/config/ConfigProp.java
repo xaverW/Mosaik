@@ -17,36 +17,19 @@
 
 package de.p2tools.mLib.configFile.config;
 
-import javafx.beans.property.StringProperty;
+import java.util.ArrayList;
 
-public class ConfigStringProp extends Config {
+public class ConfigProp extends Config {
 
-    private String initValue;
-    private StringProperty actValue;
+    private ArrayList<Config> actValue;
 
-    public ConfigStringProp(String key, String initValue, StringProperty actValue) {
+    public ConfigProp(String key, ArrayList<Config> actValue) {
         super(key);
-        this.initValue = initValue;
         this.actValue = actValue;
     }
 
-    public String getInitValue() {
-        return initValue;
-    }
-
-    public String getActValue() {
-        return actValue.getValue();
-    }
-
-    public String getActValueString() {
-        return getActValue();
-    }
-
-    public StringProperty getActValueProperty() {
+    public ArrayList<Config> getActValue() {
         return actValue;
     }
 
-    public void setActValue(String act) {
-        actValue.setValue(act);
-    }
 }
