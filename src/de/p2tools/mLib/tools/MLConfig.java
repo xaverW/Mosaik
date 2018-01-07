@@ -32,7 +32,7 @@ public class MLConfig {
         return "system";
     }
 
-    public static ConfigsData getConfigsDate() {
+    public static ConfigsData getConfigsData() {
         ConfigsData cd = new ConfigsData() {
             @Override
             public String getTagName() {

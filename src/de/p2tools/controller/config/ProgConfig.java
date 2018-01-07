@@ -82,7 +82,7 @@ public class ProgConfig extends MLConfig {
 
     public static ConfigsData getConfigsDate() {
         // sonst werde die Keys nich vorher angelegt :)
-        return MLConfig.getConfigsDate();
+        return MLConfig.getConfigsData();
     }
 
 }
