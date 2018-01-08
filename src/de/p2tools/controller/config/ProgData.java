@@ -37,7 +37,7 @@ import java.util.Random;
 public class ProgData {
 
     private static ProgData instance;
-    public Random random = new Random();
+    public static Random random = new Random();
     // flags
     public static boolean debug = false; // Debugmodus
     public static boolean reset = false; // Programm auf Starteinstellungen zurücksetzen
@@ -70,7 +70,7 @@ public class ProgData {
 
     private ProgData() {
         projectDataList = new ProjectDataList();
-        thumbCollection = new ThumbCollection(this);
+        thumbCollection = new ThumbCollection();
 
         mosaikData = new MosaikData();
         wallpaperData = new WallpaperData();

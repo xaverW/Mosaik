@@ -27,7 +27,7 @@ import java.util.Collections;
 
 public class ThumbList extends SimpleListProperty<Thumb> implements ConfigsList<Thumb> {
 
-    public static final String TAG = "THUMBLIST";
+    public static final String TAG = "Thumblist";
     private int nr = 1;
     private BooleanProperty fotoListChanged = new SimpleBooleanProperty(true);
 

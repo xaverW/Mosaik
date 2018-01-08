@@ -17,7 +17,7 @@
 
 package de.p2tools.mLib.configFile.config;
 
-import java.util.ArrayList;
+import de.p2tools.mLib.configFile.ConfigsData;
 
 /**
  * its a pseudo CONFIG, it contains a CONFIGDATA, also
@@ -25,14 +25,14 @@ import java.util.ArrayList;
  */
 public class ConfigConfigsData extends Config {
 
-    private ArrayList<Config> actValue;
+    private ConfigsData actValue;
 
-    public ConfigConfigsData(String key, ArrayList<Config> actValue) {
+    public ConfigConfigsData(String key, ConfigsData actValue) {
         super(key);
         this.actValue = actValue;
     }
 
-    public ArrayList<Config> getActValue() {
+    public ConfigsData getActValue() {
         return actValue;
     }
 

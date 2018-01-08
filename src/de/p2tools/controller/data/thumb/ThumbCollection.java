@@ -16,12 +16,15 @@
 
 package de.p2tools.controller.data.thumb;
 
-import de.p2tools.controller.config.ProgData;
+import java.util.Random;
 
 public final class ThumbCollection extends ThumbCollectionProps {
 
-    public ThumbCollection(ProgData progData) {
-        setId(progData.random.nextInt());
+    public ThumbCollection() {
+        setId(new Random().nextInt());
+        // todo: wieder weg
+        this.getThumbList().add(new Thumb(1, 2, 3, "pp"));
+        this.getThumbList().add(new Thumb(2, 2, 2, "aaa"));
     }
 
     public ThumbCollection(String name) {
@@ -29,7 +32,7 @@ public final class ThumbCollection extends ThumbCollectionProps {
     }
 
     public ThumbCollection getCopy() {
-        final ThumbCollection ret = new ThumbCollection(ProgData.getInstance());
+        final ThumbCollection ret = new ThumbCollection();
         for (int i = 0; i < properties.length; ++i) {
             ret.properties[i].setValue(this.properties[i].getValue());
         }
