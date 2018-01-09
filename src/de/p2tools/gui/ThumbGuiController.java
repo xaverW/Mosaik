@@ -51,7 +51,6 @@ public class ThumbGuiController extends AnchorPane {
 
 
     ThumbCollection thumbCollection = null;
-    TextField txtName = new TextField("");
     TextField txtDir = new TextField("");
     ToggleSwitch tglRecursive = new ToggleSwitch("Ordner rekursiv durchsuchen");
     Button btnLod = new Button("Fotos hinzufügen");
@@ -88,20 +87,16 @@ public class ThumbGuiController extends AnchorPane {
         splitPane.getItems().addAll(vBox, scrollPane);
         splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
 
-        initListener();
     }
 
     public void isShown() {
+        selectThumbCollection();
     }
 
 
     public void saveTable() {
         new Table().saveTable(table, Table.TABLE.THUMB);
     }
-
-    private void initListener() {
-    }
-
 
     private void initTable() {
         table.setTableMenuButtonVisible(true);
@@ -112,25 +107,23 @@ public class ThumbGuiController extends AnchorPane {
         initTableColor(table);
     }
 
-
     private void selectThumbCollection() {
         table.setItems(null);
 
         if (thumbCollection != null) {
-            txtName.textProperty().unbindBidirectional(thumbCollection.nameProperty());
             txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
         }
-        thumbCollection = progData.selectedThumbCollection;
-        progData.selectedThumbCollection = thumbCollection;
+
+        if (progData.selectedProjectData != null) {
+            thumbCollection = progData.selectedProjectData.getThumbCollection();
+        }
 
         if (thumbCollection == null) {
             contPane.setDisable(true);
         } else {
             contPane.setDisable(false);
 
-            ProgConfig.THUMB_GUI_THUMB_COLLECTION.setValue(thumbCollection.getId());
-            txtName.textProperty().bindBidirectional(thumbCollection.nameProperty());
             txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
 
@@ -139,21 +132,18 @@ public class ThumbGuiController extends AnchorPane {
     }
 
     private void initCont() {
-        Label lblName = new Label("Name der Sammlung");
         Label lblDir = new Label("Ordner mit Fotos auswählen");
 
         txtDir.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDir, Priority.ALWAYS);
 
         final Button btnDir = new Button();
-        btnDir.setOnAction(event -> {
-            DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir);
-        });
+        btnDir.setOnAction(event -> DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir));
         btnDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
         final Button btnHelp = new Button("");
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+        btnHelp.setOnAction(event -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
 
         btnLod.setOnAction(a -> {
@@ -161,7 +151,7 @@ public class ThumbGuiController extends AnchorPane {
                 return;
             }
             // todo destDir ist leer
-            String destDir = ProgInfos.getFotoCollectionsDirectory_String(thumbCollection.getName());
+            String destDir = ProgInfos.getFotoCollectionsDirectory_String();
             thumbCollection.setThumbDir(destDir);
 
             progData.genThumbList.create(thumbCollection);
@@ -190,7 +180,7 @@ public class ThumbGuiController extends AnchorPane {
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
-        vBox.getChildren().addAll(lblName, txtName, lblDir, hBoxDir, tglRecursive, hBoxButon);
+        vBox.getChildren().addAll(lblDir, hBoxDir, tglRecursive, hBoxButon);
 
         AnchorPane.setTopAnchor(vBox, 5.0);
         AnchorPane.setLeftAnchor(vBox, 5.0);

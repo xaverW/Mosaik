@@ -34,7 +34,6 @@ public final class Thumb extends ThumbProps {
         for (int i = 0; i < properties.length; ++i) {
             ret.properties[i].setValue(this.properties[i].getValue());
         }
-        ret.setXmlFromProps();
 
         return ret;
     }
@@ -43,6 +42,5 @@ public final class Thumb extends ThumbProps {
         for (int i = 0; i < properties.length; ++i) {
             properties[i].setValue(thumb.properties[i].getValue());
         }
-        setXmlFromProps();
     }
 }

@@ -35,10 +35,7 @@ public class ProgSave {
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();
         ConfigFile configFile = new ConfigFile(xmlFilePath);
         configFile.addConfigs(ProgConfig.getConfigsDate());
-        configFile.addConfigs(progData.mosaikData);
-        configFile.addConfigs(progData.wallpaperData);
         configFile.addConfigs(progData.projectDataList);
-        configFile.addConfigs(progData.thumbCollection);
         configFile.writeConfigFile();
     }
 

@@ -37,7 +37,6 @@ public class ThumbProps extends Data<Thumb> {
     private final IntegerProperty blue = new SimpleIntegerProperty(0);
     private final StringProperty fileName = new SimpleStringProperty("");
 
-    private int sum = 0;
     private Color color = Color.rgb(0, 0, 0);
 
     public String getTag() {
@@ -131,14 +130,6 @@ public class ThumbProps extends Data<Thumb> {
     }
 
 
-    public int getSum() {
-        return sum;
-    }
-
-    public void setSum() {
-        sum = getGreen() + getBlue() + getRed();
-    }
-
     public Color getColor() {
         return color;
     }
@@ -146,23 +137,6 @@ public class ThumbProps extends Data<Thumb> {
     public void setColor() {
         this.color = Color.rgb(getRed(), getGreen(), getBlue());
     }
-
-//    public void setPropsFromXml() {
-//        setRed(Integer.parseInt(arr[COLOR_RED]));
-//        setGreen(Integer.parseInt(arr[COLOR_GREEN]));
-//        setBlue(Integer.parseInt(arr[COLOR_BLUE]));
-//        setSum();
-//        setColor();
-//        setFileName(arr[FILENAME]);
-//    }
-//
-//
-//    public void setXmlFromProps() {
-//        arr[COLOR_RED] = String.valueOf(getRed());
-//        arr[COLOR_GREEN] = String.valueOf(getGreen());
-//        arr[COLOR_BLUE] = String.valueOf(getBlue());
-//        arr[FILENAME] = getFileName();
-//    }
 
 
     @Override
@@ -172,13 +146,6 @@ public class ThumbProps extends Data<Thumb> {
         } else {
             return 1;
         }
-//        if (arg0.getSum() == getSum()) {
-//            return 0;
-//        } else if (arg0.getSum() < getSum()) {
-//            return -1;
-//        } else {
-//            return 1;
-//        }
     }
 
 }

@@ -25,9 +25,9 @@ import java.util.ArrayList;
 public class Data<E> implements ConfigsData, Comparable<E> {
 
     public static String TAG;
-    public static String[] COLUMN_NAMES;
-    public static String[] XML_NAMES;
-    public static int MAX_ELEM;
+//    public static String[] COLUMN_NAMES;
+//    public static String[] XML_NAMES;
+//    public static int MAX_ELEM;
 
     public String[] arr;
 
@@ -57,11 +57,11 @@ public class Data<E> implements ConfigsData, Comparable<E> {
         return null;
     }
 
-    public void setPropsFromXml() {
-    }
-
-    public void setXmlFromProps() {
-    }
+//    public void setPropsFromXml() {
+//    }
+//
+//    public void setXmlFromProps() {
+//    }
 
     @Override
     public int compareTo(E o) {

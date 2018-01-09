@@ -20,9 +20,6 @@ package de.p2tools.controller.config;
 import de.p2tools.MosaikController;
 import de.p2tools.controller.data.destData.ProjectData;
 import de.p2tools.controller.data.destData.ProjectDataList;
-import de.p2tools.controller.data.mosaikData.MosaikData;
-import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.genThumbList.GenThumbList;
 import de.p2tools.gui.*;
 import de.p2tools.gui.tools.Listener;
@@ -47,12 +44,6 @@ public class ProgData {
 
     // zentrale Klassen
     public ProjectDataList projectDataList = null;
-    public ThumbCollection thumbCollection = null;
-
-    public MosaikData mosaikData;
-    public WallpaperData wallpaperData;
-
-    public ThumbCollection selectedThumbCollection = null;
     public ProjectData selectedProjectData = null;
 
     public GenThumbList genThumbList = null;
@@ -70,11 +61,6 @@ public class ProgData {
 
     private ProgData() {
         projectDataList = new ProjectDataList();
-        thumbCollection = new ThumbCollection();
-
-        mosaikData = new MosaikData();
-        wallpaperData = new WallpaperData();
-
         genThumbList = new GenThumbList(this);
 
         Timeline timeline = new Timeline(new KeyFrame(

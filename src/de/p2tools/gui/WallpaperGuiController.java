@@ -44,7 +44,7 @@ public class WallpaperGuiController extends AnchorPane {
 
     public WallpaperGuiController() {
         this.progData = ProgData.getInstance();
-        this.wallpaperData = progData.wallpaperData;
+        this.wallpaperData = progData.selectedProjectData.getWallpaperData();
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
@@ -148,8 +148,8 @@ public class WallpaperGuiController extends AnchorPane {
 
         btnCreate.setOnAction(a -> {
             if (!txtDest.getText().isEmpty()) {
-                new GenWallpaper(progData.selectedThumbCollection,
-                        progData.wallpaperData).gen();
+                new GenWallpaper(progData.selectedProjectData.getThumbCollection(),
+                        progData.selectedProjectData.getWallpaperData()).gen();
             }
         });
 

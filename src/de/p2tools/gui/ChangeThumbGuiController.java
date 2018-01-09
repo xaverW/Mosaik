@@ -83,10 +83,6 @@ public class ChangeThumbGuiController extends AnchorPane {
     }
 
     public void isShown() {
-        if (progData.selectedThumbCollection == null ||
-                !thumbCollection.equals(progData.selectedThumbCollection)) {
-            selectThumbCollection();
-        }
     }
 
 
@@ -104,13 +100,13 @@ public class ChangeThumbGuiController extends AnchorPane {
         if (thumbCollection != null) {
             lblName.setText("");
         }
-        thumbCollection = progData.selectedThumbCollection;
+        thumbCollection = progData.selectedProjectData.getThumbCollection();
 
         if (thumbCollection == null) {
             contPane.setDisable(true);
         } else {
             contPane.setDisable(false);
-            lblName.setText(thumbCollection.getName());
+            lblName.setText(progData.selectedProjectData.getName());
             table.setItems(thumbCollection.getThumbList());
         }
     }

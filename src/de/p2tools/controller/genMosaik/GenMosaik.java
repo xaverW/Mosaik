@@ -60,7 +60,7 @@ public class GenMosaik {
         progData = ProgData.getInstance();
         this.mosaikData = mosaikData;
 //        this.thumbCollection = progData.thumbCollectionList.getThumbCollection(mosaikDataDataData.getThumbCollectionId());
-        this.thumbCollection = progData.selectedThumbCollection;
+        this.thumbCollection = progData.selectedProjectData.getThumbCollection();
     }
 
     /**

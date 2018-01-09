@@ -16,32 +16,8 @@
 
 package de.p2tools.controller.data.thumb;
 
-import java.util.Random;
-
 public final class ThumbCollection extends ThumbCollectionProps {
 
     public ThumbCollection() {
-        setId(new Random().nextInt());
-    }
-
-    public ThumbCollection(String name) {
-        setName(name);
-    }
-
-    public ThumbCollection getCopy() {
-        final ThumbCollection ret = new ThumbCollection();
-        for (int i = 0; i < properties.length; ++i) {
-            ret.properties[i].setValue(this.properties[i].getValue());
-        }
-        ret.setXmlFromProps();
-
-        return ret;
-    }
-
-    public void copyToMe(ThumbCollection foto) {
-        for (int i = 0; i < properties.length; ++i) {
-            properties[i].setValue(foto.properties[i].getValue());
-        }
-        setXmlFromProps();
     }
 }

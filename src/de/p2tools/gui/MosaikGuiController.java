@@ -47,7 +47,7 @@ public class MosaikGuiController extends AnchorPane {
 
     public MosaikGuiController() {
         progData = ProgData.getInstance();
-        mosaikData = progData.mosaikData;
+        mosaikData = progData.selectedProjectData.getMosaikData();
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
@@ -169,7 +169,6 @@ public class MosaikGuiController extends AnchorPane {
 
         btnCreate.setOnAction(a -> {
             if (!txtSrc.getText().isEmpty() && !txtDest.getText().isEmpty()) {
-                mosaikData.setThumbCollectionId(progData.selectedThumbCollection.getId());
                 new GenMosaik(mosaikData).erstellen();
             }
         });

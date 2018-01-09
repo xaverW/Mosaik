@@ -18,8 +18,14 @@ package de.p2tools.controller.data.thumb;
 
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.data.Data;
-import de.p2tools.mLib.configFile.config.*;
-import javafx.beans.property.*;
+import de.p2tools.mLib.configFile.config.Config;
+import de.p2tools.mLib.configFile.config.ConfigBoolProp;
+import de.p2tools.mLib.configFile.config.ConfigConfigsList;
+import de.p2tools.mLib.configFile.config.ConfigStringProp;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +33,6 @@ import java.util.Arrays;
 public class ThumbCollectionProps extends Data<ThumbCollection> {
 
     public static final String TAG = "ThumbCollection";
-    private final IntegerProperty id = new SimpleIntegerProperty(0);
-    private final StringProperty name = new SimpleStringProperty("");
     private final BooleanProperty recursive = new SimpleBooleanProperty(true);
     private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG);
     private final StringProperty thumbDir = new SimpleStringProperty("");
@@ -42,8 +46,6 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
 
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<>(Arrays.asList(
-                new ConfigIntProp("id", 0, id),
-                new ConfigStringProp("name", "", name),
                 new ConfigBoolProp("recursiv", true, recursive),
                 new ConfigStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("dir-thumb", "", thumbDir),
@@ -59,32 +61,6 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
         this.thumbList = thumbList;
     }
 
-
-    public final Property[] properties = {id, name, format};
-
-    public int getId() {
-        return id.get();
-    }
-
-    public IntegerProperty idProperty() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id.set(id);
-    }
-
-    public String getName() {
-        return name.get();
-    }
-
-    public StringProperty nameProperty() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name.set(name);
-    }
 
     public boolean isRecursive() {
         return recursive.get();
@@ -134,37 +110,5 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
         this.fotoSrcDir.set(fotoSrcDir);
     }
 
-//    public void setPropsFromXml() {
-//        setName(arr[NAME]);
-//        setFormat(arr[FOTO_FORMAT]);
-//        setThumbDir(arr[DIR_THUMB]);
-//        setFotoSrcDir(arr[DIR_FOTO_SRC]);
-//        setInt();
-//    }
-//
-//    private void setInt() {
-//        try {
-//            setRecursive(Boolean.parseBoolean(arr[RECURSIV]));
-//            setId(Integer.parseInt(arr[ID]));
-//        } catch (Exception e) {
-//            setRecursive(true);
-//            setId(0);
-//        }
-//    }
-//
-//    public void setXmlFromProps() {
-//        arr[ID] = String.valueOf(getId());
-//        arr[NAME] = getName();
-//        arr[RECURSIV] = String.valueOf(isRecursive());
-//        arr[FOTO_FORMAT] = getFormat();
-//        arr[DIR_THUMB] = getThumbDir();
-//        arr[DIR_FOTO_SRC] = getFotoSrcDir();
-//    }
-
-
-    @Override
-    public int compareTo(ThumbCollection thumbCollection) {
-        return getName().compareTo(thumbCollection.getName());
-    }
 
 }

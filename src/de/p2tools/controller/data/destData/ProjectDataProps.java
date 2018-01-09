@@ -18,7 +18,9 @@
 package de.p2tools.controller.data.destData;
 
 import de.p2tools.controller.data.Data;
+import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mLib.configFile.config.Config;
 import de.p2tools.mLib.configFile.config.ConfigConfigsData;
 import de.p2tools.mLib.configFile.config.ConfigStringProp;
@@ -34,6 +36,8 @@ public class ProjectDataProps extends Data<ProjectData> {
     private final StringProperty name = new SimpleStringProperty("Neues Mosaik");
     private final StringProperty destDir = new SimpleStringProperty(""); // project dir
 
+    private final MosaikData mosaikData = new MosaikData();
+    private final WallpaperData wallpaperData = new WallpaperData();
     private final ThumbCollection thumbCollection = new ThumbCollection();
 
     public String getTag() {
@@ -44,7 +48,17 @@ public class ProjectDataProps extends Data<ProjectData> {
         return new ArrayList<>(Arrays.asList(
                 new ConfigStringProp("name", "Neues Mosaik", name),
                 new ConfigStringProp("dest-dir", "", destDir),
+                new ConfigConfigsData(mosaikData),
+                new ConfigConfigsData(wallpaperData),
                 new ConfigConfigsData(thumbCollection)));
+    }
+
+    public MosaikData getMosaikData() {
+        return mosaikData;
+    }
+
+    public WallpaperData getWallpaperData() {
+        return wallpaperData;
     }
 
     public ThumbCollection getThumbCollection() {

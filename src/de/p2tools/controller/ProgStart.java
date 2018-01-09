@@ -70,7 +70,7 @@ public class ProgStart {
         ConfigFile configFile = new ConfigFile(xmlFilePath);
         return configFile.readConfigFile(
                 new ArrayList<>(Arrays.asList(progData.projectDataList)),
-                new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate(), progData.mosaikData, progData.wallpaperData)));
+                new ArrayList<>(Arrays.asList(ProgConfig.getConfigsDate())));
     }
 
 }
