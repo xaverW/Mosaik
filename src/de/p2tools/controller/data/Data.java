@@ -44,9 +44,14 @@ public class Data<E> implements ConfigsData, Comparable<E> {
         return a;
     }
 
-    public String getTagName() {
+    public String getTag() {
         return "";
     }
+
+    public String getComment() {
+        return "";
+    }
+
 
     public ArrayList<Config> getConfigsArr() {
         return null;

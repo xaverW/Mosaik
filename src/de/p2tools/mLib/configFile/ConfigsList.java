@@ -27,7 +27,9 @@ import java.util.List;
  */
 public interface ConfigsList<E extends ConfigsData> extends List<E> {
 
-    String getTagName();
+    String getTag();
+
+    String getComment();
 
     ConfigsData getNewItem();
 

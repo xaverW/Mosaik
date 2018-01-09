@@ -35,8 +35,13 @@ public class MLConfig {
     public static ConfigsData getConfigsData() {
         ConfigsData cd = new ConfigsData() {
             @Override
-            public String getTagName() {
+            public String getTag() {
                 return MLConfig.getTagName();
+            }
+
+            @Override
+            public String getComment() {
+                return "system settings";
             }
 
             @Override

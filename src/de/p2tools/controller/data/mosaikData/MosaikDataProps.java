@@ -40,7 +40,7 @@ public class MosaikDataProps extends Data<MosaikData> {
 
     public final Property[] properties = {format, fotoSrc, fotoDest, thumbSize, numberThumbsWidth, thumbCount, thumbCollectionId};
 
-    public String getTagName() {
+    public String getTag() {
         return TAG;
     }
 

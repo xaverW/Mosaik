@@ -41,7 +41,7 @@ public class ConfigFile {
 //    public void addConfigs(String tag, ArrayList<Config> configs) {
 //        ConfigsData configsData = new ConfigsData() {
 //            @Override
-//            public String getTagName() {
+//            public String getTag() {
 //                return tag;
 //            }
 //

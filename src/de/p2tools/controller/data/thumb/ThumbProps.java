@@ -40,7 +40,7 @@ public class ThumbProps extends Data<Thumb> {
     private int sum = 0;
     private Color color = Color.rgb(0, 0, 0);
 
-    public String getTagName() {
+    public String getTag() {
         return TAG;
     }
 

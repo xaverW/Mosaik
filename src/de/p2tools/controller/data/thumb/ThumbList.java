@@ -36,8 +36,12 @@ public class ThumbList extends SimpleListProperty<Thumb> implements ConfigsList<
         super(FXCollections.observableArrayList());
     }
 
-    public String getTagName() {
+    public String getTag() {
         return TAG;
+    }
+
+    public String getComment() {
+        return "the list of the thumbs";
     }
 
     public Thumb getNewItem() {

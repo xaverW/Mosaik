@@ -29,9 +29,9 @@ public class ConfigConfigsList extends Config {
 
     private ConfigsList<? extends ConfigsData> actValue;
 
-    public ConfigConfigsList(String key, ConfigsList<? extends ConfigsData> actValue) {
-        super(key);
-        this.actValue = actValue;
+    public ConfigConfigsList(ConfigsList<? extends ConfigsData> configsList) {
+        super(configsList.getTag());
+        this.actValue = configsList;
     }
 
     public ConfigsList<? extends ConfigsData> getActValue() {

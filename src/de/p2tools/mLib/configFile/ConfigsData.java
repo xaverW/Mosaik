@@ -29,7 +29,9 @@ import java.util.ArrayList;
  */
 public interface ConfigsData {
 
-    String getTagName();
+    String getTag();
+
+    String getComment();
 
     ArrayList<Config> getConfigsArr();
 

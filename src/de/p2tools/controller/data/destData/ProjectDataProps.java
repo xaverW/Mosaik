@@ -36,15 +36,15 @@ public class ProjectDataProps extends Data<ProjectData> {
 
     private final ThumbCollection thumbCollection = new ThumbCollection();
 
-    public String getTagName() {
+    public String getTag() {
         return TAG;
     }
 
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<>(Arrays.asList(
-                new ConfigStringProp("dest-dir", "", destDir),
                 new ConfigStringProp("name", "Neues Mosaik", name),
-                new ConfigConfigsData(ThumbCollection.TAG, thumbCollection)));
+                new ConfigStringProp("dest-dir", "", destDir),
+                new ConfigConfigsData(thumbCollection)));
     }
 
     public ThumbCollection getThumbCollection() {

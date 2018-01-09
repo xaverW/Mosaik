@@ -44,9 +44,14 @@ public class ProjectDataList extends SimpleListProperty<ProjectData> implements 
         }
     }
 
-    public String getTagName() {
+    public String getTag() {
         return TAG;
     }
+
+    public String getComment() {
+        return "list of the project data";
+    }
+
 
     public ProjectData getNewItem() {
         return new ProjectData();

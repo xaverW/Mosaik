@@ -63,12 +63,16 @@ class SaveConfigFile implements AutoCloseable {
             xmlSchreibenStart();
 
             for (ConfigsData configsData : configsData) {
+
                 writer.writeCharacters("\n\n");
+                writer.writeComment(configsData.getComment());
+                writer.writeCharacters("\n");
                 write(configsData, 0);
             }
 
             for (ConfigsList cl : configsList) {
-                writer.writeCharacters("\n\n");
+                writer.writeCharacters("\n");
+                writer.writeComment(cl.getComment());
                 write(cl, 0);
             }
 
@@ -129,7 +133,7 @@ class SaveConfigFile implements AutoCloseable {
 
     private void writeConfigsData(ConfigsData configsData, int tab) throws XMLStreamException {
 
-        String xmlName = configsData.getTagName();
+        String xmlName = configsData.getTag();
 
         for (int t = 0; t < tab; ++t) {
             writer.writeCharacters("\t"); // Tab
@@ -153,7 +157,8 @@ class SaveConfigFile implements AutoCloseable {
 
     private void writeConfigsList(ConfigsList configsList, int tab) throws XMLStreamException {
 
-        String xmlName = configsList.getTagName();
+        String xmlName = configsList.getTag();
+        writer.writeCharacters("\n"); // neue Zeile
 
         for (int t = 0; t < tab; ++t) {
             writer.writeCharacters("\t"); // Tab

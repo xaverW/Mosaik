@@ -18,8 +18,8 @@
 package de.p2tools.controller.data.wallpaperData;
 
 import de.p2tools.controller.config.ProgConst;
-import de.p2tools.mLib.configFile.config.Config;
 import de.p2tools.mLib.configFile.ConfigsData;
+import de.p2tools.mLib.configFile.config.Config;
 import de.p2tools.mLib.configFile.config.ConfigIntProp;
 import de.p2tools.mLib.configFile.config.ConfigStringProp;
 import javafx.beans.property.*;
@@ -36,10 +36,13 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
 
     public final Property[] properties = {format, fotoDest, thumbSize, numberThumbsWidth, thumbCollectionId};
 
-    public String getTagName() {
+    public String getTag() {
         return TAG;
     }
 
+    public String getComment() {
+        return "settings of the wallpaper";
+    }
 
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<Config>(Arrays.asList(

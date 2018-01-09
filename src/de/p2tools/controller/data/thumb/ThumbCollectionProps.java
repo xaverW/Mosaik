@@ -36,7 +36,7 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
 
     private ThumbList thumbList = new ThumbList();
 
-    public String getTagName() {
+    public String getTag() {
         return TAG;
     }
 
@@ -48,7 +48,7 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
                 new ConfigStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("dir-thumb", "", thumbDir),
                 new ConfigStringProp("dir-foto-src", "", fotoSrcDir),
-                new ConfigConfigsList(Thumb.TAG, thumbList)));
+                new ConfigConfigsList(thumbList)));
     }
 
     public ThumbList getThumbList() {

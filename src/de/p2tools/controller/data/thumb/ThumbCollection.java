@@ -22,9 +22,6 @@ public final class ThumbCollection extends ThumbCollectionProps {
 
     public ThumbCollection() {
         setId(new Random().nextInt());
-        // todo: wieder weg
-        this.getThumbList().add(new Thumb(1, 2, 3, "pp"));
-        this.getThumbList().add(new Thumb(2, 2, 2, "aaa"));
     }
 
     public ThumbCollection(String name) {
