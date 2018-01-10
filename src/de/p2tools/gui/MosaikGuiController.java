@@ -28,7 +28,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 public class MosaikGuiController extends AnchorPane {
 
@@ -38,8 +41,11 @@ public class MosaikGuiController extends AnchorPane {
     private final Label lblSrc = new Label("Foto zum Erstellen des Mosaik");
     private final TextField txtSrc = new TextField();
     private final Button btnSrc = new Button("");
-    private final Label lblDesst = new Label("Mosaik speichern");
-    private final TextField txtDest = new TextField();
+    private final Label lblDestName = new Label("Dateiname des Mosaik");
+    private final TextField txtDestName = new TextField();
+
+    private final Label lblDest = new Label("Mosaik im Ordner speichern");
+    private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Mosaik erstellen");
 
@@ -80,15 +86,13 @@ public class MosaikGuiController extends AnchorPane {
 
         txtSrc.textProperty().bindBidirectional(mosaikData.fotoSrcProperty());
         txtSrc.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(txtSrc, Priority.ALWAYS);
-
-        HBox hBoxSrc = new HBox(10);
-        hBoxSrc.getChildren().addAll(txtSrc, btnSrc, btnHelpSrc);
-
 
         // DEST
+        txtDestName.textProperty().bindBidirectional(mosaikData.fotoDestNameProperty());
+        txtDestName.setMaxWidth(Double.MAX_VALUE);
+
         btnDest.setOnAction(event -> {
-            DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtDest);
+            DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtDestDir);
         });
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
@@ -96,13 +100,11 @@ public class MosaikGuiController extends AnchorPane {
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        txtDest.textProperty().bindBidirectional(mosaikData.fotoDestProperty());
-        txtDest.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(txtDest, Priority.ALWAYS);
+        txtDestDir.textProperty().bindBidirectional(mosaikData.fotoDestDirProperty());
+        txtDestDir.setMaxWidth(Double.MAX_VALUE);
 
-        HBox hBoxDest = new HBox(10);
-        hBoxDest.getChildren().addAll(txtDest, btnDest, btnHelpDest);
-
+        GridPane.setHgrow(txtDestName, Priority.ALWAYS);
+        GridPane.setHgrow(txtDestDir, Priority.ALWAYS);
 
         // Thumbsize
         final Button btnHelpSlider = new Button("");
@@ -112,6 +114,7 @@ public class MosaikGuiController extends AnchorPane {
         Slider sliderSize = new Slider();
         sliderSize.setMin(5);
         sliderSize.setMax(25);
+        GridPane.setHgrow(sliderSize, Priority.ALWAYS);
 
         sliderSize.setValue(mosaikData.getThumbSize() / 10);
         IntegerProperty iProp = new SimpleIntegerProperty();
@@ -123,7 +126,6 @@ public class MosaikGuiController extends AnchorPane {
         Label lblSlider = new Label("");
         lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.thumbSizeProperty()));
 
-
         // Anzahl Thumbs
         final Button btnHelpSliderCount = new Button("");
         btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
@@ -132,6 +134,7 @@ public class MosaikGuiController extends AnchorPane {
         Slider sliderCount = new Slider();
         sliderCount.setMin(1);
         sliderCount.setMax(100);
+        GridPane.setHgrow(sliderCount, Priority.ALWAYS);
 
         sliderCount.setValue(mosaikData.getNumberThumbsWidth() / 10);
         IntegerProperty iPropCount = new SimpleIntegerProperty();
@@ -144,31 +147,48 @@ public class MosaikGuiController extends AnchorPane {
         lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
 
 
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(0));
-        gridPane.setVgap(10);
-        gridPane.setHgap(10);
+        // make Grid
+        int row = 0;
+        GridPane gridPaneDest = new GridPane();
+        gridPaneDest.setPadding(new Insets(0));
+        gridPaneDest.setVgap(5);
+        gridPaneDest.setHgap(5);
+        gridPaneDest.add(new Label("Foto zum Erstellen des Mosaik"), 0, row, 2, 1);
+        gridPaneDest.add(new Label("Datei:"), 0, ++row);
+        gridPaneDest.add(txtSrc, 1, row);
+        gridPaneDest.add(btnSrc, 2, row);
+        gridPaneDest.add(btnHelpSrc, 3, row);
 
-        GridPane.setHgrow(sliderSize, Priority.ALWAYS);
-        GridPane.setHgrow(sliderCount, Priority.ALWAYS);
+        gridPaneDest.add(new Label(""), 0, ++row);
 
-        gridPane.add(new Label("Größe der Miniaturbilder (Pixel):"), 0, 0);
-        gridPane.add(sliderSize, 1, 0);
-        gridPane.add(lblSlider, 2, 0);
-        gridPane.add(btnHelpSlider, 3, 0);
-        gridPane.add(new Label("Anzahl Miniaturbilder im Mosaik (Breite):"), 0, 1);
-        gridPane.add(sliderCount, 1, 1);
-        gridPane.add(lblSliderCount, 2, 1);
-        gridPane.add(btnHelpSliderCount, 3, 1);
+        gridPaneDest.add(new Label("Mosaik speichern"), 0, ++row, 2, 1);
+        gridPaneDest.add(new Label("Dateiname:"), 0, ++row);
+        gridPaneDest.add(txtDestName, 1, row);
+        gridPaneDest.add(new Label("Verzeichnis:"), 0, ++row);
+        gridPaneDest.add(txtDestDir, 1, row);
+        gridPaneDest.add(btnDest, 2, row);
+        gridPaneDest.add(btnHelpDest, 3, row);
+
+        gridPaneDest.add(new Label(""), 0, ++row);
+
+        gridPaneDest.add(new Label("Größe der Miniaturbilder (Pixel):"), 0, ++row, 2, 1);
+        gridPaneDest.add(sliderSize, 0, ++row, 2, 1);
+        gridPaneDest.add(lblSlider, 2, row);
+        gridPaneDest.add(btnHelpSlider, 3, row);
+
+        gridPaneDest.add(new Label("Anzahl Miniaturbilder im Mosaik (Breite):"), 0, ++row, 2, 1);
+        gridPaneDest.add(sliderCount, 0, ++row, 2, 1);
+        gridPaneDest.add(lblSliderCount, 2, row);
+        gridPaneDest.add(btnHelpSliderCount, 3, row);
 
         // import all
-        vBoxCont.setSpacing(10);
+        vBoxCont.setSpacing(25);
         vBoxCont.setPadding(new Insets(10));
-        vBoxCont.getChildren().addAll(lblSrc, hBoxSrc, lblDesst, hBoxDest, gridPane, btnCreate);
+        vBoxCont.getChildren().addAll(gridPaneDest, btnCreate);
 
 
         btnCreate.setOnAction(a -> {
-            if (!txtSrc.getText().isEmpty() && !txtDest.getText().isEmpty()) {
+            if (!txtSrc.getText().isEmpty() && !txtDestDir.getText().isEmpty()) {
                 new GenMosaik(mosaikData).erstellen();
             }
         });

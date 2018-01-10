@@ -80,7 +80,7 @@ public class GenMosaik {
     /**
      */
     public void erstellen() {
-        dest = mosaikData.getFotoDest();
+        dest = mosaikData.getFotoDestDir();
         src = mosaikData.getFotoSrc();
         anz = mosaikData.getThumbCount();
         progress = 0;
