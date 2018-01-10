@@ -250,4 +250,30 @@ public class FileUtils {
         return ret;
     }
 
+    public static boolean deleteFileNoMsg(String strFile) {
+        boolean ret = false;
+        try {
+            File file = new File(strFile);
+            if (!file.exists()) {
+                new MTAlert().showErrorAlert("Datei löschen", "", "Die Datei existiert nicht!");
+                return false;
+            }
+
+            // und jetzt die Datei löschen
+            SysMsg.sysMsg(new String[]{"Datei löschen: ", file.getAbsolutePath()});
+            if (!file.delete()) {
+                throw new Exception();
+            }
+            ret = true;
+
+        } catch (Exception ex) {
+            ret = false;
+            new MTAlert().showErrorAlert("Datei löschen",
+                    "Konnte die Datei nicht löschen!", "Fehler beim löschen von:\n\n" +
+                            strFile);
+            Log.errorLog(912036547, "Fehler beim löschen: " + strFile);
+        }
+        return ret;
+    }
+
 }

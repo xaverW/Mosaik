@@ -16,17 +16,16 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.genThumbList.ScaleImage;
+import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.MTOpen;
 import de.p2tools.gui.tools.Table;
-import javafx.beans.property.DoubleProperty;
+import de.p2tools.mLib.tools.MLAlert;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -36,53 +35,47 @@ import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class ChangeThumbGuiController extends AnchorPane {
-    SplitPane splitPane = new SplitPane();
-    ScrollPane scrollPane = new ScrollPane();
+    ScrollPane scrollPaneTable = new ScrollPane();
+    ScrollPane scrollPaneCont = new ScrollPane();
     TableView table = new TableView<>();
     AnchorPane contPane = new AnchorPane();
-    AnchorPane collectPane = new AnchorPane();
-
 
     ThumbCollection thumbCollection = null;
-    Label lblName = new Label("");
     Button btnReload = new Button("Liste neu einlesen");
+    Button btnDel = new Button("Bilder löschen");
 
     private final ProgData progData;
-    DoubleProperty splitPaneProperty = ProgConfig.CHANGE_THUMB_GUI_DIVIDER.getDoubleProperty();
 
     public ChangeThumbGuiController() {
         progData = ProgData.getInstance();
 
-        AnchorPane.setLeftAnchor(splitPane, 0.0);
-        AnchorPane.setBottomAnchor(splitPane, 0.0);
-        AnchorPane.setRightAnchor(splitPane, 0.0);
-        AnchorPane.setTopAnchor(splitPane, 0.0);
-        splitPane.setOrientation(Orientation.HORIZONTAL);
-        splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        getChildren().addAll(splitPane);
-
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setContent(table);
-        SplitPane.setResizableWithParent(scrollPane, Boolean.FALSE);
-        initTable();
-
-        initCont();
-        selectThumbCollection();
-
         VBox vBox = new VBox();
-        vBox.setSpacing(10);
+        AnchorPane.setLeftAnchor(vBox, 0.0);
+        AnchorPane.setBottomAnchor(vBox, 0.0);
+        AnchorPane.setRightAnchor(vBox, 0.0);
+        AnchorPane.setTopAnchor(vBox, 0.0);
+        getChildren().addAll(vBox);
 
-        vBox.getChildren().addAll(collectPane, contPane);
-        splitPane.getItems().addAll(vBox, scrollPane);
-        splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
+        scrollPaneTable.setFitToHeight(true);
+        scrollPaneTable.setFitToWidth(true);
+        scrollPaneTable.setContent(table);
+        scrollPaneCont.setFitToHeight(true);
+        scrollPaneCont.setFitToWidth(true);
+        scrollPaneCont.setContent(contPane);
+        VBox.setVgrow(scrollPaneTable, Priority.ALWAYS);
+        vBox.getChildren().addAll(scrollPaneTable, scrollPaneCont);
 
+        initTable();
+        initCont();
         initListener();
+        selectThumbCollection();
     }
 
     public void isShown() {
+        selectThumbCollection();
     }
 
 
@@ -95,42 +88,68 @@ public class ChangeThumbGuiController extends AnchorPane {
 
 
     private void selectThumbCollection() {
+//        if (thumbCollection != null &&
+//                progData.selectedProjectData.getThumbCollection() != null &&
+//                thumbCollection.equals(progData.selectedProjectData.getThumbCollection())) {
+//            return;
+//        }
+
         table.setItems(null);
 
-        if (thumbCollection != null) {
-            lblName.setText("");
-        }
         thumbCollection = progData.selectedProjectData.getThumbCollection();
 
         if (thumbCollection == null) {
             contPane.setDisable(true);
         } else {
             contPane.setDisable(false);
-            lblName.setText(progData.selectedProjectData.getName());
             table.setItems(thumbCollection.getThumbList());
         }
     }
 
     private void initCont() {
-//        lblName.textProperty().addListener((observable, oldValue, newValue) -> progData.s.thumbCollectionList.setListChanged());
-
         btnReload.setOnAction(a -> {
             progData.genThumbList.read(thumbCollection);
             table.refresh();
         });
 
-        VBox vBox = new VBox(10);
-        vBox.setPadding(new Insets(10));
-        HBox hBox = new HBox(10);
-        hBox.getChildren().addAll(new Label("Sammlung:"), lblName);
-        vBox.getChildren().addAll(hBox, btnReload);
+        btnDel.setOnAction(a -> {
+            ArrayList<Thumb> thumbs = new ArrayList<>();
+            thumbs.addAll(table.getSelectionModel().getSelectedItems());
 
-        AnchorPane.setTopAnchor(vBox, 5.0);
-        AnchorPane.setLeftAnchor(vBox, 5.0);
-        AnchorPane.setBottomAnchor(vBox, 5.0);
-        AnchorPane.setRightAnchor(vBox, 5.0);
-        vBox.setStyle("-fx-border-color: black;");
-        contPane.getChildren().add(vBox);
+            if (thumbs.isEmpty()) {
+                new MLAlert().showInfoNoSelection();
+
+            } else if (thumbs.size() == 1 &&
+                    !new MTAlert().showAlert("Datei Löschen?", "", "Die Datei löschen:\n\n" + thumbs.get(0).getFileName())) {
+                return;
+
+            } else if (thumbs.size() > 1 &&
+                    !new MTAlert().showAlert("Dateien Löschen?", thumbs.size() + " Dateien löschen",
+                            "Sollen die Datei gelöscht werden?")) {
+                return;
+            }
+
+            for (Thumb thumb : thumbs) {
+                if (de.p2tools.mLib.tools.FileUtils.deleteFileNoMsg(thumb.getFileName())) {
+                    thumbCollection.getThumbList().remove(thumb);
+                } else {
+                    break;
+                }
+            }
+
+            table.refresh();
+
+        });
+
+        HBox hBox = new HBox(10);
+        hBox.setPadding(new Insets(10));
+        hBox.getChildren().addAll(btnReload, btnDel);
+
+        AnchorPane.setTopAnchor(hBox, 5.0);
+        AnchorPane.setLeftAnchor(hBox, 5.0);
+        AnchorPane.setBottomAnchor(hBox, 5.0);
+        AnchorPane.setRightAnchor(hBox, 5.0);
+        contPane.getChildren().add(hBox);
     }
 
     private void initTable() {
@@ -138,11 +157,6 @@ public class ChangeThumbGuiController extends AnchorPane {
         table.setEditable(false);
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-
-        initTableColor(table);
-    }
-
-    private void initTableColor(TableView<Thumb> tableView) {
 
         final TableColumn<Thumb, Integer> nrColumn = new TableColumn<>("Nr");
         nrColumn.setCellValueFactory(new PropertyValueFactory<>("nr"));
@@ -159,8 +173,7 @@ public class ChangeThumbGuiController extends AnchorPane {
         changeColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         changeColumn.setCellFactory(cellFactoryChange);
 
-        tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        tableView.getColumns().addAll(nrColumn, imageColumn, colorColumn, changeColumn);
+        table.getColumns().addAll(nrColumn, imageColumn, colorColumn, changeColumn);
     }
 
     private Callback<TableColumn<Thumb, Color>, TableCell<Thumb, Color>> cellFactoryColor
@@ -179,8 +192,8 @@ public class ChangeThumbGuiController extends AnchorPane {
                     return;
                 }
                 Thumb thumb = getTableView().getItems().get(getIndex());
-//                setStyle("-fx-background-color: rgb(" + thumb.getRed() + "," + thumb.getGreen() + ", " + thumb.getBlue() + ");");
-                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+                setStyle("-fx-background-color: rgb(" + thumb.getRed() + "," + thumb.getGreen() + ", " + thumb.getBlue() + ");");
+//                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
             }
 
         };

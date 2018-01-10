@@ -93,7 +93,6 @@ public class ThumbGuiController extends AnchorPane {
         selectThumbCollection();
     }
 
-
     public void saveTable() {
         new Table().saveTable(table, Table.TABLE.THUMB);
     }
@@ -101,7 +100,7 @@ public class ThumbGuiController extends AnchorPane {
     private void initTable() {
         table.setTableMenuButtonVisible(true);
         table.setEditable(false);
-        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         initTableColor(table);
