@@ -37,14 +37,13 @@ public class ThumbProps extends Data<Thumb> {
     private final IntegerProperty blue = new SimpleIntegerProperty(0);
     private final StringProperty fileName = new SimpleStringProperty("");
 
-    private Color color = Color.rgb(0, 0, 0);
 
     public String getTag() {
         return TAG;
     }
 
     public ArrayList<Config> getConfigsArr() {
-        return new ArrayList<Config>(Arrays.asList(
+        return new ArrayList<>(Arrays.asList(
                 new ConfigIntProp("nr", 0, nr),
                 new ConfigIntProp("red", 0, red),
                 new ConfigIntProp("green", 0, green),
@@ -88,7 +87,6 @@ public class ThumbProps extends Data<Thumb> {
 
     public void setRed(int red) {
         this.red.set(red);
-        setColor();
     }
 
     public int getGreen() {
@@ -101,7 +99,6 @@ public class ThumbProps extends Data<Thumb> {
 
     public void setGreen(int green) {
         this.green.set(green);
-        setColor();
     }
 
     public int getBlue() {
@@ -114,7 +111,6 @@ public class ThumbProps extends Data<Thumb> {
 
     public void setBlue(int blue) {
         this.blue.set(blue);
-        setColor();
     }
 
     public String getFileName() {
@@ -131,11 +127,7 @@ public class ThumbProps extends Data<Thumb> {
 
 
     public Color getColor() {
-        return color;
-    }
-
-    public void setColor() {
-        this.color = Color.rgb(getRed(), getGreen(), getBlue());
+        return Color.rgb(getRed(), getGreen(), getBlue());
     }
 
 
