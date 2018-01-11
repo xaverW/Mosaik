@@ -27,6 +27,7 @@ import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.genThumbList.ScaleImage;
 import de.p2tools.mLib.tools.Duration;
+import de.p2tools.mLib.tools.FileUtils;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
 
@@ -59,7 +60,6 @@ public class GenMosaik {
     public GenMosaik(MosaikData mosaikData) {
         progData = ProgData.getInstance();
         this.mosaikData = mosaikData;
-//        this.thumbCollection = progData.thumbCollectionList.getThumbCollection(mosaikDataDataData.getThumbCollectionId());
         this.thumbCollection = progData.selectedProjectData.getThumbCollection();
     }
 
@@ -80,13 +80,14 @@ public class GenMosaik {
     /**
      */
     public void erstellen() {
-        dest = mosaikData.getFotoDestDir();
+
+        dest = FileUtils.concatPaths(mosaikData.getFotoDestDir(), mosaikData.getFotoDestName());
         src = mosaikData.getFotoSrc();
         anz = mosaikData.getThumbCount();
         progress = 0;
         stopAll = false;
 
-        if (dest.equals("")) {
+        if (dest.isEmpty()) {
             Log.errorLog(945120365, "Keine Zieldatei angegeben!");
             return;
         }

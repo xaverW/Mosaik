@@ -38,7 +38,7 @@ public class MosaikGuiController extends AnchorPane {
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox vBoxCont = new VBox();
-    private final Label lblSrc = new Label("Foto zum Erstellen des Mosaik");
+    private final Label lblSrc = new Label("Foto als Vorlage zum Erstellen des Mosaik");
     private final TextField txtSrc = new TextField();
     private final Button btnSrc = new Button("");
     private final Label lblDestName = new Label("Dateiname des Mosaik");
@@ -91,9 +91,7 @@ public class MosaikGuiController extends AnchorPane {
         txtDestName.textProperty().bindBidirectional(mosaikData.fotoDestNameProperty());
         txtDestName.setMaxWidth(Double.MAX_VALUE);
 
-        btnDest.setOnAction(event -> {
-            DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtDestDir);
-        });
+        btnDest.setOnAction(event -> DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDestDir));
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
         final Button btnHelpDest = new Button("");
