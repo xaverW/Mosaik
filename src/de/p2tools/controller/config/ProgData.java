@@ -26,8 +26,6 @@ import de.p2tools.gui.tools.Listener;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -37,7 +35,6 @@ public class ProgData {
 
     // flags
     public static boolean debug = false; // Debugmodus
-    public static BooleanProperty stopProp = new SimpleBooleanProperty();
 
     // Infos
     public static String configDir; // Verzeichnis zum Speichern der Programmeinstellungen

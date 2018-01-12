@@ -59,7 +59,6 @@ public class GenMosaik {
 
     public GenMosaik(ProgData progData) {
         this.progData = progData;
-        ProgData.stopProp.addListener(ch -> stopAll = true);
     }
 
 
@@ -68,6 +67,10 @@ public class GenMosaik {
      */
     public void addAdListener(RunListener listener) {
         listeners.add(RunListener.class, listener);
+    }
+
+    public void setStop() {
+        stopAll = true;
     }
 
     /**
@@ -146,10 +149,11 @@ public class GenMosaik {
 
                 imgOut = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
 
-                Thumb thumb;
                 //Bild zusammenbauen
+                Thumb thumb;
                 Color c;
-                notifyEvent(numThumbsWidth * numThumbsHeight, 0, "");
+                int maxRun = numThumbsHeight * numThumbsWidth;
+                notifyEvent(maxRun, 0, "");
                 Farbraum farbraum = new Farbraum(thumbCollection);
                 File file;
                 BufferedImage buffImg;
@@ -159,7 +163,7 @@ public class GenMosaik {
                     for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
 
                         ++progress;
-                        notifyEvent(yy * xx, progress, "Zeilen: " + yy);
+                        notifyEvent(maxRun, progress, "Zeilen: " + yy);
                         c = getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb,
                                 numPixelProThumb, numPixelProThumb));
 
@@ -177,7 +181,7 @@ public class GenMosaik {
                 }
 
                 //fertig
-                notifyEvent(numThumbsHeight * numThumbsWidth, progress, "Speichern");
+                notifyEvent(maxRun, progress, "Speichern");
                 writeImage(imgOut);
                 notifyEvent(0, 0, "");
             } catch (Exception ex) {

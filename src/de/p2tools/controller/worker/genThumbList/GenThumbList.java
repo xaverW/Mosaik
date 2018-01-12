@@ -56,17 +56,17 @@ public class GenThumbList {
 
 
     /**
-     *
-     */
-    public void setStop() {
-        stopAll = true;
-    }
-
-    /**
      * @param listener
      */
     public void addAdListener(RunListener listener) {
         listeners.add(RunListener.class, listener);
+    }
+
+    /**
+     *
+     */
+    public void setStop() {
+        stopAll = true;
     }
 
     public void create(ThumbCollection thumbCollection) {

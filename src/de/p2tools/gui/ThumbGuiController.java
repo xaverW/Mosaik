@@ -16,12 +16,15 @@
 
 package de.p2tools.gui;
 
+import de.p2tools.controller.RunEvent;
+import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
 import de.p2tools.mLib.tools.Log;
@@ -80,6 +83,14 @@ public class ThumbGuiController extends AnchorPane {
         splitPane.getItems().addAll(vBox, scrollPane);
         splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
 
+        progData.worker.addAdListener(new RunListener() {
+            @Override
+            public void ping(RunEvent runEvent) {
+                if (runEvent.nixLos() && runEvent.getSource().getClass().equals(GenThumbList.class)) {
+                    setFlowPane();
+                }
+            }
+        });
     }
 
     public void isShown() {
@@ -155,7 +166,7 @@ public class ThumbGuiController extends AnchorPane {
             setFlowPane();
         });
         btnReload.setOnAction(a -> {
-            progData.worker.createThumbList(thumbCollection);
+            progData.worker.readThumbList(thumbCollection);
             setFlowPane();
         });
         btnClear.setOnAction(a -> {

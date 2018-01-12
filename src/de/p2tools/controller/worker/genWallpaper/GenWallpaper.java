@@ -41,6 +41,7 @@ public class GenWallpaper {
     private EventListenerList listeners = new EventListenerList();
     private ThumbCollection thumbCollection;
     private String dest;
+    private boolean stopAll = false;
     private int numThumbWidth;
     private int thumbSize;
 
@@ -53,6 +54,10 @@ public class GenWallpaper {
      */
     public void addAdListener(RunListener listener) {
         listeners.add(RunListener.class, listener);
+    }
+
+    public void setStop() {
+        stopAll = true;
     }
 
     public void create(ThumbCollection thumbCollection, WallpaperData wallpaperData) {
@@ -77,6 +82,7 @@ public class GenWallpaper {
             return;
         }
 
+        stopAll = false;
         Tus tus = new Tus();
         Thread startenThread = new Thread(tus);
         startenThread.setDaemon(true);
@@ -92,6 +98,10 @@ public class GenWallpaper {
                 final int thumbListSize = thumbCollection.getThumbList().getSize();
                 notifyEvent(thumbListSize, 0, "");
 
+                if (thumbListSize < numThumbWidth) {
+                    numThumbWidth = thumbListSize;
+                }
+
                 int height = (thumbListSize / numThumbWidth) * thumbSize;
                 int width = numThumbWidth * thumbSize;
 
@@ -102,7 +112,8 @@ public class GenWallpaper {
                 BufferedImage imgOut = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
                 int hh = 0, ww = 0;
-                for (int i = 0; i < thumbListSize; ++i) {
+                for (int i = 0; i < thumbListSize && !stopAll; ++i) {
+
                     notifyEvent(thumbListSize, i, "");
 
                     Thumb thumb = thumbCollection.getThumbList().get(i);

@@ -101,7 +101,7 @@ public class StatusBarController extends AnchorPane {
         stackPane.getChildren().addAll(textPane, workerPane);
         textPane.toFront();
 
-        btnStop.setOnAction(e -> ProgData.stopProp.set(!ProgData.stopProp.get()));
+        btnStop.setOnAction(e -> progData.worker.setStop());
 
         progData.worker.addAdListener(new RunListener() {
             @Override

@@ -71,6 +71,11 @@ public class Worker {
         listeners.add(RunListener.class, listener);
     }
 
+    public void setStop() {
+        genThumbList.setStop();
+        genWallpaper.setStop();
+        genMosaik.setStop();
+    }
 
     public void createThumbList(ThumbCollection thumbCollection) {
         genThumbList.create(thumbCollection);
