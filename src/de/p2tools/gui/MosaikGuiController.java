@@ -186,7 +186,7 @@ public class MosaikGuiController extends AnchorPane {
 
         btnCreate.setOnAction(a -> {
             if (!txtSrc.getText().isEmpty() && !txtDestDir.getText().isEmpty()) {
-                progData.genMosaik.erstellen(mosaikData);
+                progData.worker.createMosaik(mosaikData);
             }
         });
 

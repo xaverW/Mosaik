@@ -15,7 +15,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.genMosaik;
+package de.p2tools.controller.worker.genMosaik;
 
 import de.p2tools.controller.Funktionen;
 import de.p2tools.controller.RunEvent;
@@ -25,7 +25,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.controller.genThumbList.ScaleImage;
+import de.p2tools.controller.worker.genThumbList.ScaleImage;
 import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.FileUtils;
 import de.p2tools.mLib.tools.Log;
@@ -73,7 +73,7 @@ public class GenMosaik {
     /**
      * @param mosaikData
      */
-    public void erstellen(MosaikData mosaikData) {
+    public void create(MosaikData mosaikData) {
         this.mosaikData = mosaikData;
         this.thumbCollection = progData.selectedProjectData.getThumbCollection();
 

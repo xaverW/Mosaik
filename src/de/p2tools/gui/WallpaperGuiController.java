@@ -19,7 +19,6 @@ package de.p2tools.gui;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
-import de.p2tools.controller.genWallpaper.GenWallpaper;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
 import javafx.beans.binding.Bindings;
@@ -148,8 +147,8 @@ public class WallpaperGuiController extends AnchorPane {
 
         btnCreate.setOnAction(a -> {
             if (!txtDest.getText().isEmpty()) {
-                new GenWallpaper(progData.selectedProjectData.getThumbCollection(),
-                        progData.selectedProjectData.getWallpaperData()).gen();
+                progData.worker.createWallpaper(progData.selectedProjectData.getThumbCollection(),
+                        progData.selectedProjectData.getWallpaperData());
             }
         });
 

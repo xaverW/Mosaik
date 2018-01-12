@@ -15,12 +15,15 @@
  */
 
 
-package de.p2tools.controller.genWallpaper;
+package de.p2tools.controller.worker.genWallpaper;
 
+import de.p2tools.controller.RunEvent;
+import de.p2tools.controller.RunListener;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
-import de.p2tools.controller.genThumbList.ScaleImage;
+import de.p2tools.controller.worker.genThumbList.ScaleImage;
+import de.p2tools.mLib.tools.Duration;
 import de.p2tools.mLib.tools.Log;
 import de.p2tools.mLib.tools.MLAlert;
 
@@ -28,28 +31,36 @@ import javax.imageio.*;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
+import javax.swing.event.EventListenerList;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Iterator;
 import java.util.Locale;
 
 public class GenWallpaper {
+    private EventListenerList listeners = new EventListenerList();
+    private ThumbCollection thumbCollection;
+    private String dest;
+    private int numThumbWidth;
+    private int thumbSize;
 
-    private final ThumbCollection thumbCollection;
-    private final String dest;
-    private final int numThumbWidth;
-    private final int thumbSize;
 
+    public GenWallpaper() {
+    }
 
-    public GenWallpaper(ThumbCollection thumbCollection, WallpaperData wallpaperData) {
+    /**
+     * @param listener
+     */
+    public void addAdListener(RunListener listener) {
+        listeners.add(RunListener.class, listener);
+    }
+
+    public void create(ThumbCollection thumbCollection, WallpaperData wallpaperData) {
         this.thumbCollection = thumbCollection;
-
         this.dest = wallpaperData.getFotoDest();
         this.numThumbWidth = wallpaperData.getNumberThumbsWidth();
         this.thumbSize = wallpaperData.getThumbSize();
-    }
 
-    public void gen() {
         if (dest.isEmpty()) {
             Log.errorLog(945120364, "Keine Zieldatei angegeben!");
             return;
@@ -66,46 +77,59 @@ public class GenWallpaper {
             return;
         }
 
-        int height = (thumbListSize / numThumbWidth) * thumbSize;
-        int width = numThumbWidth * thumbSize;
+        Tus tus = new Tus();
+        Thread startenThread = new Thread(tus);
+        startenThread.setDaemon(true);
+        startenThread.start();
+    }
 
-        if (thumbListSize % numThumbWidth != 0) {
-            height += thumbSize;
-        }
+    private class Tus implements Runnable {
 
-        BufferedImage imgOut = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        public synchronized void run() {
 
-        int hh = 0, ww = 0;
-        for (int i = 0; i < thumbListSize; ++i) {
-            Thumb thumb = thumbCollection.getThumbList().get(i);
-            BufferedImage img = getBufferedImage(new File(thumb.getFileName()));
+            Duration.counterStart("Mosaik erstellen");
+            try {
+                final int thumbListSize = thumbCollection.getThumbList().getSize();
+                notifyEvent(thumbListSize, 0, "");
 
-            if (img.getWidth() != thumbSize) {
-                img = ScaleImage.scaleBufferedImage(img, thumbSize, thumbSize);
+                int height = (thumbListSize / numThumbWidth) * thumbSize;
+                int width = numThumbWidth * thumbSize;
+
+                if (thumbListSize % numThumbWidth != 0) {
+                    height += thumbSize;
+                }
+
+                BufferedImage imgOut = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+                int hh = 0, ww = 0;
+                for (int i = 0; i < thumbListSize; ++i) {
+                    notifyEvent(thumbListSize, i, "");
+
+                    Thumb thumb = thumbCollection.getThumbList().get(i);
+                    BufferedImage img = getBufferedImage(new File(thumb.getFileName()));
+
+                    if (img.getWidth() != thumbSize) {
+                        img = ScaleImage.scaleBufferedImage(img, thumbSize, thumbSize);
+                    }
+
+                    imgOut.getRaster().setRect(ww * thumbSize, hh * thumbSize, img.getData());
+
+                    ++ww;
+                    if (ww >= numThumbWidth) {
+                        ww = 0;
+                        ++hh;
+                    }
+
+                }
+
+                notifyEvent(thumbListSize, thumbListSize, "Datei schreiben");
+                writeImage(imgOut);
+                notifyEvent(0, 0, "");
+
+            } catch (Exception ex) {
+                Log.errorLog(654102025, ex);
             }
-
-            imgOut.getRaster().setRect(ww * thumbSize, hh * thumbSize, img.getData());
-
-            ++ww;
-            if (ww >= numThumbWidth) {
-                ww = 0;
-                ++hh;
-            }
-
         }
-
-//        while (ww < numThumbWidth) {
-//            for (int i = 0; i < thumbListSize; ++i) {
-//                Thumb thumb = thumbCollection.getThumbList().get(i);
-//                BufferedImage img = getBufferedImage(new File(thumb.getFileName()));
-//                imgOut.getRaster().setRect(ww * numThumbWidth, hh * numThumbWidth, img.getData());
-//                ++ww;
-//                if (ww >= numThumbWidth) {
-//                    break;
-//                }
-//            }
-//        }
-        writeImage(imgOut);
     }
 
     private BufferedImage getBufferedImage(File source) {
@@ -152,5 +176,11 @@ public class GenWallpaper {
         }
     }
 
-
+    private void notifyEvent(int max, int progress, String text) {
+        RunEvent event;
+        event = new RunEvent(this, progress, max, text);
+        for (RunListener l : listeners.getListeners(RunListener.class)) {
+            l.notify(event);
+        }
+    }
 }

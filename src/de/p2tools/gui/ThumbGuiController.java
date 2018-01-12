@@ -151,11 +151,11 @@ public class ThumbGuiController extends AnchorPane {
             String destDir = ProgInfos.getFotoCollectionsDirectory_String();
             thumbCollection.setThumbDir(destDir);
 
-            progData.genThumbList.create(thumbCollection);
+            progData.worker.createThumbList(thumbCollection);
             setFlowPane();
         });
         btnReload.setOnAction(a -> {
-            progData.genThumbList.read(thumbCollection);
+            progData.worker.createThumbList(thumbCollection);
             setFlowPane();
         });
         btnClear.setOnAction(a -> {

@@ -20,8 +20,7 @@ package de.p2tools.controller.config;
 import de.p2tools.MosaikController;
 import de.p2tools.controller.data.destData.ProjectData;
 import de.p2tools.controller.data.destData.ProjectDataList;
-import de.p2tools.controller.genMosaik.GenMosaik;
-import de.p2tools.controller.genThumbList.GenThumbList;
+import de.p2tools.controller.worker.Worker;
 import de.p2tools.gui.*;
 import de.p2tools.gui.tools.Listener;
 import javafx.animation.Animation;
@@ -44,11 +43,10 @@ public class ProgData {
     public static String configDir; // Verzeichnis zum Speichern der Programmeinstellungen
 
     // zentrale Klassen
+    public Worker worker = null;
     public ProjectDataList projectDataList = null;
     public ProjectData selectedProjectData = null;
 
-    public GenThumbList genThumbList = null;
-    public GenMosaik genMosaik = null;
 
     // Gui
     public Stage primaryStage = null;
@@ -63,8 +61,7 @@ public class ProgData {
 
     private ProgData() {
         projectDataList = new ProjectDataList();
-        genThumbList = new GenThumbList(this);
-        genMosaik = new GenMosaik(this);
+        worker = new Worker(this);
 
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000), ae -> {

@@ -15,7 +15,7 @@
  */
 
 
-package de.p2tools.controller.genThumbList;
+package de.p2tools.controller.worker.genThumbList;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;

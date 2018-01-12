@@ -15,7 +15,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.controller.genThumbList;
+package de.p2tools.controller.worker.genThumbList;
 
 import de.p2tools.controller.RunEvent;
 import de.p2tools.controller.RunListener;

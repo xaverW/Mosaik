@@ -41,36 +41,14 @@ public class StatusBarController extends AnchorPane {
     ProgressBar progressBar = new ProgressBar();
     Button btnStop = new Button("");
 
-    //Start
-    Label lblLeftStart = new Label();
-    Label lblRightStart = new Label();
+    Label lblLeft = new Label();
+    Label lblRight = new Label();
 
-    //Thumb
-    Label lblLeftThumb = new Label();
-    Label lblRightThumb = new Label();
-
-    //Mosaik
-    Label lblLeftMosaik = new Label();
-    Label lblRightMosaik = new Label();
-
-    //Wallpaper
-    Label lblLeftWallpaper = new Label();
-    Label lblRightWallpaper = new Label();
-
-    //nonePane
-    Label lblLeftNone = new Label();
-    Label lblRightNone = new Label();
-
-    AnchorPane loadPane = new AnchorPane();
-    AnchorPane nonePane = new AnchorPane();
-    AnchorPane startPane = new AnchorPane();
-    AnchorPane thumbPane = new AnchorPane();
-    AnchorPane mosaikPane = new AnchorPane();
-    AnchorPane wallpaperPane = new AnchorPane();
+    AnchorPane workerPane = new AnchorPane();
+    AnchorPane textPane = new AnchorPane();
 
 
     public enum StatusbarIndex {
-
         NONE, Start, Thumb, Mosaik, Wallpaper
     }
 
@@ -90,46 +68,18 @@ public class StatusBarController extends AnchorPane {
 
 
         HBox hBox = getHbox();
-        lblLeftNone.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(lblLeftNone, Priority.ALWAYS);
-        hBox.getChildren().addAll(lblLeftNone, lblRightNone);
-        nonePane.getChildren().add(hBox);
-        nonePane.setStyle("-fx-background-color: -fx-background ;");
+        lblLeft.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(lblLeft, Priority.ALWAYS);
+        hBox.getChildren().addAll(lblLeft, lblRight);
+        textPane.getChildren().add(hBox);
+        textPane.setStyle("-fx-background-color: -fx-background ;");
 
         hBox = getHbox();
         btnStop.setGraphic(new Icons().ICON_BUTTON_STOP);
         hBox.getChildren().addAll(lblProgress, progressBar, btnStop);
         progressBar.setPrefWidth(200);
-        loadPane.getChildren().add(hBox);
-        loadPane.setStyle("-fx-background-color: -fx-background ;");
-
-        hBox = getHbox();
-        lblLeftStart.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(lblLeftStart, Priority.ALWAYS);
-        hBox.getChildren().addAll(lblLeftStart, lblRightStart);
-        startPane.getChildren().add(hBox);
-        startPane.setStyle("-fx-background-color: -fx-background ;");
-
-        hBox = getHbox();
-        lblLeftThumb.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(lblLeftThumb, Priority.ALWAYS);
-        hBox.getChildren().addAll(lblLeftThumb, lblRightThumb);
-        thumbPane.getChildren().add(hBox);
-        thumbPane.setStyle("-fx-background-color: -fx-background ;");
-
-        hBox = getHbox();
-        lblLeftMosaik.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(lblLeftMosaik, Priority.ALWAYS);
-        hBox.getChildren().addAll(lblLeftMosaik, lblRightMosaik);
-        mosaikPane.getChildren().add(hBox);
-        mosaikPane.setStyle("-fx-background-color: -fx-background ;");
-
-        hBox = getHbox();
-        lblLeftWallpaper.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(lblLeftWallpaper, Priority.ALWAYS);
-        hBox.getChildren().addAll(lblLeftWallpaper, lblRightWallpaper);
-        wallpaperPane.getChildren().add(hBox);
-        wallpaperPane.setStyle("-fx-background-color: -fx-background ;");
+        workerPane.getChildren().add(hBox);
+        workerPane.setStyle("-fx-background-color: -fx-background ;");
 
         make();
     }
@@ -148,25 +98,12 @@ public class StatusBarController extends AnchorPane {
 
 
     private void make() {
-        stackPane.getChildren().addAll(nonePane, loadPane, thumbPane, mosaikPane);
-        nonePane.toFront();
+        stackPane.getChildren().addAll(textPane, workerPane);
+        textPane.toFront();
 
         btnStop.setOnAction(e -> ProgData.stopProp.set(!ProgData.stopProp.get()));
 
-        progData.genThumbList.addAdListener(new RunListener() {
-            @Override
-            public void ping(RunEvent runEvent) {
-                if (runEvent.nixLos()) {
-                    running = false;
-                } else {
-                    running = true;
-                }
-                updateProgressBar(runEvent);
-                setStatusbar();
-            }
-        });
-
-        progData.genMosaik.addAdListener(new RunListener() {
+        progData.worker.addAdListener(new RunListener() {
             @Override
             public void ping(RunEvent runEvent) {
                 if (runEvent.nixLos()) {
@@ -212,78 +149,39 @@ public class StatusBarController extends AnchorPane {
     public void setStatusbarIndex(StatusbarIndex statusbarIndex) {
         this.statusbarIndex = statusbarIndex;
         if (running) {
-            loadPane.toFront();
+            workerPane.toFront();
             return;
         }
 
+        textPane.toFront();
         switch (statusbarIndex) {
             case Start:
-                startPane.toFront();
-                setInfoStart();
-                setTextForRightDisplay();
+                setTextNone();
                 break;
             case Thumb:
-                thumbPane.toFront();
-                setInfoThumb();
-                setTextForRightDisplay();
-                break;
             case Mosaik:
-                mosaikPane.toFront();
-                setInfoMosaik();
-                setTextForRightDisplay();
-                break;
             case Wallpaper:
-                wallpaperPane.toFront();
-                setInfoWallpaper();
-                setTextForRightDisplay();
+                setInfoMosaik();
                 break;
             case NONE:
             default:
-                nonePane.toFront();
                 setTextNone();
-                setTextForRightDisplay();
-                break;
         }
     }
 
 
     private void setTextNone() {
-        lblLeftNone.setText("Anzahl Filme: " + 0);
-    }
-
-    private void setInfoStart() {
-        String textLinks = "";
-        lblLeftStart.setText(textLinks);
-    }
-
-    private void setInfoThumb() {
-        String textLinks = "Miniaturbilder: " + (progData.selectedProjectData.getThumbCollection() != null ?
-                progData.selectedProjectData.getName() : "");
-        lblLeftThumb.setText(textLinks);
+        lblLeft.setText("");
+        lblRight.setText("");
     }
 
     private void setInfoMosaik() {
         String textLinks = "Miniaturbilder: " + (progData.selectedProjectData.getThumbCollection() != null ?
                 progData.selectedProjectData.getName() : "");
-        lblLeftMosaik.setText(textLinks);
-    }
-
-    private void setInfoWallpaper() {
-        String textLinks = "Miniaturbilder: " + (progData.selectedProjectData.getThumbCollection() != null ?
-                progData.selectedProjectData.getName() : "");
-        lblLeftWallpaper.setText(textLinks);
-    }
-
-    private void setTextForRightDisplay() {
-        // Text rechts: alter/neuladenIn anzeigen
+        lblLeft.setText(textLinks);
         String strText = progData.selectedProjectData.getThumbCollection() != null ?
                 progData.selectedProjectData.getThumbCollection().getThumbList().size() + " Bilder" : "";
-        // Infopanel setzen
-        lblRightStart.setText("");
-        lblRightThumb.setText(strText);
-        lblRightMosaik.setText(strText);
-        lblRightNone.setText(strText);
+        lblRight.setText(strText);
     }
-
 
 }

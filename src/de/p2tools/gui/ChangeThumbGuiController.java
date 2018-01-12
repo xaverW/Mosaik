@@ -20,7 +20,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.controller.genThumbList.ScaleImage;
+import de.p2tools.controller.worker.genThumbList.ScaleImage;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.MTOpen;
 import de.p2tools.gui.tools.Table;
@@ -108,7 +108,7 @@ public class ChangeThumbGuiController extends AnchorPane {
 
     private void initCont() {
         btnReload.setOnAction(a -> {
-            progData.genThumbList.read(thumbCollection);
+            progData.worker.readThumbList(thumbCollection);
             table.refresh();
         });
 
