@@ -38,8 +38,15 @@ public class WallpaperGuiController extends AnchorPane {
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Fototapete erstellen");
 
+    private final Slider sliderSize = new Slider();
+    private final Label lblSlider = new Label("");
+    private final Slider sliderCount = new Slider();
+    private final Label lblSliderCount = new Label("");
+    private final IntegerProperty iProp = new SimpleIntegerProperty();
+    private final IntegerProperty iPropCount = new SimpleIntegerProperty();
+
     private final ProgData progData;
-    private final WallpaperData wallpaperData;
+    private WallpaperData wallpaperData;
 
     public WallpaperGuiController() {
         this.progData = ProgData.getInstance();
@@ -55,11 +62,16 @@ public class WallpaperGuiController extends AnchorPane {
         AnchorPane.setTopAnchor(scrollPane, 0.0);
 
         initCont();
+        bind();
         getChildren().addAll(scrollPane);
     }
 
     public void isShown() {
-
+        if (!wallpaperData.equals(progData.selectedProjectData.getWallpaperData())) {
+            unbind();
+            wallpaperData = progData.selectedProjectData.getWallpaperData();
+            bind();
+        }
     }
 
 
@@ -74,7 +86,6 @@ public class WallpaperGuiController extends AnchorPane {
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        txtDest.textProperty().bindBidirectional(wallpaperData.fotoDestProperty());
         txtDest.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtDest, Priority.ALWAYS);
 
@@ -87,19 +98,8 @@ public class WallpaperGuiController extends AnchorPane {
         btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        Slider sliderSize = new Slider();
         sliderSize.setMin(5);
         sliderSize.setMax(25);
-
-        sliderSize.setValue(wallpaperData.getThumbSize() / 10);
-        IntegerProperty iProp = new SimpleIntegerProperty();
-        iProp.bind(sliderSize.valueProperty());
-
-        NumberBinding nb = Bindings.multiply(iProp, 10);
-        wallpaperData.thumbSizeProperty().bind(nb);
-
-        Label lblSlider = new Label("");
-        lblSlider.textProperty().bind(Bindings.format("%d", wallpaperData.thumbSizeProperty()));
 
 
         // Anzahl Thumbs
@@ -107,19 +107,8 @@ public class WallpaperGuiController extends AnchorPane {
         btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpSliderCount.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        Slider sliderCount = new Slider();
         sliderCount.setMin(1);
         sliderCount.setMax(100);
-
-        sliderCount.setValue(wallpaperData.getNumberThumbsWidth() / 10);
-        IntegerProperty iPropCount = new SimpleIntegerProperty();
-        iPropCount.bind(sliderCount.valueProperty());
-
-        NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
-        wallpaperData.numberThumbsWidthProperty().bind(nbCount);
-
-        Label lblSliderCount = new Label("");
-        lblSliderCount.textProperty().bind(Bindings.format("%d", wallpaperData.numberThumbsWidthProperty()));
 
 
         GridPane gridPane = new GridPane();
@@ -152,5 +141,47 @@ public class WallpaperGuiController extends AnchorPane {
             }
         });
 
+    }
+
+    private void unbind() {
+        if (wallpaperData == null) {
+            return;
+        }
+
+        // DEST
+        txtDest.textProperty().unbindBidirectional(wallpaperData.fotoDestProperty());
+
+        // Thumbsize
+        iProp.bind(sliderSize.valueProperty());
+        wallpaperData.thumbSizeProperty().unbind();
+        lblSlider.textProperty().unbind();
+
+        // Anzahl Thumbs
+        iPropCount.unbind();
+        wallpaperData.numberThumbsWidthProperty().unbind();
+        lblSliderCount.textProperty().unbind();
+    }
+
+    private void bind() {
+        if (wallpaperData == null) {
+            return;
+        }
+
+        // DEST
+        txtDest.textProperty().bindBidirectional(wallpaperData.fotoDestProperty());
+
+        // Thumbsize
+        sliderSize.setValue(wallpaperData.getThumbSize() / 10);
+        iProp.bind(sliderSize.valueProperty());
+        NumberBinding nb = Bindings.multiply(iProp, 10);
+        wallpaperData.thumbSizeProperty().bind(nb);
+        lblSlider.textProperty().bind(Bindings.format("%d", wallpaperData.thumbSizeProperty()));
+
+        // Anzahl Thumbs
+        sliderCount.setValue(wallpaperData.getNumberThumbsWidth() / 10);
+        iPropCount.bind(sliderCount.valueProperty());
+        NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
+        wallpaperData.numberThumbsWidthProperty().bind(nbCount);
+        lblSliderCount.textProperty().bind(Bindings.format("%d", wallpaperData.numberThumbsWidthProperty()));
     }
 }

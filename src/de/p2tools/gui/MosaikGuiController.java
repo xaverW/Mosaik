@@ -37,10 +37,8 @@ public class MosaikGuiController extends AnchorPane {
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox vBoxCont = new VBox();
-    private final Label lblSrc = new Label("Foto als Vorlage zum Erstellen des Mosaik");
     private final TextField txtSrc = new TextField();
     private final Button btnSrc = new Button("");
-    private final Label lblDestName = new Label("Dateiname des Mosaik");
     private final TextField txtDestName = new TextField();
     private final Slider sliderSize = new Slider();
     private final Label lblSlider = new Label("");
@@ -181,6 +179,10 @@ public class MosaikGuiController extends AnchorPane {
     }
 
     private void unbind() {
+        if (mosaikData == null) {
+            return;
+        }
+
         // SRC
         txtSrc.textProperty().unbindBidirectional(mosaikData.fotoSrcProperty());
 
@@ -201,6 +203,10 @@ public class MosaikGuiController extends AnchorPane {
     }
 
     private void bind() {
+        if (mosaikData == null) {
+            return;
+        }
+
         // SRC
         txtSrc.textProperty().bindBidirectional(mosaikData.fotoSrcProperty());
 
