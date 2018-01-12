@@ -42,11 +42,18 @@ public class MosaikGuiController extends AnchorPane {
     private final Button btnSrc = new Button("");
     private final Label lblDestName = new Label("Dateiname des Mosaik");
     private final TextField txtDestName = new TextField();
+    private final Slider sliderSize = new Slider();
+    private final Label lblSlider = new Label("");
+    private final Slider sliderCount = new Slider();
+    private final Label lblSliderCount = new Label("");
 
     private final Label lblDest = new Label("Mosaik im Ordner speichern");
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Mosaik erstellen");
+
+    private final IntegerProperty iPropSize = new SimpleIntegerProperty();
+    private final IntegerProperty iPropCount = new SimpleIntegerProperty();
 
     MosaikData mosaikData;
 
@@ -64,11 +71,16 @@ public class MosaikGuiController extends AnchorPane {
         AnchorPane.setTopAnchor(scrollPane, 0.0);
 
         initCont();
+        bind();
         getChildren().addAll(scrollPane);
     }
 
     public void isShown() {
-
+        if (!mosaikData.equals(progData.selectedProjectData.getMosaikData())) {
+            unbind();
+            mosaikData = progData.selectedProjectData.getMosaikData();
+            bind();
+        }
     }
 
 
@@ -83,11 +95,9 @@ public class MosaikGuiController extends AnchorPane {
         btnHelpSrc.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpSrc.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        txtSrc.textProperty().bindBidirectional(mosaikData.fotoSrcProperty());
         txtSrc.setMaxWidth(Double.MAX_VALUE);
 
         // DEST
-        txtDestName.textProperty().bindBidirectional(mosaikData.fotoDestNameProperty());
         txtDestName.setMaxWidth(Double.MAX_VALUE);
 
         btnDest.setOnAction(event -> DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDestDir));
@@ -97,7 +107,6 @@ public class MosaikGuiController extends AnchorPane {
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        txtDestDir.textProperty().bindBidirectional(mosaikData.fotoDestDirProperty());
         txtDestDir.setMaxWidth(Double.MAX_VALUE);
 
         GridPane.setHgrow(txtDestName, Priority.ALWAYS);
@@ -108,40 +117,19 @@ public class MosaikGuiController extends AnchorPane {
         btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        Slider sliderSize = new Slider();
+
         sliderSize.setMin(5);
         sliderSize.setMax(25);
         GridPane.setHgrow(sliderSize, Priority.ALWAYS);
-
-        sliderSize.setValue(mosaikData.getThumbSize() / 10);
-        IntegerProperty iProp = new SimpleIntegerProperty();
-        iProp.bind(sliderSize.valueProperty());
-
-        NumberBinding nb = Bindings.multiply(iProp, 10);
-        mosaikData.thumbSizeProperty().bind(nb);
-
-        Label lblSlider = new Label("");
-        lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.thumbSizeProperty()));
 
         // Anzahl Thumbs
         final Button btnHelpSliderCount = new Button("");
         btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpSliderCount.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
-        Slider sliderCount = new Slider();
         sliderCount.setMin(1);
         sliderCount.setMax(100);
         GridPane.setHgrow(sliderCount, Priority.ALWAYS);
-
-        sliderCount.setValue(mosaikData.getNumberThumbsWidth() / 10);
-        IntegerProperty iPropCount = new SimpleIntegerProperty();
-        iPropCount.bind(sliderCount.valueProperty());
-
-        NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
-        mosaikData.numberThumbsWidthProperty().bind(nbCount);
-
-        Label lblSliderCount = new Label("");
-        lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
 
 
         // make Grid
@@ -190,5 +178,52 @@ public class MosaikGuiController extends AnchorPane {
             }
         });
 
+    }
+
+    private void unbind() {
+        // SRC
+        txtSrc.textProperty().unbindBidirectional(mosaikData.fotoSrcProperty());
+
+        // DEST
+        txtDestName.textProperty().unbindBidirectional(mosaikData.fotoDestNameProperty());
+        txtDestDir.textProperty().unbindBidirectional(mosaikData.fotoDestDirProperty());
+
+        // Thumbsize
+
+        iPropSize.unbind();
+        mosaikData.thumbSizeProperty().unbind();
+        lblSlider.textProperty().unbind();
+
+        // Anzahl Thumbs
+        iPropCount.unbind();
+        mosaikData.numberThumbsWidthProperty().unbind();
+        lblSliderCount.textProperty().unbind();
+    }
+
+    private void bind() {
+        // SRC
+        txtSrc.textProperty().bindBidirectional(mosaikData.fotoSrcProperty());
+
+        // DEST
+        txtDestName.textProperty().bindBidirectional(mosaikData.fotoDestNameProperty());
+        txtDestDir.textProperty().bindBidirectional(mosaikData.fotoDestDirProperty());
+
+        // Thumbsize
+        sliderSize.setValue(mosaikData.getThumbSize() / 10);
+        iPropSize.bind(sliderSize.valueProperty());
+
+        NumberBinding nb = Bindings.multiply(iPropSize, 10);
+        mosaikData.thumbSizeProperty().bind(nb);
+
+        lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.thumbSizeProperty()));
+
+        // Anzahl Thumbs
+        sliderCount.setValue(mosaikData.getNumberThumbsWidth() / 10);
+        iPropCount.bind(sliderCount.valueProperty());
+
+        NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
+        mosaikData.numberThumbsWidthProperty().bind(nbCount);
+
+        lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
     }
 }
