@@ -19,7 +19,6 @@ package de.p2tools.gui;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.mosaikData.MosaikData;
-import de.p2tools.controller.genMosaik.GenMosaik;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
 import javafx.beans.binding.Bindings;
@@ -187,7 +186,7 @@ public class MosaikGuiController extends AnchorPane {
 
         btnCreate.setOnAction(a -> {
             if (!txtSrc.getText().isEmpty() && !txtDestDir.getText().isEmpty()) {
-                new GenMosaik(mosaikData).erstellen();
+                progData.genMosaik.erstellen(mosaikData);
             }
         });
 

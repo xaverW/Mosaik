@@ -20,24 +20,25 @@ package de.p2tools.controller.config;
 import de.p2tools.MosaikController;
 import de.p2tools.controller.data.destData.ProjectData;
 import de.p2tools.controller.data.destData.ProjectDataList;
+import de.p2tools.controller.genMosaik.GenMosaik;
 import de.p2tools.controller.genThumbList.GenThumbList;
 import de.p2tools.gui.*;
 import de.p2tools.gui.tools.Listener;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.util.Random;
 
 public class ProgData {
 
     private static ProgData instance;
-    public static Random random = new Random();
+
     // flags
     public static boolean debug = false; // Debugmodus
-    public static boolean reset = false; // Programm auf Starteinstellungen zurücksetzen
+    public static BooleanProperty stopProp = new SimpleBooleanProperty();
 
     // Infos
     public static String configDir; // Verzeichnis zum Speichern der Programmeinstellungen
@@ -47,6 +48,7 @@ public class ProgData {
     public ProjectData selectedProjectData = null;
 
     public GenThumbList genThumbList = null;
+    public GenMosaik genMosaik = null;
 
     // Gui
     public Stage primaryStage = null;
@@ -62,6 +64,7 @@ public class ProgData {
     private ProgData() {
         projectDataList = new ProjectDataList();
         genThumbList = new GenThumbList(this);
+        genMosaik = new GenMosaik(this);
 
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000), ae -> {

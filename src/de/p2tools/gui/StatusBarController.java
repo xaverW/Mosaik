@@ -16,8 +16,8 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.FotoEvent;
-import de.p2tools.controller.FotoListener;
+import de.p2tools.controller.RunEvent;
+import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.tools.Listener;
@@ -75,7 +75,7 @@ public class StatusBarController extends AnchorPane {
     }
 
     private StatusbarIndex statusbarIndex = StatusbarIndex.NONE;
-    private boolean loadFoto = false;
+    private boolean running = false;
 
     private final ProgData progData;
 
@@ -151,23 +151,39 @@ public class StatusBarController extends AnchorPane {
         stackPane.getChildren().addAll(nonePane, loadPane, thumbPane, mosaikPane);
         nonePane.toFront();
 
-        progData.genThumbList.addAdListener(new FotoListener() {
+        btnStop.setOnAction(e -> ProgData.stopProp.set(!ProgData.stopProp.get()));
+
+        progData.genThumbList.addAdListener(new RunListener() {
             @Override
-            public void ping(FotoEvent fotoEvent) {
-                if (fotoEvent.nixLos()) {
-                    loadFoto = false;
+            public void ping(RunEvent runEvent) {
+                if (runEvent.nixLos()) {
+                    running = false;
                 } else {
-                    loadFoto = true;
+                    running = true;
                 }
-                updateProgressBar(fotoEvent);
+                updateProgressBar(runEvent);
                 setStatusbar();
             }
         });
+
+        progData.genMosaik.addAdListener(new RunListener() {
+            @Override
+            public void ping(RunEvent runEvent) {
+                if (runEvent.nixLos()) {
+                    running = false;
+                } else {
+                    running = true;
+                }
+                updateProgressBar(runEvent);
+                setStatusbar();
+            }
+        });
+
         Listener.addListener(new Listener(Listener.EREIGNIS_TIMER, StatusBarController.class.getSimpleName()) {
             @Override
             public void ping() {
                 try {
-                    if (!loadFoto) {
+                    if (!running) {
                         setStatusbar();
                     }
                 } catch (final Exception ex) {
@@ -177,7 +193,7 @@ public class StatusBarController extends AnchorPane {
         });
     }
 
-    private void updateProgressBar(FotoEvent event) {
+    private void updateProgressBar(RunEvent event) {
         int max = event.getMax();
         int progress = event.getProgress();
         double prog = 1.0;
@@ -195,7 +211,7 @@ public class StatusBarController extends AnchorPane {
 
     public void setStatusbarIndex(StatusbarIndex statusbarIndex) {
         this.statusbarIndex = statusbarIndex;
-        if (loadFoto) {
+        if (running) {
             loadPane.toFront();
             return;
         }

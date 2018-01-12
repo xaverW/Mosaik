@@ -17,9 +17,9 @@
 
 package de.p2tools.controller.genMosaik;
 
-import de.p2tools.controller.FotoEvent;
-import de.p2tools.controller.FotoListener;
 import de.p2tools.controller.Funktionen;
+import de.p2tools.controller.RunEvent;
+import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.mosaikData.MosaikData;
@@ -53,33 +53,29 @@ public class GenMosaik {
     private int progress = 0;
     private boolean stopAll = false;
 
-    private final ProgData progData;
-    private final MosaikData mosaikData;
-    private final ThumbCollection thumbCollection;
+    private ProgData progData;
+    private MosaikData mosaikData;
+    private ThumbCollection thumbCollection;
 
-    public GenMosaik(MosaikData mosaikData) {
-        progData = ProgData.getInstance();
-        this.mosaikData = mosaikData;
-        this.thumbCollection = progData.selectedProjectData.getThumbCollection();
+    public GenMosaik(ProgData progData) {
+        this.progData = progData;
+        ProgData.stopProp.addListener(ch -> stopAll = true);
     }
 
-    /**
-     *
-     */
-    public void setStop() {
-        stopAll = true;
-    }
 
     /**
      * @param listener
      */
-    public void addAdListener(FotoListener listener) {
-        listeners.add(FotoListener.class, listener);
+    public void addAdListener(RunListener listener) {
+        listeners.add(RunListener.class, listener);
     }
 
     /**
+     * @param mosaikData
      */
-    public void erstellen() {
+    public void erstellen(MosaikData mosaikData) {
+        this.mosaikData = mosaikData;
+        this.thumbCollection = progData.selectedProjectData.getThumbCollection();
 
         dest = FileUtils.concatPaths(mosaikData.getFotoDestDir(), mosaikData.getFotoDestName());
         src = mosaikData.getFotoSrc();
@@ -120,9 +116,9 @@ public class GenMosaik {
     }
 
     private void notifyEvent(int max, int progress, String text) {
-        FotoEvent event;
-        event = new FotoEvent(this, progress, max, text, 1);
-        for (FotoListener l : listeners.getListeners(FotoListener.class)) {
+        RunEvent event;
+        event = new RunEvent(this, progress, max, text);
+        for (RunListener l : listeners.getListeners(RunListener.class)) {
             l.notify(event);
         }
     }

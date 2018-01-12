@@ -17,8 +17,8 @@
 
 package de.p2tools.controller.genThumbList;
 
-import de.p2tools.controller.FotoEvent;
-import de.p2tools.controller.FotoListener;
+import de.p2tools.controller.RunEvent;
+import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.thumb.Thumb;
@@ -29,6 +29,7 @@ import de.p2tools.mLib.tools.FileUtils;
 import javax.swing.event.EventListenerList;
 import java.io.File;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.TreeSet;
 
 public class GenThumbList {
@@ -44,6 +45,7 @@ public class GenThumbList {
 
     private int anzThread = 1;
     private int threads = 0;
+    private Random random = new Random();
 
     /**
      */
@@ -63,8 +65,8 @@ public class GenThumbList {
     /**
      * @param listener
      */
-    public void addAdListener(FotoListener listener) {
-        listeners.add(FotoListener.class, listener);
+    public void addAdListener(RunListener listener) {
+        listeners.add(RunListener.class, listener);
     }
 
     public void create(ThumbCollection thumbCollection) {
@@ -92,9 +94,9 @@ public class GenThumbList {
     }
 
     private void notifyEvent(int max, int progress, String text) {
-        FotoEvent event;
-        event = new FotoEvent(this, progress, max, text, threads);
-        for (FotoListener l : listeners.getListeners(FotoListener.class)) {
+        RunEvent event;
+        event = new RunEvent(this, progress, max, text);
+        for (RunListener l : listeners.getListeners(RunListener.class)) {
             l.notify(event);
         }
     }
@@ -169,7 +171,7 @@ public class GenThumbList {
                             try {
                                 File dest = new File(destDir.getAbsolutePath() + File.separator +
                                         liste[i].getName() + "_" +
-                                        progData.random.nextInt(Integer.MAX_VALUE) + "." + ProgConst.IMAGE_FORMAT_JPG);
+                                        random.nextInt(Integer.MAX_VALUE) + "." + ProgConst.IMAGE_FORMAT_JPG);
                                 str = dest.getAbsolutePath();
                                 addCreationsList(liste[i], dest);
                             } catch (Exception ex) {
