@@ -20,7 +20,6 @@ import de.p2tools.controller.RunEvent;
 import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
@@ -99,6 +98,13 @@ public class ThumbGuiController extends AnchorPane {
     }
 
     private void selectThumbCollection() {
+        if (progData.selectedProjectData != null &&
+                thumbCollection != null &&
+                thumbCollection.equals(progData.selectedProjectData.getThumbCollection())) {
+            // dann hat sich nichts geänert
+            return;
+        }
+
         flowPane.getChildren().clear();
 
         if (thumbCollection != null) {
@@ -162,23 +168,25 @@ public class ThumbGuiController extends AnchorPane {
                 return;
             }
 
-            if (!setDestDir()) {
+            String thumbDir = progData.selectedProjectData.getThumbDirString();
+            if (thumbDir.isEmpty()) {
                 return;
             }
 
-            progData.worker.createThumbList(thumbCollection);
+            progData.worker.createThumbList(thumbCollection, thumbDir);
             setFlowPane();
         });
         btnReload.setOnAction(a -> {
-            if (!setDestDir()) {
+            String thumbDir = progData.selectedProjectData.getThumbDirString();
+            if (thumbDir.isEmpty()) {
                 return;
             }
 
-            progData.worker.readThumbList(thumbCollection);
+            progData.worker.readThumbList(thumbCollection, thumbDir);
         });
         btnClear.setOnAction(a -> {
             try {
-                FileUtils.deleteDirectory(new File(thumbCollection.getThumbDir()));
+                FileUtils.deleteDirectory(new File(progData.selectedProjectData.getThumbDirString()));
             } catch (Exception ex) {
                 Log.errorLog(945121254, ex);
             }
@@ -204,17 +212,6 @@ public class ThumbGuiController extends AnchorPane {
         vBox.setStyle("-fx-border-color: black;");
 
         contPane.getChildren().add(vBox);
-    }
-
-    private boolean setDestDir() {
-        String destDir = ProgInfos.getFotoCollectionsDirectory_String();
-        if (destDir.isEmpty()) {
-            new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Für das Projekt wurde " +
-                    "kein Verzeichnis angegeben");
-            return false;
-        }
-        thumbCollection.setThumbDir(destDir);
-        return true;
     }
 
 }

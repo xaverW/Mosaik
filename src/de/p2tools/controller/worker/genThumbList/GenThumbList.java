@@ -41,7 +41,6 @@ public class GenThumbList {
     private int fileCount = 0;
     private LinkedList<File> fileListRead = new LinkedList<>();
     private LinkedList<File[]> filesCreateThumb = new LinkedList<>();
-    private ThumbCollection thumbCollection;
 
     private int anzThread = 1;
     private int threads = 0;
@@ -69,25 +68,23 @@ public class GenThumbList {
         stopAll = true;
     }
 
-    public void create(ThumbCollection thumbCollection) {
-        this.thumbCollection = thumbCollection;
+    public void create(ThumbCollection thumbCollection, String destDir) {
         Duration.counterStart("Thumb erstellen");
         progress = 0;
         stopAll = false;
         filesCreateThumb.clear();
-        CreateListOfThumbs thumbs = new CreateListOfThumbs();
+        CreateListOfThumbs thumbs = new CreateListOfThumbs(thumbCollection, destDir);
         Thread thread = new Thread(thumbs);
         thread.setDaemon(true);
         thread.start();
     }
 
-    public void read(ThumbCollection thumbCollection) {
-        this.thumbCollection = thumbCollection;
+    public void read(ThumbCollection thumbCollection, String destDir) {
         progress = 0;
         stopAll = false;
         fileListRead.clear();
         thumbCollection.getThumbList().clear();
-        Einlesen einl = new Einlesen(thumbCollection.getThumbDir());
+        Einlesen einl = new Einlesen(thumbCollection, destDir);
         Thread tErst = new Thread(einl);
         tErst.setDaemon(true);
         tErst.start();
@@ -118,34 +115,36 @@ public class GenThumbList {
     }
 
     private class CreateListOfThumbs implements Runnable {
-        private File srcDir;
-        private File destDir;
+        ThumbCollection thumbCollection;
+        private File fileSrcDir;
+        private File fileDestDir;
         private boolean rekursiv;
 
-        public CreateListOfThumbs() {
-            srcDir = new File(thumbCollection.getFotoSrcDir());
-            destDir = new File(thumbCollection.getThumbDir());
-            rekursiv = thumbCollection.isRecursive();
+        public CreateListOfThumbs(ThumbCollection thumbCollection, String thumbDir) {
+            this.thumbCollection = thumbCollection;
+            fileSrcDir = new File(thumbCollection.getFotoSrcDir());
+            fileDestDir = new File(thumbDir);
+            this.rekursiv = thumbCollection.isRecursive();
         }
 
         public synchronized void run() {
             fileCount = 0;
             try {
-                if (!destDir.exists()) {
-                    destDir.mkdirs();
+                if (!fileDestDir.exists()) {
+                    fileDestDir.mkdirs();
                 }
 
-                if (!srcDir.isDirectory() || !destDir.isDirectory()) {
+                if (!fileSrcDir.isDirectory() || !fileDestDir.isDirectory()) {
                     System.out.println("Quelle oder Ziel ist kein Verzeichnis!");
                     return;
                 }
 
                 // Dateien zählen
-                fileCount = FileUtils.countFilesInDirectory(srcDir);
+                fileCount = FileUtils.countFilesInDirectory(fileSrcDir);
                 notifyEvent(fileCount, 0, "");
 
                 // Fotos zum Erstellen der Thumbs suchen
-                createFileList(srcDir);
+                createFileList(fileSrcDir);
 
                 // Thumbs erstellen
                 Thread t;
@@ -169,7 +168,7 @@ public class GenThumbList {
                     if (liste[i].isFile()) {
                         if (checkSuffix(liste[i])) {
                             try {
-                                File dest = new File(destDir.getAbsolutePath() + File.separator +
+                                File dest = new File(fileDestDir.getAbsolutePath() + File.separator +
                                         liste[i].getName() + "_" +
                                         random.nextInt(Integer.MAX_VALUE) + "." + ProgConst.IMAGE_FORMAT_JPG);
                                 str = dest.getAbsolutePath();
@@ -214,21 +213,23 @@ public class GenThumbList {
 
     private class Einlesen implements Runnable {
 
-        private File src;
+        private File fileThumbDir;
+        private ThumbCollection thumbCollection;
 
-        public Einlesen(String ssrc) {
-            src = new File(ssrc);
+        public Einlesen(ThumbCollection thumbCollection, String thumbDir) {
+            this.thumbCollection = thumbCollection;
+            fileThumbDir = new File(thumbDir);
         }
 
         public synchronized void run() {
             try {
                 fileCount = 0;
                 //src und prüfen
-                if (src.isDirectory()) {
+                if (fileThumbDir.isDirectory()) {
                     //Dateien zählen
-                    fileCount = FileUtils.countFilesInDirectory(src);
+                    fileCount = FileUtils.countFilesInDirectory(fileThumbDir);
                     notifyEvent(fileCount, 0, "");
-                    einlesenGetFile(src);
+                    einlesenGetFile(fileThumbDir);
                 } else {
                     System.out.println("Quelle ist kein Verzeichnis!");
                 }
@@ -248,7 +249,7 @@ public class GenThumbList {
         }
 
         private void einlesenGetFile(File file) {
-            File[] liste = null;
+            File[] liste;
             if (file.isDirectory()) {
                 liste = file.listFiles();
                 for (int i = 0; i < liste.length; i++) {

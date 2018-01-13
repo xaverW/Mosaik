@@ -108,7 +108,11 @@ public class ChangeThumbGuiController extends AnchorPane {
 
     private void initCont() {
         btnReload.setOnAction(a -> {
-            progData.worker.readThumbList(thumbCollection);
+            String thumbDir = progData.selectedProjectData.getThumbDirString();
+            if (thumbDir.isEmpty()) {
+                return;
+            }
+            progData.worker.readThumbList(thumbCollection, thumbDir);
             table.refresh();
         });
 

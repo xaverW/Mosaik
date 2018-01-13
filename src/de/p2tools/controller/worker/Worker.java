@@ -77,12 +77,12 @@ public class Worker {
         genMosaik.setStop();
     }
 
-    public void createThumbList(ThumbCollection thumbCollection) {
-        genThumbList.create(thumbCollection);
+    public void createThumbList(ThumbCollection thumbCollection, String thumbDir) {
+        genThumbList.create(thumbCollection, thumbDir);
     }
 
-    public void readThumbList(ThumbCollection thumbCollection) {
-        genThumbList.read(thumbCollection);
+    public void readThumbList(ThumbCollection thumbCollection, String thumbDir) {
+        genThumbList.read(thumbCollection, thumbDir);
     }
 
     public void createMosaik(MosaikData mosaikData) {

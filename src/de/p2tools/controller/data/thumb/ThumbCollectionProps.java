@@ -35,7 +35,7 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
     public static final String TAG = "ThumbCollection";
     private final BooleanProperty recursive = new SimpleBooleanProperty(true);
     private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG);
-    private final StringProperty thumbDir = new SimpleStringProperty("");
+    //    private final StringProperty thumbDir = new SimpleStringProperty("");
     private final StringProperty fotoSrcDir = new SimpleStringProperty("");
 
     private ThumbList thumbList = new ThumbList();
@@ -48,7 +48,7 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
         return new ArrayList<>(Arrays.asList(
                 new ConfigBoolProp("recursiv", true, recursive),
                 new ConfigStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
-                new ConfigStringProp("dir-thumb", "", thumbDir),
+//                new ConfigStringProp("dir-thumb", "", thumbDir),
                 new ConfigStringProp("dir-foto-src", "", fotoSrcDir),
                 new ConfigConfigsList(thumbList)));
     }
@@ -86,17 +86,17 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
         this.format.set(format);
     }
 
-    public String getThumbDir() {
-        return thumbDir.get();
-    }
-
-    public StringProperty thumbDirProperty() {
-        return thumbDir;
-    }
-
-    public void setThumbDir(String thumbDir) {
-        this.thumbDir.set(thumbDir);
-    }
+//    public String getThumbDir() {
+//        return thumbDir.get();
+//    }
+//
+//    public StringProperty thumbDirProperty() {
+//        return thumbDir;
+//    }
+//
+//    public void setThumbDir(String thumbDir) {
+//        this.thumbDir.set(thumbDir);
+//    }
 
     public String getFotoSrcDir() {
         return fotoSrcDir.get();

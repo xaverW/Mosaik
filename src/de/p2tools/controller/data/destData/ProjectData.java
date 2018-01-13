@@ -17,6 +17,15 @@
 
 package de.p2tools.controller.data.destData;
 
+import de.p2tools.controller.config.ProgConst;
+import de.p2tools.controller.config.ProgData;
+import de.p2tools.mLib.tools.MLAlert;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class ProjectData extends ProjectDataProps {
 
     public ProjectData() {
@@ -24,5 +33,27 @@ public class ProjectData extends ProjectDataProps {
 
     public ProjectData(String name) {
         setName(name);
+    }
+
+    public String getThumbDirString() {
+        final Path baseDirectoryPath;
+        if (ProgData.getInstance().selectedProjectData == null || ProgData.getInstance().selectedProjectData.getDestDir().isEmpty()) {
+            new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Für das Projekt wurde " +
+                    "kein Verzeichnis angegeben");
+            return "";
+        } else {
+            baseDirectoryPath = Paths.get(ProgData.getInstance().selectedProjectData.getDestDir(), ProgConst.VERZEICHNIS_THUMBS);
+        }
+
+        if (Files.notExists(baseDirectoryPath)) {
+            try {
+                Files.createDirectories(baseDirectoryPath);
+            } catch (final IOException ioException) {
+                new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Das Verzeinis der Vorschaubilder " +
+                        "kann nicht angelegt werden: \n" +
+                        baseDirectoryPath.toString());
+            }
+        }
+        return baseDirectoryPath.toString();
     }
 }
