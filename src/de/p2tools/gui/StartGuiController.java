@@ -22,6 +22,10 @@ import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.destData.ProjectData;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -31,17 +35,17 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 public class StartGuiController extends AnchorPane {
-    ScrollPane scrollPane = new ScrollPane();
-    AnchorPane contPane = new AnchorPane();
-    AnchorPane collectPane = new AnchorPane();
 
+    private final ScrollPane scrollPane = new ScrollPane();
+    private final AnchorPane contPane = new AnchorPane();
+    private final AnchorPane collectPane = new AnchorPane();
+    private final ComboBox<ProjectData> cbProjectDataList = new ComboBox<>();
+    private final TextField txtName = new TextField("");
+    private final TextField txtDir = new TextField("");
 
-    ProjectData projectData = null;
-    ComboBox<ProjectData> cbProjectDataList = new ComboBox<>();
-    TextField txtName = new TextField("");
-    TextField txtDir = new TextField("");
-
+    private ProjectData projectData = null;
     private final ProgData progData;
+    private final BooleanProperty allOk = new SimpleBooleanProperty(false);
 
     public StartGuiController() {
         progData = ProgData.getInstance();
@@ -55,7 +59,6 @@ public class StartGuiController extends AnchorPane {
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
 
-
         initCollection();
         initCont();
         selectProjectData();
@@ -66,16 +69,40 @@ public class StartGuiController extends AnchorPane {
         vBox.getChildren().addAll(collectPane, contPane);
         scrollPane.setContent(vBox);
 
-        initListener();
+        initColor();
     }
 
     public void isShown() {
     }
 
-
-    private void initListener() {
+    public boolean isAllOk() {
+        return allOk.get();
     }
 
+    public BooleanProperty allOkProperty() {
+        return allOk;
+    }
+
+    private void initColor() {
+        BooleanBinding dirBinding = Bindings.createBooleanBinding(() -> txtDir.getText().trim().isEmpty(), txtDir.textProperty());
+        BooleanBinding nameBinding = Bindings.createBooleanBinding(() -> txtName.getText().trim().isEmpty(), txtName.textProperty());
+        allOk.bind(dirBinding.not().and(nameBinding.not()));
+
+        setColor(txtDir, dirBinding);
+        setColor(txtName, nameBinding);
+
+        dirBinding.addListener(l -> setColor(txtDir, dirBinding));
+        nameBinding.addListener(l -> setColor(txtName, nameBinding));
+    }
+
+    private void setColor(TextField tf, BooleanBinding bb) {
+        if (bb.get()) {
+            tf.getStyleClass().add("txtIsEmpty");
+        } else {
+            tf.getStyleClass().remove("txtIsEmpty");
+        }
+
+    }
 
     private void initCollection() {
         cbProjectDataList.setItems(progData.projectDataList);

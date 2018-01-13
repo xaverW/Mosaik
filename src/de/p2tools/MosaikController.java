@@ -175,9 +175,33 @@ public class MosaikController extends StackPane {
             this.getChildren().addAll(borderPane, maskerPane);
 
             selPanelStart();
+            addStartGuiBinding();
+
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    private void addStartGuiBinding() {
+        btnStart.disableProperty().bind(progData.startGuiController.allOkProperty().not());
+        btnThumbNail.disableProperty().bind(progData.startGuiController.allOkProperty().not());
+        btnChangeThumbNail.disableProperty().bind(progData.startGuiController.allOkProperty().not());
+        btnMosaik.disableProperty().bind(progData.startGuiController.allOkProperty().not());
+        btnWallpaper.disableProperty().bind(progData.startGuiController.allOkProperty().not());
+
+        if (!progData.startGuiController.isAllOk()) {
+            btnNext.setDisable(true);
+            btnPrev.setDisable(true);
+        }
+
+        progData.startGuiController.allOkProperty().addListener(l -> {
+            if (!progData.startGuiController.isAllOk()) {
+                btnNext.setDisable(true);
+                btnPrev.setDisable(true);
+            } else {
+                selPanelStart();
+            }
+        });
     }
 
     private void setPrev() {
