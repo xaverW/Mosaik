@@ -28,6 +28,7 @@ import de.p2tools.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
 import de.p2tools.mLib.tools.Log;
+import de.p2tools.mLib.tools.MLAlert;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -156,18 +157,24 @@ public class ThumbGuiController extends AnchorPane {
 
         btnLod.setOnAction(a -> {
             if (txtDir.getText().isEmpty()) {
+                new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Zum Laden der Bilder wurde " +
+                        "kein Verzeichnis angegeben");
                 return;
             }
-            // todo destDir ist leer
-            String destDir = ProgInfos.getFotoCollectionsDirectory_String();
-            thumbCollection.setThumbDir(destDir);
+
+            if (!setDestDir()) {
+                return;
+            }
 
             progData.worker.createThumbList(thumbCollection);
             setFlowPane();
         });
         btnReload.setOnAction(a -> {
+            if (!setDestDir()) {
+                return;
+            }
+
             progData.worker.readThumbList(thumbCollection);
-            setFlowPane();
         });
         btnClear.setOnAction(a -> {
             try {
@@ -199,5 +206,15 @@ public class ThumbGuiController extends AnchorPane {
         contPane.getChildren().add(vBox);
     }
 
+    private boolean setDestDir() {
+        String destDir = ProgInfos.getFotoCollectionsDirectory_String();
+        if (destDir.isEmpty()) {
+            new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Für das Projekt wurde " +
+                    "kein Verzeichnis angegeben");
+            return false;
+        }
+        thumbCollection.setThumbDir(destDir);
+        return true;
+    }
 
 }
