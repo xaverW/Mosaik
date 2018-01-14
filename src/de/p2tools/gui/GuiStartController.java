@@ -20,8 +20,10 @@ import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.destData.ProjectData;
+import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.mLib.tools.DirFileChooser;
+import de.p2tools.mLib.tools.MLAlert;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -95,7 +97,7 @@ public class GuiStartController extends AnchorPane {
         nameBinding.addListener(l -> setColor(txtName, nameBinding));
     }
 
-    private void setColor(TextField tf, BooleanBinding bb) {
+    private void setColor(Control tf, BooleanBinding bb) {
         if (bb.get()) {
             tf.getStyleClass().add("txtIsEmpty");
         } else {
@@ -201,7 +203,27 @@ public class GuiStartController extends AnchorPane {
 
         final Button btnDir = new Button();
         btnDir.setOnAction(event -> {
-            DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir);
+            String dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir.getText());
+            if (new MTAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von:\n" +
+                    txtDir.getText() + "\n\n" +
+                    "nach:\n" +
+                    dir + "\n\n" +
+                    "verschoben werden?").equals(MLAlert.BUTTON.YES)) {
+                if (progData.worker.moveProject(dir)) {
+                    txtDir.setText(dir);
+                }
+
+                ThumbCollection thumbCollection = progData.selectedProjectData.getThumbCollection();
+                if (thumbCollection == null) {
+                    return;
+                }
+                String thumbDir = progData.selectedProjectData.getThumbDirString();
+                if (thumbDir.isEmpty()) {
+                    return;
+                }
+                progData.worker.readThumbList(thumbCollection, thumbDir);
+
+            }
         });
         btnDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 

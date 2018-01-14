@@ -49,6 +49,24 @@ public class DirFileChooser {
 
     }
 
+    public static String DirChooser(Stage stage, String txtPath) {
+        final DirectoryChooser directoryChooser = new DirectoryChooser();
+        File initFile = new File(System.getProperty("user.home"));
+
+        if (!txtPath.isEmpty()) {
+            File f = new File(txtPath);
+            if (f.exists() && f.isDirectory()) {
+                initFile = new File(txtPath);
+            }
+        }
+        directoryChooser.setInitialDirectory(initFile);
+        File selectedFile = directoryChooser.showDialog(stage);
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        }
+        return "";
+    }
+
     public static void DirChooser(Stage stage, TextField txtPath) {
         final DirectoryChooser directoryChooser = new DirectoryChooser();
         File initFile = new File(System.getProperty("user.home"));

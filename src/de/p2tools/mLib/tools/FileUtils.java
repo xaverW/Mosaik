@@ -20,6 +20,7 @@ import com.jidesoft.utils.SystemInfo;
 import de.p2tools.gui.dialog.MTAlert;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,6 +63,38 @@ public class FileUtils {
             Log.errorLog(283946015, pfad1 + " - " + pfad2);
         }
         return ret;
+    }
+
+    public static boolean movePath(String from, String to) {
+        try {
+            Path src = Paths.get(from);
+            Path dest = Paths.get(to);
+
+            if (dest.toFile().exists() && !dest.toFile().isDirectory()) {
+                new MLAlert().showErrorAlert("Verzeichnis verschieben", "Das Zielverzeichnis:\n" +
+                        to + "\n\n" +
+                        "ist kein Verzeichnis");
+                return false;
+            }
+
+            if (dest.toFile().exists() && dest.toFile().isDirectory() && dest.toFile().list().length > 0) {
+                new MLAlert().showErrorAlert("Verzeichnis verschieben",
+                        "Das Verzeichnis:\n" + to +
+                                "ist nicht leer, sollen bestehende Dateien überschrieben werden?");
+                return false;
+            }
+
+            if (dest.toFile().exists() && dest.toFile().isDirectory() && dest.toFile().list().length == 0) {
+                dest.toFile().delete();
+            }
+
+            org.apache.commons.io.FileUtils.moveDirectory(src.toFile(), dest.toFile());
+//            Files.move(src, dest, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            Log.errorLog(645121047, "move path: " + from + " to " + to);
+            return false;
+        }
+        return true;
     }
 
     public static String concatPaths(String pfad1, String pfad2) {

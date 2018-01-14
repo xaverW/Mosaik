@@ -26,6 +26,8 @@ import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.worker.genMosaik.GenMosaik;
 import de.p2tools.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.controller.worker.genWallpaper.GenWallpaper;
+import de.p2tools.mLib.tools.FileUtils;
+import de.p2tools.mLib.tools.MLAlert;
 
 import javax.swing.event.EventListenerList;
 
@@ -91,6 +93,20 @@ public class Worker {
 
     public void createWallpaper(ThumbCollection thumbCollection, WallpaperData wallpaperData) {
         genWallpaper.create(thumbCollection, wallpaperData);
+    }
+
+    public boolean moveProject(String destDir) {
+        boolean ret = false;
+
+        if (FileUtils.movePath(progData.selectedProjectData.getDestDir(), destDir)) {
+            ret = true;
+        } else {
+            new MLAlert().showErrorAlert("Projekt verschieben", "Das Verschieben des Verzeichnisses nach\n" +
+                    destDir + "\n\n" +
+                    "hat nicht geklappt.");
+        }
+
+        return ret;
     }
 
     private void notifyEvent(RunEvent runEvent) {
