@@ -14,153 +14,37 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.gui;
+package de.p2tools.gui.tools;
 
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.thumb.Thumb;
-import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
-import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.gui.tools.MTOpen;
-import de.p2tools.gui.tools.Table;
-import de.p2tools.mLib.tools.MLAlert;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 import java.io.File;
-import java.util.ArrayList;
 
-public class ChangeThumbGuiController extends AnchorPane {
-    ScrollPane scrollPaneTable = new ScrollPane();
-    ScrollPane scrollPaneCont = new ScrollPane();
-    TableView table = new TableView<>();
-    AnchorPane contPane = new AnchorPane();
+public class TableChangeThumb {
 
-    ThumbCollection thumbCollection = null;
-    Button btnReload = new Button("Liste neu einlesen");
-    Button btnDel = new Button("Bilder löschen");
+    private TableView tableView;
 
-    private final ProgData progData;
+    public TableColumn[] initDownloadColumn(TableView tableView) {
+        this.tableView = tableView;
 
-    public ChangeThumbGuiController() {
-        progData = ProgData.getInstance();
+        tableView.getColumns().clear();
 
-        VBox vBox = new VBox();
-        AnchorPane.setLeftAnchor(vBox, 0.0);
-        AnchorPane.setBottomAnchor(vBox, 0.0);
-        AnchorPane.setRightAnchor(vBox, 0.0);
-        AnchorPane.setTopAnchor(vBox, 0.0);
-        getChildren().addAll(vBox);
-
-        scrollPaneTable.setFitToHeight(true);
-        scrollPaneTable.setFitToWidth(true);
-        scrollPaneTable.setContent(table);
-        scrollPaneCont.setFitToHeight(true);
-        scrollPaneCont.setFitToWidth(true);
-        scrollPaneCont.setContent(contPane);
-        VBox.setVgrow(scrollPaneTable, Priority.ALWAYS);
-        vBox.getChildren().addAll(scrollPaneTable, scrollPaneCont);
-
-        initTable();
-        initCont();
-        initListener();
-        selectThumbCollection();
-    }
-
-    public void isShown() {
-        selectThumbCollection();
-    }
-
-
-    public void saveTable() {
-        new Table().saveTable(table, Table.TABLE.THUMB);
-    }
-
-    private void initListener() {
-    }
-
-
-    private void selectThumbCollection() {
-//        if (thumbCollection != null &&
-//                progData.selectedProjectData.getThumbCollection() != null &&
-//                thumbCollection.equals(progData.selectedProjectData.getThumbCollection())) {
-//            return;
-//        }
-
-        table.setItems(null);
-
-        thumbCollection = progData.selectedProjectData.getThumbCollection();
-
-        if (thumbCollection == null) {
-            contPane.setDisable(true);
-        } else {
-            contPane.setDisable(false);
-            table.setItems(thumbCollection.getThumbList());
-        }
-    }
-
-    private void initCont() {
-        btnReload.setOnAction(a -> {
-            String thumbDir = progData.selectedProjectData.getThumbDirString();
-            if (thumbDir.isEmpty()) {
-                return;
-            }
-            progData.worker.readThumbList(thumbCollection, thumbDir);
-            table.refresh();
-        });
-
-        btnDel.setOnAction(a -> {
-            ArrayList<Thumb> thumbs = new ArrayList<>();
-            thumbs.addAll(table.getSelectionModel().getSelectedItems());
-
-            if (thumbs.isEmpty()) {
-                new MLAlert().showInfoNoSelection();
-
-            } else if (thumbs.size() == 1 &&
-                    !new MTAlert().showAlert("Datei Löschen?", "", "Die Datei löschen:\n\n" + thumbs.get(0).getFileName())) {
-                return;
-
-            } else if (thumbs.size() > 1 &&
-                    !new MTAlert().showAlert("Dateien Löschen?", thumbs.size() + " Dateien löschen",
-                            "Sollen die Datei gelöscht werden?")) {
-                return;
-            }
-
-            for (Thumb thumb : thumbs) {
-                if (de.p2tools.mLib.tools.FileUtils.deleteFileNoMsg(thumb.getFileName())) {
-                    thumbCollection.getThumbList().remove(thumb);
-                } else {
-                    break;
-                }
-            }
-
-            table.refresh();
-
-        });
-
-        HBox hBox = new HBox(10);
-        hBox.setPadding(new Insets(10));
-        hBox.getChildren().addAll(btnReload, btnDel);
-
-        AnchorPane.setTopAnchor(hBox, 5.0);
-        AnchorPane.setLeftAnchor(hBox, 5.0);
-        AnchorPane.setBottomAnchor(hBox, 5.0);
-        AnchorPane.setRightAnchor(hBox, 5.0);
-        contPane.getChildren().add(hBox);
-    }
-
-    private void initTable() {
-        table.setTableMenuButtonVisible(true);
-        table.setEditable(false);
-        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        tableView.setTableMenuButtonVisible(true);
+        tableView.setEditable(false);
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         final TableColumn<Thumb, Integer> nrColumn = new TableColumn<>("Nr");
         nrColumn.setCellValueFactory(new PropertyValueFactory<>("nr"));
@@ -177,7 +61,28 @@ public class ChangeThumbGuiController extends AnchorPane {
         changeColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         changeColumn.setCellFactory(cellFactoryChange);
 
-        table.getColumns().addAll(nrColumn, imageColumn, colorColumn, changeColumn);
+        nrColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 50% width
+        imageColumn.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 50% width
+        colorColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 50% width
+        changeColumn.setMaxWidth(1f * Integer.MAX_VALUE * 50); // 50% width
+
+        tableView.setOnMousePressed(m -> {
+            if (m.getButton().equals(MouseButton.SECONDARY)) {
+                tableView.setContextMenu(getMenu());
+            }
+        });
+
+        return new TableColumn[]{
+                nrColumn, imageColumn, colorColumn, changeColumn
+        };
+    }
+
+    private ContextMenu getMenu() {
+        final ContextMenu contextMenu = new ContextMenu();
+        MenuItem resetTable = new MenuItem("Tabelle zurücksetzen");
+        resetTable.setOnAction(a -> new Table().resetTable(tableView, Table.TABLE.CHANGE_THUMB));
+        contextMenu.getItems().addAll(resetTable);
+        return contextMenu;
     }
 
     private Callback<TableColumn<Thumb, Color>, TableCell<Thumb, Color>> cellFactoryColor
@@ -196,8 +101,7 @@ public class ChangeThumbGuiController extends AnchorPane {
                     return;
                 }
                 Thumb thumb = getTableView().getItems().get(getIndex());
-                setStyle("-fx-background-color: rgb(" + thumb.getRed() + "," + thumb.getGreen() + ", " + thumb.getBlue() + ");");
-//                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+                setBackground(new Background(new BackgroundFill(thumb.getColor(), CornerRadii.EMPTY, Insets.EMPTY)));
             }
 
         };
@@ -259,7 +163,7 @@ public class ChangeThumbGuiController extends AnchorPane {
                 Button btnDel = new Button("Bild löschen");
                 btnDel.setOnAction(a -> {
                     if (de.p2tools.mLib.tools.FileUtils.deleteFile(thumb.getFileName())) {
-                        thumbCollection.getThumbList().remove(thumb);
+                        ProgData.getInstance().selectedProjectData.getThumbCollection().getThumbList().remove(thumb);
                     }
                 });
 
@@ -272,11 +176,11 @@ public class ChangeThumbGuiController extends AnchorPane {
                 rotateRight.setGraphic(new Icons().ICON_BUTTON_ROTATE_RIGHT);
                 rotateLeft.setOnAction(a -> {
                     ScaleImage.rotate(new File(thumb.getFileName()), false);
-                    table.refresh();
+                    tableView.refresh();
                 });
                 rotateRight.setOnAction(a -> {
                     ScaleImage.rotate(new File(thumb.getFileName()), true);
-                    table.refresh();
+                    tableView.refresh();
                 });
 
                 gridPane.add(new Label("Datei:"), 0, 0);
@@ -294,5 +198,5 @@ public class ChangeThumbGuiController extends AnchorPane {
 
         return cell;
     };
-
 }
+

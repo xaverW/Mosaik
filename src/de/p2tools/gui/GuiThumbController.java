@@ -39,7 +39,7 @@ import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
 
-public class ThumbGuiController extends AnchorPane {
+public class GuiThumbController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
     ScrollPane scrollPane = new ScrollPane();
     AnchorPane contPane = new AnchorPane();
@@ -57,7 +57,7 @@ public class ThumbGuiController extends AnchorPane {
     private final ProgData progData;
     DoubleProperty splitPaneProperty = ProgConfig.THUMB_GUI_DIVIDER.getDoubleProperty();
 
-    public ThumbGuiController() {
+    public GuiThumbController() {
         progData = ProgData.getInstance();
 
         AnchorPane.setLeftAnchor(splitPane, 0.0);

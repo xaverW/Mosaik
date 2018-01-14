@@ -51,7 +51,7 @@ public class ProgConfig extends MLConfig {
     public static MLConfigs START_GUI_PROJECT_DATA = addNewKey("start-gui-project-data");
 
     // GuiThumb
-    public static MLConfigs THUMB_GUI_DIVIDER = addNewKey("thumb-gui-divider", ProgConst.GUI_FILME_DIVIDER_LOCATION);
+    public static MLConfigs THUMB_GUI_DIVIDER = addNewKey("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
     public static MLConfigs THUMB_GUI_TABLE_WIDTH = addNewKey("thumb-gui-table-width");
     public static MLConfigs THUMB_GUI_TABLE_SORT = addNewKey("thumb-gui-table-sort");
     public static MLConfigs THUMB_GUI_TABLE_UPDOWN = addNewKey("thumb-gui-table-upDown");
@@ -60,7 +60,7 @@ public class ProgConfig extends MLConfig {
     public static MLConfigs THUMB_GUI_THUMB_COLLECTION = addNewKey("thumb-gui-thumb-collection");
 
     // GuiChangeThumb
-    public static MLConfigs CHANGE_THUMB_GUI_DIVIDER = addNewKey("change-thumb-gui-divider", ProgConst.GUI_FILME_DIVIDER_LOCATION);
+    public static MLConfigs CHANGE_THUMB_GUI_DIVIDER = addNewKey("change-thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
     public static MLConfigs CHANGE_THUMB_GUI_TABLE_WIDTH = addNewKey("change-thumb-gui-table-width");
     public static MLConfigs CHANGE_THUMB_GUI_TABLE_SORT = addNewKey("change-thumb-gui-table-sort");
     public static MLConfigs CHANGE_THUMB_GUI_TABLE_UPDOWN = addNewKey("change-thumb-gui-table-upDown");

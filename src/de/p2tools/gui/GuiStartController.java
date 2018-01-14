@@ -34,7 +34,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
-public class StartGuiController extends AnchorPane {
+public class GuiStartController extends AnchorPane {
 
     private final ScrollPane scrollPane = new ScrollPane();
     private final AnchorPane contPane = new AnchorPane();
@@ -47,7 +47,7 @@ public class StartGuiController extends AnchorPane {
     private final ProgData progData;
     private final BooleanProperty allOk = new SimpleBooleanProperty(false);
 
-    public StartGuiController() {
+    public GuiStartController() {
         progData = ProgData.getInstance();
 
         AnchorPane.setLeftAnchor(scrollPane, 0.0);
@@ -195,6 +195,7 @@ public class StartGuiController extends AnchorPane {
         Label lblDir = new Label("Ordner in dem das Mosaik erstellt wird");
 
         txtDir.setMaxWidth(Double.MAX_VALUE);
+        txtDir.setEditable(false);
         HBox.setHgrow(txtDir, Priority.ALWAYS);
         txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.projectDataList.setListChanged());
 

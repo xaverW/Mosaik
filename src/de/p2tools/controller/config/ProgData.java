@@ -49,11 +49,11 @@ public class ProgData {
     public Stage primaryStage = null;
     public MosaikController mosaikController = null;
 
-    public StartGuiController startGuiController = null; // StartTab
-    public ThumbGuiController thumbGuiController = null; // Tab mit den Filmen
-    public ChangeThumbGuiController changeThumbGuiController = null; // Tab mit den Filmen
-    public MosaikGuiController mosaikGuiController = null; // Tab mit den Downloads
-    public WallpaperGuiController wallpaperGuiController = null; // Tab mit den Downloads
+    public GuiStartController guiStartController = null; // StartTab
+    public GuiThumbController guiThumbController = null; // Tab mit den Filmen
+    public GuiChangeThumbController guiChangeThumbController = null; // Tab mit den Filmen
+    public GuiMosaikController guiMosaikController = null; // Tab mit den Downloads
+    public GuiWallpaperController guiWallpaperController = null; // Tab mit den Downloads
 
 
     private ProgData() {

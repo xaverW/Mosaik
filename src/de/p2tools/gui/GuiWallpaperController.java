@@ -29,7 +29,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-public class WallpaperGuiController extends AnchorPane {
+public class GuiWallpaperController extends AnchorPane {
 
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox vBoxCont = new VBox();
@@ -48,7 +48,7 @@ public class WallpaperGuiController extends AnchorPane {
     private final ProgData progData;
     private WallpaperData wallpaperData;
 
-    public WallpaperGuiController() {
+    public GuiWallpaperController() {
         this.progData = ProgData.getInstance();
         this.wallpaperData = progData.selectedProjectData.getWallpaperData();
 
