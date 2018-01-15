@@ -19,6 +19,7 @@ package de.p2tools.controller.data.destData;
 
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
+import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.mLib.tools.MLAlert;
 
 import java.io.IOException;
@@ -28,11 +29,10 @@ import java.nio.file.Paths;
 
 public class ProjectData extends ProjectDataProps {
 
-    public ProjectData() {
-    }
-
     public ProjectData(String name) {
-        setName(name);
+        String[] nArr = ProgInfos.getNextProjectNameDirString();
+        setName(nArr[0]);
+        setDestDir(nArr[1]);
     }
 
     public String getThumbDirString() {

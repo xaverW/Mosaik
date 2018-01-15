@@ -36,6 +36,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class GuiStartController extends AnchorPane {
 
     private final ScrollPane scrollPane = new ScrollPane();
@@ -204,6 +207,21 @@ public class GuiStartController extends AnchorPane {
         final Button btnDir = new Button();
         btnDir.setOnAction(event -> {
             String dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir.getText());
+            if (progData.selectedProjectData.getDestDir().isEmpty()) {
+                // dann ist das Projektverzeichnis noch nicht angelegt
+                progData.selectedProjectData.setDestDir(dir);
+                return;
+            } else {
+                String oldDir = progData.selectedProjectData.getDestDir();
+                Path oldDirPath = Paths.get(oldDir);
+                if (!oldDirPath.toFile().exists()) {
+                    // dann ist das Projektverzeichnis noch nicht angelegt
+                    progData.selectedProjectData.setDestDir(dir);
+                    return;
+                }
+            }
+
+
             if (new MTAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von:\n" +
                     txtDir.getText() + "\n\n" +
                     "nach:\n" +

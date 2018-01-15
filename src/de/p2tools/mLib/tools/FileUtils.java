@@ -89,7 +89,6 @@ public class FileUtils {
             }
 
             org.apache.commons.io.FileUtils.moveDirectory(src.toFile(), dest.toFile());
-//            Files.move(src, dest, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
             Log.errorLog(645121047, "move path: " + from + " to " + to);
             return false;

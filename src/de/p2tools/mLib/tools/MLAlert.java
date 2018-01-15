@@ -27,7 +27,7 @@ public class MLAlert {
     public enum BUTTON {UNKNOWN, YES, NO, CANCEL}
 
 
-    public boolean showAlert(String title, String header, String content) {
+    public static boolean showAlert(String title, String header, String content) {
         final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -42,7 +42,7 @@ public class MLAlert {
         return false;
     }
 
-    public BUTTON showAlert_yes_no(String title, String header, String content) {
+    public static BUTTON showAlert_yes_no(String title, String header, String content) {
         final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -69,11 +69,11 @@ public class MLAlert {
     }
 
 
-    public BUTTON showAlert_yes_no_cancel(String title, String header, String content) {
+    public static BUTTON showAlert_yes_no_cancel(String title, String header, String content) {
         return showAlert_yes_no_cancel(title, header, content, true);
     }
 
-    public BUTTON showAlert_yes_no_cancel(String title, String header, String content, boolean noBtn) {
+    public static BUTTON showAlert_yes_no_cancel(String title, String header, String content, boolean noBtn) {
         final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -107,7 +107,7 @@ public class MLAlert {
         return ret;
     }
 
-    public BUTTON showAlert_yes_no_cancel(String title, String header, TextFlow content, boolean noBtn) {
+    public static BUTTON showAlert_yes_no_cancel(String title, String header, TextFlow content, boolean noBtn) {
         final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -142,7 +142,7 @@ public class MLAlert {
     }
 
 
-    public boolean showHelpAlert(String header, TextFlow content) {
+    public static boolean showHelpAlert(String header, TextFlow content) {
         final Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Hilfe");
         alert.setHeaderText(header);
@@ -156,7 +156,7 @@ public class MLAlert {
         return false;
     }
 
-    public boolean showHelpAlert(String header, String content) {
+    public static boolean showHelpAlert(String header, String content) {
         final Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Hilfe");
         alert.setHeaderText(header);
@@ -180,7 +180,7 @@ public class MLAlert {
         return false;
     }
 
-    public boolean showInfoAlert(String title, String header, String content) {
+    public static boolean showInfoAlert(String title, String header, String content) {
         final Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -203,7 +203,7 @@ public class MLAlert {
         return false;
     }
 
-    public boolean showInfoAlert(String title, String header, String content, boolean txtArea) {
+    public static boolean showInfoAlert(String title, String header, String content, boolean txtArea) {
         final Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -227,11 +227,11 @@ public class MLAlert {
         return false;
     }
 
-    public boolean showErrorAlert(String header, String content) {
+    public static boolean showErrorAlert(String header, String content) {
         return showErrorAlert("Fehler", header, content);
     }
 
-    public boolean showErrorAlert(String title, String header, String content) {
+    public static boolean showErrorAlert(String title, String header, String content) {
         final Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -246,7 +246,7 @@ public class MLAlert {
         return false;
     }
 
-    public boolean showInfoNoSelection() {
+    public static boolean showInfoNoSelection() {
         final Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("keine Auswahl");
         alert.setHeaderText("Es wurden nichts markiert.");

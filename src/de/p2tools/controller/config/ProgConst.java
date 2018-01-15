@@ -30,6 +30,7 @@ public class ProgConst {
     public static final String VERZEICHNIS_SENDER_ICONS = "Icons/Sender"; // Unterverzeichnis im Programmverzeichnis
     public static final String VERZEICHNIS_EINSTELLUNGEN = ".mosaik"; // im Homeverzeichnis
     public static final String VERZEICHNIS_THUMBS = "Bilder"; // im Projektverzeichnis für die Thumbs
+    public static final String DIR_STANDARD_PROJECT = "Mosaik"; // Standardname fürs Projektverzeichnis
 
     public static final String XML_START = "Mosaik";
 

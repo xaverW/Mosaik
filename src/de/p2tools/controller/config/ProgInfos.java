@@ -108,27 +108,19 @@ public class ProgInfos {
         return getSettingsDirectory().toString();
     }
 
-//    public static String getFotoCollectionsDirectory_String() {
-//        final Path baseDirectoryPath;
-//        if (ProgData.getInstance().selectedProjectData == null || ProgData.getInstance().selectedProjectData.getDestDir().isEmpty()) {
-//            new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Für das Projekt wurde " +
-//                    "kein Verzeichnis angegeben");
-//            return "";
-//        } else {
-//            baseDirectoryPath = Paths.get(ProgData.getInstance().selectedProjectData.getDestDir(), ProgConst.VERZEICHNIS_THUMBS);
-//        }
-//
-//        if (Files.notExists(baseDirectoryPath)) {
-//            try {
-//                Files.createDirectories(baseDirectoryPath);
-//            } catch (final IOException ioException) {
-//                new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Das Verzeinis der Vorschaubilder " +
-//                        "kann nicht angelegt werden: \n" +
-//                        baseDirectoryPath.toString());
-//            }
-//        }
-//        return baseDirectoryPath.toString();
-//    }
+    public static String[] getNextProjectNameDirString() {
+        Path baseDirectoryPath;
+        baseDirectoryPath = Paths.get(System.getProperty("user.home"), ProgConst.DIR_STANDARD_PROJECT);
+
+        int nr = 1;
+        String name = "";
+        while (Files.exists(baseDirectoryPath)) {
+            name = ProgConst.DIR_STANDARD_PROJECT + "_" + nr++;
+            baseDirectoryPath = Paths.get(System.getProperty("user.home"), name);
+        }
+
+        return new String[]{name, baseDirectoryPath.toString()};
+    }
 
 
 }
