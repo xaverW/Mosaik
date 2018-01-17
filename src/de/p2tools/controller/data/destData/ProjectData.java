@@ -29,7 +29,7 @@ import java.nio.file.Paths;
 
 public class ProjectData extends ProjectDataProps {
 
-    public ProjectData(String name) {
+    public ProjectData() {
         String[] nArr = ProgInfos.getNextProjectNameDirString();
         setName(nArr[0]);
         setDestDir(nArr[1]);

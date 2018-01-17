@@ -47,6 +47,8 @@ public class GuiStartController extends AnchorPane {
     private final ComboBox<ProjectData> cbProjectDataList = new ComboBox<>();
     private final TextField txtName = new TextField("");
     private final TextField txtDir = new TextField("");
+    Button btnNew = new Button("Neues Mosaik erstellen");
+    Button btnDel = new Button("gewähltes Mosaik löschen");
 
     private ProjectData projectData = null;
     private final ProgData progData;
@@ -135,19 +137,19 @@ public class GuiStartController extends AnchorPane {
 
         cbProjectDataList.setConverter(converter);
         cbProjectDataList.setMaxWidth(Double.MAX_VALUE);
-        cbProjectDataList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
-                selectProjectData()
+        cbProjectDataList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    selectProjectData();
+                    btnDel.setDisable(projectData == null ? true : false);
+                }
         );
 
-        Button btnNew = new Button("");
         btnNew.setGraphic(new Icons().ICON_BUTTON_ADD);
         btnNew.setOnAction(event -> {
-            ProjectData pd = new ProjectData("Neu-" + progData.projectDataList.size());
+            ProjectData pd = new ProjectData();
             progData.projectDataList.add(pd);
             cbProjectDataList.getSelectionModel().select(pd);
         });
 
-        Button btnDel = new Button("");
         btnDel.setGraphic(new Icons().ICON_BUTTON_REMOVE);
         btnDel.setOnAction(event -> {
             int i = cbProjectDataList.getSelectionModel().getSelectedIndex();
@@ -161,17 +163,19 @@ public class GuiStartController extends AnchorPane {
             }
         });
 
-        HBox hBox = new HBox();
-        hBox.setStyle("-fx-border-color: black;");
-        AnchorPane.setTopAnchor(hBox, 5.0);
-        AnchorPane.setLeftAnchor(hBox, 5.0);
-        AnchorPane.setBottomAnchor(hBox, 5.0);
-        AnchorPane.setRightAnchor(hBox, 5.0);
-        hBox.setPadding(new Insets(10));
-        hBox.setSpacing(10);
-        HBox.setHgrow(cbProjectDataList, Priority.ALWAYS);
-        hBox.getChildren().addAll(cbProjectDataList, btnNew, btnDel);
-        collectPane.getChildren().add(hBox);
+        VBox vBox = new VBox(10);
+        vBox.setStyle("-fx-border-color: black;");
+        vBox.setPadding(new Insets(10));
+        AnchorPane.setTopAnchor(vBox, 5.0);
+        AnchorPane.setLeftAnchor(vBox, 5.0);
+        AnchorPane.setBottomAnchor(vBox, 5.0);
+        AnchorPane.setRightAnchor(vBox, 5.0);
+
+        HBox hBox = new HBox(10);
+        hBox.getChildren().addAll(btnNew, btnDel);
+
+        vBox.getChildren().addAll(cbProjectDataList, hBox);
+        collectPane.getChildren().add(vBox);
     }
 
 

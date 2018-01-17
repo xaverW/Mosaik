@@ -108,11 +108,12 @@ public class ProgInfos {
         return getSettingsDirectory().toString();
     }
 
+    private static int nr = 1;
+
     public static String[] getNextProjectNameDirString() {
         Path baseDirectoryPath;
         baseDirectoryPath = Paths.get(System.getProperty("user.home"), ProgConst.DIR_STANDARD_PROJECT);
 
-        int nr = 1;
         String name = "";
         while (Files.exists(baseDirectoryPath)) {
             name = ProgConst.DIR_STANDARD_PROJECT + "_" + nr++;

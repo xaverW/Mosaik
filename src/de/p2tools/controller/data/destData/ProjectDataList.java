@@ -40,7 +40,7 @@ public class ProjectDataList extends SimpleListProperty<ProjectData> implements 
 
     public void initList() {
         if (this.isEmpty()) {
-            this.add(new ProjectData("Mosaik-" + this.size() + 1));
+            this.add(new ProjectData());
         }
     }
 
@@ -54,7 +54,7 @@ public class ProjectDataList extends SimpleListProperty<ProjectData> implements 
 
 
     public ProjectData getNewItem() {
-        return new ProjectData("Mosaik-" + this.size() + 1);
+        return new ProjectData();
     }
 
     public void addNewItem(Object obj) {
