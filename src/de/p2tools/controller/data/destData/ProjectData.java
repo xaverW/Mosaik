@@ -19,7 +19,6 @@ package de.p2tools.controller.data.destData;
 
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.mLib.tools.MLAlert;
 
 import java.io.IOException;
@@ -28,11 +27,29 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ProjectData extends ProjectDataProps {
+    private int nr = 1;
 
     public ProjectData() {
-        String[] nArr = ProgInfos.getNextProjectNameDirString();
+        String[] nArr = getNextProjectNameDirString();
         setName(nArr[0]);
         setDestDir(nArr[1]);
+    }
+
+    public String[] getNextProjectNameDirString() {
+        Path baseDirectoryPath;
+        baseDirectoryPath = Paths.get(System.getProperty("user.home"), ProgConst.DIR_STANDARD_PROJECT);
+
+        String name = ProgConst.DIR_STANDARD_PROJECT;
+        ProjectData projectData = ProgData.getInstance().projectDataList.containProjectName(name);
+
+        while (Files.exists(baseDirectoryPath) ||
+                ProgData.getInstance().projectDataList.containProjectName(name) != null) {
+
+            name = ProgConst.DIR_STANDARD_PROJECT + "_" + nr++;
+            baseDirectoryPath = Paths.get(System.getProperty("user.home"), name);
+        }
+
+        return new String[]{name, baseDirectoryPath.toString()};
     }
 
     public String getThumbDirString() {

@@ -73,8 +73,8 @@ public class GenThumbList {
         progress = 0;
         stopAll = false;
         filesCreateThumb.clear();
-        CreateListOfThumbs thumbs = new CreateListOfThumbs(thumbCollection, destDir);
-        Thread thread = new Thread(thumbs);
+        CreateListOfThumbs createListOfThumbs = new CreateListOfThumbs(thumbCollection, destDir);
+        Thread thread = new Thread(createListOfThumbs);
         thread.setDaemon(true);
         thread.start();
     }

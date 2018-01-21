@@ -34,6 +34,9 @@ import java.io.IOException;
 public class ImageInCorrectOrientation {
 
     public static BufferedImage getImageInCorrectOrientation(File file) throws ImageProcessingException, IOException, MetadataException {
+        // Create a buffered image from the input stream
+        BufferedImage bimg = ImageIO.read(file);
+
         Metadata metadata = ImageMetadataReader.readMetadata(file);
         if (metadata != null) {
             if (metadata.containsDirectoryOfType(ExifIFD0Directory.class)) {
@@ -43,10 +46,6 @@ public class ImageInCorrectOrientation {
                 if (directory.containsTag(ExifIFD0Directory.TAG_ORIENTATION)) {
                     orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
                 }
-
-                // Create a buffered image from the input stream
-                BufferedImage bimg = ImageIO.read(file);
-
 
                 // Get the current width and height of the image
                 int[] imageSize = {bimg.getWidth(), bimg.getHeight()};
@@ -93,7 +92,8 @@ public class ImageInCorrectOrientation {
             }
         }
 
-        return null;
+        // dann eben so wie es ist
+        return bimg;
     }
 
     /**

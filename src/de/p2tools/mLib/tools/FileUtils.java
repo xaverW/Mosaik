@@ -16,8 +16,8 @@
 
 package de.p2tools.mLib.tools;
 
-import com.jidesoft.utils.SystemInfo;
 import de.p2tools.gui.dialog.MTAlert;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -120,7 +120,7 @@ public class FileUtils {
     }
 
     public static String[] checkLengthPath(String[] pathName) {
-        if (SystemInfo.isWindows()) {
+        if (SystemUtils.IS_OS_WINDOWS) {
             // in Win dürfen die Pfade nicht länger als 260 Zeichen haben (für die Infodatei kommen noch
             // ".txt" dazu)
             if ((pathName[0].length() + 10) > WIN_MAX_PATH_LENGTH) {

@@ -147,6 +147,7 @@ public class GuiStartController extends AnchorPane {
         btnNew.setOnAction(event -> {
             ProjectData pd = new ProjectData();
             progData.projectDataList.add(pd);
+
             cbProjectDataList.getSelectionModel().select(pd);
         });
 

@@ -16,8 +16,8 @@
 
 package de.p2tools.mLib.tools;
 
-import com.jidesoft.utils.SystemInfo;
 import de.p2tools.mLib.MLConst;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -78,7 +78,7 @@ public class Log {
             " ╚═╝     ╚═╝   ╚═╝   ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝\n";
 
     public static void versionMsg(String progName) {
-        if (!SystemInfo.isMacOSX()) {
+        if (!SystemUtils.IS_OS_MAC_OSX) {
             sysLog("");
             sysLog("");
             sysLog("");

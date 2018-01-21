@@ -89,4 +89,9 @@ public class ProjectDataProps extends Data<ProjectData> {
         this.destDir.set(destDir);
     }
 
+    @Override
+    public int compareTo(ProjectData arg0) {
+        return getName().compareTo(arg0.getName());
+    }
+
 }

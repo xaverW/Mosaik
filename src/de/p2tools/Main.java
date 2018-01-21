@@ -15,7 +15,6 @@
  */
 package de.p2tools;
 
-import com.jidesoft.utils.SystemInfo;
 import de.p2tools.controller.Messages;
 import de.p2tools.controller.ProgStart;
 import de.p2tools.controller.config.ProgConst;
@@ -23,6 +22,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.mLib.tools.Log;
 import javafx.application.Application;
 import javafx.application.Platform;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.awt.*;
 
@@ -86,7 +86,7 @@ public class Main {
         // JavaFX stuff
         Platform.setImplicitExit(false);
 
-        if (SystemInfo.isUnix()) {
+        if (SystemUtils.IS_OS_UNIX) {
             setupX11WindowManagerClassName();
         }
 

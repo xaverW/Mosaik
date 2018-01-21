@@ -157,15 +157,35 @@ public class ScaleImage {
         int r = 0, g = 0, b = 0;
         long count = 0;
         if (rast != null) {
-            for (int x = rast.getMinX(); x < (rast.getMinX() + rast.getWidth()); x++) {
-                for (int y = rast.getMinY(); y < (rast.getMinY() + rast.getHeight()); y++) {
-                    r += rast.getSample(x, y, 0);
-                    g += rast.getSample(x, y, 1);
-                    b += rast.getSample(x, y, 2);
-                    ++count;
+/*
+            System.out.println(img.getAbsolutePath());
+            System.out.println(rast.getMinX());
+            System.out.println(rast.getMinY());
+            System.out.println(rast.getHeight());
+            System.out.println(rast.getWidth());
+*/
+
+            try {
+                for (int x = rast.getMinX(); x < (rast.getMinX() + rast.getWidth()); x++) {
+                    for (int y = rast.getMinY(); y < (rast.getMinY() + rast.getHeight()); y++) {
+                        if (rast.getNumBands() < 3) {
+                            r += rast.getSample(x, y, 0);
+                            g = r;
+                            b = r;
+                        } else {
+                            r += rast.getSample(x, y, 0);
+                            g += rast.getSample(x, y, 1);
+                            b += rast.getSample(x, y, 2);
+                        }
+                        ++count;
+                    }
                 }
+
+                ret = new Thumb((int) (r / count), (int) (g / count), (int) (b / count), img.getAbsolutePath());
+
+            } catch (Exception ex) {
+                throw ex;
             }
-            ret = new Thumb((int) (r / count), (int) (g / count), (int) (b / count), img.getAbsolutePath());
         }
         return ret;
     }

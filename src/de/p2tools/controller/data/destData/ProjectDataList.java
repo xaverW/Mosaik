@@ -75,9 +75,13 @@ public class ProjectDataList extends SimpleListProperty<ProjectData> implements 
         this.listChanged.set(!listChanged.get());
     }
 
+    public ProjectData containProjectName(String name) {
+        return this.stream().filter(projectData -> projectData.getName().equals(name)).findFirst().orElse(null);
+    }
 
     public synchronized boolean add(ProjectData projectData) {
         boolean ret = super.add(projectData);
+        sort();
         setListChanged();
         return ret;
     }
@@ -85,6 +89,7 @@ public class ProjectDataList extends SimpleListProperty<ProjectData> implements 
 
     public synchronized boolean addAll(ArrayList<ProjectData> projectData) {
         boolean ret = super.addAll(projectData);
+        sort();
         setListChanged();
         return ret;
     }
