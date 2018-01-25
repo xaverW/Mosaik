@@ -24,10 +24,7 @@ import de.p2tools.gui.tools.Table;
 import de.p2tools.p2Lib.tools.PAlert;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -36,10 +33,11 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 
 public class GuiChangeThumbController extends AnchorPane {
-    ScrollPane scrollPaneTable = new ScrollPane();
-    ScrollPane scrollPaneCont = new ScrollPane();
-    TableView table = new TableView<>();
+    TitledPane collectPane = new TitledPane();
     TitledPane contPane = new TitledPane();
+
+    ScrollPane scrollPaneTable = new ScrollPane();
+    TableView table = new TableView<>();
 
     ThumbCollection thumbCollection = null;
     Button btnReload = new Button("Liste neu einlesen");
@@ -50,27 +48,34 @@ public class GuiChangeThumbController extends AnchorPane {
     public GuiChangeThumbController() {
         progData = ProgData.getInstance();
 
+        SplitPane stackPane = new SplitPane();
+
+        AnchorPane.setLeftAnchor(stackPane, 0.0);
+        AnchorPane.setBottomAnchor(stackPane, 0.0);
+        AnchorPane.setRightAnchor(stackPane, 0.0);
+        AnchorPane.setTopAnchor(stackPane, 0.0);
+
         VBox vBox = new VBox();
-        AnchorPane.setLeftAnchor(vBox, 0.0);
-        AnchorPane.setBottomAnchor(vBox, 0.0);
-        AnchorPane.setRightAnchor(vBox, 0.0);
-        AnchorPane.setTopAnchor(vBox, 0.0);
-        getChildren().addAll(vBox);
+        stackPane.getItems().add(vBox);
+        getChildren().addAll(stackPane);
 
         scrollPaneTable.setFitToHeight(true);
         scrollPaneTable.setFitToWidth(true);
         scrollPaneTable.setContent(table);
-        scrollPaneCont.setFitToHeight(true);
-        scrollPaneCont.setFitToWidth(true);
-        scrollPaneCont.setContent(contPane);
+
+        collectPane.setCollapsible(false);
+        collectPane.setMaxHeight(Double.MAX_VALUE);
+        collectPane.getStyleClass().add("contPane");
+        collectPane.setText("Sammlung der Miniaturbilder");
+        collectPane.setContent(scrollPaneTable);
 
         contPane.setCollapsible(false);
         contPane.setAlignment(Pos.CENTER);
         contPane.getStyleClass().add("contPane");
-        contPane.setText("Einstellungen des gewählten Mosaik");
+        contPane.setText("Miniaturbilder bearbeiten");
 
-        VBox.setVgrow(scrollPaneTable, Priority.ALWAYS);
-        vBox.getChildren().addAll(scrollPaneTable, scrollPaneCont);
+        VBox.setVgrow(collectPane, Priority.ALWAYS);
+        vBox.getChildren().addAll(collectPane, contPane);
 
         initTable();
         initCont();

@@ -42,11 +42,11 @@ import java.io.File;
 
 public class GuiThumbController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
-    ScrollPane scrollPane = new ScrollPane();
+
     TitledPane contPane = new TitledPane();
     TitledPane collectPane = new TitledPane();
+    ScrollPane scrollPane = new ScrollPane();
     FlowPane flowPane = new FlowPane();
-
 
     ThumbCollection thumbCollection = null;
     TextField txtDir = new TextField("");
@@ -81,11 +81,18 @@ public class GuiThumbController extends AnchorPane {
         collectPane.setCollapsible(false);
         collectPane.getStyleClass().add("contPane");
         collectPane.setText("Sammlung der Miniaturbilder");
-        collectPane.setContent(flowPane);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setContent(collectPane);
+        collectPane.setContent(scrollPane);
 
-        splitPane.getItems().addAll(stackPane, scrollPane);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+//        scrollPane.setMinWidth(150);
+        scrollPane.setContent(flowPane);
+
+        final StackPane stackPaneColl = new StackPane();
+        stackPaneColl.setAlignment(Pos.TOP_CENTER);
+        stackPaneColl.getChildren().add(collectPane);
+
+        splitPane.getItems().addAll(stackPane, stackPaneColl);
         splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
 
         initCont();

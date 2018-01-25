@@ -26,11 +26,13 @@ import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 public class GuiWallpaperController extends AnchorPane {
 
+    TitledPane contPane = new TitledPane();
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox vBoxCont = new VBox();
     private final Label lblDesst = new Label("Fototapete speichern");
@@ -52,9 +54,15 @@ public class GuiWallpaperController extends AnchorPane {
         this.progData = ProgData.getInstance();
         this.wallpaperData = progData.selectedProjectData.getWallpaperData();
 
+        contPane.setCollapsible(false);
+        contPane.setAlignment(Pos.CENTER);
+        contPane.getStyleClass().add("contPane");
+        contPane.setText("Eine Fototapete aus den Miniaturbildern erstellen");
+        contPane.setContent(vBoxCont);
+
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setContent(vBoxCont);
+        scrollPane.setContent(contPane);
 
         AnchorPane.setLeftAnchor(scrollPane, 0.0);
         AnchorPane.setBottomAnchor(scrollPane, 0.0);
