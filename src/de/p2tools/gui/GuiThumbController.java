@@ -49,7 +49,7 @@ public class GuiThumbController extends AnchorPane {
 
     ThumbCollection thumbCollection = null;
     TextField txtDir = new TextField("");
-    ToggleSwitch tglRecursive = new ToggleSwitch("Ordner rekursiv durchsuchen");
+    ToggleSwitch tglRecursive = new ToggleSwitch("Auch Unterordner durchsuchen");
     Button btnLod = new Button("Fotos hinzufügen");
     Button btnReload = new Button("Liste neu einlesen");
     Button btnClear = new Button("Liste Löschen");
@@ -94,6 +94,12 @@ public class GuiThumbController extends AnchorPane {
     }
 
     public void isShown() {
+        if (progData.selectedProjectData == null) {
+            contPane.setDisable(true);
+            return;
+        }
+
+        contPane.setDisable(false);
         selectThumbCollection();
     }
 
@@ -158,7 +164,7 @@ public class GuiThumbController extends AnchorPane {
 
         final Button btnHelp = new Button("");
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelp.setOnAction(event -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+        btnHelp.setOnAction(event -> new MTAlert().showHelpAlert("Dateimanager", HelpText.GET_THUMB_DIR));
 
 
         btnLod.setOnAction(a -> {

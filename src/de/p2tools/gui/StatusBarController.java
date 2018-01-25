@@ -176,6 +176,12 @@ public class StatusBarController extends AnchorPane {
     }
 
     private void setInfoMosaik() {
+        if (progData.selectedProjectData == null) {
+            lblLeft.setText("");
+            lblRight.setText("");
+            return;
+        }
+
         String textLinks = "Miniaturbilder: " + (progData.selectedProjectData.getThumbCollection() != null ?
                 progData.selectedProjectData.getName() : "");
         lblLeft.setText(textLinks);

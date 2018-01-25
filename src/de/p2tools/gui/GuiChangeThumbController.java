@@ -79,16 +79,14 @@ public class GuiChangeThumbController extends AnchorPane {
     }
 
     private void selectThumbCollection() {
-//        if (thumbCollection != null &&
-//                progData.selectedProjectData.getThumbCollection() != null &&
-//                thumbCollection.equals(progData.selectedProjectData.getThumbCollection())) {
-//            return;
-//        }
-
         table.setItems(null);
 
-        thumbCollection = progData.selectedProjectData.getThumbCollection();
+        if (progData.selectedProjectData == null) {
+            contPane.setDisable(true);
+            return;
+        }
 
+        thumbCollection = progData.selectedProjectData.getThumbCollection();
         if (thumbCollection == null) {
             contPane.setDisable(true);
         } else {

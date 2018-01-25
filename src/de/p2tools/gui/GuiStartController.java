@@ -252,7 +252,7 @@ public class GuiStartController extends AnchorPane {
 
         final Button btnHelp = new Button("");
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROG_PATHS));
+        btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROJECT_PATH));
 
 
         HBox hBoxDir = new HBox();

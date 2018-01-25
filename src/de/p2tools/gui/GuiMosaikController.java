@@ -45,7 +45,6 @@ public class GuiMosaikController extends AnchorPane {
     private final Slider sliderCount = new Slider();
     private final Label lblSliderCount = new Label("");
 
-    private final Label lblDest = new Label("Mosaik im Ordner speichern");
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Mosaik erstellen");
@@ -74,6 +73,12 @@ public class GuiMosaikController extends AnchorPane {
     }
 
     public void isShown() {
+        if (progData.selectedProjectData == null) {
+            vBoxCont.setDisable(true);
+            return;
+        }
+
+        vBoxCont.setDisable(false);
         if (!mosaikData.equals(progData.selectedProjectData.getMosaikData())) {
             unbind();
             mosaikData = progData.selectedProjectData.getMosaikData();

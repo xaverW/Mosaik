@@ -67,6 +67,12 @@ public class GuiWallpaperController extends AnchorPane {
     }
 
     public void isShown() {
+        if (progData.selectedProjectData == null) {
+            vBoxCont.setDisable(true);
+            return;
+        }
+
+        vBoxCont.setDisable(false);
         if (!wallpaperData.equals(progData.selectedProjectData.getWallpaperData())) {
             unbind();
             wallpaperData = progData.selectedProjectData.getWallpaperData();

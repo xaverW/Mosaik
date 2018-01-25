@@ -17,14 +17,12 @@
 package de.p2tools;
 
 import de.p2tools.controller.ProgQuitt;
-import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.*;
 import de.p2tools.gui.configDialog.ConfigDialogController;
 import de.p2tools.gui.dialog.AboutDialogController;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -53,14 +51,13 @@ public class MosaikController extends StackPane {
     private MaskerPane maskerPane = new MaskerPane();
     private StatusBarController statusBarController;
 
-    private AnchorPane paneStart;
-    private AnchorPane paneThumb;
-    private AnchorPane paneChangeThumb;
-    private AnchorPane paneMosaik;
-    private AnchorPane paneWallpaper;
+    private AnchorPane guiStartController;
+    private AnchorPane guiThumbController;
+    private AnchorPane guiChangeThumbController;
+    private AnchorPane guiMosaikController;
+    private AnchorPane guiWallpaperController;
 
     private final ProgData progData;
-    BooleanProperty msgVisProperty = ProgConfig.MSG_VISIBLE.getBooleanProperty();
 
 
     public MosaikController() {
@@ -121,21 +118,22 @@ public class MosaikController extends StackPane {
 
             // Panes
             progData.guiStartController = new GuiStartController();
-            paneStart = progData.guiStartController;
+            guiStartController = progData.guiStartController;
 
             progData.guiThumbController = new GuiThumbController();
-            paneThumb = progData.guiThumbController;
+            guiThumbController = progData.guiThumbController;
 
             progData.guiChangeThumbController = new GuiChangeThumbController();
-            paneChangeThumb = progData.guiChangeThumbController;
+            guiChangeThumbController = progData.guiChangeThumbController;
 
             progData.guiMosaikController = new GuiMosaikController();
-            paneMosaik = progData.guiMosaikController;
+            guiMosaikController = progData.guiMosaikController;
 
             progData.guiWallpaperController = new GuiWallpaperController();
-            paneWallpaper = progData.guiWallpaperController;
+            guiWallpaperController = progData.guiWallpaperController;
 
-            stackPaneCont.getChildren().addAll(paneStart, paneThumb, paneChangeThumb, paneMosaik, paneWallpaper);
+            stackPaneCont.getChildren().addAll(guiStartController, guiThumbController,
+                    guiChangeThumbController, guiMosaikController, guiWallpaperController);
 
 
             // Statusbar
@@ -206,30 +204,30 @@ public class MosaikController extends StackPane {
 
     private void setPrev() {
         Node front = stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1);
-        if (front.equals(paneStart)) {
+        if (front.equals(guiStartController)) {
 
-        } else if (front.equals(paneThumb)) {
+        } else if (front.equals(guiThumbController)) {
             selPanelStart();
-        } else if (front.equals(paneChangeThumb)) {
+        } else if (front.equals(guiChangeThumbController)) {
             selPanelTumb();
-        } else if (front.equals(paneMosaik)) {
+        } else if (front.equals(guiMosaikController)) {
             selPanelChangeTumb();
-        } else if (front.equals(paneWallpaper)) {
+        } else if (front.equals(guiWallpaperController)) {
             selPanelMosaik();
         }
     }
 
     private void setNext() {
         Node front = stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1);
-        if (front.equals(paneStart)) {
+        if (front.equals(guiStartController)) {
             selPanelTumb();
-        } else if (front.equals(paneThumb)) {
+        } else if (front.equals(guiThumbController)) {
             selPanelChangeTumb();
-        } else if (front.equals(paneChangeThumb)) {
+        } else if (front.equals(guiChangeThumbController)) {
             selPanelMosaik();
-        } else if (front.equals(paneMosaik)) {
+        } else if (front.equals(guiMosaikController)) {
             selPanelWallpaper();
-        } else if (front.equals(paneWallpaper)) {
+        } else if (front.equals(guiWallpaperController)) {
 
         }
     }
@@ -253,7 +251,7 @@ public class MosaikController extends StackPane {
         btnMosaik.getStyleClass().add("btnTab");
         btnWallpaper.getStyleClass().add("btnTab");
 
-        paneStart.toFront();
+        guiStartController.toFront();
         progData.guiStartController.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Start);
     }
@@ -277,7 +275,7 @@ public class MosaikController extends StackPane {
         btnMosaik.getStyleClass().add("btnTab");
         btnWallpaper.getStyleClass().add("btnTab");
 
-        paneThumb.toFront();
+        guiThumbController.toFront();
         progData.guiThumbController.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Thumb);
     }
@@ -301,7 +299,7 @@ public class MosaikController extends StackPane {
         btnMosaik.getStyleClass().add("btnTab");
         btnWallpaper.getStyleClass().add("btnTab");
 
-        paneChangeThumb.toFront();
+        guiChangeThumbController.toFront();
         progData.guiChangeThumbController.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Thumb);
     }
@@ -326,7 +324,7 @@ public class MosaikController extends StackPane {
         btnWallpaper.getStyleClass().add("btnTab");
 
         progData.guiMosaikController.isShown();
-        paneMosaik.toFront();
+        guiMosaikController.toFront();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Mosaik);
     }
 
@@ -350,7 +348,7 @@ public class MosaikController extends StackPane {
         btnWallpaper.getStyleClass().add("btnTab-sel");
 
         progData.guiWallpaperController.isShown();
-        paneWallpaper.toFront();
+        guiWallpaperController.toFront();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Wallpaper);
     }
 
