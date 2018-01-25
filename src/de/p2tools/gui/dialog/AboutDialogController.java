@@ -19,7 +19,7 @@ package de.p2tools.gui.dialog;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
-import de.p2tools.mLib.tools.Functions;
+import de.p2tools.p2Lib.tools.Functions;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;

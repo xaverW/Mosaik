@@ -16,7 +16,7 @@
 
 package de.p2tools.gui.dialog;
 
-import de.p2tools.mLib.tools.MLConfigs;
+import de.p2tools.p2Lib.tools.PConfigs;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
@@ -31,7 +31,7 @@ public class MTDialogExtra extends MTDialog {
     private TilePane tilePaneOk = new TilePane();
 
 
-    public MTDialogExtra(String fxml, MLConfigs conf, String title, boolean modal) {
+    public MTDialogExtra(String fxml, PConfigs conf, String title, boolean modal) {
         super(fxml, conf, title, modal);
         initDialog();
     }

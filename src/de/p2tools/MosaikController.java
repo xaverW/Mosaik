@@ -33,14 +33,10 @@ import org.controlsfx.control.MaskerPane;
 public class MosaikController extends StackPane {
 
     Button btnStart = new Button("Start");
-    Button btnThumbNail = new Button("Miniaturbilder\n" +
-            "erstellen");
-    Button btnChangeThumbNail = new Button("Miniaturbilder\n" +
-            "bearbeiten");
-    Button btnMosaik = new Button("Mosaik\n" +
-            "erstellen");
-    Button btnWallpaper = new Button("Fototapete\n" +
-            "erstellen");
+    Button btnThumbNail = new Button("Miniaturbilder\n" + "erstellen");
+    Button btnChangeThumbNail = new Button("Miniaturbilder\n" + "bearbeiten");
+    Button btnMosaik = new Button("Mosaik\n" + "erstellen");
+    Button btnWallpaper = new Button("Fototapete\n" + "erstellen");
     Button btnPrev = new Button("");
     Button btnNext = new Button("");
 

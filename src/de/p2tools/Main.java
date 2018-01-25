@@ -19,7 +19,7 @@ import de.p2tools.controller.Messages;
 import de.p2tools.controller.ProgStart;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.mLib.tools.Log;
+import de.p2tools.p2Lib.tools.Log;
 import javafx.application.Application;
 import javafx.application.Platform;
 import org.apache.commons.lang3.SystemUtils;

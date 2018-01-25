@@ -16,7 +16,7 @@
 
 package de.p2tools.controller.data.thumb;
 
-import de.p2tools.mLib.configFile.ConfigsList;
+import de.p2tools.p2Lib.configFile.ConfigsList;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;

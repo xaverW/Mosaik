@@ -162,13 +162,13 @@ public class TableChangeThumb {
                 lblFile.textProperty().bind(thumb.fileNameProperty());
                 Button btnDel = new Button("Bild löschen");
                 btnDel.setOnAction(a -> {
-                    if (de.p2tools.mLib.tools.FileUtils.deleteFile(thumb.getFileName())) {
+                    if (de.p2tools.p2Lib.tools.FileUtils.deleteFile(thumb.getFileName())) {
                         ProgData.getInstance().selectedProjectData.getThumbCollection().getThumbList().remove(thumb);
                     }
                 });
 
                 Button btnOpenDir = new Button("Ordner öffnen");
-                btnOpenDir.setOnAction(a -> MTOpen.openDestDir(de.p2tools.mLib.tools.FileUtils.getPath(thumb.getFileName())));
+                btnOpenDir.setOnAction(a -> MTOpen.openDestDir(de.p2tools.p2Lib.tools.FileUtils.getPath(thumb.getFileName())));
 
                 Button rotateLeft = new Button("");
                 rotateLeft.setGraphic(new Icons().ICON_BUTTON_ROTATE_LEFT);

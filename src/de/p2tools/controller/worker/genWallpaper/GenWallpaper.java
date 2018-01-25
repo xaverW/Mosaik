@@ -23,9 +23,9 @@ import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
-import de.p2tools.mLib.tools.Duration;
-import de.p2tools.mLib.tools.Log;
-import de.p2tools.mLib.tools.MLAlert;
+import de.p2tools.p2Lib.tools.Duration;
+import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.PAlert;
 
 import javax.imageio.*;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
@@ -72,8 +72,8 @@ public class GenWallpaper {
         }
 
         if (new File(dest).exists() &&
-                !new MLAlert().showAlert_yes_no("Ziel existiert", dest,
-                        "Soll die bereits vorhandene Datei überschrieben werden?").equals(MLAlert.BUTTON.YES)) {
+                !new PAlert().showAlert_yes_no("Ziel existiert", dest,
+                        "Soll die bereits vorhandene Datei überschrieben werden?").equals(PAlert.BUTTON.YES)) {
             return;
         }
 

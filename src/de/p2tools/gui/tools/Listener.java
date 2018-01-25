@@ -16,7 +16,7 @@
 
 package de.p2tools.gui.tools;
 
-import de.p2tools.mLib.tools.Log;
+import de.p2tools.p2Lib.tools.Log;
 import javafx.application.Platform;
 
 import java.util.ArrayList;

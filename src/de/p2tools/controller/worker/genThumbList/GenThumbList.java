@@ -23,8 +23,8 @@ import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.mLib.tools.Duration;
-import de.p2tools.mLib.tools.FileUtils;
+import de.p2tools.p2Lib.tools.Duration;
+import de.p2tools.p2Lib.tools.FileUtils;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;

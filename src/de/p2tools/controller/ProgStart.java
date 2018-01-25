@@ -20,16 +20,16 @@ import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
-import de.p2tools.mLib.MLInit;
-import de.p2tools.mLib.configFile.ConfigFile;
-import de.p2tools.mLib.tools.Log;
-import de.p2tools.mLib.tools.SysMsg;
+import de.p2tools.p2Lib.PInit;
+import de.p2tools.p2Lib.configFile.ConfigFile;
+import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.SysMsg;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static de.p2tools.mLib.tools.Log.LILNE;
+import static de.p2tools.p2Lib.tools.Log.LILNE;
 
 public class ProgStart {
     ProgData progData;
@@ -56,7 +56,7 @@ public class ProgStart {
         }
         SysMsg.sysMsg("Progstart: Konfig");
 
-        MLInit.initLib(ProgData.debug, ProgConst.PROGRAMMNAME, ProgInfos.getUserAgent());
+        PInit.initLib(ProgData.debug, ProgConst.PROGRAMMNAME, ProgInfos.getUserAgent());
         progData.projectDataList.initList();
         return true;
     }

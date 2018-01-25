@@ -20,7 +20,7 @@ package de.p2tools.controller.worker.genMosaik;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.mLib.tools.Log;
+import de.p2tools.p2Lib.tools.Log;
 
 import java.awt.*;
 import java.util.Iterator;

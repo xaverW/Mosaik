@@ -22,13 +22,13 @@ import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.destData.ProjectData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.mLib.tools.DirFileChooser;
-import de.p2tools.mLib.tools.MLAlert;
+import de.p2tools.p2Lib.tools.DirFileChooser;
+import de.p2tools.p2Lib.tools.PAlert;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -42,8 +42,8 @@ import java.nio.file.Paths;
 public class GuiStartController extends AnchorPane {
 
     private final ScrollPane scrollPane = new ScrollPane();
-    private final AnchorPane contPane = new AnchorPane();
-    private final AnchorPane collectPane = new AnchorPane();
+    private final TitledPane contPane = new TitledPane();
+    private final TitledPane projectDataPane = new TitledPane();
     private final ComboBox<ProjectData> cbProjectDataList = new ComboBox<>();
     private final TextField txtName = new TextField("");
     private final TextField txtDir = new TextField("");
@@ -66,14 +66,22 @@ public class GuiStartController extends AnchorPane {
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
 
+        projectDataPane.setCollapsible(false);
+        projectDataPane.setAlignment(Pos.CENTER);
+        projectDataPane.getStyleClass().add("contPane");
+        projectDataPane.setText("Mosaik auswählen");
+
+        contPane.setCollapsible(false);
+        contPane.setAlignment(Pos.CENTER);
+        contPane.getStyleClass().add("contPane");
+        contPane.setText("Einstellungen des gewählten Mosaik");
+
         initCollection();
         initCont();
         selectProjectData();
 
-        VBox vBox = new VBox();
-        vBox.setSpacing(10);
-
-        vBox.getChildren().addAll(collectPane, contPane);
+        VBox vBox = new VBox(10);
+        vBox.getChildren().addAll(projectDataPane, contPane);
         scrollPane.setContent(vBox);
 
         initColor();
@@ -165,18 +173,17 @@ public class GuiStartController extends AnchorPane {
         });
 
         VBox vBox = new VBox(10);
-        vBox.setStyle("-fx-border-color: black;");
-        vBox.setPadding(new Insets(10));
-        AnchorPane.setTopAnchor(vBox, 5.0);
-        AnchorPane.setLeftAnchor(vBox, 5.0);
-        AnchorPane.setBottomAnchor(vBox, 5.0);
-        AnchorPane.setRightAnchor(vBox, 5.0);
+//        vBox.setPadding(new Insets(10));
+//        AnchorPane.setTopAnchor(vBox, 0.0);
+//        AnchorPane.setLeftAnchor(vBox, 0.0);
+//        AnchorPane.setBottomAnchor(vBox, 0.0);
+//        AnchorPane.setRightAnchor(vBox, 0.0);
 
         HBox hBox = new HBox(10);
         hBox.getChildren().addAll(btnNew, btnDel);
 
         vBox.getChildren().addAll(cbProjectDataList, hBox);
-        collectPane.getChildren().add(vBox);
+        projectDataPane.setContent(vBox);
     }
 
 
@@ -191,6 +198,8 @@ public class GuiStartController extends AnchorPane {
 
         if (projectData == null) {
             contPane.setDisable(true);
+            txtDir.setText("");
+            txtName.setText("");
         } else {
             contPane.setDisable(false);
 
@@ -231,7 +240,7 @@ public class GuiStartController extends AnchorPane {
                     txtDir.getText() + "\n\n" +
                     "nach:\n" +
                     dir + "\n\n" +
-                    "verschoben werden?").equals(MLAlert.BUTTON.YES)) {
+                    "verschoben werden?").equals(PAlert.BUTTON.YES)) {
                 if (progData.worker.moveProject(dir)) {
                     txtDir.setText(dir);
                 }
@@ -255,20 +264,20 @@ public class GuiStartController extends AnchorPane {
         btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROJECT_PATH));
 
 
-        HBox hBoxDir = new HBox();
-        hBoxDir.setSpacing(10);
+        HBox hBoxDir = new HBox(10);
         hBoxDir.getChildren().addAll(txtDir, btnDir, btnHelp);
 
         VBox vBox = new VBox(10);
-        vBox.setPadding(new Insets(10));
-        vBox.getChildren().addAll(lblName, txtName, lblDir, hBoxDir);
+//        vBox.setPadding(new Insets(10));
 
-        AnchorPane.setTopAnchor(vBox, 5.0);
-        AnchorPane.setLeftAnchor(vBox, 5.0);
-        AnchorPane.setBottomAnchor(vBox, 5.0);
-        AnchorPane.setRightAnchor(vBox, 5.0);
-        vBox.setStyle("-fx-border-color: black;");
-        contPane.getChildren().add(vBox);
+//        AnchorPane.setTopAnchor(vBox, 5.0);
+//        AnchorPane.setLeftAnchor(vBox, 5.0);
+//        AnchorPane.setBottomAnchor(vBox, 5.0);
+//        AnchorPane.setRightAnchor(vBox, 5.0);
+//        vBox.setStyle("-fx-border-color: black;");
+
+        vBox.getChildren().addAll(lblName, txtName, lblDir, hBoxDir);
+        contPane.setContent(vBox);
     }
 
 }

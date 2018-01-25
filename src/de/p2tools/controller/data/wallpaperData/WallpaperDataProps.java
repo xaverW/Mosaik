@@ -18,10 +18,10 @@
 package de.p2tools.controller.data.wallpaperData;
 
 import de.p2tools.controller.config.ProgConst;
-import de.p2tools.mLib.configFile.ConfigsData;
-import de.p2tools.mLib.configFile.config.Config;
-import de.p2tools.mLib.configFile.config.ConfigIntProp;
-import de.p2tools.mLib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.ConfigsData;
+import de.p2tools.p2Lib.configFile.config.Config;
+import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
+import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;

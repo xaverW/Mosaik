@@ -21,9 +21,9 @@ import de.p2tools.controller.data.Data;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
-import de.p2tools.mLib.configFile.config.Config;
-import de.p2tools.mLib.configFile.config.ConfigConfigsData;
-import de.p2tools.mLib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.config.Config;
+import de.p2tools.p2Lib.configFile.config.ConfigConfigsData;
+import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

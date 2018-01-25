@@ -19,9 +19,9 @@ package de.p2tools.controller.data.mosaikData;
 
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.data.Data;
-import de.p2tools.mLib.configFile.config.Config;
-import de.p2tools.mLib.configFile.config.ConfigIntProp;
-import de.p2tools.mLib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.config.Config;
+import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
+import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

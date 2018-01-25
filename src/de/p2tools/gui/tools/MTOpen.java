@@ -18,8 +18,8 @@ package de.p2tools.gui.tools;
 
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.mLib.tools.Log;
-import de.p2tools.mLib.tools.MLConfigs;
+import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.PConfigs;
 import javafx.application.Platform;
 
 import java.awt.*;
@@ -158,7 +158,7 @@ public class MTOpen {
         String programm = "";
         boolean ok;
         String title, header, cont;
-        MLConfigs conf;
+        PConfigs conf;
 
         switch (t) {
             default:

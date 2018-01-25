@@ -26,10 +26,10 @@ import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
-import de.p2tools.mLib.tools.Duration;
-import de.p2tools.mLib.tools.FileUtils;
-import de.p2tools.mLib.tools.Log;
-import de.p2tools.mLib.tools.MLAlert;
+import de.p2tools.p2Lib.tools.Duration;
+import de.p2tools.p2Lib.tools.FileUtils;
+import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.PAlert;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -102,8 +102,8 @@ public class GenMosaik {
         }
 
         if (new File(dest).exists() &&
-                !new MLAlert().showAlert_yes_no("Ziel existiert", dest,
-                        "Soll die bereits vorhandene Datei überschrieben werden?").equals(MLAlert.BUTTON.YES)) {
+                !new PAlert().showAlert_yes_no("Ziel existiert", dest,
+                        "Soll die bereits vorhandene Datei überschrieben werden?").equals(PAlert.BUTTON.YES)) {
             return;
         }
 

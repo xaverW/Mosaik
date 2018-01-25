@@ -20,7 +20,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.mLib.tools.DirFileChooser;
+import de.p2tools.p2Lib.tools.DirFileChooser;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;

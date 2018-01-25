@@ -16,9 +16,9 @@
 
 package de.p2tools.controller.data;
 
-import de.p2tools.mLib.configFile.ConfigsData;
-import de.p2tools.mLib.configFile.config.Config;
-import de.p2tools.mLib.tools.GermanStringSorter;
+import de.p2tools.p2Lib.configFile.ConfigsData;
+import de.p2tools.p2Lib.configFile.config.Config;
+import de.p2tools.p2Lib.tools.GermanStringSorter;
 
 import java.util.ArrayList;
 

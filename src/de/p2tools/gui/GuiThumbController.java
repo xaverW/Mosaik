@@ -25,12 +25,13 @@ import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.mLib.tools.DirFileChooser;
-import de.p2tools.mLib.tools.Log;
-import de.p2tools.mLib.tools.MLAlert;
+import de.p2tools.p2Lib.tools.DirFileChooser;
+import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.PAlert;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -42,8 +43,8 @@ import java.io.File;
 public class GuiThumbController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
     ScrollPane scrollPane = new ScrollPane();
-    AnchorPane contPane = new AnchorPane();
-    AnchorPane collectPane = new AnchorPane();
+    TitledPane contPane = new TitledPane();
+    TitledPane collectPane = new TitledPane();
     FlowPane flowPane = new FlowPane();
 
 
@@ -64,24 +65,31 @@ public class GuiThumbController extends AnchorPane {
         AnchorPane.setBottomAnchor(splitPane, 0.0);
         AnchorPane.setRightAnchor(splitPane, 0.0);
         AnchorPane.setTopAnchor(splitPane, 0.0);
+
         splitPane.setOrientation(Orientation.HORIZONTAL);
         splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        SplitPane.setResizableWithParent(scrollPane, Boolean.FALSE);
         getChildren().addAll(splitPane);
 
-        scrollPane.setFitToHeight(true);
+        contPane.setCollapsible(false);
+        contPane.getStyleClass().add("contPane");
+        contPane.setText("Bilder zur Sammlung der Miniaturbilder hinzufügen");
+        final StackPane stackPane = new StackPane();
+        stackPane.setAlignment(Pos.TOP_CENTER);
+        stackPane.getChildren().add(contPane);
+
+        collectPane.setCollapsible(false);
+        collectPane.getStyleClass().add("contPane");
+        collectPane.setText("Sammlung der Miniaturbilder");
+        collectPane.setContent(flowPane);
         scrollPane.setFitToWidth(true);
-        scrollPane.setContent(flowPane);
-        SplitPane.setResizableWithParent(scrollPane, Boolean.FALSE);
+        scrollPane.setContent(collectPane);
+
+        splitPane.getItems().addAll(stackPane, scrollPane);
+        splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
 
         initCont();
         selectThumbCollection();
-
-        VBox vBox = new VBox();
-        vBox.setSpacing(10);
-
-        vBox.getChildren().addAll(collectPane, contPane);
-        splitPane.getItems().addAll(vBox, scrollPane);
-        splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
 
         progData.worker.addAdListener(new RunListener() {
             @Override
@@ -169,7 +177,7 @@ public class GuiThumbController extends AnchorPane {
 
         btnLod.setOnAction(a -> {
             if (txtDir.getText().isEmpty()) {
-                new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Zum Laden der Bilder wurde " +
+                new PAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Zum Laden der Bilder wurde " +
                         "kein Verzeichnis angegeben");
                 return;
             }
@@ -200,24 +208,15 @@ public class GuiThumbController extends AnchorPane {
             setFlowPane();
         });
 
-        HBox hBoxDir = new HBox();
-        hBoxDir.setSpacing(10);
+        HBox hBoxDir = new HBox(10);
         hBoxDir.getChildren().addAll(txtDir, btnDir, btnHelp);
 
         HBox hBoxButon = new HBox(10);
         hBoxButon.getChildren().addAll(btnLod, btnReload, btnClear);
 
         VBox vBox = new VBox(10);
-        vBox.setPadding(new Insets(10));
         vBox.getChildren().addAll(lblDir, hBoxDir, tglRecursive, hBoxButon);
-
-        AnchorPane.setTopAnchor(vBox, 5.0);
-        AnchorPane.setLeftAnchor(vBox, 5.0);
-        AnchorPane.setBottomAnchor(vBox, 5.0);
-        AnchorPane.setRightAnchor(vBox, 5.0);
-        vBox.setStyle("-fx-border-color: black;");
-
-        contPane.getChildren().add(vBox);
+        contPane.setContent(vBox);
     }
 
 }

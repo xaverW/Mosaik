@@ -18,8 +18,8 @@ package de.p2tools.gui.dialog;
 
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
-import de.p2tools.mLib.tools.DirFileChooser;
-import de.p2tools.mLib.tools.MLAlert;
+import de.p2tools.p2Lib.tools.DirFileChooser;
+import de.p2tools.p2Lib.tools.PAlert;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -30,7 +30,7 @@ import javafx.scene.layout.Region;
 
 import java.util.Optional;
 
-public class MTAlert extends MLAlert {
+public class MTAlert extends PAlert {
 
     public static String showAlertFileCooser(String title, String header, String content, boolean dir) {
         return showAlertFileCooser(title, header, content, dir, true, "");

@@ -19,7 +19,7 @@ package de.p2tools.controller.data.destData;
 
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.mLib.tools.MLAlert;
+import de.p2tools.p2Lib.tools.PAlert;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -55,7 +55,7 @@ public class ProjectData extends ProjectDataProps {
     public String getThumbDirString() {
         final Path baseDirectoryPath;
         if (ProgData.getInstance().selectedProjectData == null || ProgData.getInstance().selectedProjectData.getDestDir().isEmpty()) {
-            new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Für das Projekt wurde " +
+            new PAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Für das Projekt wurde " +
                     "kein Verzeichnis angegeben");
             return "";
         } else {
@@ -66,7 +66,7 @@ public class ProjectData extends ProjectDataProps {
             try {
                 Files.createDirectories(baseDirectoryPath);
             } catch (final IOException ioException) {
-                new MLAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Das Verzeinis der Vorschaubilder " +
+                new PAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Das Verzeinis der Vorschaubilder " +
                         "kann nicht angelegt werden: \n" +
                         baseDirectoryPath.toString());
             }

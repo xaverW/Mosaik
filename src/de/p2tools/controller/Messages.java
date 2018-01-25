@@ -16,7 +16,7 @@
 
 package de.p2tools.controller;
 
-import de.p2tools.mLib.tools.Log;
+import de.p2tools.p2Lib.tools.Log;
 
 /**
  * A enum which contains log messages.

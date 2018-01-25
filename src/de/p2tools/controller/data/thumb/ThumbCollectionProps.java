@@ -18,10 +18,10 @@ package de.p2tools.controller.data.thumb;
 
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.data.Data;
-import de.p2tools.mLib.configFile.config.Config;
-import de.p2tools.mLib.configFile.config.ConfigBoolProp;
-import de.p2tools.mLib.configFile.config.ConfigConfigsList;
-import de.p2tools.mLib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.config.Config;
+import de.p2tools.p2Lib.configFile.config.ConfigBoolProp;
+import de.p2tools.p2Lib.configFile.config.ConfigConfigsList;
+import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;

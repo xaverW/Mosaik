@@ -18,8 +18,8 @@ package de.p2tools.gui.tools;
 
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.data.Data;
-import de.p2tools.mLib.tools.Log;
-import de.p2tools.mLib.tools.MLConfigs;
+import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.PConfigs;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -41,11 +41,11 @@ public class Table {
     private boolean[] visAr;
     private TableColumn[] tArray;
 
-    private MLConfigs confWidth; //Spaltenbreite
-    private MLConfigs confSort; //"Sortieren"  der Tabelle nach Spalte
-    private MLConfigs confUpDown; //Sortierung UP oder Down
-    private MLConfigs confVis; //Spalte ist sichtbar
-    private MLConfigs confOrder; //"Reihenfolge" der Spalten
+    private PConfigs confWidth; //Spaltenbreite
+    private PConfigs confSort; //"Sortieren"  der Tabelle nach Spalte
+    private PConfigs confUpDown; //Sortierung UP oder Down
+    private PConfigs confVis; //Spalte ist sichtbar
+    private PConfigs confOrder; //"Reihenfolge" der Spalten
 
 
     private void initConf(TABLE eTable) {

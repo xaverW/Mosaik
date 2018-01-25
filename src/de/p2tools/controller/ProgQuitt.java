@@ -19,8 +19,8 @@ package de.p2tools.controller;
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.gui.tools.GuiSize;
-import de.p2tools.mLib.tools.Duration;
-import de.p2tools.mLib.tools.Log;
+import de.p2tools.p2Lib.tools.Duration;
+import de.p2tools.p2Lib.tools.Log;
 import javafx.application.Platform;
 
 public class ProgQuitt {

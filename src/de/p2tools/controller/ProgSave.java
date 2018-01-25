@@ -19,7 +19,7 @@ package de.p2tools.controller;
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
-import de.p2tools.mLib.configFile.ConfigFile;
+import de.p2tools.p2Lib.configFile.ConfigFile;
 
 import java.nio.file.Path;
 

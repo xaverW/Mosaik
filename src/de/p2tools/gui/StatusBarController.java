@@ -21,7 +21,7 @@ import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.tools.Listener;
-import de.p2tools.mLib.tools.Log;
+import de.p2tools.p2Lib.tools.Log;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

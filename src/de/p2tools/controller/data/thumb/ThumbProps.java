@@ -17,9 +17,9 @@
 package de.p2tools.controller.data.thumb;
 
 import de.p2tools.controller.data.Data;
-import de.p2tools.mLib.configFile.config.Config;
-import de.p2tools.mLib.configFile.config.ConfigIntProp;
-import de.p2tools.mLib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.config.Config;
+import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
+import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 

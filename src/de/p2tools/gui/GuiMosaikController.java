@@ -20,12 +20,13 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.mLib.tools.DirFileChooser;
+import de.p2tools.p2Lib.tools.DirFileChooser;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -36,7 +37,9 @@ public class GuiMosaikController extends AnchorPane {
 
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
-    private final VBox vBoxCont = new VBox();
+    //    private final VBox vBoxCont = new VBox();
+    private final TitledPane contPane = new TitledPane();
+
     private final TextField txtSrc = new TextField();
     private final Button btnSrc = new Button("");
     private final TextField txtDestName = new TextField();
@@ -60,12 +63,17 @@ public class GuiMosaikController extends AnchorPane {
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setContent(vBoxCont);
+        scrollPane.setContent(contPane);
 
         AnchorPane.setLeftAnchor(scrollPane, 0.0);
         AnchorPane.setBottomAnchor(scrollPane, 0.0);
         AnchorPane.setRightAnchor(scrollPane, 0.0);
         AnchorPane.setTopAnchor(scrollPane, 0.0);
+
+        contPane.setCollapsible(false);
+        contPane.setAlignment(Pos.CENTER);
+        contPane.getStyleClass().add("contPane");
+        contPane.setText("Einstellungen des gewählten Mosaik");
 
         initCont();
         bind();
@@ -74,11 +82,11 @@ public class GuiMosaikController extends AnchorPane {
 
     public void isShown() {
         if (progData.selectedProjectData == null) {
-            vBoxCont.setDisable(true);
+            contPane.setDisable(true);
             return;
         }
 
-        vBoxCont.setDisable(false);
+        contPane.setDisable(false);
         if (!mosaikData.equals(progData.selectedProjectData.getMosaikData())) {
             unbind();
             mosaikData = progData.selectedProjectData.getMosaikData();
@@ -170,10 +178,10 @@ public class GuiMosaikController extends AnchorPane {
         gridPaneDest.add(btnHelpSliderCount, 3, row);
 
         // import all
-        vBoxCont.setSpacing(25);
+        VBox vBoxCont = new VBox(25);
         vBoxCont.setPadding(new Insets(10));
         vBoxCont.getChildren().addAll(gridPaneDest, btnCreate);
-
+        contPane.setContent(vBoxCont);
 
         btnCreate.setOnAction(a -> {
             if (!txtSrc.getText().isEmpty() && !txtDestDir.getText().isEmpty()) {

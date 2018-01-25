@@ -21,11 +21,13 @@ import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.Table;
-import de.p2tools.mLib.tools.MLAlert;
+import de.p2tools.p2Lib.tools.PAlert;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -37,7 +39,7 @@ public class GuiChangeThumbController extends AnchorPane {
     ScrollPane scrollPaneTable = new ScrollPane();
     ScrollPane scrollPaneCont = new ScrollPane();
     TableView table = new TableView<>();
-    AnchorPane contPane = new AnchorPane();
+    TitledPane contPane = new TitledPane();
 
     ThumbCollection thumbCollection = null;
     Button btnReload = new Button("Liste neu einlesen");
@@ -61,6 +63,12 @@ public class GuiChangeThumbController extends AnchorPane {
         scrollPaneCont.setFitToHeight(true);
         scrollPaneCont.setFitToWidth(true);
         scrollPaneCont.setContent(contPane);
+
+        contPane.setCollapsible(false);
+        contPane.setAlignment(Pos.CENTER);
+        contPane.getStyleClass().add("contPane");
+        contPane.setText("Einstellungen des gewählten Mosaik");
+
         VBox.setVgrow(scrollPaneTable, Priority.ALWAYS);
         vBox.getChildren().addAll(scrollPaneTable, scrollPaneCont);
 
@@ -110,7 +118,7 @@ public class GuiChangeThumbController extends AnchorPane {
             thumbs.addAll(table.getSelectionModel().getSelectedItems());
 
             if (thumbs.isEmpty()) {
-                new MLAlert().showInfoNoSelection();
+                new PAlert().showInfoNoSelection();
 
             } else if (thumbs.size() == 1 &&
                     !new MTAlert().showAlert("Datei Löschen?", "", "Die Datei löschen:\n\n" + thumbs.get(0).getFileName())) {
@@ -123,7 +131,7 @@ public class GuiChangeThumbController extends AnchorPane {
             }
 
             for (Thumb thumb : thumbs) {
-                if (de.p2tools.mLib.tools.FileUtils.deleteFileNoMsg(thumb.getFileName())) {
+                if (de.p2tools.p2Lib.tools.FileUtils.deleteFileNoMsg(thumb.getFileName())) {
                     thumbCollection.getThumbList().remove(thumb);
                 } else {
                     break;
@@ -142,7 +150,7 @@ public class GuiChangeThumbController extends AnchorPane {
         AnchorPane.setLeftAnchor(hBox, 5.0);
         AnchorPane.setBottomAnchor(hBox, 5.0);
         AnchorPane.setRightAnchor(hBox, 5.0);
-        contPane.getChildren().add(hBox);
+        contPane.setContent(hBox);
     }
 
     private void initTable() {

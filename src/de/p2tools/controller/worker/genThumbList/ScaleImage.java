@@ -22,7 +22,7 @@ import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.mLib.tools.Log;
+import de.p2tools.p2Lib.tools.Log;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
