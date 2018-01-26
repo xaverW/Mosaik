@@ -17,24 +17,17 @@
 package de.p2tools.gui;
 
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.gui.tools.Table;
-import de.p2tools.p2Lib.tools.PAlert;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-
 public class GuiChangeThumbController extends AnchorPane {
-    TitledPane collectPane = new TitledPane();
-    TitledPane contPane = new TitledPane();
+    VBox contPane = new VBox(10);
 
     ScrollPane scrollPaneTable = new ScrollPane();
     TableView table = new TableView<>();
@@ -48,37 +41,22 @@ public class GuiChangeThumbController extends AnchorPane {
     public GuiChangeThumbController() {
         progData = ProgData.getInstance();
 
-        SplitPane stackPane = new SplitPane();
 
-        AnchorPane.setLeftAnchor(stackPane, 0.0);
-        AnchorPane.setBottomAnchor(stackPane, 0.0);
-        AnchorPane.setRightAnchor(stackPane, 0.0);
-        AnchorPane.setTopAnchor(stackPane, 0.0);
+        AnchorPane.setLeftAnchor(contPane, 0.0);
+        AnchorPane.setBottomAnchor(contPane, 0.0);
+        AnchorPane.setRightAnchor(contPane, 0.0);
+        AnchorPane.setTopAnchor(contPane, 0.0);
 
-        VBox vBox = new VBox();
-        stackPane.getItems().add(vBox);
-        getChildren().addAll(stackPane);
+        getChildren().addAll(contPane);
 
         scrollPaneTable.setFitToHeight(true);
         scrollPaneTable.setFitToWidth(true);
         scrollPaneTable.setContent(table);
 
-        collectPane.setCollapsible(false);
-        collectPane.setMaxHeight(Double.MAX_VALUE);
-        collectPane.getStyleClass().add("contPane");
-        collectPane.setText("Sammlung der Miniaturbilder");
-        collectPane.setContent(scrollPaneTable);
-
-        contPane.setCollapsible(false);
-        contPane.setAlignment(Pos.CENTER);
-        contPane.getStyleClass().add("contPane");
-        contPane.setText("Miniaturbilder bearbeiten");
-
-        VBox.setVgrow(collectPane, Priority.ALWAYS);
-        vBox.getChildren().addAll(collectPane, contPane);
+        contPane.getChildren().add(scrollPaneTable);
+        VBox.setVgrow(scrollPaneTable, Priority.ALWAYS);
 
         initTable();
-        initCont();
         selectThumbCollection();
     }
 
@@ -108,55 +86,6 @@ public class GuiChangeThumbController extends AnchorPane {
         }
     }
 
-    private void initCont() {
-        btnReload.setOnAction(a -> {
-            String thumbDir = progData.selectedProjectData.getThumbDirString();
-            if (thumbDir.isEmpty()) {
-                return;
-            }
-            progData.worker.readThumbList(thumbCollection, thumbDir);
-            table.refresh();
-        });
-
-        btnDel.setOnAction(a -> {
-            ArrayList<Thumb> thumbs = new ArrayList<>();
-            thumbs.addAll(table.getSelectionModel().getSelectedItems());
-
-            if (thumbs.isEmpty()) {
-                new PAlert().showInfoNoSelection();
-
-            } else if (thumbs.size() == 1 &&
-                    !new MTAlert().showAlert("Datei Löschen?", "", "Die Datei löschen:\n\n" + thumbs.get(0).getFileName())) {
-                return;
-
-            } else if (thumbs.size() > 1 &&
-                    !new MTAlert().showAlert("Dateien Löschen?", thumbs.size() + " Dateien löschen",
-                            "Sollen die Datei gelöscht werden?")) {
-                return;
-            }
-
-            for (Thumb thumb : thumbs) {
-                if (de.p2tools.p2Lib.tools.FileUtils.deleteFileNoMsg(thumb.getFileName())) {
-                    thumbCollection.getThumbList().remove(thumb);
-                } else {
-                    break;
-                }
-            }
-
-            table.refresh();
-
-        });
-
-        HBox hBox = new HBox(10);
-        hBox.setPadding(new Insets(10));
-        hBox.getChildren().addAll(btnReload, btnDel);
-
-        AnchorPane.setTopAnchor(hBox, 5.0);
-        AnchorPane.setLeftAnchor(hBox, 5.0);
-        AnchorPane.setBottomAnchor(hBox, 5.0);
-        AnchorPane.setRightAnchor(hBox, 5.0);
-        contPane.setContent(hBox);
-    }
 
     private void initTable() {
         new Table().setTable(table, Table.TABLE.CHANGE_THUMB);

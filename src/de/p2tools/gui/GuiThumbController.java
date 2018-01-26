@@ -31,7 +31,6 @@ import de.p2tools.p2Lib.tools.PAlert;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -43,8 +42,8 @@ import java.io.File;
 public class GuiThumbController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
 
-    TitledPane contPane = new TitledPane();
-    TitledPane collectPane = new TitledPane();
+    VBox vBoxCont = new VBox(10);
+    VBox vBoxTable = new VBox(10);
     ScrollPane scrollPane = new ScrollPane();
     FlowPane flowPane = new FlowPane();
 
@@ -71,28 +70,15 @@ public class GuiThumbController extends AnchorPane {
         SplitPane.setResizableWithParent(scrollPane, Boolean.FALSE);
         getChildren().addAll(splitPane);
 
-        contPane.setCollapsible(false);
-        contPane.getStyleClass().add("contPane");
-        contPane.setText("Bilder zur Sammlung der Miniaturbilder hinzufügen");
-        final StackPane stackPane = new StackPane();
-        stackPane.setAlignment(Pos.TOP_CENTER);
-        stackPane.getChildren().add(contPane);
-
-        collectPane.setCollapsible(false);
-        collectPane.getStyleClass().add("contPane");
-        collectPane.setText("Sammlung der Miniaturbilder");
-        collectPane.setContent(scrollPane);
-
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-//        scrollPane.setMinWidth(150);
         scrollPane.setContent(flowPane);
 
-        final StackPane stackPaneColl = new StackPane();
-        stackPaneColl.setAlignment(Pos.TOP_CENTER);
-        stackPaneColl.getChildren().add(collectPane);
+        vBoxTable.setPadding(new Insets(10));
+        vBoxTable.getChildren().add(scrollPane);
+        vBoxCont.setPadding(new Insets(10));
 
-        splitPane.getItems().addAll(stackPane, stackPaneColl);
+        splitPane.getItems().addAll(vBoxCont, vBoxTable);
         splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
 
         initCont();
@@ -110,11 +96,11 @@ public class GuiThumbController extends AnchorPane {
 
     public void isShown() {
         if (progData.selectedProjectData == null) {
-            contPane.setDisable(true);
+            vBoxCont.setDisable(true);
             return;
         }
 
-        contPane.setDisable(false);
+        vBoxCont.setDisable(false);
         selectThumbCollection();
     }
 
@@ -138,9 +124,9 @@ public class GuiThumbController extends AnchorPane {
         }
 
         if (thumbCollection == null) {
-            contPane.setDisable(true);
+            vBoxCont.setDisable(true);
         } else {
-            contPane.setDisable(false);
+            vBoxCont.setDisable(false);
 
             txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
@@ -221,9 +207,7 @@ public class GuiThumbController extends AnchorPane {
         HBox hBoxButon = new HBox(10);
         hBoxButon.getChildren().addAll(btnLod, btnReload, btnClear);
 
-        VBox vBox = new VBox(10);
-        vBox.getChildren().addAll(lblDir, hBoxDir, tglRecursive, hBoxButon);
-        contPane.setContent(vBox);
+        vBoxCont.getChildren().addAll(lblDir, hBoxDir, tglRecursive, hBoxButon);
     }
 
 }

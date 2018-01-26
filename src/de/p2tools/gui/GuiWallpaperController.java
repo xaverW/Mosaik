@@ -26,15 +26,13 @@ import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 public class GuiWallpaperController extends AnchorPane {
 
-    TitledPane contPane = new TitledPane();
     private final ScrollPane scrollPane = new ScrollPane();
-    private final VBox vBoxCont = new VBox();
+    private final VBox contPane = new VBox();
     private final Label lblDesst = new Label("Fototapete speichern");
     private final TextField txtDest = new TextField();
     private final Button btnDest = new Button("");
@@ -54,11 +52,6 @@ public class GuiWallpaperController extends AnchorPane {
         this.progData = ProgData.getInstance();
         this.wallpaperData = progData.selectedProjectData.getWallpaperData();
 
-        contPane.setCollapsible(false);
-        contPane.setAlignment(Pos.CENTER);
-        contPane.getStyleClass().add("contPane");
-        contPane.setText("Eine Fototapete aus den Miniaturbildern erstellen");
-        contPane.setContent(vBoxCont);
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
@@ -76,11 +69,11 @@ public class GuiWallpaperController extends AnchorPane {
 
     public void isShown() {
         if (progData.selectedProjectData == null) {
-            vBoxCont.setDisable(true);
+            contPane.setDisable(true);
             return;
         }
 
-        vBoxCont.setDisable(false);
+        contPane.setDisable(false);
         if (!wallpaperData.equals(progData.selectedProjectData.getWallpaperData())) {
             unbind();
             wallpaperData = progData.selectedProjectData.getWallpaperData();
@@ -143,9 +136,9 @@ public class GuiWallpaperController extends AnchorPane {
         gridPane.add(btnHelpSliderCount, 3, 1);
 
         // import all
-        vBoxCont.setSpacing(10);
-        vBoxCont.setPadding(new Insets(10));
-        vBoxCont.getChildren().addAll(lblDesst, hBoxDest, gridPane, btnCreate);
+        contPane.setSpacing(10);
+        contPane.setPadding(new Insets(10));
+        contPane.getChildren().addAll(lblDesst, hBoxDest, gridPane, btnCreate);
 
 
         btnCreate.setOnAction(a -> {

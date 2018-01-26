@@ -34,9 +34,7 @@ public class MosaikController extends StackPane {
 
     Button btnStart = new Button("Start");
     Button btnThumbNail = new Button("Miniaturbilder\n" + "erstellen");
-    Button btnChangeThumbNail = new Button("Miniaturbilder\n" + "bearbeiten");
     Button btnMosaik = new Button("Mosaik\n" + "erstellen");
-    Button btnWallpaper = new Button("Fototapete\n" + "erstellen");
     Button btnPrev = new Button("");
     Button btnNext = new Button("");
 
@@ -48,10 +46,8 @@ public class MosaikController extends StackPane {
     private StatusBarController statusBarController;
 
     private AnchorPane guiStartController;
-    private AnchorPane guiThumbController;
-    private AnchorPane guiChangeThumbController;
-    private AnchorPane guiMosaikController;
-    private AnchorPane guiWallpaperController;
+    private AnchorPane guiMosaik;
+    private AnchorPane guiThumb;
 
     private final ProgData progData;
 
@@ -75,7 +71,7 @@ public class MosaikController extends StackPane {
             tilePane.setAlignment(Pos.CENTER);
             HBox.setHgrow(tilePane, Priority.ALWAYS);
 
-            tilePane.getChildren().addAll(btnStart, btnThumbNail, btnChangeThumbNail, btnMosaik, btnWallpaper);
+            tilePane.getChildren().addAll(btnStart, btnThumbNail, btnMosaik);
             hBoxMenueButton.getChildren().addAll(tilePane, menuButton);
 
             btnStart.setOnAction(e -> selPanelStart());
@@ -84,14 +80,8 @@ public class MosaikController extends StackPane {
             btnThumbNail.setOnAction(e -> selPanelTumb());
             btnThumbNail.setMaxWidth(Double.MAX_VALUE);
 
-            btnChangeThumbNail.setOnAction(e -> selPanelChangeTumb());
-            btnChangeThumbNail.setMaxWidth(Double.MAX_VALUE);
-
             btnMosaik.setOnAction(e -> selPanelMosaik());
             btnMosaik.setMaxWidth(Double.MAX_VALUE);
-
-            btnWallpaper.setOnAction(e -> selPanelWallpaper());
-            btnWallpaper.setMaxWidth(Double.MAX_VALUE);
 
             final MenuItem miConfig = new MenuItem("Einstellungen");
             miConfig.setOnAction(e -> new ConfigDialogController());
@@ -117,20 +107,16 @@ public class MosaikController extends StackPane {
             guiStartController = progData.guiStartController;
 
             progData.guiThumbController = new GuiThumbController();
-            guiThumbController = progData.guiThumbController;
-
             progData.guiChangeThumbController = new GuiChangeThumbController();
-            guiChangeThumbController = progData.guiChangeThumbController;
+            progData.guiThumb = new GuiThumb();
+            guiThumb = progData.guiThumb;
 
             progData.guiMosaikController = new GuiMosaikController();
-            guiMosaikController = progData.guiMosaikController;
-
             progData.guiWallpaperController = new GuiWallpaperController();
-            guiWallpaperController = progData.guiWallpaperController;
+            progData.guiMosaik = new GuiMosaik();
+            guiMosaik = progData.guiMosaik;
 
-            stackPaneCont.getChildren().addAll(guiStartController, guiThumbController,
-                    guiChangeThumbController, guiMosaikController, guiWallpaperController);
-
+            stackPaneCont.getChildren().addAll(guiStartController, guiThumb, guiMosaik);
 
             // Statusbar
             statusBarController = new StatusBarController(progData);
@@ -179,9 +165,7 @@ public class MosaikController extends StackPane {
     private void addStartGuiBinding() {
         btnStart.disableProperty().bind(progData.guiStartController.allOkProperty().not());
         btnThumbNail.disableProperty().bind(progData.guiStartController.allOkProperty().not());
-        btnChangeThumbNail.disableProperty().bind(progData.guiStartController.allOkProperty().not());
         btnMosaik.disableProperty().bind(progData.guiStartController.allOkProperty().not());
-        btnWallpaper.disableProperty().bind(progData.guiStartController.allOkProperty().not());
 
         if (!progData.guiStartController.isAllOk()) {
             btnNext.setDisable(true);
@@ -202,14 +186,10 @@ public class MosaikController extends StackPane {
         Node front = stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1);
         if (front.equals(guiStartController)) {
 
-        } else if (front.equals(guiThumbController)) {
+        } else if (front.equals(guiThumb)) {
             selPanelStart();
-        } else if (front.equals(guiChangeThumbController)) {
+        } else if (front.equals(guiMosaik)) {
             selPanelTumb();
-        } else if (front.equals(guiMosaikController)) {
-            selPanelChangeTumb();
-        } else if (front.equals(guiWallpaperController)) {
-            selPanelMosaik();
         }
     }
 
@@ -217,14 +197,8 @@ public class MosaikController extends StackPane {
         Node front = stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1);
         if (front.equals(guiStartController)) {
             selPanelTumb();
-        } else if (front.equals(guiThumbController)) {
-            selPanelChangeTumb();
-        } else if (front.equals(guiChangeThumbController)) {
+        } else if (front.equals(guiThumb)) {
             selPanelMosaik();
-        } else if (front.equals(guiMosaikController)) {
-            selPanelWallpaper();
-        } else if (front.equals(guiWallpaperController)) {
-
         }
     }
 
@@ -237,15 +211,11 @@ public class MosaikController extends StackPane {
 
         btnStart.getStyleClass().clear();
         btnThumbNail.getStyleClass().clear();
-        btnChangeThumbNail.getStyleClass().clear();
         btnMosaik.getStyleClass().clear();
-        btnWallpaper.getStyleClass().clear();
 
         btnStart.getStyleClass().add("btnTab-sel");
         btnThumbNail.getStyleClass().add("btnTab");
-        btnChangeThumbNail.getStyleClass().add("btnTab");
         btnMosaik.getStyleClass().add("btnTab");
-        btnWallpaper.getStyleClass().add("btnTab");
 
         guiStartController.toFront();
         progData.guiStartController.isShown();
@@ -261,42 +231,14 @@ public class MosaikController extends StackPane {
 
         btnStart.getStyleClass().clear();
         btnThumbNail.getStyleClass().clear();
-        btnChangeThumbNail.getStyleClass().clear();
         btnMosaik.getStyleClass().clear();
-        btnWallpaper.getStyleClass().clear();
 
         btnStart.getStyleClass().add("btnTab");
         btnThumbNail.getStyleClass().add("btnTab-sel");
-        btnChangeThumbNail.getStyleClass().add("btnTab");
         btnMosaik.getStyleClass().add("btnTab");
-        btnWallpaper.getStyleClass().add("btnTab");
 
-        guiThumbController.toFront();
+        guiThumb.toFront();
         progData.guiThumbController.isShown();
-        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Thumb);
-    }
-
-    private void selPanelChangeTumb() {
-        if (maskerPane.isVisible()) {
-            return;
-        }
-        btnPrev.setDisable(false);
-        btnNext.setDisable(false);
-
-        btnStart.getStyleClass().clear();
-        btnThumbNail.getStyleClass().clear();
-        btnChangeThumbNail.getStyleClass().clear();
-        btnMosaik.getStyleClass().clear();
-        btnWallpaper.getStyleClass().clear();
-
-        btnStart.getStyleClass().add("btnTab");
-        btnThumbNail.getStyleClass().add("btnTab");
-        btnChangeThumbNail.getStyleClass().add("btnTab-sel");
-        btnMosaik.getStyleClass().add("btnTab");
-        btnWallpaper.getStyleClass().add("btnTab");
-
-        guiChangeThumbController.toFront();
-        progData.guiChangeThumbController.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Thumb);
     }
 
@@ -305,47 +247,19 @@ public class MosaikController extends StackPane {
             return;
         }
         btnPrev.setDisable(false);
-        btnNext.setDisable(false);
-
-        btnStart.getStyleClass().clear();
-        btnThumbNail.getStyleClass().clear();
-        btnChangeThumbNail.getStyleClass().clear();
-        btnMosaik.getStyleClass().clear();
-        btnWallpaper.getStyleClass().clear();
-
-        btnStart.getStyleClass().add("btnTab");
-        btnThumbNail.getStyleClass().add("btnTab");
-        btnChangeThumbNail.getStyleClass().add("btnTab");
-        btnMosaik.getStyleClass().add("btnTab-sel");
-        btnWallpaper.getStyleClass().add("btnTab");
-
-        progData.guiMosaikController.isShown();
-        guiMosaikController.toFront();
-        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Mosaik);
-    }
-
-    private void selPanelWallpaper() {
-        if (maskerPane.isVisible()) {
-            return;
-        }
-        btnPrev.setDisable(false);
         btnNext.setDisable(true);
 
         btnStart.getStyleClass().clear();
         btnThumbNail.getStyleClass().clear();
-        btnChangeThumbNail.getStyleClass().clear();
         btnMosaik.getStyleClass().clear();
-        btnWallpaper.getStyleClass().clear();
 
         btnStart.getStyleClass().add("btnTab");
         btnThumbNail.getStyleClass().add("btnTab");
-        btnChangeThumbNail.getStyleClass().add("btnTab");
-        btnMosaik.getStyleClass().add("btnTab");
-        btnWallpaper.getStyleClass().add("btnTab-sel");
+        btnMosaik.getStyleClass().add("btnTab-sel");
 
-        progData.guiWallpaperController.isShown();
-        guiWallpaperController.toFront();
-        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Wallpaper);
+        progData.guiMosaik.isShown();
+        guiMosaik.toFront();
+        statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Mosaik);
     }
 
     public void setMasker() {

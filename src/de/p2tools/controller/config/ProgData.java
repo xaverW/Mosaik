@@ -55,6 +55,9 @@ public class ProgData {
     public GuiMosaikController guiMosaikController = null; // Tab mit den Downloads
     public GuiWallpaperController guiWallpaperController = null; // Tab mit den Downloads
 
+    public GuiMosaik guiMosaik = null;
+    public GuiThumb guiThumb = null;
+
 
     private ProgData() {
         projectDataList = new ProjectDataList();

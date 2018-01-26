@@ -26,7 +26,6 @@ import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -38,7 +37,7 @@ public class GuiMosaikController extends AnchorPane {
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
     //    private final VBox vBoxCont = new VBox();
-    private final TitledPane contPane = new TitledPane();
+    private final VBox contPane = new VBox();
 
     private final TextField txtSrc = new TextField();
     private final Button btnSrc = new Button("");
@@ -69,11 +68,6 @@ public class GuiMosaikController extends AnchorPane {
         AnchorPane.setBottomAnchor(scrollPane, 0.0);
         AnchorPane.setRightAnchor(scrollPane, 0.0);
         AnchorPane.setTopAnchor(scrollPane, 0.0);
-
-        contPane.setCollapsible(false);
-        contPane.setAlignment(Pos.CENTER);
-        contPane.getStyleClass().add("contPane");
-        contPane.setText("Einstellungen des gewählten Mosaik");
 
         initCont();
         bind();
@@ -178,10 +172,9 @@ public class GuiMosaikController extends AnchorPane {
         gridPaneDest.add(btnHelpSliderCount, 3, row);
 
         // import all
-        VBox vBoxCont = new VBox(25);
-        vBoxCont.setPadding(new Insets(10));
-        vBoxCont.getChildren().addAll(gridPaneDest, btnCreate);
-        contPane.setContent(vBoxCont);
+        contPane.setSpacing(25);
+        contPane.setPadding(new Insets(10));
+        contPane.getChildren().addAll(gridPaneDest, btnCreate);
 
         btnCreate.setOnAction(a -> {
             if (!txtSrc.getText().isEmpty() && !txtDestDir.getText().isEmpty()) {

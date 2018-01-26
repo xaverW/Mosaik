@@ -18,8 +18,11 @@ package de.p2tools.gui.tools;
 
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
+import de.p2tools.controller.data.destData.ProjectData;
 import de.p2tools.controller.data.thumb.Thumb;
+import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
+import de.p2tools.gui.dialog.MTAlert;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -31,6 +34,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class TableChangeThumb {
 
@@ -79,6 +83,48 @@ public class TableChangeThumb {
 
     private ContextMenu getMenu() {
         final ContextMenu contextMenu = new ContextMenu();
+
+        final ThumbCollection thumbCollection;
+        ProjectData projectData = ProgData.getInstance().selectedProjectData;
+        if (projectData != null) {
+            thumbCollection = projectData.getThumbCollection();
+        } else {
+            thumbCollection = null;
+        }
+
+
+        ArrayList<Thumb> thumbs = new ArrayList<>();
+        thumbs.addAll(tableView.getSelectionModel().getSelectedItems());
+
+        if (thumbCollection != null && !thumbs.isEmpty()) {
+            MenuItem delThumb = new MenuItem("Miniaturbilder löschen");
+            contextMenu.getItems().add(delThumb);
+
+            delThumb.setOnAction(a -> {
+                if (thumbs.size() == 1 &&
+                        !new MTAlert().showAlert("Datei Löschen?", "", "Die Datei löschen:\n\n" + thumbs.get(0).getFileName())) {
+                    return;
+
+                } else if (thumbs.size() > 1 &&
+                        !new MTAlert().showAlert("Dateien Löschen?", thumbs.size() + " Dateien löschen",
+                                "Sollen die Datei gelöscht werden?")) {
+                    return;
+                }
+
+                for (Thumb thumb : thumbs) {
+                    if (de.p2tools.p2Lib.tools.FileUtils.deleteFileNoMsg(thumb.getFileName())) {
+                        thumbCollection.getThumbList().remove(thumb);
+                    } else {
+                        break;
+                    }
+                }
+
+                tableView.refresh();
+
+            });
+        }
+
+
         MenuItem resetTable = new MenuItem("Tabelle zurücksetzen");
         resetTable.setOnAction(a -> new Table().resetTable(tableView, Table.TABLE.CHANGE_THUMB));
         contextMenu.getItems().addAll(resetTable);
