@@ -20,10 +20,12 @@ package de.p2tools.controller.worker;
 import de.p2tools.controller.RunEvent;
 import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgData;
+import de.p2tools.controller.data.mosaikBwData.MosaikDataBw;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.worker.genMosaik.GenMosaik;
+import de.p2tools.controller.worker.genMosaikBw.GenMosaikBw;
 import de.p2tools.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.controller.worker.genWallpaper.GenWallpaper;
 import de.p2tools.p2Lib.tools.FileUtils;
@@ -36,6 +38,7 @@ public class Worker {
 
     private final GenThumbList genThumbList;
     private final GenMosaik genMosaik;
+    private final GenMosaikBw genMosaikBw;
     private final GenWallpaper genWallpaper;
 
     private EventListenerList listeners = new EventListenerList();
@@ -43,6 +46,7 @@ public class Worker {
     public Worker(ProgData progData) {
         this.progData = progData;
         genMosaik = new GenMosaik(progData);
+        genMosaikBw = new GenMosaikBw(progData);
         genThumbList = new GenThumbList(progData);
         genWallpaper = new GenWallpaper();
 
@@ -89,6 +93,10 @@ public class Worker {
 
     public void createMosaik(MosaikData mosaikData) {
         genMosaik.create(mosaikData);
+    }
+
+    public void createMosaikBw(MosaikDataBw mosaikDataBw) {
+        genMosaikBw.create(mosaikDataBw);
     }
 
     public void createWallpaper(ThumbCollection thumbCollection, WallpaperData wallpaperData) {

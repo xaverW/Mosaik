@@ -66,6 +66,20 @@ public class FileUtils {
     }
 
     public static boolean movePath(String from, String to) {
+        if (from.isEmpty()) {
+            new PAlert().showErrorAlert("Verzeichnis verschieben", "Das Quellverzeichnis:\n" +
+                    to + "\n\n" +
+                    "ist kein Verzeichnis");
+            return false;
+        }
+
+        if (to.isEmpty()) {
+            new PAlert().showErrorAlert("Verzeichnis verschieben", "Das Zielverzeichnis:\n" +
+                    to + "\n\n" +
+                    "ist kein Verzeichnis");
+            return false;
+        }
+
         try {
             Path src = Paths.get(from);
             Path dest = Paths.get(to);
@@ -79,8 +93,8 @@ public class FileUtils {
 
             if (dest.toFile().exists() && dest.toFile().isDirectory() && dest.toFile().list().length > 0) {
                 new PAlert().showErrorAlert("Verzeichnis verschieben",
-                        "Das Verzeichnis:\n" + to +
-                                "ist nicht leer, sollen bestehende Dateien überschrieben werden?");
+                        "Das Zielverzeichnis:\n" + to + "\n\n" +
+                                "existiert bereits und ist nicht leer!");
                 return false;
             }
 

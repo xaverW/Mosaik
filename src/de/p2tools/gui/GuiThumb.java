@@ -29,6 +29,7 @@ public class GuiThumb extends AnchorPane {
 
     public GuiThumb() {
         progData = ProgData.getInstance();
+        getStyleClass().add("layoutBackground");
 
         initCont();
     }

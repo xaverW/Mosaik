@@ -17,49 +17,90 @@
 package de.p2tools.gui;
 
 import de.p2tools.controller.config.ProgData;
-import javafx.scene.control.Accordion;
+import javafx.geometry.Insets;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class GuiMosaik extends AnchorPane {
 
-    private final Accordion accordion = new Accordion();
+    private final VBox vBox = new VBox(10);
+    private final StackPane stackPane = new StackPane();
     private final ProgData progData;
+    private final ComboBox<OPTIONS> comboBox = new ComboBox();
+
+    public enum OPTIONS {
+
+        MOSAIK("Mosaik"), MOSAIK_BW("Mosaik aus Quellbild"), WALLPAPER("Fototapete");
+        private final String name;
+
+        OPTIONS(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
 
     public GuiMosaik() {
         progData = ProgData.getInstance();
+        getStyleClass().add("layoutBackground");
 
         initCont();
     }
 
     public void isShown() {
         progData.guiMosaikController.isShown();
+        progData.guiMosaikBWController.isShown();
         progData.guiWallpaperController.isShown();
     }
 
 
     private void initCont() {
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(10));
+        hBox.getChildren().add(comboBox);
 
-        TitledPane tpMosaik = new TitledPane("Mosaik", progData.guiMosaikController);
-        tpMosaik.getStyleClass().add("contPaneAccordion");
+        stackPane.getChildren().addAll(progData.guiMosaikController, progData.guiMosaikBWController,
+                progData.guiWallpaperController);
 
+        comboBox.getItems().addAll(OPTIONS.MOSAIK, OPTIONS.MOSAIK_BW, OPTIONS.WALLPAPER);
+        comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    switch (newValue) {
+                        case MOSAIK:
+                            progData.guiMosaikController.toFront();
+                            break;
+                        case MOSAIK_BW:
+                            progData.guiMosaikBWController.toFront();
+                            break;
+                        case WALLPAPER:
+                            progData.guiWallpaperController.toFront();
+                            break;
+                        default:
+                            progData.guiMosaikController.toFront();
+                    }
+                }
+        );
+        comboBox.getSelectionModel().selectFirst();
 
-        TitledPane tpWallpaper = new TitledPane("Fototapete", progData.guiWallpaperController);
-        tpWallpaper.getStyleClass().add("contPaneAccordion");
-
-        accordion.getPanes().addAll(tpMosaik, tpWallpaper);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setContent(accordion);
+        scrollPane.setContent(stackPane);
 
-        AnchorPane.setLeftAnchor(scrollPane, 10.0);
-        AnchorPane.setBottomAnchor(scrollPane, 10.0);
-        AnchorPane.setRightAnchor(scrollPane, 10.0);
-        AnchorPane.setTopAnchor(scrollPane, 10.0);
+        AnchorPane.setLeftAnchor(vBox, 0.0);
+        AnchorPane.setBottomAnchor(vBox, 0.0);
+        AnchorPane.setRightAnchor(vBox, 0.0);
+        AnchorPane.setTopAnchor(vBox, 0.0);
 
-        this.getChildren().add(scrollPane);
+        vBox.getChildren().addAll(hBox, scrollPane);
+
+        this.getChildren().add(vBox);
     }
 }

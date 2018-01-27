@@ -103,8 +103,8 @@ public class MosaikController extends StackPane {
 
 
             // Panes
-            progData.guiStartController = new GuiStartController();
-            guiStartController = progData.guiStartController;
+            progData.guiStart = new GuiStart();
+            guiStartController = progData.guiStart;
 
             progData.guiThumbController = new GuiThumbController();
             progData.guiChangeThumbController = new GuiChangeThumbController();
@@ -112,6 +112,7 @@ public class MosaikController extends StackPane {
             guiThumb = progData.guiThumb;
 
             progData.guiMosaikController = new GuiMosaikController();
+            progData.guiMosaikBWController = new GuiMosaikBWController();
             progData.guiWallpaperController = new GuiWallpaperController();
             progData.guiMosaik = new GuiMosaik();
             guiMosaik = progData.guiMosaik;
@@ -163,17 +164,17 @@ public class MosaikController extends StackPane {
     }
 
     private void addStartGuiBinding() {
-        btnStart.disableProperty().bind(progData.guiStartController.allOkProperty().not());
-        btnThumbNail.disableProperty().bind(progData.guiStartController.allOkProperty().not());
-        btnMosaik.disableProperty().bind(progData.guiStartController.allOkProperty().not());
+        btnStart.disableProperty().bind(progData.guiStart.allOkProperty().not());
+        btnThumbNail.disableProperty().bind(progData.guiStart.allOkProperty().not());
+        btnMosaik.disableProperty().bind(progData.guiStart.allOkProperty().not());
 
-        if (!progData.guiStartController.isAllOk()) {
+        if (!progData.guiStart.isAllOk()) {
             btnNext.setDisable(true);
             btnPrev.setDisable(true);
         }
 
-        progData.guiStartController.allOkProperty().addListener(l -> {
-            if (!progData.guiStartController.isAllOk()) {
+        progData.guiStart.allOkProperty().addListener(l -> {
+            if (!progData.guiStart.isAllOk()) {
                 btnNext.setDisable(true);
                 btnPrev.setDisable(true);
             } else {
@@ -218,7 +219,7 @@ public class MosaikController extends StackPane {
         btnMosaik.getStyleClass().add("btnTab");
 
         guiStartController.toFront();
-        progData.guiStartController.isShown();
+        progData.guiStart.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Start);
     }
 
