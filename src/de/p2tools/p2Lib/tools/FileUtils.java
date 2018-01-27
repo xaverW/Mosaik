@@ -233,6 +233,28 @@ public class FileUtils {
         return ret;
     }
 
+    public static String getNextFileName(String path, String selName) {
+        String ret = "";
+
+        Path dir = Paths.get(path);
+        if (!Files.exists(dir)) {
+            return selName;
+        }
+
+        String name = selName;
+        Path baseDirectoryPath;
+        baseDirectoryPath = Paths.get(path, name);
+        int nr = 1;
+
+        while (Files.exists(baseDirectoryPath)) {
+            name = selName + "_" + nr++;
+            baseDirectoryPath = Paths.get(path, name);
+        }
+
+        ret = baseDirectoryPath.getFileName().toString();
+        return ret;
+    }
+
     /**
      * Get the free disk space for a selected path.
      *

@@ -34,18 +34,18 @@ public class GuiMosaik extends AnchorPane {
     }
 
     public void isShown() {
+        progData.guiMosaikController.isShown();
+        progData.guiWallpaperController.isShown();
     }
 
 
     private void initCont() {
 
-        GuiMosaikController guiMosaikController = new GuiMosaikController();
-        TitledPane tpMosaik = new TitledPane("Mosaik", guiMosaikController);
+        TitledPane tpMosaik = new TitledPane("Mosaik", progData.guiMosaikController);
         tpMosaik.getStyleClass().add("contPaneAccordion");
 
 
-        GuiWallpaperController guiWallpaperController = new GuiWallpaperController();
-        TitledPane tpWallpaper = new TitledPane("Fototapete", guiWallpaperController);
+        TitledPane tpWallpaper = new TitledPane("Fototapete", progData.guiWallpaperController);
         tpWallpaper.getStyleClass().add("contPaneAccordion");
 
         accordion.getPanes().addAll(tpMosaik, tpWallpaper);

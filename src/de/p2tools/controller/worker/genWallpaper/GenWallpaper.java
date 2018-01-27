@@ -34,16 +34,20 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.swing.event.EventListenerList;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Locale;
 
 public class GenWallpaper {
     private EventListenerList listeners = new EventListenerList();
     private ThumbCollection thumbCollection;
-    private String dest;
+    private String destDir;
+    private String destName;
     private boolean stopAll = false;
     private int numThumbWidth;
     private int thumbSize;
+    private Path destPath = null;
 
 
     public GenWallpaper() {
@@ -62,17 +66,20 @@ public class GenWallpaper {
 
     public void create(ThumbCollection thumbCollection, WallpaperData wallpaperData) {
         this.thumbCollection = thumbCollection;
-        this.dest = wallpaperData.getFotoDest();
+        this.destDir = wallpaperData.getFotoDestDir();
+        this.destName = wallpaperData.getFotoDestName();
         this.numThumbWidth = wallpaperData.getNumberThumbsWidth();
         this.thumbSize = wallpaperData.getThumbSize();
 
-        if (dest.isEmpty()) {
+        if (destDir.isEmpty() || destName.isEmpty()) {
             Log.errorLog(945120364, "Keine Zieldatei angegeben!");
             return;
         }
 
-        if (new File(dest).exists() &&
-                !new PAlert().showAlert_yes_no("Ziel existiert", dest,
+        destPath = Paths.get(destDir, destName);
+
+        if (destPath.toFile().exists() &&
+                !new PAlert().showAlert_yes_no("Ziel existiert", destPath.toString(),
                         "Soll die bereits vorhandene Datei überschrieben werden?").equals(PAlert.BUTTON.YES)) {
             return;
         }
@@ -170,7 +177,7 @@ public class GenWallpaper {
         ImageOutputStream ios = null;
         try {
             ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-            ios = ImageIO.createImageOutputStream(new File(dest));
+            ios = ImageIO.createImageOutputStream(destPath.toFile());
             writer.setOutput(ios);
             ImageWriteParam iwparam = new JPEGImageWriteParam(Locale.getDefault());
             iwparam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);

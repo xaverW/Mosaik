@@ -18,8 +18,8 @@
 package de.p2tools.controller.config;
 
 import de.p2tools.MosaikController;
-import de.p2tools.controller.data.destData.ProjectData;
-import de.p2tools.controller.data.destData.ProjectDataList;
+import de.p2tools.controller.data.projectData.ProjectData;
+import de.p2tools.controller.data.projectData.ProjectDataList;
 import de.p2tools.controller.worker.Worker;
 import de.p2tools.gui.*;
 import de.p2tools.gui.tools.Listener;

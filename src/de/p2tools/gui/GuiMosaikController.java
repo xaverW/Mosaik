@@ -16,11 +16,13 @@
 
 package de.p2tools.gui;
 
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.p2Lib.tools.DirFileChooser;
+import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
@@ -86,6 +88,12 @@ public class GuiMosaikController extends AnchorPane {
             mosaikData = progData.selectedProjectData.getMosaikData();
             bind();
         }
+        if (txtDestDir.getText().isEmpty()) {
+            txtDestDir.setText(progData.selectedProjectData.getDestDir());
+        }
+        if (txtDestName.getText().isEmpty()) {
+            txtDestName.setText(FileUtils.getNextFileName(txtDestDir.getText(), ProgConst.MOSAIK_STD_NAME));
+        }
     }
 
 
@@ -114,8 +122,6 @@ public class GuiMosaikController extends AnchorPane {
 
         txtDestDir.setMaxWidth(Double.MAX_VALUE);
 
-        GridPane.setHgrow(txtDestName, Priority.ALWAYS);
-        GridPane.setHgrow(txtDestDir, Priority.ALWAYS);
 
         // Thumbsize
         final Button btnHelpSlider = new Button("");
@@ -125,7 +131,6 @@ public class GuiMosaikController extends AnchorPane {
 
         sliderSize.setMin(5);
         sliderSize.setMax(25);
-        GridPane.setHgrow(sliderSize, Priority.ALWAYS);
 
         // Anzahl Thumbs
         final Button btnHelpSliderCount = new Button("");
@@ -134,7 +139,6 @@ public class GuiMosaikController extends AnchorPane {
 
         sliderCount.setMin(1);
         sliderCount.setMax(100);
-        GridPane.setHgrow(sliderCount, Priority.ALWAYS);
 
 
         // make Grid
@@ -143,6 +147,12 @@ public class GuiMosaikController extends AnchorPane {
         gridPaneDest.setPadding(new Insets(0));
         gridPaneDest.setVgap(5);
         gridPaneDest.setHgap(5);
+
+        GridPane.setHgrow(txtDestName, Priority.ALWAYS);
+        GridPane.setHgrow(txtDestDir, Priority.ALWAYS);
+        GridPane.setHgrow(sliderSize, Priority.ALWAYS);
+        GridPane.setHgrow(sliderCount, Priority.ALWAYS);
+
         gridPaneDest.add(new Label("Foto zum Erstellen des Mosaik"), 0, row, 2, 1);
         gridPaneDest.add(new Label("Datei:"), 0, ++row);
         gridPaneDest.add(txtSrc, 1, row);
@@ -150,17 +160,17 @@ public class GuiMosaikController extends AnchorPane {
         gridPaneDest.add(btnHelpSrc, 3, row);
 
         gridPaneDest.add(new Label(""), 0, ++row);
-
         gridPaneDest.add(new Label("Mosaik speichern"), 0, ++row, 2, 1);
-        gridPaneDest.add(new Label("Dateiname:"), 0, ++row);
-        gridPaneDest.add(txtDestName, 1, row);
+
         gridPaneDest.add(new Label("Verzeichnis:"), 0, ++row);
         gridPaneDest.add(txtDestDir, 1, row);
         gridPaneDest.add(btnDest, 2, row);
         gridPaneDest.add(btnHelpDest, 3, row);
 
-        gridPaneDest.add(new Label(""), 0, ++row);
+        gridPaneDest.add(new Label("Dateiname:"), 0, ++row);
+        gridPaneDest.add(txtDestName, 1, row);
 
+        gridPaneDest.add(new Label(""), 0, ++row);
         gridPaneDest.add(new Label("Größe der Miniaturbilder (Pixel):"), 0, ++row, 2, 1);
         gridPaneDest.add(sliderSize, 0, ++row, 2, 1);
         gridPaneDest.add(lblSlider, 2, row);

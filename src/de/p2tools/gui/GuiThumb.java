@@ -34,18 +34,17 @@ public class GuiThumb extends AnchorPane {
     }
 
     public void isShown() {
+        progData.guiThumbController.isShown();
+        progData.guiChangeThumbController.isShown();
     }
 
 
     private void initCont() {
 
-        GuiThumbController guiThumbController = new GuiThumbController();
-        TitledPane tpThumb = new TitledPane("Miniaturbilder", guiThumbController);
+        TitledPane tpThumb = new TitledPane("Miniaturbilder", progData.guiThumbController);
         tpThumb.getStyleClass().add("contPaneAccordion");
 
-
-        GuiChangeThumbController guiChangeThumbController = new GuiChangeThumbController();
-        TitledPane tpChangeThumb = new TitledPane("Miniaturbilder bearbeiten", guiChangeThumbController);
+        TitledPane tpChangeThumb = new TitledPane("Miniaturbilder bearbeiten", progData.guiChangeThumbController);
         tpChangeThumb.getStyleClass().add("contPaneAccordion");
 
         accordion.getPanes().addAll(tpThumb, tpChangeThumb);

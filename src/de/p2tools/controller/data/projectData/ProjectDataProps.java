@@ -15,7 +15,7 @@
  */
 
 
-package de.p2tools.controller.data.destData;
+package de.p2tools.controller.data.projectData;
 
 import de.p2tools.controller.data.Data;
 import de.p2tools.controller.data.mosaikData.MosaikData;

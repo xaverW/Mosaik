@@ -16,25 +16,30 @@
 
 package de.p2tools.gui;
 
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.p2Lib.tools.DirFileChooser;
+import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 public class GuiWallpaperController extends AnchorPane {
 
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox contPane = new VBox();
-    private final Label lblDesst = new Label("Fototapete speichern");
-    private final TextField txtDest = new TextField();
+    private final TextField txtDestName = new TextField();
+    private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Fototapete erstellen");
 
@@ -79,25 +84,27 @@ public class GuiWallpaperController extends AnchorPane {
             wallpaperData = progData.selectedProjectData.getWallpaperData();
             bind();
         }
+
+        if (txtDestDir.getText().isEmpty()) {
+            txtDestDir.setText(progData.selectedProjectData.getDestDir());
+        }
+        if (txtDestName.getText().isEmpty()) {
+            txtDestName.setText(FileUtils.getNextFileName(txtDestDir.getText(), ProgConst.WALLPAPER_STD_NAME));
+        }
+
     }
 
 
     private void initCont() {
         // DEST
         btnDest.setOnAction(event -> {
-            DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtDest);
+            DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtDestDir);
         });
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
         final Button btnHelpDest = new Button("");
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
-
-        txtDest.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(txtDest, Priority.ALWAYS);
-
-        HBox hBoxDest = new HBox(10);
-        hBoxDest.getChildren().addAll(txtDest, btnDest, btnHelpDest);
 
 
         // Thumbsize
@@ -118,31 +125,46 @@ public class GuiWallpaperController extends AnchorPane {
         sliderCount.setMax(100);
 
 
+        int row = 0;
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(0));
-        gridPane.setVgap(10);
-        gridPane.setHgap(10);
+        gridPane.setVgap(5);
+        gridPane.setHgap(5);
 
+        GridPane.setHgrow(txtDestDir, Priority.ALWAYS);
+        GridPane.setHgrow(txtDestName, Priority.ALWAYS);
         GridPane.setHgrow(sliderSize, Priority.ALWAYS);
         GridPane.setHgrow(sliderCount, Priority.ALWAYS);
 
-        gridPane.add(new Label("Größe der Miniaturbilder (Pixel):"), 0, 0);
-        gridPane.add(sliderSize, 1, 0);
-        gridPane.add(lblSlider, 2, 0);
-        gridPane.add(btnHelpSlider, 3, 0);
-        gridPane.add(new Label("Anzahl Miniaturbilder im Mosaik (Breite):"), 0, 1);
-        gridPane.add(sliderCount, 1, 1);
-        gridPane.add(lblSliderCount, 2, 1);
-        gridPane.add(btnHelpSliderCount, 3, 1);
+        gridPane.add(new Label("Fototapete speichern"), 0, row, 2, 1);
+        gridPane.add(new Label("Verzeichnis:"), 0, ++row);
+        gridPane.add(txtDestDir, 1, row);
+        gridPane.add(btnDest, 2, row);
+        gridPane.add(btnHelpDest, 3, row);
+
+        gridPane.add(new Label("Dateiname: "), 0, ++row);
+        gridPane.add(txtDestName, 1, row);
+
+        gridPane.add(new Label(""), 0, ++row);
+
+        gridPane.add(new Label("Größe der Miniaturbilder (Pixel):"), 0, ++row, 2, 1);
+        gridPane.add(sliderSize, 0, ++row, 2, 1);
+        gridPane.add(lblSlider, 2, row);
+        gridPane.add(btnHelpSlider, 3, row);
+
+        gridPane.add(new Label("Anzahl Miniaturbilder im Mosaik (Breite):"), 0, ++row, 2, 1);
+        gridPane.add(sliderCount, 0, ++row, 2, 1);
+        gridPane.add(lblSliderCount, 2, row);
+        gridPane.add(btnHelpSliderCount, 3, row);
 
         // import all
         contPane.setSpacing(10);
         contPane.setPadding(new Insets(10));
-        contPane.getChildren().addAll(lblDesst, hBoxDest, gridPane, btnCreate);
+        contPane.getChildren().addAll(gridPane, btnCreate);
 
 
         btnCreate.setOnAction(a -> {
-            if (!txtDest.getText().isEmpty()) {
+            if (!txtDestDir.getText().isEmpty()) {
                 progData.worker.createWallpaper(progData.selectedProjectData.getThumbCollection(),
                         progData.selectedProjectData.getWallpaperData());
             }
@@ -156,7 +178,8 @@ public class GuiWallpaperController extends AnchorPane {
         }
 
         // DEST
-        txtDest.textProperty().unbindBidirectional(wallpaperData.fotoDestProperty());
+        txtDestDir.textProperty().unbindBidirectional(wallpaperData.fotoDestDirProperty());
+        txtDestName.textProperty().unbindBidirectional(wallpaperData.fotoDestNameProperty());
 
         // Thumbsize
         iProp.bind(sliderSize.valueProperty());
@@ -175,7 +198,8 @@ public class GuiWallpaperController extends AnchorPane {
         }
 
         // DEST
-        txtDest.textProperty().bindBidirectional(wallpaperData.fotoDestProperty());
+        txtDestDir.textProperty().bindBidirectional(wallpaperData.fotoDestDirProperty());
+        txtDestName.textProperty().bindBidirectional(wallpaperData.fotoDestNameProperty());
 
         // Thumbsize
         sliderSize.setValue(wallpaperData.getThumbSize() / 10);

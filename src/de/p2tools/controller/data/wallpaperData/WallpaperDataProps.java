@@ -29,12 +29,13 @@ import java.util.Arrays;
 
 public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData {
     private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
-    private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
+    private final StringProperty fotoDestDir = new SimpleStringProperty(""); // File dest
+    private final StringProperty fotoDestName = new SimpleStringProperty(""); // File dest
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
     private final IntegerProperty numberThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
     private final IntegerProperty thumbCollectionId = new SimpleIntegerProperty(0); // ID der ThumbCollection
 
-    public final Property[] properties = {format, fotoDest, thumbSize, numberThumbsWidth, thumbCollectionId};
+    public final Property[] properties = {format, fotoDestDir, thumbSize, numberThumbsWidth, thumbCollectionId};
 
     public String getTag() {
         return TAG;
@@ -47,7 +48,8 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<Config>(Arrays.asList(
                 new ConfigStringProp("format", ProgConst.IMAGE_FORMAT_JPG, format),
-                new ConfigStringProp("foto-dest", "", fotoDest),
+                new ConfigStringProp("foto-dest-dir", "", fotoDestDir),
+                new ConfigStringProp("foto-dest-name", "", fotoDestName),
                 new ConfigIntProp("thumb-size", 50, thumbSize),
                 new ConfigIntProp("number-thumbs-width", 50, numberThumbsWidth),
                 new ConfigIntProp("thumb-collection-id", 0, thumbCollectionId)));
@@ -66,16 +68,28 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
     }
 
 
-    public String getFotoDest() {
-        return fotoDest.get();
+    public String getFotoDestDir() {
+        return fotoDestDir.get();
     }
 
-    public StringProperty fotoDestProperty() {
-        return fotoDest;
+    public StringProperty fotoDestDirProperty() {
+        return fotoDestDir;
     }
 
-    public void setFotoDest(String fotoDest) {
-        this.fotoDest.set(fotoDest);
+    public void setFotoDestDir(String fotoDestDir) {
+        this.fotoDestDir.set(fotoDestDir);
+    }
+
+    public String getFotoDestName() {
+        return fotoDestName.get();
+    }
+
+    public StringProperty fotoDestNameProperty() {
+        return fotoDestName;
+    }
+
+    public void setFotoDestName(String fotoDestName) {
+        this.fotoDestName.set(fotoDestName);
     }
 
     public int getThumbSize() {
@@ -117,7 +131,7 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
 
     public void setPropsFromXml() {
         setFormat(arr[FORMAT]);
-        setFotoDest(arr[FOTO_DEST]);
+        setFotoDestDir(arr[FOTO_DEST]);
         setInt();
     }
 
@@ -135,7 +149,7 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
 
     public void setXmlFromProps() {
         arr[FORMAT] = getFormat();
-        arr[FOTO_DEST] = getFotoDest();
+        arr[FOTO_DEST] = getFotoDestDir();
         arr[THUMB_SIZE] = String.valueOf(getThumbSize());
         arr[NUMBER_THUMBS_W] = String.valueOf(getNumberThumbsWidth());
         arr[THUMB_COLLECTION_ID] = String.valueOf(getThumbCollectionId());

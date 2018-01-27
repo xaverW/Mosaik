@@ -18,7 +18,7 @@ package de.p2tools.gui.tools;
 
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
-import de.p2tools.controller.data.destData.ProjectData;
+import de.p2tools.controller.data.projectData.ProjectData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;

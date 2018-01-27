@@ -15,7 +15,7 @@
  */
 
 
-package de.p2tools.controller.data.destData;
+package de.p2tools.controller.data.projectData;
 
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
@@ -40,8 +40,6 @@ public class ProjectData extends ProjectDataProps {
         baseDirectoryPath = Paths.get(System.getProperty("user.home"), ProgConst.DIR_STANDARD_PROJECT);
 
         String name = ProgConst.DIR_STANDARD_PROJECT;
-        ProjectData projectData = ProgData.getInstance().projectDataList.containProjectName(name);
-
         while (Files.exists(baseDirectoryPath) ||
                 ProgData.getInstance().projectDataList.containProjectName(name) != null) {
 

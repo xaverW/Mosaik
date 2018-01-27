@@ -19,7 +19,7 @@ package de.p2tools.gui;
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
-import de.p2tools.controller.data.destData.ProjectData;
+import de.p2tools.controller.data.projectData.ProjectData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.p2Lib.tools.DirFileChooser;
@@ -173,12 +173,6 @@ public class GuiStartController extends AnchorPane {
         });
 
         VBox vBox = new VBox(10);
-//        vBox.setPadding(new Insets(10));
-//        AnchorPane.setTopAnchor(vBox, 0.0);
-//        AnchorPane.setLeftAnchor(vBox, 0.0);
-//        AnchorPane.setBottomAnchor(vBox, 0.0);
-//        AnchorPane.setRightAnchor(vBox, 0.0);
-
         HBox hBox = new HBox(10);
         hBox.getChildren().addAll(btnNew, btnDel);
 
@@ -268,14 +262,6 @@ public class GuiStartController extends AnchorPane {
         hBoxDir.getChildren().addAll(txtDir, btnDir, btnHelp);
 
         VBox vBox = new VBox(10);
-//        vBox.setPadding(new Insets(10));
-
-//        AnchorPane.setTopAnchor(vBox, 5.0);
-//        AnchorPane.setLeftAnchor(vBox, 5.0);
-//        AnchorPane.setBottomAnchor(vBox, 5.0);
-//        AnchorPane.setRightAnchor(vBox, 5.0);
-//        vBox.setStyle("-fx-border-color: black;");
-
         vBox.getChildren().addAll(lblName, txtName, lblDir, hBoxDir);
         contPane.setContent(vBox);
     }
