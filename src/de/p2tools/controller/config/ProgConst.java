@@ -31,9 +31,9 @@ public class ProgConst {
     public static final String VERZEICHNIS_EINSTELLUNGEN = ".mosaik"; // im Homeverzeichnis
     public static final String VERZEICHNIS_THUMBS = "Bilder"; // im Projektverzeichnis für die Thumbs
     public static final String DIR_STANDARD_PROJECT = "Mosaik"; // Standardname fürs Projektverzeichnis
-    public static final String MOSAIK_STD_NAME = "Mosaik.jpg";
-    public static final String MOSAIK_BW_STD_NAME = "MosaikQuellbild.jpg";
-    public static final String WALLPAPER_STD_NAME = "Tapete.jpg";
+    public static final String MOSAIK_STD_NAME = "Mosaik";
+    public static final String MOSAIK_BW_STD_NAME = "MosaikQuellbild";
+    public static final String WALLPAPER_STD_NAME = "Tapete";
 
     public static final String XML_START = "Mosaik";
 

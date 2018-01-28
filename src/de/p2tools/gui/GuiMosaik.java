@@ -18,6 +18,7 @@ package de.p2tools.gui;
 
 import de.p2tools.controller.config.ProgData;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -27,7 +28,7 @@ import javafx.scene.layout.VBox;
 
 public class GuiMosaik extends AnchorPane {
 
-    private final VBox vBox = new VBox(10);
+    private final VBox vBox = new VBox(0);
     private final StackPane stackPane = new StackPane();
     private final ProgData progData;
     private final ComboBox<OPTIONS> comboBox = new ComboBox();
@@ -63,6 +64,7 @@ public class GuiMosaik extends AnchorPane {
 
     private void initCont() {
         HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setPadding(new Insets(10));
         hBox.getChildren().add(comboBox);
 

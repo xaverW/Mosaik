@@ -20,13 +20,14 @@ import de.p2tools.controller.ProgQuitt;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.gui.*;
-import de.p2tools.gui.configDialog.ConfigDialogController;
 import de.p2tools.gui.dialog.AboutDialogController;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import org.controlsfx.control.MaskerPane;
 
@@ -59,7 +60,7 @@ public class MosaikController extends StackPane {
 
     private void init() {
         try {
-            // Menübutton
+            // Top-Menü
             HBox hBoxMenueButton = new HBox();
             hBoxMenueButton.setPadding(new Insets(10));
             hBoxMenueButton.setSpacing(20);
@@ -83,23 +84,19 @@ public class MosaikController extends StackPane {
             btnMosaik.setOnAction(e -> selPanelMosaik());
             btnMosaik.setMaxWidth(Double.MAX_VALUE);
 
-            final MenuItem miConfig = new MenuItem("Einstellungen");
-            miConfig.setOnAction(e -> new ConfigDialogController());
 
+            // Menü
             final MenuItem miQuitt = new MenuItem("Beenden");
             miQuitt.setOnAction(e -> new ProgQuitt().beenden(true));
 
             final MenuItem miAbout = new MenuItem("Über dieses Programm");
             miAbout.setOnAction(event -> new AboutDialogController(progData));
 
-            final Menu mHelp = new Menu("Hilfe");
-            mHelp.getItems().addAll(miAbout);
-
             menuButton.getStyleClass().add("btnFunction");
             menuButton.setText("");
             javafx.scene.image.ImageView iv = new Icons().FX_ICON_TOOLBAR_MENUE_TOP;
             menuButton.setGraphic(new Icons().FX_ICON_TOOLBAR_MENUE_TOP);
-            menuButton.getItems().addAll(miConfig, mHelp, new SeparatorMenuItem(), miQuitt);
+            menuButton.getItems().addAll(miAbout, miQuitt);
 
 
             // Panes

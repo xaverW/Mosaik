@@ -22,6 +22,8 @@ import de.p2tools.controller.config.ProgInfos;
 import de.p2tools.p2Lib.tools.Functions;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -55,12 +57,12 @@ public class AboutDialogController extends MTDialogExtra {
 
         getVboxCont().getChildren().add(hBox);
 
-//        ImageView iv = new ImageView();
-//        Image im = getImage();
-//        iv.setSmooth(true);
-//        iv.setCache(true);
-//        iv.setImage(im);
-//        hBox.getChildren().add(iv);
+        ImageView iv = new ImageView();
+        Image im = getImage();
+        iv.setSmooth(true);
+        iv.setCache(true);
+        iv.setImage(im);
+        hBox.getChildren().add(iv);
 
         final GridPane gridPane = new GridPane();
         gridPane.setHgap(5);
@@ -87,8 +89,7 @@ public class AboutDialogController extends MTDialogExtra {
         text.setFont(Font.font(null, FontWeight.BOLD, 15));
         gridPane.add(text, 0, ++row, 2, 1);
 
-        text = new Text("Xaver W. (xaverW)\n" +
-                "Christian F. (derreisende77)");
+        text = new Text("Xaver W. (xaverW)");
         text.setFont(new Font(15));
         gridPane.add(text, 0, ++row, 2, 1);
 
@@ -146,9 +147,9 @@ public class AboutDialogController extends MTDialogExtra {
 
     }
 
-//    private javafx.scene.image.Image getImage() {
-//        final String path = "/de/p2tools/res/MTPlayer.png";
-//        return new javafx.scene.image.Image(path);
-//    }
+    private javafx.scene.image.Image getImage() {
+        final String path = "/de/p2tools/res/Mosaik.png";
+        return new javafx.scene.image.Image(path);
+    }
 
 }
