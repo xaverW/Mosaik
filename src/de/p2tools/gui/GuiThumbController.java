@@ -43,7 +43,7 @@ public class GuiThumbController extends AnchorPane {
     SplitPane splitPane = new SplitPane();
 
     VBox vBoxCont = new VBox(10);
-    VBox vBoxTable = new VBox(10);
+    VBox vBoxFlowPane = new VBox(10);
     ScrollPane scrollPane = new ScrollPane();
     FlowPane flowPane = new FlowPane();
 
@@ -64,23 +64,35 @@ public class GuiThumbController extends AnchorPane {
         AnchorPane.setBottomAnchor(splitPane, 0.0);
         AnchorPane.setRightAnchor(splitPane, 0.0);
         AnchorPane.setTopAnchor(splitPane, 0.0);
-
         splitPane.setOrientation(Orientation.HORIZONTAL);
         splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        SplitPane.setResizableWithParent(scrollPane, Boolean.FALSE);
+        splitPane.getItems().addAll(vBoxCont, vBoxFlowPane);
+        splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
+        SplitPane.setResizableWithParent(vBoxFlowPane, Boolean.FALSE);
         getChildren().addAll(splitPane);
 
-        scrollPane.setFitToHeight(true);
+
+        flowPane.setStyle("-fx-border-color: red;");
+        scrollPane.setStyle("-fx-border-color: blue;");
+        vBoxFlowPane.setStyle("-fx-border-color: green;");
+
+
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+//        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+//        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+//        scrollPane.setMaxHeight(Double.MAX_VALUE);
+//        scrollPane.setMaxWidth(Double.MAX_VALUE);
+//        scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setContent(flowPane);
 
-        vBoxTable.setPadding(new Insets(10));
-        vBoxTable.getChildren().add(scrollPane);
+//        flowPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+
+        vBoxFlowPane.setPadding(new Insets(10));
+        vBoxFlowPane.getChildren().add(scrollPane);
+
         vBoxCont.setPadding(new Insets(10));
-
-        splitPane.getItems().addAll(vBoxCont, vBoxTable);
-        splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
-
         initCont();
         selectThumbCollection();
 
@@ -137,8 +149,11 @@ public class GuiThumbController extends AnchorPane {
 
     private void setFlowPane() {
         flowPane.getChildren().clear();
+        int i = 1;
         for (Thumb thumb : thumbCollection.getThumbList()) {
-            Label lbl = new Label("  ");
+            // todo muss wieder weg
+            Label lbl = new Label("" + i++);
+            lbl.setTextFill(Color.WHITE);
             lbl.setPrefHeight(30);
             lbl.setPrefWidth(30);
 

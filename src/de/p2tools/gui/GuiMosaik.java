@@ -99,7 +99,8 @@ public class GuiMosaik extends AnchorPane {
         AnchorPane.setLeftAnchor(vBox, 0.0);
         AnchorPane.setBottomAnchor(vBox, 0.0);
         AnchorPane.setRightAnchor(vBox, 0.0);
-        AnchorPane.setTopAnchor(vBox, 0.0);
+        AnchorPane.setTopAnchor(vBox,
+                0.0);
 
         vBox.getChildren().addAll(hBox, scrollPane);
 
