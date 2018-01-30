@@ -104,7 +104,8 @@ public class DirFileChooser {
         return "";
     }
 
-    public static void DirChooser(Stage stage, TextField txtPath) {
+    public static String DirChooser(Stage stage, TextField txtPath) {
+        String ret = "";
         final DirectoryChooser directoryChooser = new DirectoryChooser();
         File initFile = new File(System.getProperty("user.home"));
 
@@ -117,8 +118,10 @@ public class DirFileChooser {
         directoryChooser.setInitialDirectory(initFile);
         File selectedFile = directoryChooser.showDialog(stage);
         if (selectedFile != null) {
+            ret = selectedFile.getAbsolutePath();
             txtPath.setText(selectedFile.getAbsolutePath());
         }
+        return ret;
     }
 
     public static String DirChooser(Stage stage, ComboBox<String> cbPath) {

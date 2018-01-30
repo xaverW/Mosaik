@@ -75,7 +75,7 @@ public class ProgConfig extends PConfig {
 
 
     // ConfigDialog
-    public static PConfigs CONFIG_DIALOG_SIZE = addNewKey("Config-Dialog-Groesse");
+    public static PConfigs DIALOG_ADD_MOSAIK = addNewKey("dialog-add-mosaik");
     public static PConfigs CONFIG_DIALOG_ACCORDION = addNewKey("Config_Dialog-accordion", Boolean.TRUE.toString());
     public static PConfigs CONFIG_DIALOG_SET_DIVIDER = addNewKey("Config-Dialog-set-divider", ProgConst.CONFIG_DIALOG_SET_DIVIDER);
     public static PConfigs CONFIG_DIALOG_IMPORT_SET_GROESSE = addNewKey("Config-Dialog-import-set-Groesse", "800:600");

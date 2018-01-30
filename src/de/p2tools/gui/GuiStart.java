@@ -22,6 +22,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.projectData.ProjectData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.gui.dialog.AddMosaikDialogController;
 import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.p2Lib.tools.DirFileChooser;
 import de.p2tools.p2Lib.tools.PAlert;
@@ -82,6 +83,9 @@ public class GuiStart extends AnchorPane {
 
         initCollection();
         initCont();
+        if (progData.projectDataList.isEmpty()) {
+            addProjectDataDialog();
+        }
         selectProjectData();
 
         VBox vBox = new VBox(10);
@@ -157,10 +161,7 @@ public class GuiStart extends AnchorPane {
 
         btnNew.setGraphic(new Icons().ICON_BUTTON_ADD);
         btnNew.setOnAction(event -> {
-            ProjectData pd = new ProjectData();
-            progData.projectDataList.add(pd);
-
-            cbProjectDataList.getSelectionModel().select(pd);
+            addProjectDataDialog();
         });
 
         btnDel.setGraphic(new Icons().ICON_BUTTON_REMOVE);
@@ -184,6 +185,15 @@ public class GuiStart extends AnchorPane {
         projectDataPane.setContent(vBox);
     }
 
+    private void addProjectDataDialog() {
+        AddMosaikDialogController amc = new AddMosaikDialogController();
+        ProjectData pd = amc.getProjectData();
+
+        if (pd != null) {
+            progData.projectDataList.add(pd);
+            cbProjectDataList.getSelectionModel().select(pd);
+        }
+    }
 
     private void selectProjectData() {
         if (projectData != null) {
