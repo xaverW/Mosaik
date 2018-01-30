@@ -81,7 +81,6 @@ public class ProgConfig extends PConfig {
     public static PConfigs CONFIG_DIALOG_IMPORT_SET_GROESSE = addNewKey("Config-Dialog-import-set-Groesse", "800:600");
 
     // Programmpfade
-    public static PConfigs CONFIG_DIR_MOSAIK_PATH = addNewKey("config-dir-mosaik-path", "");
     public static PConfigs CONFIG_DIR_SRC_PHOTO_PATH = addNewKey("config-dir-src-photo-path", "");
 
     public static ConfigsData getConfigsData() {

@@ -47,12 +47,12 @@ public class GuiStart extends AnchorPane {
     private final TitledPane contPane = new TitledPane();
     private final TitledPane projectDataPane = new TitledPane();
     private final ComboBox<ProjectData> cbProjectDataList = new ComboBox<>();
-    private final ComboBox<String> cbProjectSrcDir = new ComboBox<>();
     private final ComboBox<String> cbSrcPhoto = new ComboBox<>();
     private final TextField txtName = new TextField("");
     private final TextField txtDir = new TextField("");
-    Button btnNew = new Button("Neues Mosaik erstellen");
-    Button btnDel = new Button("gewähltes Mosaik löschen");
+    Button btnNew = new Button("Neues Projekt erstellen");
+    Button btnDel = new Button("Projekt löschen");
+    Button btnMov = new Button("Projektordner verschieben");
 
     private ProjectData projectData = null;
     private final ProgData progData;
@@ -74,12 +74,12 @@ public class GuiStart extends AnchorPane {
         projectDataPane.setCollapsible(false);
         projectDataPane.setAlignment(Pos.CENTER);
         projectDataPane.getStyleClass().add("contPane");
-        projectDataPane.setText("Mosaik auswählen");
+        projectDataPane.setText("Projekt auswählen");
 
         contPane.setCollapsible(false);
         contPane.setAlignment(Pos.CENTER);
         contPane.getStyleClass().add("contPane");
-        contPane.setText("Einstellungen des gewählten Mosaik");
+        contPane.setText("Einstellungen des gewählten Projekts");
 
         initCollection();
         initCont();
@@ -156,6 +156,7 @@ public class GuiStart extends AnchorPane {
         cbProjectDataList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     selectProjectData();
                     btnDel.setDisable(projectData == null ? true : false);
+                    btnMov.setDisable(projectData == null ? true : false);
                 }
         );
 
@@ -177,12 +178,64 @@ public class GuiStart extends AnchorPane {
             }
         });
 
+        btnMov.setGraphic(new Icons().ICON_BUTTON_MOVE);
+        btnMov.setOnAction(event -> {
+            int i = cbProjectDataList.getSelectionModel().getSelectedIndex();
+            if (i < 0) {
+                return;
+            }
+            ProjectData pd = progData.projectDataList.get(i);
+            if (pd != null) {
+                moveProject();
+            }
+        });
+
+
         VBox vBox = new VBox(10);
         HBox hBox = new HBox(10);
-        hBox.getChildren().addAll(btnNew, btnDel);
+        hBox.getChildren().addAll(btnNew, btnDel, btnMov);
 
         vBox.getChildren().addAll(cbProjectDataList, hBox);
         projectDataPane.setContent(vBox);
+    }
+
+    private void moveProject() {
+        String oldDir = progData.selectedProjectData.getDestDir();
+        String dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir);
+        if (dir.isEmpty()) {
+            return;
+        }
+
+        if (progData.selectedProjectData.getDestDir().isEmpty()) {
+            // dann ist das Projektverzeichnis noch nicht angelegt
+            progData.selectedProjectData.setDestDir(dir);
+            return;
+        } else {
+            Path oldDirPath = Paths.get(oldDir);
+            if (!oldDirPath.toFile().exists()) {
+                // dann ist das Projektverzeichnis noch nicht angelegt
+                progData.selectedProjectData.setDestDir(dir);
+                return;
+            }
+        }
+
+
+        if (!progData.worker.moveProject(dir)) {
+            progData.selectedProjectData.setDestDir(oldDir);
+
+//            cbProjectSrcDir.getSelectionModel().select(oldDir);
+        }
+
+        ThumbCollection thumbCollection = progData.selectedProjectData.getThumbCollection();
+        if (thumbCollection == null) {
+            return;
+        }
+        String thumbDir = progData.selectedProjectData.getThumbDirString();
+        if (thumbDir.isEmpty()) {
+            return;
+        }
+        progData.worker.readThumbList(thumbCollection, thumbDir);
+
     }
 
     private void addProjectDataDialog() {
@@ -209,7 +262,6 @@ public class GuiStart extends AnchorPane {
             txtDir.setText("");
             txtName.setText("");
             cbSrcPhoto.getItems().clear();
-            cbProjectSrcDir.getItems().clear();
         } else {
             contPane.setDisable(false);
 
@@ -225,129 +277,19 @@ public class GuiStart extends AnchorPane {
                 cbSrcPhoto.getItems().add(projectData.getSrcPhoto());
             }
             cbSrcPhoto.getSelectionModel().select(projectData.getSrcPhoto());
-
-            storedPhotoPath = ProgConfig.CONFIG_DIR_MOSAIK_PATH.get().split(ProgConst.DIR_SEPARATOR);
-            cbProjectSrcDir.getItems().clear();
-            cbProjectSrcDir.getItems().addAll(storedPhotoPath);
-            if (!cbProjectSrcDir.getItems().contains(projectData.getDestDir())) {
-                cbProjectSrcDir.getItems().add(projectData.getDestDir());
-            }
-            cbProjectSrcDir.getSelectionModel().select(projectData.getDestDir());
         }
-    }
-
-    private void init() {
-        Label lblName = new Label("Name des Mosaik");
-        Label lblDir = new Label("Ordner in dem das Mosaik erstellt wird");
-
-        txtDir.setMaxWidth(Double.MAX_VALUE);
-        txtDir.setEditable(false);
-        HBox.setHgrow(txtDir, Priority.ALWAYS);
-        txtName.textProperty().addListener((observable, oldValue, newValue) -> progData.projectDataList.setListChanged());
-
-        final Button btnDir = new Button();
-        btnDir.setOnAction(event -> {
-            String dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir.getText());
-            if (dir.isEmpty()) {
-                return;
-            }
-
-            if (progData.selectedProjectData.getDestDir().isEmpty()) {
-                // dann ist das Projektverzeichnis noch nicht angelegt
-                progData.selectedProjectData.setDestDir(dir);
-                return;
-            } else {
-                String oldDir = progData.selectedProjectData.getDestDir();
-                Path oldDirPath = Paths.get(oldDir);
-                if (!oldDirPath.toFile().exists()) {
-                    // dann ist das Projektverzeichnis noch nicht angelegt
-                    progData.selectedProjectData.setDestDir(dir);
-                    return;
-                }
-            }
-
-
-            if (new MTAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von:\n" +
-                    txtDir.getText() + "\n\n" +
-                    "nach:\n" +
-                    dir + "\n\n" +
-                    "verschoben werden?").equals(PAlert.BUTTON.YES)) {
-                if (progData.worker.moveProject(dir)) {
-                    txtDir.setText(dir);
-                }
-
-                ThumbCollection thumbCollection = progData.selectedProjectData.getThumbCollection();
-                if (thumbCollection == null) {
-                    return;
-                }
-                String thumbDir = progData.selectedProjectData.getThumbDirString();
-                if (thumbDir.isEmpty()) {
-                    return;
-                }
-                progData.worker.readThumbList(thumbCollection, thumbDir);
-
-            }
-        });
-        btnDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
-
-        final Button btnHelp = new Button("");
-        btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROJECT_PATH));
-
-
-        HBox hBoxDir = new HBox(10);
-        hBoxDir.getChildren().addAll(txtDir, btnDir, btnHelp);
-
-        VBox vBox = new VBox(10);
-        vBox.getChildren().addAll(lblName, txtName, lblDir, hBoxDir);
-        contPane.setContent(vBox);
     }
 
     private void initCont() {
 
         final Button btnDestDir = new Button();
         btnDestDir.setOnAction(event -> {
-            String oldDir = progData.selectedProjectData.getDestDir();
-            String dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, cbProjectSrcDir);
-            if (dir.isEmpty()) {
-                return;
-            }
-
-            if (progData.selectedProjectData.getDestDir().isEmpty()) {
-                // dann ist das Projektverzeichnis noch nicht angelegt
-                progData.selectedProjectData.setDestDir(dir);
-                return;
-            } else {
-                Path oldDirPath = Paths.get(oldDir);
-                if (!oldDirPath.toFile().exists()) {
-                    // dann ist das Projektverzeichnis noch nicht angelegt
-                    progData.selectedProjectData.setDestDir(dir);
-                    return;
-                }
-            }
-
-
-            if (new MTAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von:\n" +
-                    oldDir + "\n\n" +
-                    "nach:\n" +
-                    dir + "\n\n" +
+            if (!new MTAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von:\n" +
+                    txtDir.getText() + "\n\n" +
                     "verschoben werden?").equals(PAlert.BUTTON.YES)) {
-                if (!progData.worker.moveProject(dir)) {
-                    progData.selectedProjectData.setDestDir(oldDir);
-                    cbProjectSrcDir.getSelectionModel().select(oldDir);
-                }
-
-                ThumbCollection thumbCollection = progData.selectedProjectData.getThumbCollection();
-                if (thumbCollection == null) {
-                    return;
-                }
-                String thumbDir = progData.selectedProjectData.getThumbDirString();
-                if (thumbDir.isEmpty()) {
-                    return;
-                }
-                progData.worker.readThumbList(thumbCollection, thumbDir);
-
+                return;
             }
+            moveProject();
         });
         btnDestDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
@@ -376,25 +318,23 @@ public class GuiStart extends AnchorPane {
         gridPaneDest.setVgap(5);
         gridPaneDest.setHgap(5);
 
-        cbProjectSrcDir.setMaxWidth(Double.MAX_VALUE);
-        cbProjectSrcDir.getItems().addListener((ListChangeListener<String>) c ->
-                ProgConfig.CONFIG_DIR_MOSAIK_PATH.setValue(saveComboPfad(cbProjectSrcDir)));
+        txtDir.setMaxWidth(Double.MAX_VALUE);
+        txtDir.setEditable(false);
         cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
         cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c ->
                 ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setValue(saveComboPfad(cbSrcPhoto)));
 
-        GridPane.setHgrow(cbProjectSrcDir, Priority.ALWAYS);
-        GridPane.setHgrow(cbSrcPhoto, Priority.ALWAYS);
         GridPane.setHgrow(txtDir, Priority.ALWAYS);
+        GridPane.setHgrow(cbSrcPhoto, Priority.ALWAYS);
 
         gridPaneDest.add(new Label("Ordner in dem das Mosaik erstellt wird"), 0, ++row, 2, 1);
         gridPaneDest.add(new Label("Pfad:"), 0, ++row);
-        gridPaneDest.add(cbProjectSrcDir, 1, row);
+        gridPaneDest.add(txtDir, 1, row);
         gridPaneDest.add(btnDestDir, 2, row);
         gridPaneDest.add(btnDestDirHelp, 3, row);
 
         gridPaneDest.add(new Label(""), 0, ++row);
-        gridPaneDest.add(new Label("Bild das als Mosaik dargestellt werden soll"), 0, row, 2, 1);
+        gridPaneDest.add(new Label("Bild das als Mosaik dargestellt werden soll"), 0, ++row, 2, 1);
         gridPaneDest.add(new Label("Pfad: "), 0, ++row);
         gridPaneDest.add(cbSrcPhoto, 1, row);
         gridPaneDest.add(btnSrcFotoDir, 2, row);
