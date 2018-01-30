@@ -222,8 +222,6 @@ public class GuiStart extends AnchorPane {
 
         if (!progData.worker.moveProject(dir)) {
             progData.selectedProjectData.setDestDir(oldDir);
-
-//            cbProjectSrcDir.getSelectionModel().select(oldDir);
         }
 
         ThumbCollection thumbCollection = progData.selectedProjectData.getThumbCollection();
@@ -252,31 +250,35 @@ public class GuiStart extends AnchorPane {
         if (projectData != null) {
             txtName.textProperty().unbindBidirectional(projectData.nameProperty());
             txtDir.textProperty().unbindBidirectional(projectData.destDirProperty());
+            projectData.srcPhotoProperty().unbind();
         }
 
         projectData = cbProjectDataList.getSelectionModel().getSelectedItem();
         progData.selectedProjectData = projectData;
 
+        cbSrcPhoto.getItems().clear();
         if (projectData == null) {
             contPane.setDisable(true);
             txtDir.setText("");
             txtName.setText("");
-            cbSrcPhoto.getItems().clear();
+
         } else {
             contPane.setDisable(false);
 
             ProgConfig.START_GUI_PROJECT_DATA.setValue(cbProjectDataList.getSelectionModel().getSelectedIndex());
+
             txtName.textProperty().bindBidirectional(projectData.nameProperty());
             txtDir.textProperty().bindBidirectional(projectData.destDirProperty());
 
             String[] storedPhotoPath = {""};
             storedPhotoPath = ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.get().split(ProgConst.DIR_SEPARATOR);
-            cbSrcPhoto.getItems().clear();
             cbSrcPhoto.getItems().addAll(storedPhotoPath);
             if (!cbSrcPhoto.getItems().contains(projectData.getSrcPhoto())) {
                 cbSrcPhoto.getItems().add(projectData.getSrcPhoto());
             }
             cbSrcPhoto.getSelectionModel().select(projectData.getSrcPhoto());
+
+            projectData.srcPhotoProperty().bind(cbSrcPhoto.getSelectionModel().selectedItemProperty());
         }
     }
 
@@ -321,12 +323,18 @@ public class GuiStart extends AnchorPane {
         txtDir.setMaxWidth(Double.MAX_VALUE);
         txtDir.setEditable(false);
         cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
-        cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c ->
-                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setValue(saveComboPfad(cbSrcPhoto)));
+        cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c -> {
+            ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setValue(saveComboPfad(cbSrcPhoto));
+        });
 
         GridPane.setHgrow(txtDir, Priority.ALWAYS);
         GridPane.setHgrow(cbSrcPhoto, Priority.ALWAYS);
 
+        gridPaneDest.add(new Label("Name des Projekts"), 0, ++row, 2, 1);
+        gridPaneDest.add(new Label("Name:"), 0, ++row);
+        gridPaneDest.add(txtName, 1, row);
+
+        gridPaneDest.add(new Label(""), 0, ++row);
         gridPaneDest.add(new Label("Ordner in dem das Mosaik erstellt wird"), 0, ++row, 2, 1);
         gridPaneDest.add(new Label("Pfad:"), 0, ++row);
         gridPaneDest.add(txtDir, 1, row);
