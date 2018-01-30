@@ -20,7 +20,7 @@ package de.p2tools.p2Lib.configFile.config;
 import de.p2tools.p2Lib.configFile.ConfigsData;
 
 /**
- * its a pseudo CONFIG, it contains a CONFIGDATA, also
+ * its a pseudo CONFIG, it contains a CONFIGDATA, so
  * a array of config
  */
 public class ConfigConfigsData extends Config {

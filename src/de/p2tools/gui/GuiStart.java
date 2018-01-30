@@ -17,6 +17,7 @@
 package de.p2tools.gui;
 
 import de.p2tools.controller.config.ProgConfig;
+import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.projectData.ProjectData;
@@ -28,16 +29,16 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ListChangeListener;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.StringConverter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class GuiStart extends AnchorPane {
 
@@ -45,6 +46,8 @@ public class GuiStart extends AnchorPane {
     private final TitledPane contPane = new TitledPane();
     private final TitledPane projectDataPane = new TitledPane();
     private final ComboBox<ProjectData> cbProjectDataList = new ComboBox<>();
+    private final ComboBox<String> cbProjectSrcDir = new ComboBox<>();
+    private final ComboBox<String> cbSrcPhoto = new ComboBox<>();
     private final TextField txtName = new TextField("");
     private final TextField txtDir = new TextField("");
     Button btnNew = new Button("Neues Mosaik erstellen");
@@ -195,16 +198,35 @@ public class GuiStart extends AnchorPane {
             contPane.setDisable(true);
             txtDir.setText("");
             txtName.setText("");
+            cbSrcPhoto.getItems().clear();
+            cbProjectSrcDir.getItems().clear();
         } else {
             contPane.setDisable(false);
 
             ProgConfig.START_GUI_PROJECT_DATA.setValue(cbProjectDataList.getSelectionModel().getSelectedIndex());
             txtName.textProperty().bindBidirectional(projectData.nameProperty());
             txtDir.textProperty().bindBidirectional(projectData.destDirProperty());
+
+            String[] storedPhotoPath = {""};
+            storedPhotoPath = ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.get().split(ProgConst.DIR_SEPARATOR);
+            cbSrcPhoto.getItems().clear();
+            cbSrcPhoto.getItems().addAll(storedPhotoPath);
+            if (!cbSrcPhoto.getItems().contains(projectData.getSrcPhoto())) {
+                cbSrcPhoto.getItems().add(projectData.getSrcPhoto());
+            }
+            cbSrcPhoto.getSelectionModel().select(projectData.getSrcPhoto());
+
+            storedPhotoPath = ProgConfig.CONFIG_DIR_MOSAIK_PATH.get().split(ProgConst.DIR_SEPARATOR);
+            cbProjectSrcDir.getItems().clear();
+            cbProjectSrcDir.getItems().addAll(storedPhotoPath);
+            if (!cbProjectSrcDir.getItems().contains(projectData.getDestDir())) {
+                cbProjectSrcDir.getItems().add(projectData.getDestDir());
+            }
+            cbProjectSrcDir.getSelectionModel().select(projectData.getDestDir());
         }
     }
 
-    private void initCont() {
+    private void init() {
         Label lblName = new Label("Name des Mosaik");
         Label lblDir = new Label("Ordner in dem das Mosaik erstellt wird");
 
@@ -271,4 +293,138 @@ public class GuiStart extends AnchorPane {
         contPane.setContent(vBox);
     }
 
+    private void initCont() {
+
+        final Button btnDestDir = new Button();
+        btnDestDir.setOnAction(event -> {
+            String oldDir = progData.selectedProjectData.getDestDir();
+            String dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, cbProjectSrcDir);
+            if (dir.isEmpty()) {
+                return;
+            }
+
+            if (progData.selectedProjectData.getDestDir().isEmpty()) {
+                // dann ist das Projektverzeichnis noch nicht angelegt
+                progData.selectedProjectData.setDestDir(dir);
+                return;
+            } else {
+                Path oldDirPath = Paths.get(oldDir);
+                if (!oldDirPath.toFile().exists()) {
+                    // dann ist das Projektverzeichnis noch nicht angelegt
+                    progData.selectedProjectData.setDestDir(dir);
+                    return;
+                }
+            }
+
+
+            if (new MTAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von:\n" +
+                    oldDir + "\n\n" +
+                    "nach:\n" +
+                    dir + "\n\n" +
+                    "verschoben werden?").equals(PAlert.BUTTON.YES)) {
+                if (!progData.worker.moveProject(dir)) {
+                    progData.selectedProjectData.setDestDir(oldDir);
+                    cbProjectSrcDir.getSelectionModel().select(oldDir);
+                }
+
+                ThumbCollection thumbCollection = progData.selectedProjectData.getThumbCollection();
+                if (thumbCollection == null) {
+                    return;
+                }
+                String thumbDir = progData.selectedProjectData.getThumbDirString();
+                if (thumbDir.isEmpty()) {
+                    return;
+                }
+                progData.worker.readThumbList(thumbCollection, thumbDir);
+
+            }
+        });
+        btnDestDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
+
+        final Button btnDestDirHelp = new Button("");
+        btnDestDirHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
+        btnDestDirHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROJECT_PATH));
+
+        final Button btnSrcFotoDir = new Button();
+        btnSrcFotoDir.setOnAction(event -> {
+            String foto = DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbSrcPhoto);
+            if (foto.isEmpty()) {
+                return;
+            }
+        });
+        btnSrcFotoDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
+
+        final Button btnSrcFotoHelp = new Button("");
+        btnSrcFotoHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
+        btnSrcFotoHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROJECT_PATH));
+
+
+        // make Grid
+        int row = 0;
+        GridPane gridPaneDest = new GridPane();
+        gridPaneDest.setPadding(new Insets(10));
+        gridPaneDest.setVgap(5);
+        gridPaneDest.setHgap(5);
+
+        cbProjectSrcDir.setMaxWidth(Double.MAX_VALUE);
+        cbProjectSrcDir.getItems().addListener((ListChangeListener<String>) c ->
+                ProgConfig.CONFIG_DIR_MOSAIK_PATH.setValue(saveComboPfad(cbProjectSrcDir)));
+        cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
+        cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c ->
+                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setValue(saveComboPfad(cbSrcPhoto)));
+
+        GridPane.setHgrow(cbProjectSrcDir, Priority.ALWAYS);
+        GridPane.setHgrow(cbSrcPhoto, Priority.ALWAYS);
+        GridPane.setHgrow(txtDir, Priority.ALWAYS);
+
+        gridPaneDest.add(new Label("Ordner in dem das Mosaik erstellt wird"), 0, ++row, 2, 1);
+        gridPaneDest.add(new Label("Pfad:"), 0, ++row);
+        gridPaneDest.add(cbProjectSrcDir, 1, row);
+        gridPaneDest.add(btnDestDir, 2, row);
+        gridPaneDest.add(btnDestDirHelp, 3, row);
+
+        gridPaneDest.add(new Label(""), 0, ++row);
+        gridPaneDest.add(new Label("Bild das als Mosaik dargestellt werden soll"), 0, row, 2, 1);
+        gridPaneDest.add(new Label("Pfad: "), 0, ++row);
+        gridPaneDest.add(cbSrcPhoto, 1, row);
+        gridPaneDest.add(btnSrcFotoDir, 2, row);
+        gridPaneDest.add(btnSrcFotoHelp, 3, row);
+
+
+        VBox vBox = new VBox(10);
+        vBox.getChildren().addAll(gridPaneDest);
+        contPane.setContent(vBox);
+
+    }
+
+    private String saveComboPfad(ComboBox<String> comboBox) {
+        final ArrayList<String> pfade = new ArrayList<>(comboBox.getItems());
+
+        final ArrayList<String> pfade2 = new ArrayList<>();
+        String sel = comboBox.getEditor().getText();
+        if (sel != null && !sel.isEmpty()) {
+            System.out.println(sel);
+            pfade2.add(sel);
+        }
+
+        pfade.stream().forEach(s1 -> {
+            // um doppelte auszusortieren
+
+            if (!s1.isEmpty() && !pfade2.contains(s1)) {
+                pfade2.add(s1);
+            }
+        });
+
+        String s = "";
+        if (!pfade2.isEmpty()) {
+            s = pfade2.get(0);
+            for (int i = 1; i < ProgConst.MAX_PFADE_SRC_PHOTO && i < pfade2.size(); ++i) {
+                if (!pfade2.get(i).isEmpty()) {
+                    s += ProgConst.DIR_SEPARATOR + pfade2.get(i);
+                }
+            }
+        }
+
+        return s;
+    }
 }

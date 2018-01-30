@@ -36,6 +36,7 @@ public class ProjectDataProps extends Data<ProjectData> {
 
     private final StringProperty name = new SimpleStringProperty("Neues Mosaik");
     private final StringProperty destDir = new SimpleStringProperty(""); // project dir
+    private final StringProperty srcPhoto = new SimpleStringProperty(""); // Quellbild für das Mosaik
 
     private final MosaikData mosaikData = new MosaikData();
     private final MosaikDataBw mosaikDataBw = new MosaikDataBw();
@@ -50,6 +51,7 @@ public class ProjectDataProps extends Data<ProjectData> {
         return new ArrayList<>(Arrays.asList(
                 new ConfigStringProp("name", "Neues Mosaik", name),
                 new ConfigStringProp("dest-dir", "", destDir),
+                new ConfigStringProp("src-photo", "", srcPhoto),
                 new ConfigConfigsData(mosaikData),
                 new ConfigConfigsData(mosaikDataBw),
                 new ConfigConfigsData(wallpaperData),
@@ -94,6 +96,18 @@ public class ProjectDataProps extends Data<ProjectData> {
 
     public void setDestDir(String destDir) {
         this.destDir.set(destDir);
+    }
+
+    public String getSrcPhoto() {
+        return srcPhoto.get();
+    }
+
+    public StringProperty srcPhotoProperty() {
+        return srcPhoto;
+    }
+
+    public void setSrcPhoto(String srcPhoto) {
+        this.srcPhoto.set(srcPhoto);
     }
 
     @Override

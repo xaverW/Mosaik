@@ -34,7 +34,7 @@ public class ProgSave {
     public void save() {
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();
         ConfigFile configFile = new ConfigFile(xmlFilePath);
-        configFile.addConfigs(ProgConfig.getConfigsDate());
+        configFile.addConfigs(ProgConfig.getConfigsData());
         configFile.addConfigs(progData.projectDataList);
         configFile.writeConfigFile();
     }

@@ -35,6 +35,9 @@ public class ProgConst {
     public static final String MOSAIK_BW_STD_NAME = "MosaikQuellbild";
     public static final String WALLPAPER_STD_NAME = "Tapete";
 
+    public static final int MAX_PFADE_SRC_PHOTO = 15;
+    public static final String DIR_SEPARATOR = "<>";
+
     public static final String XML_START = "Mosaik";
 
 

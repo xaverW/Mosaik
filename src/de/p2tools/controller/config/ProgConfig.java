@@ -80,8 +80,12 @@ public class ProgConfig extends PConfig {
     public static PConfigs CONFIG_DIALOG_SET_DIVIDER = addNewKey("Config-Dialog-set-divider", ProgConst.CONFIG_DIALOG_SET_DIVIDER);
     public static PConfigs CONFIG_DIALOG_IMPORT_SET_GROESSE = addNewKey("Config-Dialog-import-set-Groesse", "800:600");
 
-    public static ConfigsData getConfigsDate() {
-        // sonst werde die Keys nich vorher angelegt :)
+    // Programmpfade
+    public static PConfigs CONFIG_DIR_MOSAIK_PATH = addNewKey("config-dir-mosaik-path", "");
+    public static PConfigs CONFIG_DIR_SRC_PHOTO_PATH = addNewKey("config-dir-src-photo-path", "");
+
+    public static ConfigsData getConfigsData() {
+        // sonst werden die Keys nich vorher angelegt :)
         return PConfig.getConfigsData();
     }
 

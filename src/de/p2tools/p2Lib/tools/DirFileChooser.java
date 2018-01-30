@@ -23,6 +23,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class DirFileChooser {
 
@@ -47,6 +49,41 @@ public class DirFileChooser {
             txtFile.setText(selectedFile.getAbsolutePath());
         }
 
+    }
+
+
+    public static String FileChooser(Stage stage, ComboBox<String> cbPath) {
+        String ret = "";
+
+        final FileChooser fileChooser = new FileChooser();
+        File initFile = new File(System.getProperty("user.home"));
+
+        if (cbPath.getSelectionModel().getSelectedItem() != null &&
+                !cbPath.getSelectionModel().getSelectedItem().isEmpty()) {
+            Path path = Paths.get(cbPath.getSelectionModel().getSelectedItem());
+            if (path.toFile().exists() && path.toFile().isDirectory()) {
+                initFile = path.toFile();
+            } else if (path.toFile().exists() && path.getParent().toFile().isDirectory()) {
+                initFile = path.getParent().toFile();
+            }
+        }
+
+        fileChooser.setInitialDirectory(initFile);
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            try {
+                ret = selectedFile.getAbsolutePath();
+                if (!cbPath.getItems().contains(ret)) {
+                    cbPath.getItems().add(ret);
+                }
+                cbPath.getSelectionModel().select(ret);
+
+            } catch (final Exception ex) {
+                Log.errorLog(912030201, ex);
+            }
+        }
+
+        return ret;
     }
 
     public static String DirChooser(Stage stage, String txtPath) {
@@ -84,11 +121,13 @@ public class DirFileChooser {
         }
     }
 
-    public static void DirChooser(Stage stage, ComboBox<String> cbPath) {
+    public static String DirChooser(Stage stage, ComboBox<String> cbPath) {
+        String ret = "";
         final DirectoryChooser directoryChooser = new DirectoryChooser();
         File initFile = new File(System.getProperty("user.home"));
 
-        if (!cbPath.getSelectionModel().getSelectedItem().isEmpty()) {
+        if (cbPath.getSelectionModel().getSelectedItem() != null &&
+                !cbPath.getSelectionModel().getSelectedItem().isEmpty()) {
             File f = new File(cbPath.getSelectionModel().getSelectedItem());
             if (f.exists() && f.isDirectory()) {
                 initFile = new File(cbPath.getSelectionModel().getSelectedItem());
@@ -99,15 +138,16 @@ public class DirFileChooser {
         File selectedDir = directoryChooser.showDialog(stage);
         if (selectedDir != null) {
             try {
-                final String path = selectedDir.getAbsolutePath();
-                if (!cbPath.getItems().contains(path)) {
-                    cbPath.getItems().add(path);
+                ret = selectedDir.getAbsolutePath();
+                if (!cbPath.getItems().contains(ret)) {
+                    cbPath.getItems().add(ret);
                 }
-                cbPath.getSelectionModel().select(path);
+                cbPath.getSelectionModel().select(ret);
 
             } catch (final Exception ex) {
                 Log.errorLog(912365478, ex);
             }
         }
+        return ret;
     }
 }
