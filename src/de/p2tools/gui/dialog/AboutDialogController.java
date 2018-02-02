@@ -85,7 +85,7 @@ public class AboutDialogController extends MTDialogExtra {
         text.setFill(GRAY);
         gridPane.add(text, 0, ++row, 2, 1);
 
-        text = new Text("\n\nAutoren");
+        text = new Text("\n\nAutor");
         text.setFont(Font.font(null, FontWeight.BOLD, 15));
         gridPane.add(text, 0, ++row, 2, 1);
 

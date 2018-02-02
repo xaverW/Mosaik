@@ -44,6 +44,7 @@ public class AddMosaikDialogController extends MTDialogExtra {
     private final Button btnDestDir = new Button();
     private final Button btnDestDirHelp = new Button();
 
+    private ProjectData retProjectData = null;
     private ProjectData projectData;
 
 
@@ -58,7 +59,7 @@ public class AddMosaikDialogController extends MTDialogExtra {
     }
 
     public ProjectData getProjectData() {
-        return projectData;
+        return retProjectData;
     }
 
     @Override
@@ -94,13 +95,15 @@ public class AddMosaikDialogController extends MTDialogExtra {
 
     private void makeButton() {
         btnCancel.setOnAction(a -> {
-            projectData = null;
             close();
         });
         btnOk.setOnAction(a -> {
+            retProjectData = projectData;
             close();
         });
 
+        txtName.setText(projectData.getName());
+        txtDir.setText(projectData.getDestDir());
         projectData.destDirProperty().bind(txtDir.textProperty());
         projectData.nameProperty().bind(txtName.textProperty());
 
