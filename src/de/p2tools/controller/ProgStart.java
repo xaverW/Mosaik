@@ -57,7 +57,7 @@ public class ProgStart {
         SysMsg.sysMsg("Progstart: Konfig");
 
         PInit.initLib(ProgData.debug, ProgConst.PROGRAMMNAME, ProgInfos.getUserAgent());
-        progData.projectDataList.initList();
+//        progData.projectDataList.initList();
         return true;
     }
 

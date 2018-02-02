@@ -51,12 +51,13 @@ public class GuiWallpaperController extends AnchorPane {
     private final IntegerProperty iPropCount = new SimpleIntegerProperty();
 
     private final ProgData progData;
-    private WallpaperData wallpaperData;
+    private WallpaperData wallpaperData = null;
 
     public GuiWallpaperController() {
         this.progData = ProgData.getInstance();
-        this.wallpaperData = progData.selectedProjectData.getWallpaperData();
-
+        if (progData.selectedProjectData != null) {
+            this.wallpaperData = progData.selectedProjectData.getWallpaperData();
+        }
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);

@@ -56,12 +56,15 @@ public class GuiMosaikController extends AnchorPane {
     private final IntegerProperty iPropSize = new SimpleIntegerProperty();
     private final IntegerProperty iPropCount = new SimpleIntegerProperty();
 
-    MosaikData mosaikData;
+    MosaikData mosaikData = null;
 
     public GuiMosaikController() {
         progData = ProgData.getInstance();
-        mosaikData = progData.selectedProjectData.getMosaikData();
 
+        if (progData.selectedProjectData != null) {
+            mosaikData = progData.selectedProjectData.getMosaikData();
+        }
+        
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setContent(contPane);

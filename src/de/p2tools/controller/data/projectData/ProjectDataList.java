@@ -38,11 +38,11 @@ public class ProjectDataList extends SimpleListProperty<ProjectData> implements 
                 new Observable[]{callback.nameProperty()}));
     }
 
-    public void initList() {
-        if (this.isEmpty()) {
-            this.add(new ProjectData());
-        }
-    }
+//    public void initList() {
+//        if (this.isEmpty()) {
+//            this.add(new ProjectData());
+//        }
+//    }
 
     public String getTag() {
         return TAG;
