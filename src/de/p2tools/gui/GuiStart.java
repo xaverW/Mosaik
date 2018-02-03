@@ -155,8 +155,8 @@ public class GuiStart extends AnchorPane {
         cbProjectDataList.setMaxWidth(Double.MAX_VALUE);
         cbProjectDataList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     selectProjectData();
-                    btnDel.setDisable(projectData == null ? true : false);
-                    btnMov.setDisable(projectData == null ? true : false);
+                    btnDel.setDisable(projectData == null);
+                    btnMov.setDisable(projectData == null);
                 }
         );
 
@@ -257,13 +257,15 @@ public class GuiStart extends AnchorPane {
         progData.selectedProjectData = projectData;
 
         cbSrcPhoto.getItems().clear();
+        contPane.setDisable(projectData == null);
+        btnMov.setDisable(projectData == null);
+        btnDel.setDisable(projectData == null);
+
         if (projectData == null) {
-            contPane.setDisable(true);
             txtDir.setText("");
             txtName.setText("");
 
         } else {
-            contPane.setDisable(false);
 
             ProgConfig.START_GUI_PROJECT_DATA.setValue(cbProjectDataList.getSelectionModel().getSelectedIndex());
 

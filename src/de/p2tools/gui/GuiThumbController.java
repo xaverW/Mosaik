@@ -31,6 +31,7 @@ import de.p2tools.p2Lib.tools.PAlert;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -45,7 +46,7 @@ public class GuiThumbController extends AnchorPane {
     VBox vBoxCont = new VBox(10);
     VBox vBoxFlowPane = new VBox(10);
     ScrollPane scrollPane = new ScrollPane();
-    FlowPane flowPane = new FlowPane();
+    TilePane tilePane = new TilePane();
 
     ThumbCollection thumbCollection = null;
     TextField txtDir = new TextField("");
@@ -71,23 +72,13 @@ public class GuiThumbController extends AnchorPane {
         SplitPane.setResizableWithParent(vBoxFlowPane, Boolean.FALSE);
         getChildren().addAll(splitPane);
 
-
-        flowPane.setStyle("-fx-border-color: red;");
-        scrollPane.setStyle("-fx-border-color: blue;");
-        vBoxFlowPane.setStyle("-fx-border-color: green;");
-
+        tilePane.setHgap(5);
+        tilePane.setVgap(5);
+        tilePane.setPadding(new Insets(5));
 
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
-//        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-//        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-//        scrollPane.setMaxHeight(Double.MAX_VALUE);
-//        scrollPane.setMaxWidth(Double.MAX_VALUE);
-//        scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setContent(flowPane);
-
-//        flowPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
+        scrollPane.setContent(tilePane);
 
         vBoxFlowPane.setPadding(new Insets(10));
         vBoxFlowPane.getChildren().add(scrollPane);
@@ -124,7 +115,7 @@ public class GuiThumbController extends AnchorPane {
             return;
         }
 
-        flowPane.getChildren().clear();
+        tilePane.getChildren().clear();
 
         if (thumbCollection != null) {
             txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
@@ -148,14 +139,16 @@ public class GuiThumbController extends AnchorPane {
     }
 
     private void setFlowPane() {
-        flowPane.getChildren().clear();
+        tilePane.getChildren().clear();
         int i = 1;
         for (Thumb thumb : thumbCollection.getThumbList()) {
             // todo muss wieder weg
             Label lbl = new Label("" + i++);
+            lbl.setAlignment(Pos.CENTER);
+            lbl.setPadding(new Insets(2));
             lbl.setTextFill(Color.WHITE);
-            lbl.setPrefHeight(30);
-            lbl.setPrefWidth(30);
+            lbl.setMinHeight(30);
+            lbl.setMinWidth(30);
 
             lbl.setTooltip(new Tooltip(thumb.getFileName()));
 
@@ -164,7 +157,7 @@ public class GuiThumbController extends AnchorPane {
             Background background = new Background(new BackgroundFill(col, corn, Insets.EMPTY));
             lbl.setBackground(background);
 
-            flowPane.getChildren().add(lbl);
+            tilePane.getChildren().add(lbl);
         }
     }
 
@@ -205,6 +198,7 @@ public class GuiThumbController extends AnchorPane {
             }
 
             progData.worker.readThumbList(thumbCollection, thumbDir);
+            setFlowPane();
         });
         btnClear.setOnAction(a -> {
             try {
