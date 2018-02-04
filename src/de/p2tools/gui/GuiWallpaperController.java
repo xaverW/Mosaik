@@ -28,11 +28,9 @@ import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 public class GuiWallpaperController extends AnchorPane {
 
@@ -159,9 +157,13 @@ public class GuiWallpaperController extends AnchorPane {
         gridPane.add(btnHelpSliderCount, 3, row);
 
         // import all
-        contPane.setSpacing(10);
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+        hBox.getChildren().add(btnCreate);
+
+        contPane.setSpacing(20);
         contPane.setPadding(new Insets(10));
-        contPane.getChildren().addAll(gridPane, btnCreate);
+        contPane.getChildren().addAll(gridPane, hBox);
 
 
         btnCreate.setOnAction(a -> {

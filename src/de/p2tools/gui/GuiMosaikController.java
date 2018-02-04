@@ -18,17 +18,20 @@ package de.p2tools.gui;
 
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.mosaikData.MosaikData;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class GuiMosaikController extends AnchorPane {
 
     private final ProgData progData;
-    private final VBox vBox = new VBox(10);
-    private final TabPane contPane = new TabPane();
+    private final VBox vBox = new VBox();
+    private final TabPane tabPane = new TabPane();
 
     private final GuiMosaikPane guiMosaikPane = new GuiMosaikPane();
     private final GuiMosaikExtendedPane guiMosaikExtendedPane = new GuiMosaikExtendedPane();
@@ -68,12 +71,12 @@ public class GuiMosaikController extends AnchorPane {
         Tab tab = new Tab("Mosaik");
         tab.setClosable(false);
         tab.setContent(guiMosaikPane);
-        contPane.getTabs().add(tab);
+        tabPane.getTabs().add(tab);
 
         tab = new Tab("erweiterte Einstellungen");
         tab.setClosable(false);
         tab.setContent(guiMosaikExtendedPane);
-        contPane.getTabs().add(tab);
+        tabPane.getTabs().add(tab);
 
         btnCreate.setOnAction(a -> {
             if (mosaikData != null &&
@@ -82,6 +85,13 @@ public class GuiMosaikController extends AnchorPane {
             }
         });
 
-        vBox.getChildren().addAll(contPane, btnCreate);
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+        hBox.getChildren().add(btnCreate);
+
+        vBox.setPadding(new Insets(10));
+        vBox.setSpacing(20);
+        vBox.getChildren().addAll(tabPane, hBox);
+
     }
 }

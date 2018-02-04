@@ -35,9 +35,11 @@
 .menu-button > .arrow-button {
     -fx-padding: 0;
 }
+
 .menu-button > .arrow-button > .arrow {
     -fx-padding: 0;
 }
+
 .txtIsEmpty {
     -fx-control-inner-background: antiquewhite;
 }
@@ -61,13 +63,13 @@
 .contPaneAccordion > *.content {
     -fx-padding: 10 10 10 10;
  }
+
 .contPane{
     -fx-border-color: silver;
     -fx-border-width: 2;
     -fx-border-radius: 5;
     -fx-border-insets: 10;
  }
-
  .contPane > .title {
 /*    -fx-font-weight: bold;*/
     -fx-text-alignment: center;

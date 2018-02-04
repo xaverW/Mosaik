@@ -88,12 +88,9 @@ public class MosaikBw implements Runnable {
             imgSrcSmall = ScaleImage.scaleBufferedImage(srcImg, sizeThumb, sizeThumb);
 
             //Bild zusammenbauen
-//                Thumb thumb;
             Color c;
             int maxRun = numThumbsHeight * numThumbsWidth;
             notifyEvent(maxRun, 0, "");
-//                Farbraum farbraum = new Farbraum(thumbCollection);
-            File file;
             BufferedImage buffImg;
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
                 System.out.println("yy " + yy + " von " + numThumbsHeight);

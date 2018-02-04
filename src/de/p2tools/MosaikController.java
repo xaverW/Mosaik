@@ -94,7 +94,6 @@ public class MosaikController extends StackPane {
 
             menuButton.getStyleClass().add("btnFunction");
             menuButton.setText("");
-            javafx.scene.image.ImageView iv = new Icons().FX_ICON_TOOLBAR_MENUE_TOP;
             menuButton.setGraphic(new Icons().FX_ICON_TOOLBAR_MENUE_TOP);
             menuButton.getItems().addAll(miAbout, miQuitt);
 

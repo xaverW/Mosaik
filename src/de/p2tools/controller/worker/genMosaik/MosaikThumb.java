@@ -116,6 +116,11 @@ public class MosaikThumb implements Runnable {
                 }
             }
 
+            // Schwarz/Weis
+            if (mosaikData.isBlackWhite()) {
+                ImgTools.changeToGrayscale(imgOut);
+            }
+
             //fertig
             notifyEvent(maxRun, progress, "Speichern");
             ImgTools.writeImage(imgOut, dest, mosaikData.getFormat());
