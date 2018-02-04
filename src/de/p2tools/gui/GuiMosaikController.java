@@ -17,39 +17,50 @@
 package de.p2tools.gui;
 
 import de.p2tools.controller.config.ProgData;
+import de.p2tools.controller.data.mosaikData.MosaikData;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 public class GuiMosaikController extends AnchorPane {
 
     private final ProgData progData;
+    private final VBox vBox = new VBox(10);
     private final TabPane contPane = new TabPane();
 
     private final GuiMosaikPane guiMosaikPane = new GuiMosaikPane();
     private final GuiMosaikExtendedPane guiMosaikExtendedPane = new GuiMosaikExtendedPane();
+    private final Button btnCreate = new Button("Mosaik erstellen");
+
+    MosaikData mosaikData = null;
 
     public GuiMosaikController() {
         progData = ProgData.getInstance();
 
-        AnchorPane.setLeftAnchor(contPane, 0.0);
-        AnchorPane.setBottomAnchor(contPane, 0.0);
-        AnchorPane.setRightAnchor(contPane, 0.0);
-        AnchorPane.setTopAnchor(contPane, 0.0);
+        AnchorPane.setLeftAnchor(vBox, 0.0);
+        AnchorPane.setBottomAnchor(vBox, 0.0);
+        AnchorPane.setRightAnchor(vBox, 0.0);
+        AnchorPane.setTopAnchor(vBox, 0.0);
 
         initCont();
-        getChildren().addAll(contPane);
+        getChildren().addAll(vBox);
     }
 
     public void isShown() {
         if (progData.selectedProjectData == null) {
-            contPane.setDisable(true);
+            vBox.setDisable(true);
             return;
         }
 
-        contPane.setDisable(false);
+        vBox.setDisable(false);
         guiMosaikPane.isShown();
         guiMosaikExtendedPane.isShown();
+
+        if (!progData.selectedProjectData.getMosaikData().equals(mosaikData)) {
+            mosaikData = progData.selectedProjectData.getMosaikData();
+        }
     }
 
 
@@ -63,5 +74,14 @@ public class GuiMosaikController extends AnchorPane {
         tab.setClosable(false);
         tab.setContent(guiMosaikExtendedPane);
         contPane.getTabs().add(tab);
+
+        btnCreate.setOnAction(a -> {
+            if (mosaikData != null &&
+                    !mosaikData.getFotoSrc().isEmpty() && !mosaikData.getFotoDestDir().isEmpty() && !mosaikData.getFotoDestName().isEmpty()) {
+                progData.worker.createMosaik(mosaikData);
+            }
+        });
+
+        vBox.getChildren().addAll(contPane, btnCreate);
     }
 }

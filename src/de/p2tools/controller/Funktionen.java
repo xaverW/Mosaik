@@ -17,54 +17,11 @@
 
 package de.p2tools.controller;
 
-import de.p2tools.controller.config.ProgConst;
+import de.p2tools.p2Lib.image.ImgTools;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
-import java.util.Iterator;
 
 public class Funktionen {
-
-    public static BufferedImage getBufferedImage(File source) {
-        BufferedImage img = null;
-        ImageReader reader = getReader(source);
-        try {
-            img = reader.read(0);
-        } catch (Exception e) {
-        }
-        reader.dispose();
-        return img;
-    }
-
-    public static RenderedImage getRenderedImage(File file) {
-        RenderedImage img;
-        ImageReader reader = getReader(file);
-        try {
-            img = reader.readAsRenderedImage(0, null);
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + "BildArchiv_ - getRenderedImage");
-            return null;
-        }
-        reader.dispose();
-        return img;
-    }
-
-    private static ImageReader getReader(File source) {
-        try {
-            Iterator readers = ImageIO.getImageReadersByFormatName(fileType(source));
-            ImageReader reader = (ImageReader) readers.next();
-            ImageInputStream iis = ImageIO.createImageInputStream(source);
-            reader.setInput(iis, true);
-            return reader;
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + "\n" + "Funktionen - getReader");
-            return null;
-        }
-    }
 
     public static String fileType(File f) {
         return fileType(f.getName());
@@ -77,11 +34,11 @@ public class Funktionen {
         if (i > 0 && i < n.length() - 1) {
             suffix = n.substring(i + 1).toLowerCase();
         }
-        if (suffix.equals("jpeg") || suffix.equals(ProgConst.IMAGE_FORMAT_JPG)) {
-            return ProgConst.IMAGE_FORMAT_JPG;
+        if (suffix.equals("jpeg") || suffix.equals(ImgTools.IMAGE_FORMAT_JPG)) {
+            return ImgTools.IMAGE_FORMAT_JPG;
         }
-        if (suffix.equals(ProgConst.IMAGE_FORMAT_PNG)) {
-            return ProgConst.IMAGE_FORMAT_PNG;
+        if (suffix.equals(ImgTools.IMAGE_FORMAT_PNG)) {
+            return ImgTools.IMAGE_FORMAT_PNG;
         }
         return "";
     }

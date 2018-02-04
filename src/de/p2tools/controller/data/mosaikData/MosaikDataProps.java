@@ -17,11 +17,12 @@
 
 package de.p2tools.controller.data.mosaikData;
 
-import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.data.Data;
 import de.p2tools.p2Lib.configFile.config.Config;
+import de.p2tools.p2Lib.configFile.config.ConfigBoolProp;
 import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.image.ImgTools;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class MosaikDataProps extends Data<MosaikData> {
         }
     }
 
-    private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
+    private final StringProperty format = new SimpleStringProperty(ImgTools.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
     private final StringProperty fotoDestName = new SimpleStringProperty(""); // File dest
     private final StringProperty fotoDestDir = new SimpleStringProperty(""); // File dest
@@ -61,14 +62,15 @@ public class MosaikDataProps extends Data<MosaikData> {
 
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<>(Arrays.asList(
-                new ConfigStringProp("format", ProgConst.IMAGE_FORMAT_JPG, format),
+                new ConfigStringProp("format", ImgTools.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("foto-src", "", fotoSrc),
                 new ConfigStringProp("foto-dest-name", "", fotoDestName),
                 new ConfigStringProp("foto-dest-dir", "", fotoDestDir),
                 new ConfigIntProp("thumb-size", 50, thumbSize),
                 new ConfigIntProp("number-thumbs-width", 50, numberThumbsWidth),
                 new ConfigIntProp("thumb-count", 0, thumbCount),
-                new ConfigStringProp("thumb-src", THUMB_SRC.THUMBS.toString(), thumbSrc)));
+                new ConfigStringProp("thumb-src", THUMB_SRC.THUMBS.toString(), thumbSrc),
+                new ConfigBoolProp("black-white", Boolean.FALSE, blackWhite)));
     }
 
 

@@ -18,7 +18,6 @@
 package de.p2tools.controller.data.projectData;
 
 import de.p2tools.controller.data.Data;
-import de.p2tools.controller.data.mosaikBwData.MosaikDataBw;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
@@ -39,7 +38,6 @@ public class ProjectDataProps extends Data<ProjectData> {
     private final StringProperty srcPhoto = new SimpleStringProperty(""); // Quellbilder für das Mosaik
 
     private final MosaikData mosaikData = new MosaikData();
-    private final MosaikDataBw mosaikDataBw = new MosaikDataBw();
     private final WallpaperData wallpaperData = new WallpaperData();
     private final ThumbCollection thumbCollection = new ThumbCollection();
 
@@ -53,17 +51,12 @@ public class ProjectDataProps extends Data<ProjectData> {
                 new ConfigStringProp("dest-dir", "", destDir),
                 new ConfigStringProp("src-photo", "", srcPhoto),
                 new ConfigConfigsData(mosaikData),
-                new ConfigConfigsData(mosaikDataBw),
                 new ConfigConfigsData(wallpaperData),
                 new ConfigConfigsData(thumbCollection)));
     }
 
     public MosaikData getMosaikData() {
         return mosaikData;
-    }
-
-    public MosaikDataBw getMosaikDataBw() {
-        return mosaikDataBw;
     }
 
     public WallpaperData getWallpaperData() {

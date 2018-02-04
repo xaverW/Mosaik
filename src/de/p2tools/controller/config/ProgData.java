@@ -53,7 +53,6 @@ public class ProgData {
     public GuiThumbController guiThumbController = null;
     public GuiChangeThumbController guiChangeThumbController = null;
     public GuiMosaikController guiMosaikController = null;
-    public GuiMosaikBWController guiMosaikBWController = null;
     public GuiWallpaperController guiWallpaperController = null;
 
     public GuiMosaik guiMosaik = null;

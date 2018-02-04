@@ -18,6 +18,7 @@
 package de.p2tools.controller.config;
 
 import de.p2tools.p2Lib.configFile.ConfigsData;
+import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.PConfig;
 import de.p2tools.p2Lib.tools.PConfigs;
 
@@ -45,7 +46,7 @@ public class ProgConfig extends PConfig {
     // Einstellungen zum Erstellen der Fotolisten
     public static PConfigs FOTO_SIZE = addNewKey("foto-size", 600);
     public static PConfigs FOTO_SQUARE = addNewKey("foto-square", Boolean.TRUE.toString());
-    public static PConfigs FOTO_FORMAT = addNewKey("foto-format", ProgConst.IMAGE_FORMAT_JPG);
+    public static PConfigs FOTO_FORMAT = addNewKey("foto-format", ImgTools.IMAGE_FORMAT_JPG);
 
     // GuiStart
     public static PConfigs START_GUI_PROJECT_DATA = addNewKey("start-gui-project-data");

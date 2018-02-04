@@ -35,7 +35,7 @@ public class GuiMosaik extends AnchorPane {
 
     public enum OPTIONS {
 
-        MOSAIK("Mosaik"), MOSAIK_BW("Mosaik aus Quellbild"), WALLPAPER("Fototapete");
+        MOSAIK("Mosaik"), WALLPAPER("Fototapete");
         private final String name;
 
         OPTIONS(String name) {
@@ -57,7 +57,6 @@ public class GuiMosaik extends AnchorPane {
 
     public void isShown() {
         progData.guiMosaikController.isShown();
-        progData.guiMosaikBWController.isShown();
         progData.guiWallpaperController.isShown();
     }
 
@@ -68,17 +67,13 @@ public class GuiMosaik extends AnchorPane {
         hBox.setPadding(new Insets(10));
         hBox.getChildren().add(comboBox);
 
-        stackPane.getChildren().addAll(progData.guiMosaikController, progData.guiMosaikBWController,
-                progData.guiWallpaperController);
+        stackPane.getChildren().addAll(progData.guiMosaikController, progData.guiWallpaperController);
 
-        comboBox.getItems().addAll(OPTIONS.MOSAIK, OPTIONS.MOSAIK_BW, OPTIONS.WALLPAPER);
+        comboBox.getItems().addAll(OPTIONS.MOSAIK, OPTIONS.WALLPAPER);
         comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     switch (newValue) {
                         case MOSAIK:
                             progData.guiMosaikController.toFront();
-                            break;
-                        case MOSAIK_BW:
-                            progData.guiMosaikBWController.toFront();
                             break;
                         case WALLPAPER:
                             progData.guiWallpaperController.toFront();

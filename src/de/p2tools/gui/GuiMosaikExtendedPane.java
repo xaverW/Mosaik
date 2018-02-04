@@ -143,6 +143,7 @@ public class GuiMosaikExtendedPane extends AnchorPane {
             rbSelf.setSelected(true);
         }
 
+        tglBlackWhite.setSelected(mosaikData.isBlackWhite());
         mosaikData.blackWhiteProperty().bind(tglBlackWhite.selectedProperty());
 
 

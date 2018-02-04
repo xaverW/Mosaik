@@ -52,8 +52,5 @@ public class ProgConst {
     public static final int MIN_TABLE_HEIGHT = 250;
 
 
-    public static final String IMAGE_FORMAT_JPG = "jpg";
-    public static final String IMAGE_FORMAT_PNG = "png";
-
     public static final int THUMB_RESOLUTION = 600; // Auflösung der Thumbs in der ThumbCollection
 }

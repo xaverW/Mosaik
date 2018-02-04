@@ -109,7 +109,6 @@ public class MosaikController extends StackPane {
             guiThumb = progData.guiThumb;
 
             progData.guiMosaikController = new GuiMosaikController();
-            progData.guiMosaikBWController = new GuiMosaikBWController();
             progData.guiWallpaperController = new GuiWallpaperController();
             progData.guiMosaik = new GuiMosaik();
             guiMosaik = progData.guiMosaik;

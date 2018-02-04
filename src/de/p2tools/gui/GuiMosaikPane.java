@@ -55,7 +55,7 @@ public class GuiMosaikPane extends AnchorPane {
 
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
-    private final Button btnCreate = new Button("Mosaik erstellen");
+
 
     private final IntegerProperty iPropSize = new SimpleIntegerProperty();
     private final IntegerProperty iPropCount = new SimpleIntegerProperty();
@@ -116,9 +116,9 @@ public class GuiMosaikPane extends AnchorPane {
         btnHelpSrc.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
 
         cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
-        cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c -> {
-            ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setValue(saveComboPfad(cbSrcPhoto));
-        });
+        cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c ->
+                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setValue(saveComboPfad(cbSrcPhoto))
+        );
 
         // DEST
         txtDestName.setMaxWidth(Double.MAX_VALUE);
@@ -195,20 +195,8 @@ public class GuiMosaikPane extends AnchorPane {
         // import all
         contPane.setSpacing(25);
         contPane.setPadding(new Insets(10));
-        contPane.getChildren().addAll(gridPaneDest, btnCreate);
+        contPane.getChildren().addAll(gridPaneDest);
 
-        btnCreate.setOnAction(a -> {
-            if (cbSrcPhoto.getSelectionModel().getSelectedItem() != null &&
-                    !cbSrcPhoto.getSelectionModel().getSelectedItem().isEmpty() && !txtDestDir.getText().isEmpty()) {
-
-                if (mosaikData.getThumbSrc().equals(MosaikData.THUMB_SRC.THUMBS.toString())) {
-                    progData.worker.createMosaik(mosaikData);
-                } else {
-                    progData.worker.createMosaikBw(mosaikData);
-                }
-
-            }
-        });
 
     }
 
@@ -218,7 +206,7 @@ public class GuiMosaikPane extends AnchorPane {
         }
 
         // SRC
-        progData.selectedProjectData.srcPhotoProperty().unbind();
+        mosaikData.fotoSrcProperty().unbind();
 
         // DEST
         txtDestName.textProperty().unbindBidirectional(mosaikData.fotoDestNameProperty());
@@ -245,11 +233,11 @@ public class GuiMosaikPane extends AnchorPane {
         String[] storedPhotoPath = {""};
         storedPhotoPath = ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.get().split(ProgConst.DIR_SEPARATOR);
         cbSrcPhoto.getItems().addAll(storedPhotoPath);
-        if (!cbSrcPhoto.getItems().contains(mosaikData.getFotoSrc())) {
+        if (!mosaikData.getFotoSrc().isEmpty() && !cbSrcPhoto.getItems().contains(mosaikData.getFotoSrc())) {
             cbSrcPhoto.getItems().add(mosaikData.getFotoSrc());
         }
         cbSrcPhoto.getSelectionModel().select(mosaikData.getFotoSrc());
-        progData.selectedProjectData.srcPhotoProperty().bind(cbSrcPhoto.getSelectionModel().selectedItemProperty());
+        mosaikData.fotoSrcProperty().bind(cbSrcPhoto.getSelectionModel().selectedItemProperty());
 
         // DEST
         txtDestName.textProperty().bindBidirectional(mosaikData.fotoDestNameProperty());

@@ -16,12 +16,12 @@
 
 package de.p2tools.controller.data.thumb;
 
-import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.data.Data;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigBoolProp;
 import de.p2tools.p2Lib.configFile.config.ConfigConfigsList;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.image.ImgTools;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -34,7 +34,7 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
 
     public static final String TAG = "ThumbCollection";
     private final BooleanProperty recursive = new SimpleBooleanProperty(true);
-    private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG);
+    private final StringProperty format = new SimpleStringProperty(ImgTools.IMAGE_FORMAT_JPG);
     //    private final StringProperty thumbDir = new SimpleStringProperty("");
     private final StringProperty fotoSrcDir = new SimpleStringProperty("");
 
@@ -47,7 +47,7 @@ public class ThumbCollectionProps extends Data<ThumbCollection> {
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<>(Arrays.asList(
                 new ConfigBoolProp("recursiv", true, recursive),
-                new ConfigStringProp("foto-format", ProgConst.IMAGE_FORMAT_JPG, format),
+                new ConfigStringProp("foto-format", ImgTools.IMAGE_FORMAT_JPG, format),
 //                new ConfigStringProp("dir-thumb", "", thumbDir),
                 new ConfigStringProp("dir-foto-src", "", fotoSrcDir),
                 new ConfigConfigsList(thumbList)));

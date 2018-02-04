@@ -17,18 +17,18 @@
 
 package de.p2tools.controller.data.wallpaperData;
 
-import de.p2tools.controller.config.ProgConst;
 import de.p2tools.p2Lib.configFile.ConfigsData;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.image.ImgTools;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData {
-    private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
+    private final StringProperty format = new SimpleStringProperty(ImgTools.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoDestDir = new SimpleStringProperty(""); // File dest
     private final StringProperty fotoDestName = new SimpleStringProperty(""); // File dest
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
@@ -47,7 +47,7 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
 
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<Config>(Arrays.asList(
-                new ConfigStringProp("format", ProgConst.IMAGE_FORMAT_JPG, format),
+                new ConfigStringProp("format", ImgTools.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("foto-dest-dir", "", fotoDestDir),
                 new ConfigStringProp("foto-dest-name", "", fotoDestName),
                 new ConfigIntProp("thumb-size", 50, thumbSize),
