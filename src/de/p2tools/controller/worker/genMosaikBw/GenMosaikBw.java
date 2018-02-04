@@ -22,7 +22,7 @@ import de.p2tools.controller.RunEvent;
 import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.data.mosaikBwData.MosaikDataBw;
+import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
@@ -54,7 +54,7 @@ public class GenMosaikBw {
     private boolean stopAll = false;
 
     private ProgData progData;
-    private MosaikDataBw mosaikDataBw;
+    private MosaikData mosaikData;
     private ThumbCollection thumbCollection;
 
     public GenMosaikBw(ProgData progData) {
@@ -76,8 +76,8 @@ public class GenMosaikBw {
     /**
      * @param mosaikData
      */
-    public void create(MosaikDataBw mosaikData) {
-        this.mosaikDataBw = mosaikData;
+    public void create(MosaikData mosaikData) {
+        this.mosaikData = mosaikData;
         this.thumbCollection = progData.selectedProjectData.getThumbCollection();
 
         dest = FileUtils.concatPaths(mosaikData.getFotoDestDir(), mosaikData.getFotoDestName());
@@ -139,16 +139,16 @@ public class GenMosaikBw {
 
                 int srcHeight = srcImg.getRaster().getHeight();
                 int srcWidth = srcImg.getRaster().getWidth();
-                int sizeThumb = mosaikDataBw.getThumbSize();
+                int sizeThumb = mosaikData.getThumbSize();
 
-                int numThumbsWidth = mosaikDataBw.getNumberThumbsWidth();
+                int numThumbsWidth = mosaikData.getNumberThumbsWidth();
                 int numPixelProThumb = srcWidth / numThumbsWidth;
                 int numThumbsHeight = srcHeight / numPixelProThumb;
 
                 int destWidth = numThumbsWidth * sizeThumb;
                 int destHeight = numThumbsHeight * sizeThumb;
 
-                boolean blackWhite = mosaikDataBw.isBlackWhite();
+                boolean blackWhite = mosaikData.isBlackWhite();
 
                 imgOut = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
 
@@ -216,7 +216,7 @@ public class GenMosaikBw {
             ImageOutputStream ios = null;
             ImageWriter writer = null;
             try {
-                if (mosaikDataBw.getFormat().equals(ProgConst.IMAGE_FORMAT_PNG)) {
+                if (mosaikData.getFormat().equals(ProgConst.IMAGE_FORMAT_PNG)) {
                     writer = ImageIO.getImageWritersBySuffix(ProgConst.IMAGE_FORMAT_PNG).next();
                     ios = ImageIO.createImageOutputStream(new File(dest));
                     writer.setOutput(ios);

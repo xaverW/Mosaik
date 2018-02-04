@@ -30,7 +30,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -47,7 +46,6 @@ public class GuiStart extends AnchorPane {
     private final TitledPane contPane = new TitledPane();
     private final TitledPane projectDataPane = new TitledPane();
     private final ComboBox<ProjectData> cbProjectDataList = new ComboBox<>();
-    private final ComboBox<String> cbSrcPhoto = new ComboBox<>();
     private final TextField txtName = new TextField("");
     private final TextField txtDir = new TextField("");
     Button btnNew = new Button("Neues Projekt erstellen");
@@ -256,7 +254,6 @@ public class GuiStart extends AnchorPane {
         projectData = cbProjectDataList.getSelectionModel().getSelectedItem();
         progData.selectedProjectData = projectData;
 
-        cbSrcPhoto.getItems().clear();
         contPane.setDisable(projectData == null);
         btnMov.setDisable(projectData == null);
         btnDel.setDisable(projectData == null);
@@ -271,16 +268,6 @@ public class GuiStart extends AnchorPane {
 
             txtName.textProperty().bindBidirectional(projectData.nameProperty());
             txtDir.textProperty().bindBidirectional(projectData.destDirProperty());
-
-            String[] storedPhotoPath = {""};
-            storedPhotoPath = ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.get().split(ProgConst.DIR_SEPARATOR);
-            cbSrcPhoto.getItems().addAll(storedPhotoPath);
-            if (!cbSrcPhoto.getItems().contains(projectData.getSrcPhoto())) {
-                cbSrcPhoto.getItems().add(projectData.getSrcPhoto());
-            }
-            cbSrcPhoto.getSelectionModel().select(projectData.getSrcPhoto());
-
-            projectData.srcPhotoProperty().bind(cbSrcPhoto.getSelectionModel().selectedItemProperty());
         }
     }
 
@@ -301,20 +288,6 @@ public class GuiStart extends AnchorPane {
         btnDestDirHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnDestDirHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROJECT_PATH));
 
-        final Button btnSrcFotoDir = new Button();
-        btnSrcFotoDir.setOnAction(event -> {
-            String foto = DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbSrcPhoto);
-            if (foto.isEmpty()) {
-                return;
-            }
-        });
-        btnSrcFotoDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
-
-        final Button btnSrcFotoHelp = new Button("");
-        btnSrcFotoHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnSrcFotoHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROJECT_PATH));
-
-
         // make Grid
         int row = 0;
         GridPane gridPaneDest = new GridPane();
@@ -324,13 +297,8 @@ public class GuiStart extends AnchorPane {
 
         txtDir.setMaxWidth(Double.MAX_VALUE);
         txtDir.setEditable(false);
-        cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
-        cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c -> {
-            ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setValue(saveComboPfad(cbSrcPhoto));
-        });
 
         GridPane.setHgrow(txtDir, Priority.ALWAYS);
-        GridPane.setHgrow(cbSrcPhoto, Priority.ALWAYS);
 
         gridPaneDest.add(new Label("Name des Projekts"), 0, ++row, 2, 1);
         gridPaneDest.add(new Label("Name:"), 0, ++row);
@@ -342,14 +310,6 @@ public class GuiStart extends AnchorPane {
         gridPaneDest.add(txtDir, 1, row);
         gridPaneDest.add(btnDestDir, 2, row);
         gridPaneDest.add(btnDestDirHelp, 3, row);
-
-        gridPaneDest.add(new Label(""), 0, ++row);
-        gridPaneDest.add(new Label("Bild das als Mosaik dargestellt werden soll"), 0, ++row, 2, 1);
-        gridPaneDest.add(new Label("Pfad: "), 0, ++row);
-        gridPaneDest.add(cbSrcPhoto, 1, row);
-        gridPaneDest.add(btnSrcFotoDir, 2, row);
-        gridPaneDest.add(btnSrcFotoHelp, 3, row);
-
 
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(gridPaneDest);

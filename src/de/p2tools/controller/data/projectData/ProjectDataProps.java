@@ -36,7 +36,7 @@ public class ProjectDataProps extends Data<ProjectData> {
 
     private final StringProperty name = new SimpleStringProperty("Neues Mosaik");
     private final StringProperty destDir = new SimpleStringProperty(""); // project dir
-    private final StringProperty srcPhoto = new SimpleStringProperty(""); // Quellbild für das Mosaik
+    private final StringProperty srcPhoto = new SimpleStringProperty(""); // Quellbilder für das Mosaik
 
     private final MosaikData mosaikData = new MosaikData();
     private final MosaikDataBw mosaikDataBw = new MosaikDataBw();

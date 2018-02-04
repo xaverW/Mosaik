@@ -195,7 +195,7 @@ public class GuiMosaikBWController extends AnchorPane {
 
         btnCreate.setOnAction(a -> {
             if (!txtSrc.getText().isEmpty() && !txtDestDir.getText().isEmpty()) {
-                progData.worker.createMosaikBw(mosaikDataBw);
+//                progData.worker.createMosaikBw(mosaikDataBw);
             }
         });
 

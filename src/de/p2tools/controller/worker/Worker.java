@@ -20,7 +20,6 @@ package de.p2tools.controller.worker;
 import de.p2tools.controller.RunEvent;
 import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.data.mosaikBwData.MosaikDataBw;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
@@ -95,7 +94,7 @@ public class Worker {
         genMosaik.create(mosaikData);
     }
 
-    public void createMosaikBw(MosaikDataBw mosaikDataBw) {
+    public void createMosaikBw(MosaikData mosaikDataBw) {
         genMosaikBw.create(mosaikDataBw);
     }
 

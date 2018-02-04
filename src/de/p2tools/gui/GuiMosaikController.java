@@ -16,67 +16,29 @@
 
 package de.p2tools.gui;
 
-import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
-import de.p2tools.controller.data.Icons;
-import de.p2tools.controller.data.mosaikData.MosaikData;
-import de.p2tools.gui.dialog.MTAlert;
-import de.p2tools.p2Lib.tools.DirFileChooser;
-import de.p2tools.p2Lib.tools.FileUtils;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 
 public class GuiMosaikController extends AnchorPane {
 
     private final ProgData progData;
-    private final ScrollPane scrollPane = new ScrollPane();
-    //    private final VBox vBoxCont = new VBox();
-    private final VBox contPane = new VBox();
+    private final TabPane contPane = new TabPane();
 
-    private final TextField txtSrc = new TextField();
-    private final Button btnSrc = new Button("");
-    private final TextField txtDestName = new TextField();
-    private final Slider sliderSize = new Slider();
-    private final Label lblSlider = new Label("");
-    private final Slider sliderCount = new Slider();
-    private final Label lblSliderCount = new Label("");
-
-    private final TextField txtDestDir = new TextField();
-    private final Button btnDest = new Button("");
-    private final Button btnCreate = new Button("Mosaik erstellen");
-
-    private final IntegerProperty iPropSize = new SimpleIntegerProperty();
-    private final IntegerProperty iPropCount = new SimpleIntegerProperty();
-
-    MosaikData mosaikData = null;
+    private final GuiMosaikPane guiMosaikPane = new GuiMosaikPane();
+    private final GuiMosaikExtendedPane guiMosaikExtendedPane = new GuiMosaikExtendedPane();
 
     public GuiMosaikController() {
         progData = ProgData.getInstance();
 
-        if (progData.selectedProjectData != null) {
-            mosaikData = progData.selectedProjectData.getMosaikData();
-        }
-        
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setContent(contPane);
-
-        AnchorPane.setLeftAnchor(scrollPane, 0.0);
-        AnchorPane.setBottomAnchor(scrollPane, 0.0);
-        AnchorPane.setRightAnchor(scrollPane, 0.0);
-        AnchorPane.setTopAnchor(scrollPane, 0.0);
+        AnchorPane.setLeftAnchor(contPane, 0.0);
+        AnchorPane.setBottomAnchor(contPane, 0.0);
+        AnchorPane.setRightAnchor(contPane, 0.0);
+        AnchorPane.setTopAnchor(contPane, 0.0);
 
         initCont();
-        bind();
-        getChildren().addAll(scrollPane);
+        getChildren().addAll(contPane);
     }
 
     public void isShown() {
@@ -86,169 +48,20 @@ public class GuiMosaikController extends AnchorPane {
         }
 
         contPane.setDisable(false);
-        if (!mosaikData.equals(progData.selectedProjectData.getMosaikData())) {
-            unbind();
-            mosaikData = progData.selectedProjectData.getMosaikData();
-            bind();
-        }
-        if (txtDestDir.getText().isEmpty()) {
-            txtDestDir.setText(progData.selectedProjectData.getDestDir());
-        }
-        if (txtDestName.getText().isEmpty()) {
-            txtDestName.setText(FileUtils.getNextFileName(txtDestDir.getText(), ProgConst.MOSAIK_STD_NAME));
-        }
+        guiMosaikPane.isShown();
+        guiMosaikExtendedPane.isShown();
     }
 
 
     private void initCont() {
-        // SRC
-        btnSrc.setOnAction(event -> {
-            DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtSrc);
-        });
-        btnSrc.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
+        Tab tab = new Tab("Mosaik");
+        tab.setClosable(false);
+        tab.setContent(guiMosaikPane);
+        contPane.getTabs().add(tab);
 
-        final Button btnHelpSrc = new Button("");
-        btnHelpSrc.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSrc.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
-
-        txtSrc.setMaxWidth(Double.MAX_VALUE);
-
-        // DEST
-        txtDestName.setMaxWidth(Double.MAX_VALUE);
-
-        btnDest.setOnAction(event -> DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDestDir));
-        btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
-
-        final Button btnHelpDest = new Button("");
-        btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
-
-        txtDestDir.setMaxWidth(Double.MAX_VALUE);
-
-
-        // Thumbsize
-        final Button btnHelpSlider = new Button("");
-        btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
-
-
-        sliderSize.setMin(5);
-        sliderSize.setMax(25);
-
-        // Anzahl Thumbs
-        final Button btnHelpSliderCount = new Button("");
-        btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSliderCount.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
-
-        sliderCount.setMin(1);
-        sliderCount.setMax(100);
-
-
-        // make Grid
-        int row = 0;
-        GridPane gridPaneDest = new GridPane();
-        gridPaneDest.setPadding(new Insets(0));
-        gridPaneDest.setVgap(5);
-        gridPaneDest.setHgap(5);
-
-        GridPane.setHgrow(txtDestName, Priority.ALWAYS);
-        GridPane.setHgrow(txtDestDir, Priority.ALWAYS);
-        GridPane.setHgrow(sliderSize, Priority.ALWAYS);
-        GridPane.setHgrow(sliderCount, Priority.ALWAYS);
-
-        gridPaneDest.add(new Label("Foto zum Erstellen des Mosaik"), 0, row, 2, 1);
-        gridPaneDest.add(new Label("Datei:"), 0, ++row);
-        gridPaneDest.add(txtSrc, 1, row);
-        gridPaneDest.add(btnSrc, 2, row);
-        gridPaneDest.add(btnHelpSrc, 3, row);
-
-        gridPaneDest.add(new Label(""), 0, ++row);
-        gridPaneDest.add(new Label("Mosaik speichern"), 0, ++row, 2, 1);
-
-        gridPaneDest.add(new Label("Verzeichnis:"), 0, ++row);
-        gridPaneDest.add(txtDestDir, 1, row);
-        gridPaneDest.add(btnDest, 2, row);
-        gridPaneDest.add(btnHelpDest, 3, row);
-
-        gridPaneDest.add(new Label("Dateiname:"), 0, ++row);
-        gridPaneDest.add(txtDestName, 1, row);
-
-        gridPaneDest.add(new Label(""), 0, ++row);
-        gridPaneDest.add(new Label("Größe der Miniaturbilder (Pixel):"), 0, ++row, 2, 1);
-        gridPaneDest.add(sliderSize, 0, ++row, 2, 1);
-        gridPaneDest.add(lblSlider, 2, row);
-        gridPaneDest.add(btnHelpSlider, 3, row);
-
-        gridPaneDest.add(new Label("Anzahl Miniaturbilder im Mosaik (Breite):"), 0, ++row, 2, 1);
-        gridPaneDest.add(sliderCount, 0, ++row, 2, 1);
-        gridPaneDest.add(lblSliderCount, 2, row);
-        gridPaneDest.add(btnHelpSliderCount, 3, row);
-
-        // import all
-        contPane.setSpacing(25);
-        contPane.setPadding(new Insets(10));
-        contPane.getChildren().addAll(gridPaneDest, btnCreate);
-
-        btnCreate.setOnAction(a -> {
-            if (!txtSrc.getText().isEmpty() && !txtDestDir.getText().isEmpty()) {
-                progData.worker.createMosaik(mosaikData);
-            }
-        });
-
-    }
-
-    private void unbind() {
-        if (mosaikData == null) {
-            return;
-        }
-
-        // SRC
-        txtSrc.textProperty().unbindBidirectional(mosaikData.fotoSrcProperty());
-
-        // DEST
-        txtDestName.textProperty().unbindBidirectional(mosaikData.fotoDestNameProperty());
-        txtDestDir.textProperty().unbindBidirectional(mosaikData.fotoDestDirProperty());
-
-        // Thumbsize
-
-        iPropSize.unbind();
-        mosaikData.thumbSizeProperty().unbind();
-        lblSlider.textProperty().unbind();
-
-        // Anzahl Thumbs
-        iPropCount.unbind();
-        mosaikData.numberThumbsWidthProperty().unbind();
-        lblSliderCount.textProperty().unbind();
-    }
-
-    private void bind() {
-        if (mosaikData == null) {
-            return;
-        }
-
-        // SRC
-        txtSrc.textProperty().bindBidirectional(mosaikData.fotoSrcProperty());
-
-        // DEST
-        txtDestName.textProperty().bindBidirectional(mosaikData.fotoDestNameProperty());
-        txtDestDir.textProperty().bindBidirectional(mosaikData.fotoDestDirProperty());
-
-        // Thumbsize
-        sliderSize.setValue(mosaikData.getThumbSize() / 10);
-        iPropSize.bind(sliderSize.valueProperty());
-
-        NumberBinding nb = Bindings.multiply(iPropSize, 10);
-        mosaikData.thumbSizeProperty().bind(nb);
-
-        lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.thumbSizeProperty()));
-
-        // Anzahl Thumbs
-        sliderCount.setValue(mosaikData.getNumberThumbsWidth() / 10);
-        iPropCount.bind(sliderCount.valueProperty());
-
-        NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
-        mosaikData.numberThumbsWidthProperty().bind(nbCount);
-
-        lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
+        tab = new Tab("erweiterte Einstellungen");
+        tab.setClosable(false);
+        tab.setContent(guiMosaikExtendedPane);
+        contPane.getTabs().add(tab);
     }
 }

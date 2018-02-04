@@ -49,6 +49,7 @@ public class GuiThumb extends AnchorPane {
         tpChangeThumb.getStyleClass().add("contPaneAccordion");
 
         accordion.getPanes().addAll(tpThumb, tpChangeThumb);
+        accordion.setExpandedPane(tpThumb);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToHeight(true);

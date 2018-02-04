@@ -22,16 +22,28 @@ import de.p2tools.controller.data.Data;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MosaikDataProps extends Data<MosaikData> {
     public static final String TAG = "MosaikData";
+
+    public enum THUMB_SRC {
+
+        THUMBS("THUMBS"), SRC_FOTO("SRC_FOTO");
+        private final String name;
+
+        THUMB_SRC(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
 
     private final StringProperty format = new SimpleStringProperty(ProgConst.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
@@ -40,6 +52,8 @@ public class MosaikDataProps extends Data<MosaikData> {
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
     private final IntegerProperty numberThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
     private final IntegerProperty thumbCount = new SimpleIntegerProperty(0); // Anzahl wie oft ein Thumbs verwendet werden kann
+    private final StringProperty thumbSrc = new SimpleStringProperty(THUMB_SRC.THUMBS.toString()); // Miniaturbilder die verwendet werden
+    private final BooleanProperty blackWhite = new SimpleBooleanProperty(false); // Mosaik aus S/W-Bildern erstellen
 
     public String getTag() {
         return TAG;
@@ -53,7 +67,8 @@ public class MosaikDataProps extends Data<MosaikData> {
                 new ConfigStringProp("foto-dest-dir", "", fotoDestDir),
                 new ConfigIntProp("thumb-size", 50, thumbSize),
                 new ConfigIntProp("number-thumbs-width", 50, numberThumbsWidth),
-                new ConfigIntProp("thumb-count", 0, thumbCount)));
+                new ConfigIntProp("thumb-count", 0, thumbCount),
+                new ConfigStringProp("thumb-src", THUMB_SRC.THUMBS.toString(), thumbSrc)));
     }
 
 
@@ -142,4 +157,27 @@ public class MosaikDataProps extends Data<MosaikData> {
         this.thumbCount.set(thumbCount);
     }
 
+    public String getThumbSrc() {
+        return thumbSrc.get();
+    }
+
+    public StringProperty thumbSrcProperty() {
+        return thumbSrc;
+    }
+
+    public void setThumbSrc(String thumbSrc) {
+        this.thumbSrc.set(thumbSrc);
+    }
+
+    public boolean isBlackWhite() {
+        return blackWhite.get();
+    }
+
+    public BooleanProperty blackWhiteProperty() {
+        return blackWhite;
+    }
+
+    public void setBlackWhite(boolean blackWhite) {
+        this.blackWhite.set(blackWhite);
+    }
 }
