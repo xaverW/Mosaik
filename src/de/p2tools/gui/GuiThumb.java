@@ -19,7 +19,8 @@ package de.p2tools.gui;
 import de.p2tools.controller.config.ProgData;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 
 public class GuiThumb extends AnchorPane {
@@ -42,19 +43,33 @@ public class GuiThumb extends AnchorPane {
 
     private void initCont() {
 
-        TitledPane tpThumb = new TitledPane("Miniaturbilder", progData.guiThumbController);
-        tpThumb.getStyleClass().add("contPaneAccordion");
+        TabPane tabPane = new TabPane();
+        Tab tab = new Tab("Miniaturbilder");
+//        tab.getStyleClass().add("contPaneAccordion");
+        tab.setClosable(false);
+        tab.setContent(progData.guiThumbController);
+        tabPane.getTabs().add(tab);
 
-        TitledPane tpChangeThumb = new TitledPane("Miniaturbilder bearbeiten", progData.guiChangeThumbController);
-        tpChangeThumb.getStyleClass().add("contPaneAccordion");
+        tab = new Tab("Miniaturbilder bearbeiten");
+//        tab.getStyleClass().add("contPaneAccordion");
+        tab.setClosable(false);
+        tab.setContent(progData.guiChangeThumbController);
+        tabPane.getTabs().add(tab);
 
-        accordion.getPanes().addAll(tpThumb, tpChangeThumb);
-        accordion.setExpandedPane(tpThumb);
+
+//        TitledPane tpThumb = new TitledPane("Miniaturbilder", progData.guiThumbController);
+//        tpThumb.getStyleClass().add("contPaneAccordion");
+//
+//        TitledPane tpChangeThumb = new TitledPane("Miniaturbilder bearbeiten", progData.guiChangeThumbController);
+//        tpChangeThumb.getStyleClass().add("contPaneAccordion");
+//
+//        accordion.getPanes().addAll(tpThumb, tpChangeThumb);
+//        accordion.setExpandedPane(tpThumb);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setContent(accordion);
+        scrollPane.setContent(tabPane);
 
         AnchorPane.setLeftAnchor(scrollPane, 10.0);
         AnchorPane.setBottomAnchor(scrollPane, 10.0);
