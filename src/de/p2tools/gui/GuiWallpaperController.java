@@ -27,15 +27,18 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 public class GuiWallpaperController extends AnchorPane {
 
     private final ScrollPane scrollPane = new ScrollPane();
-    private final VBox contPane = new VBox();
+    private final VBox contPane = new VBox(10);
     private final TextField txtDestName = new TextField();
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
@@ -57,15 +60,17 @@ public class GuiWallpaperController extends AnchorPane {
             this.wallpaperData = progData.selectedProjectData.getWallpaperData();
         }
 
+        contPane.setPadding(new Insets(10));
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setContent(contPane);
 
         AnchorPane.setLeftAnchor(scrollPane, 0.0);
-        AnchorPane.setBottomAnchor(scrollPane, 0.0);
+//        AnchorPane.setBottomAnchor(scrollPane, 0.0);
         AnchorPane.setRightAnchor(scrollPane, 0.0);
         AnchorPane.setTopAnchor(scrollPane, 0.0);
-
+        scrollPane.getStyleClass().add("layoutBackground");
+        getStyleClass().add("layoutBackground");
         initCont();
         bind();
         getChildren().addAll(scrollPane);
@@ -127,15 +132,19 @@ public class GuiWallpaperController extends AnchorPane {
         int row = 0;
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(0));
-        gridPane.setVgap(5);
-        gridPane.setHgap(5);
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
 
         GridPane.setHgrow(txtDestDir, Priority.ALWAYS);
         GridPane.setHgrow(txtDestName, Priority.ALWAYS);
         GridPane.setHgrow(sliderSize, Priority.ALWAYS);
         GridPane.setHgrow(sliderCount, Priority.ALWAYS);
 
-        gridPane.add(new Label("Fototapete speichern"), 0, row, 2, 1);
+        Label lbl = new Label("Fototapete speichern");
+        lbl.getStyleClass().add("headerLabel");
+        lbl.setMaxWidth(Double.MAX_VALUE);
+
+        gridPane.add(lbl, 0, row, 4, 1);
         gridPane.add(new Label("Verzeichnis:"), 0, ++row);
         gridPane.add(txtDestDir, 1, row);
         gridPane.add(btnDest, 2, row);
@@ -144,27 +153,32 @@ public class GuiWallpaperController extends AnchorPane {
         gridPane.add(new Label("Dateiname: "), 0, ++row);
         gridPane.add(txtDestName, 1, row);
 
-        gridPane.add(new Label(""), 0, ++row);
 
-        gridPane.add(new Label("Größe der Miniaturbilder (Pixel):"), 0, ++row, 2, 1);
+        lbl = new Label("Größe der Miniaturbilder (Pixel)");
+        lbl.getStyleClass().add("headerLabel");
+        lbl.setMaxWidth(Double.MAX_VALUE);
+
+        gridPane.add(new Label(""), 0, ++row);
+        gridPane.add(lbl, 0, ++row, 4, 1);
         gridPane.add(sliderSize, 0, ++row, 2, 1);
         gridPane.add(lblSlider, 2, row);
         gridPane.add(btnHelpSlider, 3, row);
 
-        gridPane.add(new Label("Anzahl Miniaturbilder im Mosaik (Breite):"), 0, ++row, 2, 1);
+        lbl = new Label("Anzahl Miniaturbilder im Mosaik (Breite)");
+        lbl.getStyleClass().add("headerLabel");
+        lbl.setMaxWidth(Double.MAX_VALUE);
+
+        gridPane.add(new Label(""), 0, ++row);
+        gridPane.add(lbl, 0, ++row, 4, 1);
         gridPane.add(sliderCount, 0, ++row, 2, 1);
         gridPane.add(lblSliderCount, 2, row);
         gridPane.add(btnHelpSliderCount, 3, row);
 
-        // import all
-        HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER_RIGHT);
-        hBox.getChildren().add(btnCreate);
+        GridPane.setHalignment(btnCreate, HPos.RIGHT);
+        gridPane.add(new Label(""), 0, ++row);
+        gridPane.add(btnCreate, 0, ++row, 4, 1);
 
-        contPane.setSpacing(20);
-        contPane.setPadding(new Insets(10));
-        contPane.getChildren().addAll(gridPane, hBox);
-
+        contPane.getChildren().add(gridPane);
 
         btnCreate.setOnAction(a -> {
             if (!txtDestDir.getText().isEmpty()) {

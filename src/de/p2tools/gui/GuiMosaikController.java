@@ -43,9 +43,11 @@ public class GuiMosaikController extends AnchorPane {
         progData = ProgData.getInstance();
 
         AnchorPane.setLeftAnchor(vBox, 0.0);
-        AnchorPane.setBottomAnchor(vBox, 0.0);
+//        AnchorPane.setBottomAnchor(vBox, 0.0);
         AnchorPane.setRightAnchor(vBox, 0.0);
         AnchorPane.setTopAnchor(vBox, 0.0);
+
+        vBox.getStyleClass().add("layoutBackground");
 
         initCont();
         getChildren().addAll(vBox);

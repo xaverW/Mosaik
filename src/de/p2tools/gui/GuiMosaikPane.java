@@ -155,8 +155,8 @@ public class GuiMosaikPane extends AnchorPane {
         int row = 0;
         GridPane gridPaneDest = new GridPane();
         gridPaneDest.setPadding(new Insets(0));
-        gridPaneDest.setVgap(5);
-        gridPaneDest.setHgap(5);
+        gridPaneDest.setVgap(10);
+        gridPaneDest.setHgap(10);
 
         GridPane.setHgrow(cbSrcPhoto, Priority.ALWAYS);
         GridPane.setHgrow(txtDestName, Priority.ALWAYS);
@@ -164,14 +164,22 @@ public class GuiMosaikPane extends AnchorPane {
         GridPane.setHgrow(sliderSize, Priority.ALWAYS);
         GridPane.setHgrow(sliderCount, Priority.ALWAYS);
 
-        gridPaneDest.add(new Label("Foto als Vorlage zum Erstellen des Mosaik"), 0, row, 2, 1);
+        Label lbl = new Label("Foto als Vorlage zum Erstellen des Mosaik");
+        lbl.getStyleClass().add("headerLabel");
+        lbl.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lbl, Priority.ALWAYS);
+        gridPaneDest.add(lbl, 0, row, 4, 1);
         gridPaneDest.add(new Label("Datei:"), 0, ++row);
         gridPaneDest.add(cbSrcPhoto, 1, row);
         gridPaneDest.add(btnSrc, 2, row);
         gridPaneDest.add(btnHelpSrc, 3, row);
 
-        gridPaneDest.add(new Label(""), 0, ++row);
-        gridPaneDest.add(new Label("Mosaik speichern"), 0, ++row, 2, 1);
+        lbl = new Label("Mosaik speichern");
+        lbl.getStyleClass().add("headerLabel");
+        lbl.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lbl, Priority.ALWAYS);
+        gridPaneDest.add(new Label(" "), 0, ++row);
+        gridPaneDest.add(lbl, 0, ++row, 4, 1);
 
         gridPaneDest.add(new Label("Verzeichnis:"), 0, ++row);
         gridPaneDest.add(txtDestDir, 1, row);
@@ -181,13 +189,22 @@ public class GuiMosaikPane extends AnchorPane {
         gridPaneDest.add(new Label("Dateiname:"), 0, ++row);
         gridPaneDest.add(txtDestName, 1, row);
 
-        gridPaneDest.add(new Label(""), 0, ++row);
-        gridPaneDest.add(new Label("Größe der Miniaturbilder (Pixel):"), 0, ++row, 2, 1);
+        lbl = new Label("Größe der Miniaturbilder (Pixel):");
+        lbl.getStyleClass().add("headerLabel");
+        lbl.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lbl, Priority.ALWAYS);
+        gridPaneDest.add(new Label(" "), 0, ++row);
+        gridPaneDest.add(lbl, 0, ++row, 4, 1);
         gridPaneDest.add(sliderSize, 0, ++row, 2, 1);
         gridPaneDest.add(lblSlider, 2, row);
         gridPaneDest.add(btnHelpSlider, 3, row);
 
-        gridPaneDest.add(new Label("Anzahl Miniaturbilder im Mosaik pro Zeile"), 0, ++row, 2, 1);
+        lbl = new Label("Anzahl Miniaturbilder im Mosaik pro Zeile");
+        lbl.getStyleClass().add("headerLabel");
+        lbl.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lbl, Priority.ALWAYS);
+        gridPaneDest.add(new Label(" "), 0, ++row);
+        gridPaneDest.add(lbl, 0, ++row, 4, 1);
         gridPaneDest.add(sliderCount, 0, ++row, 2, 1);
         gridPaneDest.add(lblSliderCount, 2, row);
         gridPaneDest.add(btnHelpSliderCount, 3, row);

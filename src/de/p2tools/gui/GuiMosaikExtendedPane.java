@@ -53,10 +53,12 @@ public class GuiMosaikExtendedPane extends AnchorPane {
         scrollPane.setContent(contPane);
 
         AnchorPane.setLeftAnchor(scrollPane, 0.0);
-        AnchorPane.setBottomAnchor(scrollPane, 0.0);
+//        AnchorPane.setBottomAnchor(scrollPane, 0.0);
         AnchorPane.setRightAnchor(scrollPane, 0.0);
         AnchorPane.setTopAnchor(scrollPane, 0.0);
 
+        scrollPane.getStyleClass().add("layoutBackground");
+        
         initCont();
         bind();
         getChildren().addAll(scrollPane);
@@ -105,15 +107,23 @@ public class GuiMosaikExtendedPane extends AnchorPane {
         rbThumb.setMaxWidth(Double.MAX_VALUE);
         rbSelf.setMaxWidth(Double.MAX_VALUE);
 
-        gridPaneDest.add(new Label("Fotos aus denen das Mosaik gebaut wird festlegen"), 0, row);
-        gridPaneDest.add(btnHelpSrcImage, 1, row);
+        Label lbl = new Label("Fotos aus denen das Mosaik gebaut wird festlegen");
+        lbl.getStyleClass().add("headerLabel");
+        lbl.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lbl, Priority.ALWAYS);
+        gridPaneDest.add(lbl, 0, row, 2, 1);
         gridPaneDest.add(rbThumb, 0, ++row);
+        gridPaneDest.add(btnHelpSrcImage, 1, row);
         gridPaneDest.add(rbSelf, 0, ++row);
 
+        lbl = new Label("Mosaik aus Schwarz/Weiß Fotos bauen");
+        lbl.getStyleClass().add("headerLabel");
+        lbl.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lbl, Priority.ALWAYS);
         gridPaneDest.add(new Label(" "), 1, ++row);
-        gridPaneDest.add(new Label("Mosaik aus Schwarz/Weiß Fotos bauen"), 0, ++row);
-        gridPaneDest.add(btnHelpBlackWhite, 1, row);
+        gridPaneDest.add(lbl, 0, ++row, 2, 1);
         gridPaneDest.add(tglBlackWhite, 0, ++row);
+        gridPaneDest.add(btnHelpBlackWhite, 1, row);
 
         // import all
         contPane.setSpacing(25);

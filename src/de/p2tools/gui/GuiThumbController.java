@@ -29,6 +29,7 @@ import de.p2tools.p2Lib.tools.DirFileChooser;
 import de.p2tools.p2Lib.tools.Log;
 import de.p2tools.p2Lib.tools.PAlert;
 import javafx.beans.property.DoubleProperty;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -51,9 +52,6 @@ public class GuiThumbController extends AnchorPane {
     ThumbCollection thumbCollection = null;
     TextField txtDir = new TextField("");
     ToggleSwitch tglRecursive = new ToggleSwitch("Auch Unterordner durchsuchen");
-    Button btnLod = new Button("Fotos hinzufügen");
-    Button btnReload = new Button("Liste neu einlesen");
-    Button btnClear = new Button("Liste Löschen");
 
     private final ProgData progData;
     DoubleProperty splitPaneProperty = ProgConfig.THUMB_GUI_DIVIDER.getDoubleProperty();
@@ -162,10 +160,6 @@ public class GuiThumbController extends AnchorPane {
     }
 
     private void initCont() {
-        Label lblDir = new Label("Ordner mit Fotos auswählen");
-
-        txtDir.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(txtDir, Priority.ALWAYS);
 
         final Button btnDir = new Button();
         btnDir.setOnAction(event -> DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir));
@@ -175,6 +169,9 @@ public class GuiThumbController extends AnchorPane {
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelp.setOnAction(event -> new MTAlert().showHelpAlert("Dateimanager", HelpText.GET_THUMB_DIR));
 
+        final Button btnLod = new Button("Fotos hinzufügen");
+        final Button btnReload = new Button("Gespeicherte Liste neu einlesen");
+        final Button btnClear = new Button("Gespeicherte Liste Löschen");
 
         btnLod.setOnAction(a -> {
             if (txtDir.getText().isEmpty()) {
@@ -210,13 +207,44 @@ public class GuiThumbController extends AnchorPane {
             setFlowPane();
         });
 
-        HBox hBoxDir = new HBox(10);
-        hBoxDir.getChildren().addAll(txtDir, btnDir, btnHelp);
+        int row = 0;
+        GridPane gridPaneDest = new GridPane();
+        gridPaneDest.setPadding(new Insets(0));
+        gridPaneDest.setVgap(10);
+        gridPaneDest.setHgap(10);
 
-        HBox hBoxButon = new HBox(10);
-        hBoxButon.getChildren().addAll(btnLod, btnReload, btnClear);
+        Label lblTitle = new Label("Miniaturbilder hinzufügen");
+        lblTitle.getStyleClass().add("headerLabel");
+        lblTitle.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lblTitle, Priority.ALWAYS);
 
-        vBoxCont.getChildren().addAll(lblDir, hBoxDir, tglRecursive, hBoxButon);
+        Label lblDir = new Label("Ordner mit Fotos:");
+
+        txtDir.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(txtDir, Priority.ALWAYS);
+        GridPane.setHalignment(btnLod, HPos.RIGHT);
+
+        gridPaneDest.add(lblTitle, 0, row, 4, 1);
+        gridPaneDest.add(lblDir, 0, ++row);
+        gridPaneDest.add(txtDir, 1, row);
+        gridPaneDest.add(btnDir, 2, row);
+        gridPaneDest.add(btnHelp, 3, row);
+        gridPaneDest.add(btnLod, 0, ++row, 4, 1);
+
+        lblTitle = new Label("Gespeicherte Liste");
+        lblTitle.getStyleClass().add("headerLabel");
+        lblTitle.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lblTitle, Priority.ALWAYS);
+
+        HBox hBox = new HBox(10);
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+        hBox.getChildren().addAll(btnReload, btnClear);
+
+        gridPaneDest.add(new Label(" "), 0, ++row);
+        gridPaneDest.add(lblTitle, 0, ++row, 4, 1);
+        gridPaneDest.add(hBox, 0, ++row, 4, 1);
+
+        vBoxCont.getChildren().addAll(gridPaneDest);
     }
 
 }
