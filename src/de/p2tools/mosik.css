@@ -210,6 +210,10 @@
     -fx-text-alignment: center;
     -fx-alignment: center ;
 }
+.tab-pane {
+    -fx-border-width: 1;
+    -fx-border-color: -style-border-color-1;
+ }
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-padding: 0 10 0 10;
     -fx-border-width: 1, 2;

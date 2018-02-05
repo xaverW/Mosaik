@@ -31,7 +31,6 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.StringConverter;
@@ -43,14 +42,13 @@ import java.util.ArrayList;
 public class GuiStart extends AnchorPane {
 
     private final ScrollPane scrollPane = new ScrollPane();
-    private final TitledPane contPane = new TitledPane();
-    private final TitledPane projectDataPane = new TitledPane();
     private final ComboBox<ProjectData> cbProjectDataList = new ComboBox<>();
     private final TextField txtName = new TextField("");
     private final TextField txtDir = new TextField("");
-    Button btnNew = new Button("Neues Projekt erstellen");
-    Button btnDel = new Button("Projekt löschen");
-    Button btnMov = new Button("Projektordner verschieben");
+    private final Button btnNew = new Button("Neues Projekt erstellen");
+    private final Button btnDel = new Button("Projekt löschen");
+    private final Button btnMov = new Button("Projektordner verschieben");
+    private final VBox vBox = new VBox(10);
 
     private ProjectData projectData = null;
     private final ProgData progData;
@@ -58,7 +56,7 @@ public class GuiStart extends AnchorPane {
 
     public GuiStart() {
         progData = ProgData.getInstance();
-        getStyleClass().add("layoutBackground");
+
 
         AnchorPane.setLeftAnchor(scrollPane, 0.0);
         AnchorPane.setBottomAnchor(scrollPane, 0.0);
@@ -69,16 +67,6 @@ public class GuiStart extends AnchorPane {
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
 
-        projectDataPane.setCollapsible(false);
-        projectDataPane.setAlignment(Pos.CENTER);
-        projectDataPane.getStyleClass().add("contPane");
-        projectDataPane.setText("Projekt auswählen");
-
-        contPane.setCollapsible(false);
-        contPane.setAlignment(Pos.CENTER);
-        contPane.getStyleClass().add("contPane");
-        contPane.setText("Einstellungen des gewählten Projekts");
-
         initCollection();
         initCont();
         if (progData.projectDataList.isEmpty()) {
@@ -86,8 +74,6 @@ public class GuiStart extends AnchorPane {
         }
         selectProjectData();
 
-        VBox vBox = new VBox(10);
-        vBox.getChildren().addAll(projectDataPane, contPane);
         scrollPane.setContent(vBox);
 
         initColor();
@@ -187,14 +173,6 @@ public class GuiStart extends AnchorPane {
                 moveProject();
             }
         });
-
-
-        VBox vBox = new VBox(10);
-        HBox hBox = new HBox(10);
-        hBox.getChildren().addAll(btnNew, btnDel, btnMov);
-
-        vBox.getChildren().addAll(cbProjectDataList, hBox);
-        projectDataPane.setContent(vBox);
     }
 
     private void moveProject() {
@@ -254,7 +232,8 @@ public class GuiStart extends AnchorPane {
         projectData = cbProjectDataList.getSelectionModel().getSelectedItem();
         progData.selectedProjectData = projectData;
 
-        contPane.setDisable(projectData == null);
+        txtName.setDisable(projectData == null);
+        txtDir.setDisable(projectData == null);
         btnMov.setDisable(projectData == null);
         btnDel.setDisable(projectData == null);
 
@@ -291,30 +270,62 @@ public class GuiStart extends AnchorPane {
         // make Grid
         int row = 0;
         GridPane gridPaneDest = new GridPane();
-        gridPaneDest.setPadding(new Insets(10));
-        gridPaneDest.setVgap(5);
-        gridPaneDest.setHgap(5);
+        gridPaneDest.setPadding(new Insets(0));
+        gridPaneDest.setVgap(15);
+        gridPaneDest.setHgap(15);
+
+        Label lblProject = new Label("Projekt auswählen");
+        lblProject.getStyleClass().add("headerLabel");
+        lblProject.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lblProject, Priority.ALWAYS);
+
+        Label lblCont = new Label("Einstellungen des gewählten Projekts");
+        lblCont.getStyleClass().add("headerLabel");
+        lblCont.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lblCont, Priority.ALWAYS);
 
         txtDir.setMaxWidth(Double.MAX_VALUE);
-        txtDir.setEditable(false);
-
         GridPane.setHgrow(txtDir, Priority.ALWAYS);
+        txtName.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(txtName, Priority.ALWAYS);
 
-        gridPaneDest.add(new Label("Name des Projekts"), 0, ++row, 2, 1);
+        cbProjectDataList.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(cbProjectDataList, Priority.ALWAYS);
+
+        gridPaneDest.add(lblProject, 0, row, 4, 1);
+        gridPaneDest.add(cbProjectDataList, 0, ++row, 2, 1);
+        HBox hBox = new HBox(10);
+
+        hBox.getChildren().addAll(btnNew, btnDel, btnMov);
+        gridPaneDest.add(hBox, 0, ++row, 4, 1);
+
+
+        gridPaneDest.add(new Label(" "), 0, ++row);
+        gridPaneDest.add(lblCont, 0, ++row, 4, 1);
+
+
+        gridPaneDest.add(new Label("Name des Projekts"), 0, ++row, 4, 1);
         gridPaneDest.add(new Label("Name:"), 0, ++row);
         gridPaneDest.add(txtName, 1, row);
 
         gridPaneDest.add(new Label(""), 0, ++row);
-        gridPaneDest.add(new Label("Ordner in dem das Mosaik erstellt wird"), 0, ++row, 2, 1);
+        gridPaneDest.add(new Label("Ordner in dem das Mosaik erstellt wird"), 0, ++row, 4, 1);
+
         gridPaneDest.add(new Label("Pfad:"), 0, ++row);
         gridPaneDest.add(txtDir, 1, row);
         gridPaneDest.add(btnDestDir, 2, row);
         gridPaneDest.add(btnDestDirHelp, 3, row);
 
-        VBox vBox = new VBox(10);
-        vBox.getChildren().addAll(gridPaneDest);
-        contPane.setContent(vBox);
 
+        final ColumnConstraints ccTxt = new ColumnConstraints();
+        ccTxt.setFillWidth(true);
+        ccTxt.setMinWidth(Region.USE_COMPUTED_SIZE);
+        ccTxt.setHgrow(Priority.ALWAYS);
+        gridPaneDest.getColumnConstraints().addAll(new ColumnConstraints(), ccTxt);
+
+
+        gridPaneDest.setStyle("-fx-border-color: red;");
+        vBox.getChildren().add(gridPaneDest);
     }
 
     private String saveComboPfad(ComboBox<String> comboBox) {

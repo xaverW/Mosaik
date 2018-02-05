@@ -80,6 +80,8 @@ public class GuiMosaikPane extends AnchorPane {
 
         initCont();
         bind();
+//        this.setStyle("-fx-border-color: red;");
+
         getChildren().addAll(scrollPane);
     }
 

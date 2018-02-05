@@ -17,7 +17,7 @@
 package de.p2tools.gui;
 
 import de.p2tools.controller.config.ProgData;
-import javafx.scene.control.Accordion;
+import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -25,13 +25,10 @@ import javafx.scene.layout.AnchorPane;
 
 public class GuiThumb extends AnchorPane {
 
-    private final Accordion accordion = new Accordion();
     private final ProgData progData;
 
     public GuiThumb() {
         progData = ProgData.getInstance();
-        getStyleClass().add("layoutBackground");
-
         initCont();
     }
 
@@ -45,36 +42,25 @@ public class GuiThumb extends AnchorPane {
 
         TabPane tabPane = new TabPane();
         Tab tab = new Tab("Miniaturbilder");
-//        tab.getStyleClass().add("contPaneAccordion");
         tab.setClosable(false);
         tab.setContent(progData.guiThumbController);
         tabPane.getTabs().add(tab);
 
         tab = new Tab("Miniaturbilder bearbeiten");
-//        tab.getStyleClass().add("contPaneAccordion");
         tab.setClosable(false);
         tab.setContent(progData.guiChangeThumbController);
         tabPane.getTabs().add(tab);
 
-
-//        TitledPane tpThumb = new TitledPane("Miniaturbilder", progData.guiThumbController);
-//        tpThumb.getStyleClass().add("contPaneAccordion");
-//
-//        TitledPane tpChangeThumb = new TitledPane("Miniaturbilder bearbeiten", progData.guiChangeThumbController);
-//        tpChangeThumb.getStyleClass().add("contPaneAccordion");
-//
-//        accordion.getPanes().addAll(tpThumb, tpChangeThumb);
-//        accordion.setExpandedPane(tpThumb);
-
         ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setPadding(new Insets(10));
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setContent(tabPane);
 
-        AnchorPane.setLeftAnchor(scrollPane, 10.0);
-        AnchorPane.setBottomAnchor(scrollPane, 10.0);
-        AnchorPane.setRightAnchor(scrollPane, 10.0);
-        AnchorPane.setTopAnchor(scrollPane, 10.0);
+        AnchorPane.setLeftAnchor(scrollPane, 0.0);
+        AnchorPane.setBottomAnchor(scrollPane, 0.0);
+        AnchorPane.setRightAnchor(scrollPane, 0.0);
+        AnchorPane.setTopAnchor(scrollPane, 0.0);
 
         this.getChildren().add(scrollPane);
     }

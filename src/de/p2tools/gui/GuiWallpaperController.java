@@ -27,13 +27,10 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 public class GuiWallpaperController extends AnchorPane {
 
@@ -66,13 +63,15 @@ public class GuiWallpaperController extends AnchorPane {
         scrollPane.setContent(contPane);
 
         AnchorPane.setLeftAnchor(scrollPane, 0.0);
-//        AnchorPane.setBottomAnchor(scrollPane, 0.0);
+        AnchorPane.setBottomAnchor(scrollPane, 0.0);
         AnchorPane.setRightAnchor(scrollPane, 0.0);
         AnchorPane.setTopAnchor(scrollPane, 0.0);
-        scrollPane.getStyleClass().add("layoutBackground");
-        getStyleClass().add("layoutBackground");
+
+//        this.setStyle("-fx-background-color: -fx-background ;");
+//        this.setStyle("-fx-border-color: red;");
         initCont();
         bind();
+
         getChildren().addAll(scrollPane);
     }
 
@@ -174,11 +173,17 @@ public class GuiWallpaperController extends AnchorPane {
         gridPane.add(lblSliderCount, 2, row);
         gridPane.add(btnHelpSliderCount, 3, row);
 
-        GridPane.setHalignment(btnCreate, HPos.RIGHT);
-        gridPane.add(new Label(""), 0, ++row);
-        gridPane.add(btnCreate, 0, ++row, 4, 1);
+//        GridPane.setHalignment(btnCreate, HPos.RIGHT);
+//        gridPane.add(new Label(""), 0, ++row);
+//        gridPane.add(btnCreate, 0, ++row, 4, 1);
 
-        contPane.getChildren().add(gridPane);
+
+        HBox hBox = new HBox();
+        hBox.getChildren().add(btnCreate);
+        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+        VBox.setVgrow(hBox, Priority.ALWAYS);
+        contPane.getChildren().addAll(gridPane, hBox);
+
 
         btnCreate.setOnAction(a -> {
             if (!txtDestDir.getText().isEmpty()) {

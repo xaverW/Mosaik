@@ -25,6 +25,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class GuiMosaikController extends AnchorPane {
@@ -43,12 +44,12 @@ public class GuiMosaikController extends AnchorPane {
         progData = ProgData.getInstance();
 
         AnchorPane.setLeftAnchor(vBox, 0.0);
-//        AnchorPane.setBottomAnchor(vBox, 0.0);
+        AnchorPane.setBottomAnchor(vBox, 0.0);
         AnchorPane.setRightAnchor(vBox, 0.0);
         AnchorPane.setTopAnchor(vBox, 0.0);
 
-        vBox.getStyleClass().add("layoutBackground");
-
+        this.setStyle("-fx-background-color: -fx-background ;");
+//        this.setStyle("-fx-border-color: red;");
         initCont();
         getChildren().addAll(vBox);
     }
@@ -93,6 +94,7 @@ public class GuiMosaikController extends AnchorPane {
 
         vBox.setPadding(new Insets(10));
         vBox.setSpacing(20);
+        VBox.setVgrow(tabPane, Priority.ALWAYS);
         vBox.getChildren().addAll(tabPane, hBox);
 
     }

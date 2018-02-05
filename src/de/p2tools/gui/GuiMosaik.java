@@ -21,10 +21,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 public class GuiMosaik extends AnchorPane {
 
@@ -50,7 +47,6 @@ public class GuiMosaik extends AnchorPane {
 
     public GuiMosaik() {
         progData = ProgData.getInstance();
-        getStyleClass().add("layoutBackground");
 
         initCont();
     }
@@ -66,6 +62,7 @@ public class GuiMosaik extends AnchorPane {
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setPadding(new Insets(10));
         hBox.getChildren().add(comboBox);
+
 
         stackPane.getChildren().addAll(progData.guiMosaikController, progData.guiWallpaperController);
 
@@ -84,21 +81,22 @@ public class GuiMosaik extends AnchorPane {
                 }
         );
         comboBox.getSelectionModel().selectFirst();
-
+//        stackPane.setStyle("-fx-border-color: red;");
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setContent(stackPane);
 
-        AnchorPane.setLeftAnchor(vBox, 0.0);
-        AnchorPane.setBottomAnchor(vBox, 0.0);
-        AnchorPane.setRightAnchor(vBox, 0.0);
-        AnchorPane.setTopAnchor(vBox,
-                0.0);
+        AnchorPane.setLeftAnchor(scrollPane, 0.0);
+        AnchorPane.setBottomAnchor(scrollPane, 0.0);
+        AnchorPane.setRightAnchor(scrollPane, 0.0);
+        AnchorPane.setTopAnchor(scrollPane, 0.0);
 
-        vBox.getChildren().addAll(hBox, scrollPane);
+        VBox.setVgrow(stackPane, Priority.ALWAYS);
+        vBox.getChildren().addAll(hBox, stackPane);
 
-        this.getChildren().add(vBox);
+        scrollPane.setContent(vBox);
+
+        this.getChildren().add(scrollPane);
     }
 }

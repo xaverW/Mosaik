@@ -53,14 +53,13 @@ public class GuiMosaikExtendedPane extends AnchorPane {
         scrollPane.setContent(contPane);
 
         AnchorPane.setLeftAnchor(scrollPane, 0.0);
-//        AnchorPane.setBottomAnchor(scrollPane, 0.0);
+        AnchorPane.setBottomAnchor(scrollPane, 0.0);
         AnchorPane.setRightAnchor(scrollPane, 0.0);
         AnchorPane.setTopAnchor(scrollPane, 0.0);
 
-        scrollPane.getStyleClass().add("layoutBackground");
-        
         initCont();
         bind();
+
         getChildren().addAll(scrollPane);
     }
 
