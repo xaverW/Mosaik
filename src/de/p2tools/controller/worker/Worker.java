@@ -28,6 +28,8 @@ import de.p2tools.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.controller.worker.genWallpaper.GenWallpaper;
 import de.p2tools.p2Lib.tools.FileUtils;
 import de.p2tools.p2Lib.tools.PAlert;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 import javax.swing.event.EventListenerList;
 
@@ -39,6 +41,7 @@ public class Worker {
     private final GenWallpaper genWallpaper;
 
     private EventListenerList listeners = new EventListenerList();
+    private BooleanProperty working = new SimpleBooleanProperty(false);
 
     public Worker(ProgData progData) {
         this.progData = progData;
@@ -64,6 +67,14 @@ public class Worker {
                 notifyEvent(runEvent);
             }
         });
+    }
+
+    public boolean isWorking() {
+        return working.get();
+    }
+
+    public BooleanProperty workingProperty() {
+        return working;
     }
 
     /**
@@ -111,6 +122,8 @@ public class Worker {
     }
 
     private void notifyEvent(RunEvent runEvent) {
+        working.setValue(!runEvent.nixLos());
+        
         for (RunListener l : listeners.getListeners(RunListener.class)) {
             l.notify(runEvent);
         }

@@ -17,7 +17,6 @@
 package de.p2tools.gui;
 
 import de.p2tools.controller.config.ProgConfig;
-import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.Icons;
 import de.p2tools.controller.data.projectData.ProjectData;
@@ -37,7 +36,6 @@ import javafx.util.StringConverter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 public class GuiStart extends AnchorPane {
 
@@ -266,7 +264,7 @@ public class GuiStart extends AnchorPane {
 
         final Button btnDestDirHelp = new Button("");
         btnDestDirHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnDestDirHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROJECT_PATH));
+        btnDestDirHelp.setOnAction(a -> new MTAlert().showHelpAlert("Projektpfad", HelpText.PROJECT_PATH));
 
         // make Grid
         int row = 0;
@@ -316,7 +314,7 @@ public class GuiStart extends AnchorPane {
         gridPaneDest.add(new Label(""), 0, ++row);
         gridPaneDest.add(lblPath, 0, ++row, 4, 1);
 
-        gridPaneDest.add(new Label("Pfad:"), 0, ++row);
+        gridPaneDest.add(new Label("Projektpfad:"), 0, ++row);
         gridPaneDest.add(txtDir, 1, row);
         gridPaneDest.add(btnDestDir, 2, row);
         gridPaneDest.add(btnDestDirHelp, 3, row);
@@ -324,34 +322,4 @@ public class GuiStart extends AnchorPane {
         vBox.getChildren().add(gridPaneDest);
     }
 
-    private String saveComboPfad(ComboBox<String> comboBox) {
-        final ArrayList<String> pfade = new ArrayList<>(comboBox.getItems());
-
-        final ArrayList<String> pfade2 = new ArrayList<>();
-        String sel = comboBox.getEditor().getText();
-        if (sel != null && !sel.isEmpty()) {
-            System.out.println(sel);
-            pfade2.add(sel);
-        }
-
-        pfade.stream().forEach(s1 -> {
-            // um doppelte auszusortieren
-
-            if (!s1.isEmpty() && !pfade2.contains(s1)) {
-                pfade2.add(s1);
-            }
-        });
-
-        String s = "";
-        if (!pfade2.isEmpty()) {
-            s = pfade2.get(0);
-            for (int i = 1; i < ProgConst.MAX_PFADE_SRC_PHOTO && i < pfade2.size(); ++i) {
-                if (!pfade2.get(i).isEmpty()) {
-                    s += ProgConst.DIR_SEPARATOR + pfade2.get(i);
-                }
-            }
-        }
-
-        return s;
-    }
 }

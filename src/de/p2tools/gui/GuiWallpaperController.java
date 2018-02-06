@@ -107,13 +107,13 @@ public class GuiWallpaperController extends AnchorPane {
 
         final Button btnHelpDest = new Button("");
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+        btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Mosaik", HelpText.WALLPAPER_DEST));
 
 
         // Thumbsize
         final Button btnHelpSlider = new Button("");
         btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+        btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Pixelgröße", HelpText.WALLPAPER_PIXEL_SIZE));
 
         sliderSize.setMin(5);
         sliderSize.setMax(25);
@@ -122,7 +122,7 @@ public class GuiWallpaperController extends AnchorPane {
         // Anzahl Thumbs
         final Button btnHelpSliderCount = new Button("");
         btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSliderCount.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.FILEMANAGER));
+        btnHelpSliderCount.setOnAction(a -> new MTAlert().showHelpAlert("Mosaikgröße", HelpText.WALLPAPER_PIXEL_COUNT));
 
         sliderCount.setMin(1);
         sliderCount.setMax(100);
@@ -191,6 +191,7 @@ public class GuiWallpaperController extends AnchorPane {
                         progData.selectedProjectData.getWallpaperData());
             }
         });
+        btnCreate.disableProperty().bind(progData.worker.workingProperty());
 
     }
 

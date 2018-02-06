@@ -87,7 +87,8 @@ public class GuiMosaikController extends AnchorPane {
                 progData.worker.createMosaik(mosaikData);
             }
         });
-
+        btnCreate.disableProperty().bind(progData.worker.workingProperty());
+        
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_RIGHT);
         hBox.getChildren().add(btnCreate);

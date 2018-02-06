@@ -89,10 +89,11 @@ public class GuiThumbController extends AnchorPane {
             @Override
             public void ping(RunEvent runEvent) {
                 if (runEvent.nixLos() && runEvent.getSource().getClass().equals(GenThumbList.class)) {
-                    setFlowPane();
+                    makeTilePane();
                 }
             }
         });
+
     }
 
     public void isShown() {
@@ -132,21 +133,22 @@ public class GuiThumbController extends AnchorPane {
             txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
             tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
 
-            setFlowPane();
+            makeTilePane();
         }
     }
 
-    private void setFlowPane() {
+    private void makeTilePane() {
         tilePane.getChildren().clear();
         int i = 1;
         for (Thumb thumb : thumbCollection.getThumbList()) {
-            // todo muss wieder weg
             Label lbl = new Label("" + i++);
             lbl.setAlignment(Pos.CENTER);
             lbl.setPadding(new Insets(2));
             lbl.setTextFill(Color.WHITE);
             lbl.setMinHeight(30);
             lbl.setMinWidth(30);
+            lbl.setMaxWidth(Double.MAX_VALUE);
+            lbl.setMaxHeight(Double.MAX_VALUE);
 
             lbl.setTooltip(new Tooltip(thumb.getFileName()));
 
@@ -167,7 +169,7 @@ public class GuiThumbController extends AnchorPane {
 
         final Button btnHelp = new Button("");
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelp.setOnAction(event -> new MTAlert().showHelpAlert("Dateimanager", HelpText.GET_THUMB_DIR));
+        btnHelp.setOnAction(event -> new MTAlert().showHelpAlert("Fotos hinzufügen", HelpText.GET_THUMB_DIR));
 
         final Button btnLod = new Button("Fotos hinzufügen");
         final Button btnReload = new Button("Gespeicherte Liste neu einlesen");
@@ -186,7 +188,7 @@ public class GuiThumbController extends AnchorPane {
             }
 
             progData.worker.createThumbList(thumbCollection, thumbDir);
-            setFlowPane();
+            makeTilePane();
         });
         btnReload.setOnAction(a -> {
             String thumbDir = progData.selectedProjectData.getThumbDirString();
@@ -195,7 +197,7 @@ public class GuiThumbController extends AnchorPane {
             }
 
             progData.worker.readThumbList(thumbCollection, thumbDir);
-            setFlowPane();
+            makeTilePane();
         });
         btnClear.setOnAction(a -> {
             try {
@@ -204,8 +206,12 @@ public class GuiThumbController extends AnchorPane {
                 Log.errorLog(945121254, ex);
             }
             thumbCollection.getThumbList().clear();
-            setFlowPane();
+            makeTilePane();
         });
+
+        btnLod.disableProperty().bind(progData.worker.workingProperty());
+        btnReload.disableProperty().bind(progData.worker.workingProperty());
+        btnClear.disableProperty().bind(progData.worker.workingProperty());
 
         int row = 0;
         GridPane gridPaneDest = new GridPane();
@@ -229,6 +235,7 @@ public class GuiThumbController extends AnchorPane {
         gridPaneDest.add(txtDir, 1, row);
         gridPaneDest.add(btnDir, 2, row);
         gridPaneDest.add(btnHelp, 3, row);
+        gridPaneDest.add(tglRecursive, 0, ++row, 4, 1);
         gridPaneDest.add(btnLod, 0, ++row, 4, 1);
 
         lblTitle = new Label("Gespeicherte Liste");

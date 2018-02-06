@@ -84,11 +84,11 @@ public class GuiMosaikExtendedPane extends AnchorPane {
         // make Grid
         final Button btnHelpSrcImage = new Button("");
         btnHelpSrcImage.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSrcImage.setOnAction(a -> new MTAlert().showHelpAlert("Fotos für das Mosaik", HelpText.FILEMANAGER));
+        btnHelpSrcImage.setOnAction(a -> new MTAlert().showHelpAlert("Fotos für das Mosaik", HelpText.MOSAIK_PIXEL_FOTO));
 
         final Button btnHelpBlackWhite = new Button("");
         btnHelpBlackWhite.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpBlackWhite.setOnAction(a -> new MTAlert().showHelpAlert("Schwarz/Weiß Mosaik", HelpText.FILEMANAGER));
+        btnHelpBlackWhite.setOnAction(a -> new MTAlert().showHelpAlert("Schwarz/Weiß Mosaik", HelpText.MOSAIK_BW));
 
         rbThumb.setToggleGroup(tg);
         rbSelf.setToggleGroup(tg);
@@ -106,7 +106,7 @@ public class GuiMosaikExtendedPane extends AnchorPane {
         rbThumb.setMaxWidth(Double.MAX_VALUE);
         rbSelf.setMaxWidth(Double.MAX_VALUE);
 
-        Label lbl = new Label("Fotos aus denen das Mosaik gebaut wird festlegen");
+        Label lbl = new Label("Fotos aus denen das Mosaik gebaut wird");
         lbl.getStyleClass().add("headerLabel");
         lbl.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lbl, Priority.ALWAYS);

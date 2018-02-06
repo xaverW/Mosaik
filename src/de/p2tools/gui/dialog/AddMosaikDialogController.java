@@ -113,7 +113,7 @@ public class AddMosaikDialogController extends MTDialogExtra {
         btnDestDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
         btnDestDirHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnDestDirHelp.setOnAction(a -> new MTAlert().showHelpAlert("Dateimanager", HelpText.PROJECT_PATH));
+        btnDestDirHelp.setOnAction(a -> new MTAlert().showHelpAlert("Projektpfad", HelpText.PROJECT_PATH));
 
         initColor();
     }

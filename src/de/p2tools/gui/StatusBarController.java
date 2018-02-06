@@ -186,7 +186,7 @@ public class StatusBarController extends AnchorPane {
                 progData.selectedProjectData.getName() : "");
         lblLeft.setText(textLinks);
         String strText = progData.selectedProjectData.getThumbCollection() != null ?
-                progData.selectedProjectData.getThumbCollection().getThumbList().size() + " Bilder" : "";
+                progData.selectedProjectData.getThumbCollection().getThumbList().size() + " Miniaturbilder" : "";
         lblRight.setText(strText);
     }
 

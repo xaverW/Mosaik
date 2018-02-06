@@ -16,29 +16,29 @@
 
 package de.p2tools.gui;
 
+import de.p2tools.controller.RunEvent;
+import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
+import de.p2tools.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.gui.tools.Table;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class GuiChangeThumbController extends AnchorPane {
+public class GuiThumbChangeController extends AnchorPane {
     VBox contPane = new VBox(10);
 
     ScrollPane scrollPaneTable = new ScrollPane();
     TableView table = new TableView<>();
 
     ThumbCollection thumbCollection = null;
-    Button btnReload = new Button("Liste neu einlesen");
-    Button btnDel = new Button("Bilder löschen");
 
     private final ProgData progData;
 
-    public GuiChangeThumbController() {
+    public GuiThumbChangeController() {
         progData = ProgData.getInstance();
 
 
@@ -58,6 +58,14 @@ public class GuiChangeThumbController extends AnchorPane {
 
         initTable();
         selectThumbCollection();
+        progData.worker.addAdListener(new RunListener() {
+            @Override
+            public void ping(RunEvent runEvent) {
+                if (runEvent.nixLos() && runEvent.getSource().getClass().equals(GenThumbList.class)) {
+                    new Table().resetTable(table, Table.TABLE.CHANGE_THUMB);
+                }
+            }
+        });
     }
 
     public void isShown() {

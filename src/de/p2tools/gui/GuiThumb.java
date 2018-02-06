@@ -34,7 +34,8 @@ public class GuiThumb extends AnchorPane {
 
     public void isShown() {
         progData.guiThumbController.isShown();
-        progData.guiChangeThumbController.isShown();
+        progData.guiThumbChangeController.isShown();
+        reload();
     }
 
 
@@ -48,7 +49,7 @@ public class GuiThumb extends AnchorPane {
 
         tab = new Tab("Miniaturbilder bearbeiten");
         tab.setClosable(false);
-        tab.setContent(progData.guiChangeThumbController);
+        tab.setContent(progData.guiThumbChangeController);
         tabPane.getTabs().add(tab);
 
         ScrollPane scrollPane = new ScrollPane();
@@ -63,5 +64,22 @@ public class GuiThumb extends AnchorPane {
         AnchorPane.setTopAnchor(scrollPane, 0.0);
 
         this.getChildren().add(scrollPane);
+    }
+
+    private void reload() {
+        if (progData.selectedProjectData == null) {
+            return;
+        }
+
+        if (!progData.selectedProjectData.getThumbCollection().getThumbList().isEmpty()) {
+            return;
+        }
+
+        String thumbDir = progData.selectedProjectData.getThumbDirString();
+        if (thumbDir.isEmpty()) {
+            return;
+        }
+
+        progData.worker.readThumbList(progData.selectedProjectData.getThumbCollection(), thumbDir);
     }
 }

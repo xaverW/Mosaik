@@ -46,10 +46,6 @@ public class MosaikController extends StackPane {
     private MaskerPane maskerPane = new MaskerPane();
     private StatusBarController statusBarController;
 
-    private AnchorPane guiStartController;
-    private AnchorPane guiMosaik;
-    private AnchorPane guiThumb;
-
     private final ProgData progData;
 
 
@@ -100,19 +96,16 @@ public class MosaikController extends StackPane {
 
             // Panes
             progData.guiStart = new GuiStart();
-            guiStartController = progData.guiStart;
 
             progData.guiThumbController = new GuiThumbController();
-            progData.guiChangeThumbController = new GuiChangeThumbController();
+            progData.guiThumbChangeController = new GuiThumbChangeController();
             progData.guiThumb = new GuiThumb();
-            guiThumb = progData.guiThumb;
 
             progData.guiMosaikController = new GuiMosaikController();
             progData.guiWallpaperController = new GuiWallpaperController();
             progData.guiMosaik = new GuiMosaik();
-            guiMosaik = progData.guiMosaik;
 
-            stackPaneCont.getChildren().addAll(guiStartController, guiThumb, guiMosaik);
+            stackPaneCont.getChildren().addAll(progData.guiStart, progData.guiThumb, progData.guiMosaik);
 
             // Statusbar
             statusBarController = new StatusBarController(progData);
@@ -180,20 +173,20 @@ public class MosaikController extends StackPane {
 
     private void setPrev() {
         Node front = stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1);
-        if (front.equals(guiStartController)) {
+        if (front.equals(progData.guiStart)) {
 
-        } else if (front.equals(guiThumb)) {
+        } else if (front.equals(progData.guiThumb)) {
             selPanelStart();
-        } else if (front.equals(guiMosaik)) {
+        } else if (front.equals(progData.guiMosaik)) {
             selPanelTumb();
         }
     }
 
     private void setNext() {
         Node front = stackPaneCont.getChildren().get(stackPaneCont.getChildren().size() - 1);
-        if (front.equals(guiStartController)) {
+        if (front.equals(progData.guiStart)) {
             selPanelTumb();
-        } else if (front.equals(guiThumb)) {
+        } else if (front.equals(progData.guiThumb)) {
             selPanelMosaik();
         }
     }
@@ -213,7 +206,7 @@ public class MosaikController extends StackPane {
         btnThumbNail.getStyleClass().add("btnTab");
         btnMosaik.getStyleClass().add("btnTab");
 
-        guiStartController.toFront();
+        progData.guiStart.toFront();
         progData.guiStart.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Start);
     }
@@ -233,8 +226,8 @@ public class MosaikController extends StackPane {
         btnThumbNail.getStyleClass().add("btnTab-sel");
         btnMosaik.getStyleClass().add("btnTab");
 
-        guiThumb.toFront();
-        progData.guiThumbController.isShown();
+        progData.guiThumb.toFront();
+        progData.guiThumb.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Thumb);
     }
 
@@ -253,8 +246,8 @@ public class MosaikController extends StackPane {
         btnThumbNail.getStyleClass().add("btnTab");
         btnMosaik.getStyleClass().add("btnTab-sel");
 
+        progData.guiMosaik.toFront();
         progData.guiMosaik.isShown();
-        guiMosaik.toFront();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Mosaik);
     }
 

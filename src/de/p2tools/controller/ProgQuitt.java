@@ -38,7 +38,7 @@ public class ProgQuitt {
 
     private void writeTabSettings() {
         // Tabelleneinstellungen merken
-        progData.guiChangeThumbController.saveTable();
+        progData.guiThumbChangeController.saveTable();
     }
 
     /**

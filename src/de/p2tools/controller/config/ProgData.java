@@ -50,13 +50,14 @@ public class ProgData {
     public MosaikController mosaikController = null;
 
     public GuiStart guiStart = null; // StartTab
+    public GuiThumb guiThumb = null; // ThumbTab
+    public GuiMosaik guiMosaik = null; // MosaikTab
+
     public GuiThumbController guiThumbController = null;
-    public GuiChangeThumbController guiChangeThumbController = null;
+    public GuiThumbChangeController guiThumbChangeController = null;
+
     public GuiMosaikController guiMosaikController = null;
     public GuiWallpaperController guiWallpaperController = null;
-
-    public GuiMosaik guiMosaik = null;
-    public GuiThumb guiThumb = null;
 
 
     private ProgData() {
