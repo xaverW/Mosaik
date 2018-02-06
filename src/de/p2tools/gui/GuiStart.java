@@ -74,6 +74,7 @@ public class GuiStart extends AnchorPane {
         }
         selectProjectData();
 
+        vBox.setPadding(new Insets(10));
         scrollPane.setContent(vBox);
 
         initColor();
@@ -284,6 +285,11 @@ public class GuiStart extends AnchorPane {
         lblCont.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lblCont, Priority.ALWAYS);
 
+        Label lblPath = new Label("Ordner in dem das Mosaik erstellt wird");
+        lblPath.getStyleClass().add("headerLabel");
+        lblPath.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(lblPath, Priority.ALWAYS);
+
         txtDir.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(txtDir, Priority.ALWAYS);
         txtName.setMaxWidth(Double.MAX_VALUE);
@@ -293,38 +299,28 @@ public class GuiStart extends AnchorPane {
         GridPane.setHgrow(cbProjectDataList, Priority.ALWAYS);
 
         gridPaneDest.add(lblProject, 0, row, 4, 1);
-        gridPaneDest.add(cbProjectDataList, 0, ++row, 2, 1);
+        gridPaneDest.add(new Label("Projekt:"), 0, ++row);
+        gridPaneDest.add(cbProjectDataList, 1, row);
+
         HBox hBox = new HBox(10);
-
         hBox.getChildren().addAll(btnNew, btnDel, btnMov);
-        gridPaneDest.add(hBox, 0, ++row, 4, 1);
 
+        gridPaneDest.add(hBox, 1, ++row);
 
         gridPaneDest.add(new Label(" "), 0, ++row);
         gridPaneDest.add(lblCont, 0, ++row, 4, 1);
 
-
-        gridPaneDest.add(new Label("Name des Projekts"), 0, ++row, 4, 1);
-        gridPaneDest.add(new Label("Name:"), 0, ++row);
+        gridPaneDest.add(new Label("Projektname:"), 0, ++row);
         gridPaneDest.add(txtName, 1, row);
 
         gridPaneDest.add(new Label(""), 0, ++row);
-        gridPaneDest.add(new Label("Ordner in dem das Mosaik erstellt wird"), 0, ++row, 4, 1);
+        gridPaneDest.add(lblPath, 0, ++row, 4, 1);
 
         gridPaneDest.add(new Label("Pfad:"), 0, ++row);
         gridPaneDest.add(txtDir, 1, row);
         gridPaneDest.add(btnDestDir, 2, row);
         gridPaneDest.add(btnDestDirHelp, 3, row);
 
-
-        final ColumnConstraints ccTxt = new ColumnConstraints();
-        ccTxt.setFillWidth(true);
-        ccTxt.setMinWidth(Region.USE_COMPUTED_SIZE);
-        ccTxt.setHgrow(Priority.ALWAYS);
-        gridPaneDest.getColumnConstraints().addAll(new ColumnConstraints(), ccTxt);
-
-
-        gridPaneDest.setStyle("-fx-border-color: red;");
         vBox.getChildren().add(gridPaneDest);
     }
 
