@@ -98,17 +98,9 @@ public class MosaikThumb implements Runnable {
             }
 
             if (ProgData.saveMem) {
-                genImgDataArrayList.stream().forEach(genImgData -> {
-                    if (!stopAll) {
-                        run(genImgData);
-                    }
-                });
+                genImgDataArrayList.stream().forEach(genImgData -> run(genImgData));
             } else {
-                genImgDataArrayList.parallelStream().forEach(genImgData -> {
-                    if (!stopAll) {
-                        run(genImgData);
-                    }
-                });
+                genImgDataArrayList.parallelStream().forEach(genImgData -> run(genImgData));
             }
 
             if (stopAll) {
@@ -161,6 +153,10 @@ public class MosaikThumb implements Runnable {
 
     private void run(GenImgData genImgData) {
         try {
+            if (stopAll) {
+                return;
+            }
+
             notifyEvent(genImgData.maxRun, progress, "Pixel: " + progress);
             for (int xx = 0; xx < genImgData.numThumbsWidth && !stopAll; ++xx) {
                 ++progress;

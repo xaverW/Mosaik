@@ -121,18 +121,14 @@ public class GenWallpaper {
 
                 int height = (thumbListSize / numThumbWidth) * thumbSize;
                 int width = numThumbWidth * thumbSize;
-
                 if (thumbListSize % numThumbWidth != 0) {
                     height += thumbSize;
                 }
-
-                BufferedImage imgOut = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
                 int hh = 0, ww = 0;
                 boolean lineEnd = false;
 
+                BufferedImage imgOut = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
                 for (int i = 0; i < thumbListSize && !stopAll; ++i) {
-
                     notifyEvent(thumbListSize, i, "");
 
                     Thumb thumb = thumbCollection.getThumbList().get(i);
@@ -141,7 +137,6 @@ public class GenWallpaper {
                     if (img.getWidth() != thumbSize) {
                         img = ScaleImage.scaleBufferedImage(img, thumbSize, thumbSize);
                     }
-
                     imgOut.getRaster().setRect(ww * thumbSize, hh * thumbSize, img.getData());
 
                     ++ww;

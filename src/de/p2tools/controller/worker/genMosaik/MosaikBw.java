@@ -94,39 +94,16 @@ public class MosaikBw implements Runnable {
             int maxRun = numThumbsHeight * numThumbsWidth;
             notifyEvent(maxRun, 0, "");
             BufferedImage buffImg;
-            Color c;
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
-                System.out.println("yy " + yy + " von " + numThumbsHeight);
-
                 GenImgData genImgData = new GenImgData(imgOut, srcImg, imgSrcSmall, blackWhite,
                         sizeThumb, yy, maxRun, numThumbsWidth, numThumbsHeight, numPixelProThumb);
                 genImgDataArrayList.add(genImgData);
-
-//                for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
-//
-//                    ++progress;
-//                    notifyEvent(maxRun, progress, "Zeilen: " + yy);
-//                    c = ImgTools.getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb,
-//                            numPixelProThumb, numPixelProThumb));
-//
-//                    buffImg = getImgBw(imgSrcSmall, c, blackWhite);
-//                    buffImg = ScaleImage.scaleBufferedImage(buffImg, sizeThumb, sizeThumb);
-//                    imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
-//                }
             }
 
             if (ProgData.saveMem) {
-                genImgDataArrayList.stream().forEach(genImgData -> {
-                    if (!stopAll) {
-                        run(genImgData);
-                    }
-                });
+                genImgDataArrayList.stream().forEach(genImgData -> run(genImgData));
             } else {
-                genImgDataArrayList.parallelStream().forEach(genImgData -> {
-                    if (!stopAll) {
-                        run(genImgData);
-                    }
-                });
+                genImgDataArrayList.parallelStream().forEach(genImgData -> run(genImgData));
             }
 
             if (stopAll) {
@@ -177,10 +154,13 @@ public class MosaikBw implements Runnable {
     private void run(GenImgData genImgData) {
         BufferedImage buffImg;
 
-        for (int xx = 0; xx < genImgData.numThumbsWidth && !stopAll; ++xx) {
+        if (stopAll) {
+            return;
+        }
 
+        notifyEvent(genImgData.maxRun, progress, "Zeilen: " + genImgData.yy);
+        for (int xx = 0; xx < genImgData.numThumbsWidth && !stopAll; ++xx) {
             ++progress;
-            notifyEvent(genImgData.maxRun, progress, "Zeilen: " + genImgData.yy);
             Color c = ImgTools.getColor(genImgData.srcImg.getSubimage(xx * genImgData.numPixelProThumb,
                     genImgData.yy * genImgData.numPixelProThumb, genImgData.numPixelProThumb, genImgData.numPixelProThumb));
 
