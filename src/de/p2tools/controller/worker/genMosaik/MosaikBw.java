@@ -108,6 +108,12 @@ public class MosaikBw implements Runnable {
                 }
             }
 
+            if (stopAll) {
+                notifyEvent(0, 0, "");
+                Duration.counterStop("Mosaik erstellen");
+                return;
+            }
+
             //fertig
             notifyEvent(maxRun, progress, "Speichern");
             ImgTools.writeImage(imgOut, dest, mosaikData.getFormat());

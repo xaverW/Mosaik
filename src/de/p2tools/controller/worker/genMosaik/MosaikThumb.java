@@ -31,6 +31,7 @@ import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 public class MosaikThumb implements Runnable {
     String src, dest;
@@ -95,25 +96,35 @@ public class MosaikThumb implements Runnable {
             BufferedImage buffImg;
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
                 System.out.println("yy " + yy + " von " + numThumbsHeight);
+                GenImgDate genImgDate = new GenImgDate(imgOut, srcImg, farbraum,
+                        sizeThumb, yy, numThumbsWidth, numPixelProThumb);
+                genImgDateArrayList.add(genImgDate);
 
-                for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
+//                for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
+//                    ++progress;
+//                    notifyEvent(maxRun, progress, "Zeilen: " + yy);
+//                    c = ImgTools.getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb,
+//                            numPixelProThumb, numPixelProThumb));
+//
+//                    thumb = farbraum.getThumb(c, anz);
+//                    if (thumb != null) {
+//                        thumb.addAnz();
+//                        file = new File(thumb.getFileName());
+//                        buffImg = ImgTools.getBufferedImage(file);
+//                        buffImg = ScaleImage.scaleBufferedImage(buffImg, sizeThumb, sizeThumb);
+//                        imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
+//                    } else {
+//                        Log.errorLog(981021036, "MosaikErstellen.tus-Farbe fehlt!!");
+//                    }
+//                }
+            }
 
-                    ++progress;
-                    notifyEvent(maxRun, progress, "Zeilen: " + yy);
-                    c = ImgTools.getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb,
-                            numPixelProThumb, numPixelProThumb));
-
-                    thumb = farbraum.getThumb(c, anz);
-                    if (thumb != null) {
-                        thumb.addAnz();
-                        file = new File(thumb.getFileName());
-                        buffImg = ImgTools.getBufferedImage(file);
-                        buffImg = ScaleImage.scaleBufferedImage(buffImg, sizeThumb, sizeThumb);
-                        imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
-                    } else {
-                        Log.errorLog(981021036, "MosaikErstellen.tus-Farbe fehlt!!");
-                    }
-                }
+            new GenImg().run();
+            
+            if (stopAll) {
+                notifyEvent(0, 0, "");
+                Duration.counterStop("Mosaik erstellen");
+                return;
             }
 
             // Schwarz/Weis
@@ -130,7 +141,72 @@ public class MosaikThumb implements Runnable {
         }
 
         Duration.counterStop("Mosaik erstellen");
+    }
 
+    private class GenImgDate {
+        BufferedImage imgOut;
+        BufferedImage srcImg;
+        Farbraum farbraum;
+        int sizeThumb;
+        int yy;
+        int numThumbsWidth;
+        int numPixelProThumb;
 
+        public GenImgDate(BufferedImage imgOut, BufferedImage srcImg, Farbraum farbraum,
+                          int sizeThumb, int yy, int numThumbsWidth, int numPixelProThumb) {
+            this.imgOut = imgOut;
+            this.srcImg = srcImg;
+            this.farbraum = farbraum;
+            this.sizeThumb = sizeThumb;
+            this.yy = yy;
+            this.numThumbsWidth = numThumbsWidth;
+            this.numPixelProThumb = numPixelProThumb;
+        }
+    }
+
+    private ArrayList<GenImgDate> genImgDateArrayList = new ArrayList<>();
+
+    private synchronized GenImgDate getImgDate() {
+        if (genImgDateArrayList.size() > 0) {
+            return genImgDateArrayList.get(0);
+        }
+        return null;
+    }
+
+    private class GenImg implements Runnable {
+        GenImgDate genImgDate;
+
+        public GenImg() {
+        }
+
+        public synchronized void run() {
+            while (!stopAll && (genImgDate = getImgDate()) != null) {
+                try {
+                    for (int xx = 0; xx < genImgDate.numThumbsWidth && !stopAll; ++xx) {
+                        ++progress;
+                        Color c = ImgTools.getColor(genImgDate.srcImg.getSubimage(xx * genImgDate.numPixelProThumb,
+                                genImgDate.yy * genImgDate.numPixelProThumb,
+                                genImgDate.numPixelProThumb, genImgDate.numPixelProThumb));
+                        Thumb thumb = genImgDate.farbraum.getThumb(c, anz);
+                        if (thumb != null) {
+                            thumb.addAnz();
+                            File file = new File(thumb.getFileName());
+                            BufferedImage buffImg;
+                            buffImg = ImgTools.getBufferedImage(file);
+                            buffImg = ScaleImage.scaleBufferedImage(buffImg, genImgDate.sizeThumb, genImgDate.sizeThumb);
+                            setRaster(genImgDate.imgOut, buffImg, genImgDate.sizeThumb, xx, genImgDate.yy);
+                        } else {
+                            Log.errorLog(912365478, "MosaikErstellen.tus-Farbe fehlt!!");
+                        }
+                    }
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        }
+    }
+
+    private synchronized void setRaster(BufferedImage imgOut, BufferedImage buffImg, int sizeThumb, int xx, int yy) {
+        imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
     }
 }

@@ -98,8 +98,8 @@ public class Worker {
         genThumbList.read(thumbCollection, thumbDir);
     }
 
-    public void createMosaik(MosaikData mosaikData) {
-        genMosaik.create(mosaikData);
+    public void createMosaik(MosaikData mosaikData, ThumbCollection thumbCollection) {
+        genMosaik.create(mosaikData, thumbCollection);
     }
 
 
@@ -123,7 +123,7 @@ public class Worker {
 
     private void notifyEvent(RunEvent runEvent) {
         working.setValue(!runEvent.nixLos());
-        
+
         for (RunListener l : listeners.getListeners(RunListener.class)) {
             l.notify(runEvent);
         }

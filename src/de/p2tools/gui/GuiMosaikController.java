@@ -83,12 +83,14 @@ public class GuiMosaikController extends AnchorPane {
 
         btnCreate.setOnAction(a -> {
             if (mosaikData != null &&
-                    !mosaikData.getFotoSrc().isEmpty() && !mosaikData.getFotoDestDir().isEmpty() && !mosaikData.getFotoDestName().isEmpty()) {
-                progData.worker.createMosaik(mosaikData);
+                    !mosaikData.getFotoSrc().isEmpty() &&
+                    !mosaikData.getFotoDestDir().isEmpty() &&
+                    !mosaikData.getFotoDestName().isEmpty()) {
+                progData.worker.createMosaik(mosaikData, progData.selectedProjectData.getThumbCollection());
             }
         });
         btnCreate.disableProperty().bind(progData.worker.workingProperty());
-        
+
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_RIGHT);
         hBox.getChildren().add(btnCreate);

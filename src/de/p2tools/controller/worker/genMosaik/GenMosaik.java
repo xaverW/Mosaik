@@ -39,8 +39,9 @@ public class GenMosaik {
     private boolean stopAll = false;
 
     private ProgData progData;
-    private MosaikData mosaikData;
     private ThumbCollection thumbCollection;
+    private MosaikThumb mosaikThumb = null;
+    private MosaikBw mosaikBw = null;
 
     public GenMosaik(ProgData progData) {
         this.progData = progData;
@@ -56,14 +57,19 @@ public class GenMosaik {
 
     public void setStop() {
         stopAll = true;
+        if (mosaikThumb != null) {
+            mosaikThumb.setStop();
+        }
+        if (mosaikBw != null) {
+            mosaikBw.setStop();
+        }
     }
 
     /**
      * @param mosaikData
      */
-    public void create(MosaikData mosaikData) {
-        this.mosaikData = mosaikData;
-        this.thumbCollection = progData.selectedProjectData.getThumbCollection();
+    public void create(MosaikData mosaikData, ThumbCollection thumbCollection) {
+        this.thumbCollection = thumbCollection;
 
         dest = FileUtils.concatPaths(mosaikData.getFotoDestDir(), mosaikData.getFotoDestName());
         src = mosaikData.getFotoSrc();
@@ -76,14 +82,12 @@ public class GenMosaik {
             return;
         }
 
-        if (mosaikData.getFormat().equals(ImgTools.IMAGE_FORMAT_PNG)) {
-            if (!dest.endsWith("." + ImgTools.IMAGE_FORMAT_JPG)) {
-                dest += "." + ImgTools.IMAGE_FORMAT_PNG;
-            }
-        } else {
-            if (!dest.endsWith("." + ImgTools.IMAGE_FORMAT_JPG)) {
-                dest += "." + ImgTools.IMAGE_FORMAT_JPG;
-            }
+        if (mosaikData.getFormat().equals(ImgTools.IMAGE_FORMAT_PNG) &&
+                !dest.endsWith("." + ImgTools.IMAGE_FORMAT_PNG)) {
+            dest += "." + ImgTools.IMAGE_FORMAT_PNG;
+
+        } else if (!dest.endsWith("." + ImgTools.IMAGE_FORMAT_JPG)) {
+            dest += "." + ImgTools.IMAGE_FORMAT_JPG;
         }
 
         if (new File(dest).exists() &&
@@ -98,12 +102,12 @@ public class GenMosaik {
         }
 
         if (mosaikData.getThumbSrc().equals(MosaikData.THUMB_SRC.THUMBS.toString())) {
-            MosaikThumb mosaikThumb = new MosaikThumb(src, dest, thumbCollection, mosaikData, listeners);
+            mosaikThumb = new MosaikThumb(src, dest, thumbCollection, mosaikData, listeners);
             Thread startenThread = new Thread(mosaikThumb);
             startenThread.setDaemon(true);
             startenThread.start();
         } else {
-            MosaikBw mosaikBw = new MosaikBw(src, dest, thumbCollection, mosaikData, listeners);
+            mosaikBw = new MosaikBw(src, dest, thumbCollection, mosaikData, listeners);
             Thread startenThread = new Thread(mosaikBw);
             startenThread.setDaemon(true);
             startenThread.start();

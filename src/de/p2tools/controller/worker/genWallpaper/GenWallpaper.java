@@ -23,6 +23,7 @@ import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
+import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.Log;
 import de.p2tools.p2Lib.tools.PAlert;
@@ -76,6 +77,15 @@ public class GenWallpaper {
             return;
         }
 
+        if (wallpaperData.getFormat().equals(ImgTools.IMAGE_FORMAT_PNG) &&
+                !destName.endsWith("." + ImgTools.IMAGE_FORMAT_PNG)) {
+            destName += "." + ImgTools.IMAGE_FORMAT_PNG;
+
+        } else if (!destName.endsWith("." + ImgTools.IMAGE_FORMAT_JPG)) {
+            destName += "." + ImgTools.IMAGE_FORMAT_JPG;
+        }
+
+
         destPath = Paths.get(destDir, destName);
 
         if (destPath.toFile().exists() &&
@@ -119,6 +129,8 @@ public class GenWallpaper {
                 BufferedImage imgOut = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
                 int hh = 0, ww = 0;
+                boolean lineEnd = false;
+
                 for (int i = 0; i < thumbListSize && !stopAll; ++i) {
 
                     notifyEvent(thumbListSize, i, "");
@@ -136,12 +148,24 @@ public class GenWallpaper {
                     if (ww >= numThumbWidth) {
                         ww = 0;
                         ++hh;
+
+                        if (lineEnd) {
+                            break;
+                        }
+                    }
+
+                    if (i == thumbListSize - 1 && ww < numThumbWidth) {
+                        // dann sind wir in der letzten Zeile und nicht am Zeilenende
+                        i = -1;
+                        lineEnd = true;
                     }
 
                 }
 
-                notifyEvent(thumbListSize, thumbListSize, "Datei schreiben");
-                writeImage(imgOut);
+                if (!stopAll) {
+                    notifyEvent(thumbListSize, thumbListSize, "Datei schreiben");
+                    writeImage(imgOut);
+                }
                 notifyEvent(0, 0, "");
 
             } catch (Exception ex) {
