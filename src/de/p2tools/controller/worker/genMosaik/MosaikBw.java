@@ -19,6 +19,7 @@ package de.p2tools.controller.worker.genMosaik;
 
 import de.p2tools.controller.RunEvent;
 import de.p2tools.controller.RunListener;
+import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
@@ -29,6 +30,7 @@ import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 public class MosaikBw implements Runnable {
     String src, dest;
@@ -86,26 +88,45 @@ public class MosaikBw implements Runnable {
             imgOut = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
 
             imgSrcSmall = ScaleImage.scaleBufferedImage(srcImg, sizeThumb, sizeThumb);
+            final ArrayList<GenImgData> genImgDataArrayList = new ArrayList<>();
 
             //Bild zusammenbauen
-            Color c;
             int maxRun = numThumbsHeight * numThumbsWidth;
             notifyEvent(maxRun, 0, "");
             BufferedImage buffImg;
+            Color c;
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
                 System.out.println("yy " + yy + " von " + numThumbsHeight);
 
-                for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
+                GenImgData genImgData = new GenImgData(imgOut, srcImg, imgSrcSmall, blackWhite,
+                        sizeThumb, yy, maxRun, numThumbsWidth, numThumbsHeight, numPixelProThumb);
+                genImgDataArrayList.add(genImgData);
 
-                    ++progress;
-                    notifyEvent(maxRun, progress, "Zeilen: " + yy);
-                    c = ImgTools.getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb,
-                            numPixelProThumb, numPixelProThumb));
+//                for (int xx = 0; xx < numThumbsWidth && !stopAll; ++xx) {
+//
+//                    ++progress;
+//                    notifyEvent(maxRun, progress, "Zeilen: " + yy);
+//                    c = ImgTools.getColor(srcImg.getSubimage(xx * numPixelProThumb, yy * numPixelProThumb,
+//                            numPixelProThumb, numPixelProThumb));
+//
+//                    buffImg = getImgBw(imgSrcSmall, c, blackWhite);
+//                    buffImg = ScaleImage.scaleBufferedImage(buffImg, sizeThumb, sizeThumb);
+//                    imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
+//                }
+            }
 
-                    buffImg = getImgBw(imgSrcSmall, c, blackWhite);
-                    buffImg = ScaleImage.scaleBufferedImage(buffImg, sizeThumb, sizeThumb);
-                    imgOut.getRaster().setRect(xx * sizeThumb, yy * sizeThumb, buffImg.getData());
-                }
+            if (ProgData.saveMem) {
+                genImgDataArrayList.stream().forEach(genImgData -> {
+                    if (!stopAll) {
+                        run(genImgData);
+                    }
+                });
+            } else {
+                genImgDataArrayList.parallelStream().forEach(genImgData -> {
+                    if (!stopAll) {
+                        run(genImgData);
+                    }
+                });
             }
 
             if (stopAll) {
@@ -126,6 +147,48 @@ public class MosaikBw implements Runnable {
 
     }
 
+    private class GenImgData {
+        BufferedImage imgOut;
+        BufferedImage srcImg;
+        BufferedImage imgSrcSmall;
+        boolean blackWhite;
+        int sizeThumb;
+        int yy;
+        int maxRun;
+        int numThumbsWidth;
+        int numThumbsHeight;
+        int numPixelProThumb;
+
+        public GenImgData(BufferedImage imgOut, BufferedImage srcImg, BufferedImage imgSrcSmall, boolean blackWhite,
+                          int sizeThumb, int yy, int maxRun, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb) {
+            this.imgOut = imgOut;
+            this.srcImg = srcImg;
+            this.imgSrcSmall = imgSrcSmall;
+            this.blackWhite = blackWhite;
+            this.sizeThumb = sizeThumb;
+            this.yy = yy;
+            this.maxRun = maxRun;
+            this.numThumbsWidth = numThumbsWidth;
+            this.numThumbsHeight = numThumbsHeight;
+            this.numPixelProThumb = numPixelProThumb;
+        }
+    }
+
+    private void run(GenImgData genImgData) {
+        BufferedImage buffImg;
+
+        for (int xx = 0; xx < genImgData.numThumbsWidth && !stopAll; ++xx) {
+
+            ++progress;
+            notifyEvent(genImgData.maxRun, progress, "Zeilen: " + genImgData.yy);
+            Color c = ImgTools.getColor(genImgData.srcImg.getSubimage(xx * genImgData.numPixelProThumb,
+                    genImgData.yy * genImgData.numPixelProThumb, genImgData.numPixelProThumb, genImgData.numPixelProThumb));
+
+            buffImg = getImgBw(genImgData.imgSrcSmall, c, genImgData.blackWhite);
+            buffImg = ScaleImage.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
+            genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb, genImgData.yy * genImgData.sizeThumb, buffImg.getData());
+        }
+    }
 
     private BufferedImage getImgBw(BufferedImage srcImg, Color c, boolean bw) {
         BufferedImage img = ImgTools.cloneImage(srcImg);

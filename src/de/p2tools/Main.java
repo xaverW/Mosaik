@@ -30,6 +30,7 @@ public class Main {
 
     private final class ProgramArguments {
         private static final String STARTUPMODE_DEBUG = "-d";
+        private static final String STARTUPMODE_SAVE_MEM = "-m";
         private static final String STARTUPMODE_VERBOSE = "-v";
     }
 
@@ -123,7 +124,9 @@ public class Main {
                 case ProgramArguments.STARTUPMODE_DEBUG:
                     ProgData.debug = true;
                     break;
-
+                case ProgramArguments.STARTUPMODE_SAVE_MEM:
+                    ProgData.saveMem = true;
+                    break;
             }
         }
     }
