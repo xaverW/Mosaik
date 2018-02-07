@@ -104,11 +104,13 @@ public class GenMosaik {
         if (mosaikData.getThumbSrc().equals(MosaikData.THUMB_SRC.THUMBS.toString())) {
             mosaikThumb = new MosaikThumb(src, dest, thumbCollection, mosaikData, listeners);
             Thread startenThread = new Thread(mosaikThumb);
+            startenThread.setName("MosaikThumb");
             startenThread.setDaemon(true);
             startenThread.start();
         } else {
             mosaikBw = new MosaikBw(src, dest, thumbCollection, mosaikData, listeners);
             Thread startenThread = new Thread(mosaikBw);
+            startenThread.setName("MosaikBw");
             startenThread.setDaemon(true);
             startenThread.start();
         }
