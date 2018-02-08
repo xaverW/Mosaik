@@ -44,7 +44,7 @@ public class GuiWallpaperController extends AnchorPane {
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Fototapete erstellen");
-    Label lblSize = new Label("Das Mosaik wird die Größe haben");
+    Label lblSize = new Label("Die Fototapete wird die Größe haben von:");
 
     private final Slider sliderSize = new Slider();
     private final Label lblSlider = new Label("");
@@ -62,7 +62,7 @@ public class GuiWallpaperController extends AnchorPane {
             this.wallpaperData = progData.selectedProjectData.getWallpaperData();
         }
 
-        contPane.setPadding(new Insets(10));
+        contPane.setPadding(new Insets(0, 0, 10, 0));
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setContent(contPane);
@@ -73,7 +73,6 @@ public class GuiWallpaperController extends AnchorPane {
         AnchorPane.setTopAnchor(scrollPane, 0.0);
 
         initCont();
-        initSizePane();
         bind();
 
         getChildren().addAll(scrollPane);
@@ -177,17 +176,31 @@ public class GuiWallpaperController extends AnchorPane {
         gridPane.add(lblSliderCount, 2, row);
         gridPane.add(btnHelpSliderCount, 3, row);
 
-//        GridPane.setHalignment(btnCreate, HPos.RIGHT);
-//        gridPane.add(new Label(""), 0, ++row);
-//        gridPane.add(btnCreate, 0, ++row, 4, 1);
+        lblSize.getStyleClass().add("headerLabel");
+        lblSize.setMaxWidth(Double.MAX_VALUE);
+        lblSize.setWrapText(true);
 
+        setSize();
+        sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
+        sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
+
+
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(lblSize);
+        VBox.setVgrow(vBox, Priority.ALWAYS);
+        vBox.setAlignment(Pos.BOTTOM_LEFT);
+
+        VBox vCont = new VBox(10);
+        vCont.setPadding(new Insets(10));
+        VBox.setVgrow(vCont, Priority.ALWAYS);
+        vCont.getStyleClass().add("pane-border");
+        vCont.getChildren().addAll(gridPane, vBox);
 
         HBox hBox = new HBox();
         hBox.getChildren().add(btnCreate);
         hBox.setAlignment(Pos.BOTTOM_RIGHT);
-        VBox.setVgrow(hBox, Priority.ALWAYS);
-        contPane.getChildren().addAll(gridPane, hBox);
 
+        contPane.getChildren().addAll(vCont, hBox);
 
         btnCreate.setOnAction(a -> {
             if (!txtDestDir.getText().isEmpty()) {
@@ -243,22 +256,6 @@ public class GuiWallpaperController extends AnchorPane {
         lblSliderCount.textProperty().bind(Bindings.format("%d", wallpaperData.numberThumbsWidthProperty()));
     }
 
-    private void initSizePane() {
-        lblSize.getStyleClass().add("headerLabel");
-        lblSize.setMaxWidth(Double.MAX_VALUE);
-        lblSize.setWrapText(true);
-
-        sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
-        sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
-
-        VBox vBox = new VBox(10);
-        vBox.getChildren().addAll(lblSize);
-        VBox.setVgrow(vBox, Priority.ALWAYS);
-        vBox.setAlignment(Pos.BOTTOM_LEFT);
-
-        contPane.getChildren().add(vBox);
-    }
-
     private void setSize() {
         Text text = new Text();
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
@@ -282,9 +279,6 @@ public class GuiWallpaperController extends AnchorPane {
 
         int pixelW = 10 * (int) sliderSize.getValue() * picW;
         int pixelH = 10 * (int) sliderSize.getValue() * picH;
-
-        String count = numberFormat.format(pixelW * pixelH);
-
         long fSize = (long) (16.0 * pixelW * pixelH / 10.0 / 1024.0); // filesize kB and with jpg-compression
 
         String fileSize = numberFormat.format(fSize) + " KByte";
@@ -297,7 +291,7 @@ public class GuiWallpaperController extends AnchorPane {
             fileSize = numberFormat.format(fSize) + " GByte";
         }
 
-        text.setText("Das Mosaik hat eine Breite und Höhe von " + pixelW + " * " + pixelH + " Pixeln." +
+        text.setText("Die Fototapete hat eine Breite und Höhe von " + pixelW + " * " + pixelH + " Pixeln." +
                 "\n" +
                 "Die Dateigröße wird etwa " + fileSize + " haben.");
 

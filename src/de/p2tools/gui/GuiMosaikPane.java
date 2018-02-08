@@ -46,7 +46,6 @@ public class GuiMosaikPane extends AnchorPane {
 
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
-    //    private final VBox vBoxCont = new VBox();
     private final VBox contPane = new VBox();
 
     private final Button btnSrc = new Button("");
@@ -60,7 +59,7 @@ public class GuiMosaikPane extends AnchorPane {
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
 
-    Label lblSize = new Label("Das Mosaik wird die Größe haben");
+    Label lblSize = new Label("Das Mosaik wird eine Größe haben von:");
 
     private final IntegerProperty iPropSize = new SimpleIntegerProperty();
     private final IntegerProperty iPropCount = new SimpleIntegerProperty();

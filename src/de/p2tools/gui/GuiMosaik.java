@@ -81,7 +81,7 @@ public class GuiMosaik extends AnchorPane {
                 }
         );
         comboBox.getSelectionModel().selectFirst();
-//        stackPane.setStyle("-fx-border-color: red;");
+//        getStyleClass().add("pane-border");
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToHeight(true);
