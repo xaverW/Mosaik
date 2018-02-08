@@ -3,7 +3,8 @@
     -style-border-color-1: royalblue;
     -style-border-color-2: royalblue;
     -style-text-color-1: mediumblue;
-    -style-border-color-lbl: lightsteelblue;
+    -style-border-color-lbl: royalblue;
+    -style-border-color-tab: cornflowerblue;
 }
 
 
@@ -180,7 +181,7 @@
 }
 .tab-pane {
     -fx-border-width: 1;
-    -fx-border-color: -style-border-color-1;
+    -fx-border-color: -style-border-color-tab;
  }
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-padding: 0 10 0 10;

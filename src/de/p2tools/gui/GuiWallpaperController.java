@@ -31,6 +31,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class GuiWallpaperController extends AnchorPane {
 
@@ -40,6 +44,7 @@ public class GuiWallpaperController extends AnchorPane {
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Fototapete erstellen");
+    Label lblSize = new Label("Das Mosaik wird die Größe haben");
 
     private final Slider sliderSize = new Slider();
     private final Label lblSlider = new Label("");
@@ -67,9 +72,8 @@ public class GuiWallpaperController extends AnchorPane {
         AnchorPane.setRightAnchor(scrollPane, 0.0);
         AnchorPane.setTopAnchor(scrollPane, 0.0);
 
-//        this.setStyle("-fx-background-color: -fx-background ;");
-//        this.setStyle("-fx-border-color: red;");
         initCont();
+        initSizePane();
         bind();
 
         getChildren().addAll(scrollPane);
@@ -238,4 +242,66 @@ public class GuiWallpaperController extends AnchorPane {
         wallpaperData.numberThumbsWidthProperty().bind(nbCount);
         lblSliderCount.textProperty().bind(Bindings.format("%d", wallpaperData.numberThumbsWidthProperty()));
     }
+
+    private void initSizePane() {
+        lblSize.getStyleClass().add("headerLabel");
+        lblSize.setMaxWidth(Double.MAX_VALUE);
+        lblSize.setWrapText(true);
+
+        sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
+        sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
+
+        VBox vBox = new VBox(10);
+        vBox.getChildren().addAll(lblSize);
+        VBox.setVgrow(vBox, Priority.ALWAYS);
+        vBox.setAlignment(Pos.BOTTOM_LEFT);
+
+        contPane.getChildren().add(vBox);
+    }
+
+    private void setSize() {
+        Text text = new Text();
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
+        if (progData.selectedProjectData == null) {
+            lblSize.setText("");
+        }
+        int picW, picH;
+
+        int thumbs = progData.selectedProjectData.getThumbCollection().getThumbList().getSize();
+
+        if (10 * (int) sliderCount.getValue() >= thumbs) {
+            picW = thumbs;
+            picH = 1;
+        } else {
+            picW = 10 * (int) sliderCount.getValue();
+            picH = thumbs / picW;
+            if (thumbs % picW > 0) {
+                picH += 1;
+            }
+        }
+
+        int pixelW = 10 * (int) sliderSize.getValue() * picW;
+        int pixelH = 10 * (int) sliderSize.getValue() * picH;
+
+        String count = numberFormat.format(pixelW * pixelH);
+
+        long fSize = (long) (16.0 * pixelW * pixelH / 10.0 / 1024.0); // filesize kB and with jpg-compression
+
+        String fileSize = numberFormat.format(fSize) + " KByte";
+        if (fSize > 1024) {
+            fSize /= 1024;
+            fileSize = numberFormat.format(fSize) + " MByte";
+        }
+        if (fSize > 1024) {
+            fSize /= 1024;
+            fileSize = numberFormat.format(fSize) + " GByte";
+        }
+
+        text.setText("Das Mosaik hat eine Breite und Höhe von " + pixelW + " * " + pixelH + " Pixeln." +
+                "\n" +
+                "Die Dateigröße wird etwa " + fileSize + " haben.");
+
+        lblSize.setText(text.getText());
+    }
+
 }

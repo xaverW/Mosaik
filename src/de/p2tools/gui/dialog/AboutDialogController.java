@@ -95,7 +95,7 @@ public class AboutDialogController extends MTDialogExtra {
 
 
         // Pfade
-        text = new Text("\n\nProgrammpfade");
+        text = new Text("\n\nProgrammpfad");
         text.setFont(Font.font(null, FontWeight.BOLD, 15));
         gridPane.add(text, 0, ++row, 2, 1);
 
