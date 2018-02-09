@@ -23,7 +23,12 @@ public class ProgConst {
     public static final String CSS_FILE = "/de/p2tools/mosik.css";
     public static final String DIR_FOTO_COLLECTIONS = "Fotos";
 
-    public static final String WEBSITE_MOSAIK = "https://www.p2tools.de";
+    public static final String WEBSITE_P2 = "https://www.p2tools.de";
+
+    public static final String LOGO_NAME = "P2.png";
+    public static final String ICON_NAME = "Icon.png";
+    public static final String ICON_PATH = "/de/p2tools/res/";
+
 
     // Dateien/Verzeichnisse
     public static final String VERZEICHNIS_PROGRAMM_ICONS = "Icons/Programm"; // Unterverzeichnis im Programmverzeichnis

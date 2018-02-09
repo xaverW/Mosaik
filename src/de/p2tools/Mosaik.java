@@ -38,10 +38,6 @@ public class Mosaik extends Application {
 
     private static final String TEXT_LINE = "==========================================";
     private static final String LOG_TEXT_STARTPARAMETER_PATTERN = "Startparameter: %s";
-    private static final String ICON_NAME = "Mosaik.png";
-    private static final String ICON_PATH = "/de/p2tools/res/";
-    private static final int ICON_WIDTH = 58;
-    private static final int ICON_HEIGHT = 58;
 
     private static final String LOG_TEXT_PROGRAMMSTART = "***Programmstart***";
     private static final String ARGUMENT_PREFIX = "-";
@@ -99,7 +95,7 @@ public class Mosaik extends Application {
 
     public void losGehts() {
         Duration.counterStop(LOG_TEXT_PROGRAMMSTART);
-        primaryStage.getIcons().add(GetIcon.getImage(ICON_NAME, ICON_PATH, ICON_WIDTH, ICON_HEIGHT));
+        primaryStage.getIcons().add(GetIcon.getImage(ProgConst.ICON_NAME, ProgConst.ICON_PATH, 32, 32));
 
         Duration.staticPing("Erster Start");
         primaryStage.setTitle(ProgConst.PROGRAMMNAME);

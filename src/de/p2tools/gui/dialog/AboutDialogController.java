@@ -19,9 +19,12 @@ package de.p2tools.gui.dialog;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.config.ProgInfos;
+import de.p2tools.gui.tools.MTOpen;
 import de.p2tools.p2Lib.tools.Functions;
+import de.p2tools.p2Lib.tools.Log;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -32,6 +35,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class AboutDialogController extends MTDialogExtra {
 
@@ -53,8 +57,7 @@ public class AboutDialogController extends MTDialogExtra {
     @Override
     public void make() {
         btnOk.setOnAction(a -> close());
-        HBox hBox = new HBox();
-
+        HBox hBox = new HBox(10);
         getVboxCont().getChildren().add(hBox);
 
         ImageView iv = new ImageView();
@@ -62,6 +65,10 @@ public class AboutDialogController extends MTDialogExtra {
         iv.setSmooth(true);
         iv.setCache(true);
         iv.setImage(im);
+        iv.setFitWidth(250);
+        iv.setPreserveRatio(true);
+        iv.setSmooth(true);
+
         hBox.getChildren().add(iv);
 
         final GridPane gridPane = new GridPane();
@@ -95,9 +102,30 @@ public class AboutDialogController extends MTDialogExtra {
 
 
         // Pfade
-        text = new Text("\n\nProgrammpfad");
+        text = new Text("\n\nProgramm Informationen");
         text.setFont(Font.font(null, FontWeight.BOLD, 15));
         gridPane.add(text, 0, ++row, 2, 1);
+
+        Hyperlink hyperlink = new Hyperlink(ProgConst.WEBSITE_P2);
+        hyperlink.setStyle("-fx-font-size: 15px;");
+        hyperlink.setOnAction(a -> {
+            try {
+                MTOpen.openURL(ProgConst.WEBSITE_P2);
+            } catch (Exception e) {
+                Log.errorLog(974125469, e);
+            }
+        });
+
+        text = new Text("Website:");
+        text.setFont(new Font(15));
+        text.setFill(GRAY);
+        gridPane.add(text, 0, ++row);
+        gridPane.add(hyperlink, 1, row);
+
+
+//        text = new Text("\n\nProgrammpfad");
+//        text.setFont(Font.font(null, FontWeight.BOLD, 15));
+//        gridPane.add(text, 0, ++row, 2, 1);
 
         text = new Text("Einstellungen:");
         text.setFont(new Font(15));
@@ -148,7 +176,7 @@ public class AboutDialogController extends MTDialogExtra {
     }
 
     private javafx.scene.image.Image getImage() {
-        final String path = "/de/p2tools/res/Mosaik.png";
+        final String path = Paths.get(ProgConst.ICON_PATH, ProgConst.LOGO_NAME).toString();
         return new javafx.scene.image.Image(path);
     }
 
