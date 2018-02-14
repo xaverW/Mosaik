@@ -18,6 +18,7 @@ package de.p2tools.gui;
 
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.mosaikData.MosaikData;
+import de.p2tools.gui.dialog.MTAlert;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -87,9 +88,19 @@ public class GuiMosaikController extends AnchorPane {
                     !mosaikData.getFotoDestDir().isEmpty() &&
                     !mosaikData.getFotoDestName().isEmpty()) {
                 progData.worker.createMosaik(mosaikData, progData.selectedProjectData.getThumbCollection());
+
+            } else if (mosaikData.getFotoSrc().isEmpty()) {
+                MTAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Vorlagenbild für das Mosaik angegeben.");
+
+            } else if (mosaikData.getFotoDestDir().isEmpty()) {
+                MTAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Speicherziel angegeben.");
+
+            } else if (mosaikData.getFotoDestName().isEmpty()) {
+                MTAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Dateiname für das erstellte Mosaik angegeben.");
             }
         });
         btnCreate.disableProperty().bind(progData.worker.workingProperty());
+        btnCreate.getStyleClass().add("btnCreate");
 
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_RIGHT);

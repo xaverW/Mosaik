@@ -25,6 +25,7 @@ import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.p2Lib.tools.DirFileChooser;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -59,10 +60,16 @@ public class GuiMosaikPane extends AnchorPane {
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
 
+    private final Label lblSrcFile = new Label("Datei:");
+    private final Label lblDestDir = new Label("Verzeichnis:");
+    private final Label lblDestName = new Label("Dateiname:");
+
     Label lblSize = new Label("Das Mosaik wird eine Größe haben von:");
 
     private final IntegerProperty iPropSize = new SimpleIntegerProperty();
     private final IntegerProperty iPropCount = new SimpleIntegerProperty();
+    BooleanBinding dirBinding;
+    BooleanBinding nameBinding;
 
     MosaikData mosaikData = null;
 
@@ -84,6 +91,7 @@ public class GuiMosaikPane extends AnchorPane {
 
         initCont();
         initSizePane();
+        initColor();
         bind();
 
         getChildren().addAll(scrollPane);
@@ -106,6 +114,34 @@ public class GuiMosaikPane extends AnchorPane {
         }
         if (txtDestName.getText().isEmpty()) {
             txtDestName.setText(FileUtils.getNextFileName(txtDestDir.getText(), ProgConst.MOSAIK_STD_NAME));
+        }
+    }
+
+    private void initColor() {
+        dirBinding = Bindings.createBooleanBinding(() -> txtDestDir.getText().trim().isEmpty(), txtDestDir.textProperty());
+        nameBinding = Bindings.createBooleanBinding(() -> txtDestName.getText().trim().isEmpty(), txtDestName.textProperty());
+
+        cbSrcPhoto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    setColor(lblSrcFile, newValue == null || newValue.trim().isEmpty());
+                }
+        );
+
+        setColor(txtDestDir, dirBinding.get());
+        setColor(txtDestName, nameBinding.get());
+        setColor(lblSrcFile, cbSrcPhoto.getSelectionModel().getSelectedItem() == null ||
+                cbSrcPhoto.getSelectionModel().getSelectedItem().trim().isEmpty());
+
+        dirBinding.addListener(l -> setColor(txtDestDir, dirBinding.get()));
+        dirBinding.addListener(l -> setColor(lblDestDir, dirBinding.get()));
+        nameBinding.addListener(l -> setColor(txtDestName, nameBinding.get()));
+        nameBinding.addListener(l -> setColor(lblDestName, nameBinding.get()));
+    }
+
+    private void setColor(Control tf, boolean set) {
+        if (set) {
+            tf.getStyleClass().add("txtIsEmpty");
+        } else {
+            tf.getStyleClass().remove("txtIsEmpty");
         }
     }
 
@@ -175,7 +211,7 @@ public class GuiMosaikPane extends AnchorPane {
         lbl.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lbl, Priority.ALWAYS);
         gridPaneDest.add(lbl, 0, row, 4, 1);
-        gridPaneDest.add(new Label("Datei:"), 0, ++row);
+        gridPaneDest.add(lblSrcFile, 0, ++row);
         gridPaneDest.add(cbSrcPhoto, 1, row);
         gridPaneDest.add(btnSrc, 2, row);
         gridPaneDest.add(btnHelpSrc, 3, row);
@@ -187,12 +223,12 @@ public class GuiMosaikPane extends AnchorPane {
         gridPaneDest.add(new Label(" "), 0, ++row);
         gridPaneDest.add(lbl, 0, ++row, 4, 1);
 
-        gridPaneDest.add(new Label("Verzeichnis:"), 0, ++row);
+        gridPaneDest.add(lblDestDir, 0, ++row);
         gridPaneDest.add(txtDestDir, 1, row);
         gridPaneDest.add(btnDest, 2, row);
         gridPaneDest.add(btnHelpDest, 3, row);
 
-        gridPaneDest.add(new Label("Dateiname:"), 0, ++row);
+        gridPaneDest.add(lblDestName, 0, ++row);
         gridPaneDest.add(txtDestName, 1, row);
 
         lbl = new Label("Größe der Miniaturbilder (Pixel):");

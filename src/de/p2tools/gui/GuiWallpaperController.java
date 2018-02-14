@@ -24,6 +24,7 @@ import de.p2tools.gui.dialog.MTAlert;
 import de.p2tools.p2Lib.tools.DirFileChooser;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -44,7 +45,9 @@ public class GuiWallpaperController extends AnchorPane {
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
     private final Button btnCreate = new Button("Fototapete erstellen");
-    Label lblSize = new Label("Die Fototapete wird die Größe haben von:");
+    private final Label lblSize = new Label("Die Fototapete wird die Größe haben von:");
+    private final Label lblDestName = new Label("Dateiname: ");
+    private final Label lblDestDir = new Label("Verzeichnis:");
 
     private final Slider sliderSize = new Slider();
     private final Label lblSlider = new Label("");
@@ -52,6 +55,8 @@ public class GuiWallpaperController extends AnchorPane {
     private final Label lblSliderCount = new Label("");
     private final IntegerProperty iProp = new SimpleIntegerProperty();
     private final IntegerProperty iPropCount = new SimpleIntegerProperty();
+    BooleanBinding dirBinding;
+    BooleanBinding nameBinding;
 
     private final ProgData progData;
     private WallpaperData wallpaperData = null;
@@ -73,6 +78,7 @@ public class GuiWallpaperController extends AnchorPane {
         AnchorPane.setTopAnchor(scrollPane, 0.0);
 
         initCont();
+        initColor();
         bind();
 
         getChildren().addAll(scrollPane);
@@ -100,6 +106,26 @@ public class GuiWallpaperController extends AnchorPane {
 
     }
 
+    private void initColor() {
+        dirBinding = Bindings.createBooleanBinding(() -> txtDestDir.getText().trim().isEmpty(), txtDestDir.textProperty());
+        nameBinding = Bindings.createBooleanBinding(() -> txtDestName.getText().trim().isEmpty(), txtDestName.textProperty());
+
+        setColor(txtDestDir, dirBinding.get());
+        setColor(txtDestName, nameBinding.get());
+
+        dirBinding.addListener(l -> setColor(txtDestDir, dirBinding.get()));
+        dirBinding.addListener(l -> setColor(lblDestDir, dirBinding.get()));
+        nameBinding.addListener(l -> setColor(txtDestName, nameBinding.get()));
+        nameBinding.addListener(l -> setColor(lblDestName, nameBinding.get()));
+    }
+
+    private void setColor(Control tf, boolean set) {
+        if (set) {
+            tf.getStyleClass().add("txtIsEmpty");
+        } else {
+            tf.getStyleClass().remove("txtIsEmpty");
+        }
+    }
 
     private void initCont() {
         // DEST
@@ -147,12 +173,12 @@ public class GuiWallpaperController extends AnchorPane {
         lbl.setMaxWidth(Double.MAX_VALUE);
 
         gridPane.add(lbl, 0, row, 4, 1);
-        gridPane.add(new Label("Verzeichnis:"), 0, ++row);
+        gridPane.add(lblDestDir, 0, ++row);
         gridPane.add(txtDestDir, 1, row);
         gridPane.add(btnDest, 2, row);
         gridPane.add(btnHelpDest, 3, row);
 
-        gridPane.add(new Label("Dateiname: "), 0, ++row);
+        gridPane.add(lblDestName, 0, ++row);
         gridPane.add(txtDestName, 1, row);
 
 
@@ -200,16 +226,19 @@ public class GuiWallpaperController extends AnchorPane {
         hBox.getChildren().add(btnCreate);
         hBox.setAlignment(Pos.BOTTOM_RIGHT);
 
+        contPane.setPadding(new Insets(10));
         contPane.getChildren().addAll(vCont, hBox);
 
         btnCreate.setOnAction(a -> {
             if (!txtDestDir.getText().isEmpty()) {
                 progData.worker.createWallpaper(progData.selectedProjectData.getThumbCollection(),
                         progData.selectedProjectData.getWallpaperData());
+            } else {
+                MTAlert.showErrorAlert("Fototapete anlegen", "Es ist kein Speicherziel angegeben.");
             }
         });
         btnCreate.disableProperty().bind(progData.worker.workingProperty());
-
+        btnCreate.getStyleClass().add("btnCreate");
     }
 
     private void unbind() {

@@ -6,6 +6,60 @@
     -style-border-color-lbl: royalblue;
     -style-border-color-tab: cornflowerblue;
 }
+.tab .tab-label {
+    -fx-text-alignment: center;
+    -fx-alignment: center ;
+}
+.tab-pane {
+    -fx-border-width: 1;
+    -fx-border-color: -style-border-color-tab;
+ }
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-padding: 0 10 0 10;
+    -fx-border-width: 1, 2;
+    -fx-border-radius: 20 20 0 0, 18 18 0 0;
+    -fx-border-insets: 0, 4;
+    -fx-border-color: -style-border-color-1, transparent;
+    -fx-background-radius: 20 20 0 0, 18 18 0 0;
+    -fx-background-insets: 0;
+    -fx-background-color:
+             linear-gradient(from 0% 0% to 100% 100%, #d6d6d6 50%, white 100%),
+             radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
+    -fx-text-fill: black;
+ }
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-border-width: 2, 1, 2;
+    -fx-border-color: -style-border-color-1, transparent, transparent;
+ }
+.tab-pane > .tab-header-area > .headers-region > .tab:hover {
+    -fx-border-width: 2, 1, 2;
+    -fx-border-color: -style-border-color-2, -style-border-color-1, transparent;
+ }
+.tab-pane > .tab-header-area > .headers-region > .tab:pressed {
+    -fx-border-width: 1, 2, 2;
+    -fx-border-color: -style-border-color-1, -style-border-color-2, transparent;
+ }
+
+.tab:selected .tab-label {
+     -fx-text-fill: -style-text-color-1;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected  .focus-indicator {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.text-field{
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+.combo-box-base{
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+.button{
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
 
 
 /* Rahmen */
@@ -27,10 +81,11 @@
 }
 
 .txtIsEmpty {
+    -fx-text-fill: red;
     -fx-control-inner-background: antiquewhite;
 }
 
- .btnTab{
+.btnTab{
     -fx-font-weight: bold;
     -fx-text-alignment: center;
     -fx-alignment: center ;
@@ -117,6 +172,42 @@
          radial-gradient(center 80% -70%, radius 200%, #e6e6e6 35%, rgba(230,230,230,0) 40%);
  }
 
+.btnCreate{
+     -fx-font-weight: bold;
+     -fx-text-alignment: center;
+     -fx-alignment: center ;
+     -fx-background-radius: 30;
+     -fx-background-insets: 0,1,1;
+     -fx-text-fill: black;
+     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+     -fx-padding: 10 20 10 20;
+     -fx-border: 10;
+  }
+
+
+.btnCreate:hover{
+     -fx-font-weight: bold;
+     -fx-alignment: center ;
+     -fx-background-radius: 30;
+     -fx-background-insets: 0,1,1;
+     -fx-text-fill: black;
+     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+     -fx-padding: 10 20 10 20;
+     -fx-border: 10;
+  }
+
+.btnCreate:pressed{
+     -fx-font-weight: bold;
+     -fx-alignment: center ;
+     -fx-background-radius: 30;
+     -fx-background-insets: 0,1,1;
+     -fx-text-fill: black;
+     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+     -fx-padding: 10 20 10 20;
+     -fx-border: 10;
+  }
+
+
 .headerLabel {
     -fx-padding: 5 10 5 10;
     -fx-border-width: 1;
@@ -135,57 +226,3 @@
     -fx-border-color: -style-border-color-tab;
  }
 
-.tab .tab-label {
-    -fx-text-alignment: center;
-    -fx-alignment: center ;
-}
-.tab-pane {
-    -fx-border-width: 1;
-    -fx-border-color: -style-border-color-tab;
- }
-.tab-pane > .tab-header-area > .headers-region > .tab {
-    -fx-padding: 0 10 0 10;
-    -fx-border-width: 1, 2;
-    -fx-border-radius: 20 20 0 0, 18 18 0 0;
-    -fx-border-insets: 0, 4;
-    -fx-border-color: -style-border-color-1, transparent;
-    -fx-background-radius: 20 20 0 0, 18 18 0 0;
-    -fx-background-insets: 0;
-    -fx-background-color:
-             linear-gradient(from 0% 0% to 100% 100%, #d6d6d6 50%, white 100%),
-             radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
-    -fx-text-fill: black;
- }
-.tab-pane > .tab-header-area > .headers-region > .tab:selected {
-    -fx-border-width: 2, 1, 2;
-    -fx-border-color: -style-border-color-1, transparent, transparent;
- }
-.tab-pane > .tab-header-area > .headers-region > .tab:hover {
-    -fx-border-width: 2, 1, 2;
-    -fx-border-color: -style-border-color-2, -style-border-color-1, transparent;
- }
-.tab-pane > .tab-header-area > .headers-region > .tab:pressed {
-    -fx-border-width: 1, 2, 2;
-    -fx-border-color: -style-border-color-1, -style-border-color-2, transparent;
- }
-
-.tab:selected .tab-label {
-     -fx-text-fill: -style-text-color-1;
-}
-.tab-pane > .tab-header-area > .headers-region > .tab:selected  .focus-indicator {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-}
-
-.text-field{
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-}
-.combo-box-base{
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-}
-.button{
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-}
