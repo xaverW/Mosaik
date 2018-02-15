@@ -23,7 +23,7 @@ import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
-import de.p2tools.p2Lib.image.ImgTools;
+import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.Log;
 import de.p2tools.p2Lib.tools.PAlert;
@@ -77,12 +77,12 @@ public class GenWallpaper {
             return;
         }
 
-        if (wallpaperData.getFormat().equals(ImgTools.IMAGE_FORMAT_PNG) &&
-                !destName.endsWith("." + ImgTools.IMAGE_FORMAT_PNG)) {
-            destName += "." + ImgTools.IMAGE_FORMAT_PNG;
+        if (wallpaperData.getFormat().equals(ImgFile.IMAGE_FORMAT_PNG) &&
+                !destName.endsWith("." + ImgFile.IMAGE_FORMAT_PNG)) {
+            destName += "." + ImgFile.IMAGE_FORMAT_PNG;
 
-        } else if (!destName.endsWith("." + ImgTools.IMAGE_FORMAT_JPG)) {
-            destName += "." + ImgTools.IMAGE_FORMAT_JPG;
+        } else if (!destName.endsWith("." + ImgFile.IMAGE_FORMAT_JPG)) {
+            destName += "." + ImgFile.IMAGE_FORMAT_JPG;
         }
 
 

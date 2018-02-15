@@ -22,7 +22,7 @@ import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigBoolProp;
 import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
-import de.p2tools.p2Lib.image.ImgTools;
+import de.p2tools.p2Lib.image.ImgFile;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class MosaikDataProps extends Data<MosaikData> {
         }
     }
 
-    private final StringProperty format = new SimpleStringProperty(ImgTools.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
+    private final StringProperty format = new SimpleStringProperty(ImgFile.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
     private final StringProperty fotoDestName = new SimpleStringProperty(""); // File dest
     private final StringProperty fotoDestDir = new SimpleStringProperty(""); // File dest
@@ -62,7 +62,7 @@ public class MosaikDataProps extends Data<MosaikData> {
 
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<>(Arrays.asList(
-                new ConfigStringProp("format", ImgTools.IMAGE_FORMAT_JPG, format),
+                new ConfigStringProp("format", ImgFile.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("foto-src", "", fotoSrc),
                 new ConfigStringProp("foto-dest-name", "", fotoDestName),
                 new ConfigStringProp("foto-dest-dir", "", fotoDestDir),

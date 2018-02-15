@@ -24,6 +24,7 @@ import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
+import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.Log;
@@ -71,7 +72,7 @@ public class MosaikThumb implements Runnable {
         try {
 
             thumbCollection.getThumbList().resetAnz();
-            BufferedImage srcImg = ImgTools.getBufferedImage(new File(src));
+            BufferedImage srcImg = ImgFile.getBufferedImage(new File(src));
 
             final int srcHeight = srcImg.getRaster().getHeight();
             final int srcWidth = srcImg.getRaster().getWidth();
@@ -116,7 +117,7 @@ public class MosaikThumb implements Runnable {
 
             //fertig
             notifyEvent(maxRun, progress, "Speichern");
-            ImgTools.writeImage(imgOut, dest, mosaikData.getFormat());
+            ImgFile.writeImage(imgOut, dest, mosaikData.getFormat());
             notifyEvent(0, 0, "");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -168,7 +169,7 @@ public class MosaikThumb implements Runnable {
                     thumb.addAnz();
                     File file = new File(thumb.getFileName());
                     BufferedImage buffImg;
-                    buffImg = ImgTools.getBufferedImage(file);
+                    buffImg = ImgFile.getBufferedImage(file);
                     buffImg = ScaleImage.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
                     genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb,
                             genImgData.yy * genImgData.sizeThumb, buffImg.getData());

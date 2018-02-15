@@ -22,7 +22,7 @@ import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.p2Lib.image.ImgTools;
+import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.FileUtils;
 
@@ -170,7 +170,7 @@ public class GenThumbList {
                             try {
                                 File dest = new File(fileDestDir.getAbsolutePath() + File.separator +
                                         liste[i].getName() + "_" +
-                                        random.nextInt(Integer.MAX_VALUE) + "." + ImgTools.IMAGE_FORMAT_JPG);
+                                        random.nextInt(Integer.MAX_VALUE) + "." + ImgFile.IMAGE_FORMAT_JPG);
                                 str = dest.getAbsolutePath();
                                 addCreationsList(liste[i], dest);
                             } catch (Exception ex) {
@@ -296,9 +296,9 @@ public class GenThumbList {
 
     public boolean checkSuffix(File file) {
         boolean ret = false;
-        if (file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(ImgTools.IMAGE_FORMAT_JPG) ||
+        if (file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(ImgFile.IMAGE_FORMAT_JPG) ||
                 file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase("jpeg") ||
-                file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(ImgTools.IMAGE_FORMAT_PNG)) {
+                file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(ImgFile.IMAGE_FORMAT_PNG)) {
             ret = true;
         }
         return ret;

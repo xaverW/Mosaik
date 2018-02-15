@@ -23,6 +23,7 @@ import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
 import de.p2tools.controller.worker.genThumbList.ScaleImage;
+import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.Duration;
 
@@ -70,7 +71,7 @@ public class MosaikBw implements Runnable {
 
             thumbCollection.getThumbList().resetAnz();
             BufferedImage imgOut, imgSrcSmall;
-            BufferedImage srcImg = ImgTools.getBufferedImage(new File(src));
+            BufferedImage srcImg = ImgFile.getBufferedImage(new File(src));
 
             int srcHeight = srcImg.getRaster().getHeight();
             int srcWidth = srcImg.getRaster().getWidth();
@@ -114,7 +115,7 @@ public class MosaikBw implements Runnable {
 
             //fertig
             notifyEvent(maxRun, progress, "Speichern");
-            ImgTools.writeImage(imgOut, dest, mosaikData.getFormat());
+            ImgFile.writeImage(imgOut, dest, mosaikData.getFormat());
             notifyEvent(0, 0, "");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -171,7 +172,7 @@ public class MosaikBw implements Runnable {
     }
 
     private BufferedImage getImgBw(BufferedImage srcImg, Color c, boolean bw) {
-        BufferedImage img = ImgTools.cloneImage(srcImg);
+        BufferedImage img = ImgFile.cloneImage(srcImg);
 
         int width = img.getWidth();
         int height = img.getHeight();

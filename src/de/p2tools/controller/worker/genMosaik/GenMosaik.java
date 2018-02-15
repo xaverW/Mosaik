@@ -21,7 +21,7 @@ import de.p2tools.controller.RunListener;
 import de.p2tools.controller.config.ProgData;
 import de.p2tools.controller.data.mosaikData.MosaikData;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.p2Lib.image.ImgTools;
+import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.FileUtils;
 import de.p2tools.p2Lib.tools.Log;
 import de.p2tools.p2Lib.tools.PAlert;
@@ -82,12 +82,12 @@ public class GenMosaik {
             return;
         }
 
-        if (mosaikData.getFormat().equals(ImgTools.IMAGE_FORMAT_PNG) &&
-                !dest.endsWith("." + ImgTools.IMAGE_FORMAT_PNG)) {
-            dest += "." + ImgTools.IMAGE_FORMAT_PNG;
+        if (mosaikData.getFormat().equals(ImgFile.IMAGE_FORMAT_PNG) &&
+                !dest.endsWith("." + ImgFile.IMAGE_FORMAT_PNG)) {
+            dest += "." + ImgFile.IMAGE_FORMAT_PNG;
 
-        } else if (!dest.endsWith("." + ImgTools.IMAGE_FORMAT_JPG)) {
-            dest += "." + ImgTools.IMAGE_FORMAT_JPG;
+        } else if (!dest.endsWith("." + ImgFile.IMAGE_FORMAT_JPG)) {
+            dest += "." + ImgFile.IMAGE_FORMAT_JPG;
         }
 
         if (new File(dest).exists() &&

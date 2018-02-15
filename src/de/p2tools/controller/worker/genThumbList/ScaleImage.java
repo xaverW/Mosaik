@@ -17,12 +17,12 @@
 
 package de.p2tools.controller.worker.genThumbList;
 
-import de.p2tools.controller.Funktionen;
+import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.controller.config.ProgConfig;
 import de.p2tools.controller.config.ProgConst;
 import de.p2tools.controller.data.thumb.Thumb;
 import de.p2tools.controller.data.thumb.ThumbCollection;
-import de.p2tools.p2Lib.image.ImgTools;
+import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.Log;
 
 import javax.imageio.ImageIO;
@@ -127,9 +127,9 @@ public class ScaleImage {
 
     public static void rotate(File source, boolean rechts) {
         try {
-            BufferedImage img = ImgTools.getBufferedImage(source);
+            BufferedImage img = ImgFile.getBufferedImage(source);
             BufferedImage rImg = rotateImage(img, (rechts) ? 1 : -1);
-            ImageIO.write(rImg, Funktionen.fileType(source), source);
+            ImageIO.write(rImg, ImgTools.fileType(source), source);
         } catch (Exception ex) {
             System.out.println(ex.getMessage() + "\n" + "ScaleImage_.drehen");
         }
@@ -149,7 +149,7 @@ public class ScaleImage {
      * @param img
      */
     public static Thumb getThumb(File img) {
-        Raster rast = ImgTools.getRenderedImage(img).getData();
+        Raster rast = ImgFile.getRenderedImage(img).getData();
         return getThumb(rast, img);
     }
 
