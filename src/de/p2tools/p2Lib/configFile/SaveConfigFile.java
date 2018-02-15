@@ -16,8 +16,8 @@
 
 package de.p2tools.p2Lib.configFile;
 
-import de.p2tools.controller.config.ProgConst;
-import de.p2tools.controller.config.ProgData;
+import de.p2tools.mosaik.controller.config.ProgConst;
+import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigConfigsData;
 import de.p2tools.p2Lib.configFile.config.ConfigConfigsList;

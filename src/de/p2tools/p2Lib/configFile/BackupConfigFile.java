@@ -17,7 +17,7 @@
 
 package de.p2tools.p2Lib.configFile;
 
-import de.p2tools.gui.dialog.MTAlert;
+import de.p2tools.mosaik.gui.dialog.MTAlert;
 import de.p2tools.p2Lib.tools.Log;
 import de.p2tools.p2Lib.tools.PAlert;
 import de.p2tools.p2Lib.tools.SysMsg;

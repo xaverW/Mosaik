@@ -16,7 +16,7 @@
 
 package de.p2tools.p2Lib.tools;
 
-import de.p2tools.gui.dialog.MTAlert;
+import de.p2tools.mosaik.gui.dialog.MTAlert;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
