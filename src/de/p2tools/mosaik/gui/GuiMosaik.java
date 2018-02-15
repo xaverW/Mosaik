@@ -81,7 +81,6 @@ public class GuiMosaik extends AnchorPane {
                 }
         );
         comboBox.getSelectionModel().selectFirst();
-//        getStyleClass().add("pane-border");
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToHeight(true);

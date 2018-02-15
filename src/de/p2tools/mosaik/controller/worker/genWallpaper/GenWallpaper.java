@@ -23,10 +23,12 @@ import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mosaik.controller.worker.genThumbList.ScaleImage;
+import de.p2tools.mosaik.gui.dialog.MTAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.Log;
 import de.p2tools.p2Lib.tools.PAlert;
+import javafx.application.Platform;
 
 import javax.imageio.*;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
@@ -165,7 +167,13 @@ public class GenWallpaper {
 
             } catch (Exception ex) {
                 Log.errorLog(654102025, ex);
+            } catch (OutOfMemoryError E) {
+                Platform.runLater(() ->
+                        MTAlert.showErrorAlert("Mosaik erstellen", "Das Mosaik kann nicht erstellt werden, das Programm " +
+                                "hat zu wenig Arbeitsspeicher!")
+                );
             }
+
         }
     }
 
@@ -205,6 +213,7 @@ public class GenWallpaper {
             ios.flush();
             writer.dispose();
         } catch (Exception e) {
+            Log.errorLog(945123659, e.getMessage());
         } finally {
             try {
                 ios.close();

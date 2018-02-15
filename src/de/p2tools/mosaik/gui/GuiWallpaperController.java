@@ -21,6 +21,7 @@ import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mosaik.gui.dialog.MTAlert;
+import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.DirFileChooser;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
@@ -230,6 +231,12 @@ public class GuiWallpaperController extends AnchorPane {
         contPane.getChildren().addAll(vCont, hBox);
 
         btnCreate.setOnAction(a -> {
+            if (wallpaperData.getNumberThumbsWidth() * wallpaperData.getThumbSize() >= ImgTools.JPEG_MAX_DIMENSION) {
+                MTAlert.showErrorAlert("Mosaik erstellen", "Die Maximale Größe des Mosaiks ist überschritten.\n" +
+                        "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.");
+                return;
+            }
+
             if (!txtDestDir.getText().isEmpty()) {
                 progData.worker.createWallpaper(progData.selectedProjectData.getThumbCollection(),
                         progData.selectedProjectData.getWallpaperData());

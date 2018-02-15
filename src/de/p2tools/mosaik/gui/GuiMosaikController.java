@@ -99,17 +99,27 @@ public class GuiMosaikController extends AnchorPane {
                 MTAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Dateiname für das erstellte Mosaik angegeben.");
             }
         });
-        btnCreate.disableProperty().bind(progData.worker.workingProperty());
-        btnCreate.getStyleClass().add("btnCreate");
+        btnCreate.disableProperty().
+
+                bind(progData.worker.workingProperty());
+        btnCreate.getStyleClass().
+
+                add("btnCreate");
 
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_RIGHT);
-        hBox.getChildren().add(btnCreate);
+        hBox.getChildren().
 
-        vBox.setPadding(new Insets(10));
+                add(btnCreate);
+
+        vBox.setPadding(new
+
+                Insets(10));
         vBox.setSpacing(20);
         VBox.setVgrow(tabPane, Priority.ALWAYS);
-        vBox.getChildren().addAll(tabPane, hBox);
+        vBox.getChildren().
+
+                addAll(tabPane, hBox);
 
     }
 

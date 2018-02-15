@@ -26,6 +26,8 @@ import java.io.File;
 
 public class ImgTools {
 
+    public static long JPEG_MAX_DIMENSION = 65500L;
+
     public static String fileType(File f) {
         return fileType(f.getName());
     }
