@@ -15,7 +15,9 @@ Anz. Pixel des erstellten Mosaik pro Zeile |
 Arbeitsspeicher den das Programm braucht | Dateigröße Mosaik
 
 250 | 100 | 25.000 |  6 GByte | 650 MByte
+
 100 | 100 | 10.000 | <2 GByte | 150 MByte
- 50 | 100 |  5.000 | <1 GByte |  40 MByte
+
+50 | 100 |  5.000 | <1 GByte |  40 MByte
 
 Die resultierende Dateigröße des Mosaiks hängt auch sehr vom Inhalt des Bildes ab. Ein weißes PNG mit 10.000x10.000 Pixel hat nur 300 kByte. Als farbiges Bild kannn es >100 MByte haben.
