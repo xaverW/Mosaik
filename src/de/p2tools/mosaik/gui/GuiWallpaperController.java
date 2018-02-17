@@ -21,6 +21,7 @@ import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mosaik.gui.dialog.MTAlert;
+import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.DirFileChooser;
 import de.p2tools.p2Lib.tools.FileUtils;
@@ -111,21 +112,13 @@ public class GuiWallpaperController extends AnchorPane {
         dirBinding = Bindings.createBooleanBinding(() -> txtDestDir.getText().trim().isEmpty(), txtDestDir.textProperty());
         nameBinding = Bindings.createBooleanBinding(() -> txtDestName.getText().trim().isEmpty(), txtDestName.textProperty());
 
-        setColor(txtDestDir, dirBinding.get());
-        setColor(txtDestName, nameBinding.get());
+        GuiTools.setColor(txtDestDir, dirBinding.get());
+        GuiTools.setColor(txtDestName, nameBinding.get());
 
-        dirBinding.addListener(l -> setColor(txtDestDir, dirBinding.get()));
-        dirBinding.addListener(l -> setColor(lblDestDir, dirBinding.get()));
-        nameBinding.addListener(l -> setColor(txtDestName, nameBinding.get()));
-        nameBinding.addListener(l -> setColor(lblDestName, nameBinding.get()));
-    }
-
-    private void setColor(Control tf, boolean set) {
-        if (set) {
-            tf.getStyleClass().add("txtIsEmpty");
-        } else {
-            tf.getStyleClass().remove("txtIsEmpty");
-        }
+        dirBinding.addListener(l -> GuiTools.setColor(txtDestDir, dirBinding.get()));
+        dirBinding.addListener(l -> GuiTools.setColor(lblDestDir, dirBinding.get()));
+        nameBinding.addListener(l -> GuiTools.setColor(txtDestName, nameBinding.get()));
+        nameBinding.addListener(l -> GuiTools.setColor(lblDestName, nameBinding.get()));
     }
 
     private void initCont() {

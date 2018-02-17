@@ -21,12 +21,12 @@ import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.projectData.ProjectData;
 import de.p2tools.mosaik.gui.HelpText;
+import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.tools.DirFileChooser;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -123,20 +123,11 @@ public class AddMosaikDialogController extends MTDialogExtra {
         BooleanBinding nameBinding = Bindings.createBooleanBinding(() -> txtName.getText().trim().isEmpty(), txtName.textProperty());
 
         btnOk.disableProperty().bind(dirBinding.or(nameBinding));
-        setColor(txtDir, dirBinding);
-        setColor(txtName, nameBinding);
+        GuiTools.setColor(txtDir, dirBinding.get());
+        GuiTools.setColor(txtName, nameBinding.get());
 
-        dirBinding.addListener(l -> setColor(txtDir, dirBinding));
-        nameBinding.addListener(l -> setColor(txtName, nameBinding));
-    }
-
-    private void setColor(Control tf, BooleanBinding bb) {
-        if (bb.get()) {
-            tf.getStyleClass().add("txtIsEmpty");
-        } else {
-            tf.getStyleClass().remove("txtIsEmpty");
-        }
-
+        dirBinding.addListener(l -> GuiTools.setColor(txtDir, dirBinding.get()));
+        nameBinding.addListener(l -> GuiTools.setColor(txtName, nameBinding.get()));
     }
 
 }

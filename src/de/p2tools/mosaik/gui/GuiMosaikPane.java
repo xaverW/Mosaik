@@ -22,6 +22,7 @@ import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
 import de.p2tools.mosaik.gui.dialog.MTAlert;
+import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.tools.DirFileChooser;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
@@ -122,27 +123,19 @@ public class GuiMosaikPane extends AnchorPane {
         nameBinding = Bindings.createBooleanBinding(() -> txtDestName.getText().trim().isEmpty(), txtDestName.textProperty());
 
         cbSrcPhoto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                    setColor(lblSrcFile, newValue == null || newValue.trim().isEmpty());
+                    GuiTools.setColor(lblSrcFile, newValue == null || newValue.trim().isEmpty());
                 }
         );
 
-        setColor(txtDestDir, dirBinding.get());
-        setColor(txtDestName, nameBinding.get());
-        setColor(lblSrcFile, cbSrcPhoto.getSelectionModel().getSelectedItem() == null ||
+        GuiTools.setColor(txtDestDir, dirBinding.get());
+        GuiTools.setColor(txtDestName, nameBinding.get());
+        GuiTools.setColor(lblSrcFile, cbSrcPhoto.getSelectionModel().getSelectedItem() == null ||
                 cbSrcPhoto.getSelectionModel().getSelectedItem().trim().isEmpty());
 
-        dirBinding.addListener(l -> setColor(txtDestDir, dirBinding.get()));
-        dirBinding.addListener(l -> setColor(lblDestDir, dirBinding.get()));
-        nameBinding.addListener(l -> setColor(txtDestName, nameBinding.get()));
-        nameBinding.addListener(l -> setColor(lblDestName, nameBinding.get()));
-    }
-
-    private void setColor(Control tf, boolean set) {
-        if (set) {
-            tf.getStyleClass().add("txtIsEmpty");
-        } else {
-            tf.getStyleClass().remove("txtIsEmpty");
-        }
+        dirBinding.addListener(l -> GuiTools.setColor(txtDestDir, dirBinding.get()));
+        dirBinding.addListener(l -> GuiTools.setColor(lblDestDir, dirBinding.get()));
+        nameBinding.addListener(l -> GuiTools.setColor(txtDestName, nameBinding.get()));
+        nameBinding.addListener(l -> GuiTools.setColor(lblDestName, nameBinding.get()));
     }
 
 

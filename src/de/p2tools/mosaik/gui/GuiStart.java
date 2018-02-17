@@ -23,6 +23,7 @@ import de.p2tools.mosaik.controller.data.projectData.ProjectData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.gui.dialog.AddMosaikDialogController;
 import de.p2tools.mosaik.gui.dialog.MTAlert;
+import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.tools.DirFileChooser;
 import de.p2tools.p2Lib.tools.PAlert;
 import javafx.beans.binding.Bindings;
@@ -94,20 +95,11 @@ public class GuiStart extends AnchorPane {
         BooleanBinding nameBinding = Bindings.createBooleanBinding(() -> txtName.getText().trim().isEmpty(), txtName.textProperty());
         allOk.bind(dirBinding.not().and(nameBinding.not()));
 
-        setColor(txtDir, dirBinding);
-        setColor(txtName, nameBinding);
+        GuiTools.setColor(txtDir, dirBinding.get());
+        GuiTools.setColor(txtName, nameBinding.get());
 
-        dirBinding.addListener(l -> setColor(txtDir, dirBinding));
-        nameBinding.addListener(l -> setColor(txtName, nameBinding));
-    }
-
-    private void setColor(Control tf, BooleanBinding bb) {
-        if (bb.get()) {
-            tf.getStyleClass().add("txtIsEmpty");
-        } else {
-            tf.getStyleClass().remove("txtIsEmpty");
-        }
-
+        dirBinding.addListener(l -> GuiTools.setColor(txtDir, dirBinding.get()));
+        nameBinding.addListener(l -> GuiTools.setColor(txtName, nameBinding.get()));
     }
 
     private void initCollection() {
