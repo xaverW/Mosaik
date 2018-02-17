@@ -26,3 +26,13 @@ Die Qualität der erstellten Mosaiks hängt von der Anzahl der importierten Mini
 
 <br /><br />
 Die resultierende Dateigröße des Mosaiks hängt auch sehr vom Inhalt des Bildes ab. Ein weißes PNG mit 10.000x10.000 Pixel hat nur eine Dateigröße von 300 kByte. Als farbiges Bild kann es mehr als 100 MByte haben.
+
+
+<br /><br />
+Sollte das Programm für große Mosaiks mehr Speicher brauchen, kann es aus einer Dosbox/Terminal heraus gestartet werden (z.B. stellt das 4GByte Speicher zur Verfügung):
+
+*java -Xmx4G -jar ./Mosaik.jar*
+
+oder für Windows
+
+*java -Xmx4G -jar "C:\Users\PFAD\Mosaik.jar"*
