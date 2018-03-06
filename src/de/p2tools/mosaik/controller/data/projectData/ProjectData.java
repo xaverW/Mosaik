@@ -19,7 +19,7 @@ package de.p2tools.mosaik.controller.data.projectData;
 
 import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
-import de.p2tools.p2Lib.tools.PAlert;
+import de.p2tools.p2Lib.dialog.PAlert;
 
 import java.io.IOException;
 import java.nio.file.Files;

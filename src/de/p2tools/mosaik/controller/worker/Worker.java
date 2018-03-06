@@ -26,8 +26,8 @@ import de.p2tools.mosaik.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mosaik.controller.worker.genMosaik.GenMosaik;
 import de.p2tools.mosaik.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.mosaik.controller.worker.genWallpaper.GenWallpaper;
+import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.tools.FileUtils;
-import de.p2tools.p2Lib.tools.PAlert;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 

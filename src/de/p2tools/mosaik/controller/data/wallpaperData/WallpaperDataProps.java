@@ -17,17 +17,20 @@
 
 package de.p2tools.mosaik.controller.data.wallpaperData;
 
-import de.p2tools.p2Lib.configFile.ConfigsData;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.pData.PDataVault;
 import de.p2tools.p2Lib.image.ImgFile;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData {
+public class WallpaperDataProps extends PDataVault<WallpaperData> {
+
+    public static final String TAG = "WallpaperData";
+
     private final StringProperty format = new SimpleStringProperty(ImgFile.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoDestDir = new SimpleStringProperty(""); // File dest
     private final StringProperty fotoDestName = new SimpleStringProperty(""); // File dest
@@ -127,31 +130,5 @@ public class WallpaperDataProps extends WallpaperDataXml implements ConfigsData 
 
     public void setThumbCollectionId(int thumbCollectionId) {
         this.thumbCollectionId.set(thumbCollectionId);
-    }
-
-    public void setPropsFromXml() {
-        setFormat(arr[FORMAT]);
-        setFotoDestDir(arr[FOTO_DEST]);
-        setInt();
-    }
-
-    private void setInt() {
-        try {
-            setThumbSize(Integer.parseInt(arr[THUMB_SIZE]));
-            setNumberThumbsWidth(Integer.parseInt(arr[NUMBER_THUMBS_W]));
-            setThumbCollectionId(Integer.parseInt(arr[THUMB_COLLECTION_ID]));
-        } catch (Exception ex) {
-            setThumbSize(50);
-            setNumberThumbsWidth(50);
-            setThumbCollectionId(0);
-        }
-    }
-
-    public void setXmlFromProps() {
-        arr[FORMAT] = getFormat();
-        arr[FOTO_DEST] = getFotoDestDir();
-        arr[THUMB_SIZE] = String.valueOf(getThumbSize());
-        arr[NUMBER_THUMBS_W] = String.valueOf(getNumberThumbsWidth());
-        arr[THUMB_COLLECTION_ID] = String.valueOf(getThumbCollectionId());
     }
 }

@@ -21,10 +21,10 @@ import de.p2tools.mosaik.controller.RunListener;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
+import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.FileUtils;
 import de.p2tools.p2Lib.tools.Log;
-import de.p2tools.p2Lib.tools.PAlert;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;

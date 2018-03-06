@@ -65,10 +65,10 @@ public class TableChangeThumb {
         changeColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         changeColumn.setCellFactory(cellFactoryChange);
 
-        nrColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 50% width
-        imageColumn.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 50% width
-        colorColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 50% width
-        changeColumn.setMaxWidth(1f * Integer.MAX_VALUE * 50); // 50% width
+        nrColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10);
+        imageColumn.setMaxWidth(1f * Integer.MAX_VALUE * 30);
+        colorColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10);
+        changeColumn.setMaxWidth(1f * Integer.MAX_VALUE * 50);
 
         tableView.setOnMousePressed(m -> {
             if (m.getButton().equals(MouseButton.SECONDARY)) {

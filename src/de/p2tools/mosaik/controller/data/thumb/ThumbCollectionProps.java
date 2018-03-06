@@ -16,11 +16,11 @@
 
 package de.p2tools.mosaik.controller.data.thumb;
 
-import de.p2tools.mosaik.controller.data.Data;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigBoolProp;
-import de.p2tools.p2Lib.configFile.config.ConfigConfigsList;
+import de.p2tools.p2Lib.configFile.config.ConfigPDataList;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.pData.PDataVault;
 import de.p2tools.p2Lib.image.ImgFile;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -30,32 +30,32 @@ import javafx.beans.property.StringProperty;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ThumbCollectionProps extends Data<ThumbCollection> {
+public class ThumbCollectionProps extends PDataVault<ThumbCollection> {
 
     public static final String TAG = "ThumbCollection";
     private final BooleanProperty recursive = new SimpleBooleanProperty(true);
     private final StringProperty format = new SimpleStringProperty(ImgFile.IMAGE_FORMAT_JPG);
     private final StringProperty fotoSrcDir = new SimpleStringProperty("");
 
-    private ThumbList thumbList = new ThumbList();
+    private ThumbDataList thumbList = new ThumbDataList();
 
     public String getTag() {
         return TAG;
     }
 
     public ArrayList<Config> getConfigsArr() {
-        return new ArrayList<>(Arrays.asList(
+        return new ArrayList(Arrays.asList(
                 new ConfigBoolProp("recursiv", true, recursive),
                 new ConfigStringProp("foto-format", ImgFile.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("dir-foto-src", "", fotoSrcDir),
-                new ConfigConfigsList(thumbList)));
+                new ConfigPDataList(thumbList)));
     }
 
-    public ThumbList getThumbList() {
+    public ThumbDataList getThumbList() {
         return thumbList;
     }
 
-    public void setThumbList(ThumbList thumbList) {
+    public void setThumbList(ThumbDataList thumbList) {
         this.thumbList = thumbList;
     }
 

@@ -25,9 +25,9 @@ import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.mosaik.gui.dialog.MTAlert;
-import de.p2tools.p2Lib.tools.DirFileChooser;
+import de.p2tools.p2Lib.dialog.DirFileChooser;
+import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.tools.Log;
-import de.p2tools.p2Lib.tools.PAlert;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -42,18 +42,15 @@ import org.controlsfx.control.ToggleSwitch;
 import java.io.File;
 
 public class GuiThumbController extends AnchorPane {
+    private final ProgData progData;
     SplitPane splitPane = new SplitPane();
-
     VBox vBoxCont = new VBox(10);
     VBox vBoxFlowPane = new VBox(10);
     ScrollPane scrollPane = new ScrollPane();
     TilePane tilePane = new TilePane();
-
     ThumbCollection thumbCollection = null;
     TextField txtDir = new TextField("");
     ToggleSwitch tglRecursive = new ToggleSwitch("Auch Unterordner durchsuchen");
-
-    private final ProgData progData;
     DoubleProperty splitPaneProperty = ProgConfig.THUMB_GUI_DIVIDER.getDoubleProperty();
 
     public GuiThumbController() {

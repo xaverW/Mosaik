@@ -16,7 +16,7 @@
 
 package de.p2tools.mosaik.controller.data.thumb;
 
-import de.p2tools.p2Lib.configFile.ConfigsList;
+import de.p2tools.p2Lib.configFile.pData.PDataList;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -25,14 +25,14 @@ import javafx.collections.FXCollections;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ThumbList extends SimpleListProperty<Thumb> implements ConfigsList<Thumb> {
+public class ThumbDataList extends SimpleListProperty<Thumb> implements PDataList<Thumb> {
 
     public static final String TAG = "Thumblist";
     private int nr = 1;
     private BooleanProperty fotoListChanged = new SimpleBooleanProperty(true);
 
 
-    public ThumbList() {
+    public ThumbDataList() {
         super(FXCollections.observableArrayList());
     }
 

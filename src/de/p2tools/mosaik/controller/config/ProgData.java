@@ -19,7 +19,7 @@ package de.p2tools.mosaik.controller.config;
 
 import de.p2tools.mosaik.MosaikController;
 import de.p2tools.mosaik.controller.data.projectData.ProjectData;
-import de.p2tools.mosaik.controller.data.projectData.ProjectDataList;
+import de.p2tools.mosaik.controller.data.projectData.ProjectDataDataList;
 import de.p2tools.mosaik.controller.worker.Worker;
 import de.p2tools.mosaik.gui.*;
 import de.p2tools.mosaik.gui.tools.Listener;
@@ -42,7 +42,7 @@ public class ProgData {
 
     // zentrale Klassen
     public Worker worker = null;
-    public ProjectDataList projectDataList = null;
+    public ProjectDataDataList projectDataList = null;
     public ProjectData selectedProjectData = null;
 
 
@@ -62,7 +62,7 @@ public class ProgData {
 
 
     private ProgData() {
-        projectDataList = new ProjectDataList();
+        projectDataList = new ProjectDataDataList();
         worker = new Worker(this);
 
         Timeline timeline = new Timeline(new KeyFrame(

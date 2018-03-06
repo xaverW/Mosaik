@@ -17,7 +17,7 @@
 
 package de.p2tools.mosaik.controller.config;
 
-import de.p2tools.p2Lib.configFile.ConfigsData;
+import de.p2tools.p2Lib.configFile.pData.PData;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.PConfig;
 import de.p2tools.p2Lib.tools.PConfigs;
@@ -54,7 +54,7 @@ public class ProgConfig extends PConfig {
     // Programmpfade
     public static PConfigs CONFIG_DIR_SRC_PHOTO_PATH = addNewKey("config-dir-src-photo-path", "");
 
-    public static ConfigsData getConfigsData() {
+    public static PData getConfigsData() {
         // sonst werden die Keys nich vorher angelegt :)
         return PConfig.getConfigsData();
     }

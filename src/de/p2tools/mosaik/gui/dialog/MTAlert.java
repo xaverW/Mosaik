@@ -18,8 +18,8 @@ package de.p2tools.mosaik.gui.dialog;
 
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
-import de.p2tools.p2Lib.tools.DirFileChooser;
-import de.p2tools.p2Lib.tools.PAlert;
+import de.p2tools.p2Lib.dialog.DirFileChooser;
+import de.p2tools.p2Lib.dialog.PAlert;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;

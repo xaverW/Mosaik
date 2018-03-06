@@ -17,20 +17,20 @@
 
 package de.p2tools.mosaik.controller.data.projectData;
 
-import de.p2tools.mosaik.controller.data.Data;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.p2Lib.configFile.config.Config;
-import de.p2tools.p2Lib.configFile.config.ConfigConfigsData;
+import de.p2tools.p2Lib.configFile.config.ConfigPData;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.pData.PDataVault;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ProjectDataProps extends Data<ProjectData> {
+public class ProjectDataProps extends PDataVault<ProjectData> {
     public static final String TAG = "ProjectData";
 
     private final StringProperty name = new SimpleStringProperty("Neues Mosaik");
@@ -46,13 +46,13 @@ public class ProjectDataProps extends Data<ProjectData> {
     }
 
     public ArrayList<Config> getConfigsArr() {
-        return new ArrayList<>(Arrays.asList(
+        return new ArrayList(Arrays.asList(
                 new ConfigStringProp("name", "Neues Mosaik", name),
                 new ConfigStringProp("dest-dir", "", destDir),
                 new ConfigStringProp("src-photo", "", srcPhoto),
-                new ConfigConfigsData(mosaikData),
-                new ConfigConfigsData(wallpaperData),
-                new ConfigConfigsData(thumbCollection)));
+                new ConfigPData(mosaikData),
+                new ConfigPData(wallpaperData),
+                new ConfigPData(thumbCollection)));
     }
 
     public MosaikData getMosaikData() {

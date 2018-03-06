@@ -23,7 +23,7 @@ import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
 import de.p2tools.mosaik.gui.dialog.MTAlert;
 import de.p2tools.mosaik.gui.tools.GuiTools;
-import de.p2tools.p2Lib.tools.DirFileChooser;
+import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;

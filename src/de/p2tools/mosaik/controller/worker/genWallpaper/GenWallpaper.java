@@ -24,10 +24,10 @@ import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mosaik.controller.worker.genThumbList.ScaleImage;
 import de.p2tools.mosaik.gui.dialog.MTAlert;
+import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.Log;
-import de.p2tools.p2Lib.tools.PAlert;
 import javafx.application.Platform;
 
 import javax.imageio.*;

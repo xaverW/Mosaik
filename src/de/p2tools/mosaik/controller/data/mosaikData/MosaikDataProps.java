@@ -17,18 +17,18 @@
 
 package de.p2tools.mosaik.controller.data.mosaikData;
 
-import de.p2tools.mosaik.controller.data.Data;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigBoolProp;
 import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.pData.PDataVault;
 import de.p2tools.p2Lib.image.ImgFile;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MosaikDataProps extends Data<MosaikData> {
+public class MosaikDataProps extends PDataVault<MosaikData> {
     public static final String TAG = "MosaikData";
 
     public enum THUMB_SRC {
