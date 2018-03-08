@@ -36,7 +36,8 @@ public class GuiMosaikController extends AnchorPane {
     private final TabPane tabPane = new TabPane();
 
     private final GuiMosaikPane guiMosaikPane = new GuiMosaikPane();
-    private final GuiMosaikExtendedPane guiMosaikExtendedPane = new GuiMosaikExtendedPane();
+    private final GuiMosaikExtendedThumbPane guiMosaikExtendedThumbPane = new GuiMosaikExtendedThumbPane();
+    private final GuiMosaikExtendedSizePane guiMosaikExtendedSizePane = new GuiMosaikExtendedSizePane();
     private final Button btnCreate = new Button("Mosaik erstellen");
 
     MosaikData mosaikData = null;
@@ -63,7 +64,8 @@ public class GuiMosaikController extends AnchorPane {
 
         vBox.setDisable(false);
         guiMosaikPane.isShown();
-        guiMosaikExtendedPane.isShown();
+        guiMosaikExtendedThumbPane.isShown();
+        guiMosaikExtendedSizePane.isShown();
 
         if (!progData.selectedProjectData.getMosaikData().equals(mosaikData)) {
             mosaikData = progData.selectedProjectData.getMosaikData();
@@ -77,9 +79,14 @@ public class GuiMosaikController extends AnchorPane {
         tab.setContent(guiMosaikPane);
         tabPane.getTabs().add(tab);
 
-        tab = new Tab("erweiterte Einstellungen");
+        tab = new Tab("Miniaturbilder verändern");
         tab.setClosable(false);
-        tab.setContent(guiMosaikExtendedPane);
+        tab.setContent(guiMosaikExtendedThumbPane);
+        tabPane.getTabs().add(tab);
+
+        tab = new Tab("Größe verändern");
+        tab.setClosable(false);
+        tab.setContent(guiMosaikExtendedSizePane);
         tabPane.getTabs().add(tab);
 
         btnCreate.setOnAction(a -> {
@@ -99,28 +106,17 @@ public class GuiMosaikController extends AnchorPane {
                 PAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Dateiname für das erstellte Mosaik angegeben.");
             }
         });
-        btnCreate.disableProperty().
-
-                bind(progData.worker.workingProperty());
-        btnCreate.getStyleClass().
-
-                add("btnCreate");
+        btnCreate.disableProperty().bind(progData.worker.workingProperty());
+        btnCreate.getStyleClass().add("btnCreate");
 
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_RIGHT);
-        hBox.getChildren().
+        hBox.getChildren().add(btnCreate);
 
-                add(btnCreate);
-
-        vBox.setPadding(new
-
-                Insets(10));
+        vBox.setPadding(new Insets(10));
         vBox.setSpacing(20);
         VBox.setVgrow(tabPane, Priority.ALWAYS);
-        vBox.getChildren().
-
-                addAll(tabPane, hBox);
-
+        vBox.getChildren().addAll(tabPane, hBox);
     }
 
 }

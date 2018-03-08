@@ -265,7 +265,6 @@ public class GuiMosaikPane extends AnchorPane {
         txtDestDir.textProperty().unbindBidirectional(mosaikData.fotoDestDirProperty());
 
         // Thumbsize
-
         iPropSize.unbind();
         mosaikData.thumbSizeProperty().unbind();
         lblSlider.textProperty().unbind();

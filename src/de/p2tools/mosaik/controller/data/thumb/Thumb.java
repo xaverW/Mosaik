@@ -18,6 +18,7 @@ package de.p2tools.mosaik.controller.data.thumb;
 
 public final class Thumb extends ThumbProps {
 
+    private final int DARK = 125;
 
     public Thumb() {
     }
@@ -27,6 +28,11 @@ public final class Thumb extends ThumbProps {
         setGreen(g);
         setBlue(b);
         setFileName(path);
+    }
+
+    public boolean isDark() {
+        // todo
+        return (getRed() < DARK && getGreen() < DARK && getBlue() < DARK);
     }
 
     public Thumb getCopy() {
