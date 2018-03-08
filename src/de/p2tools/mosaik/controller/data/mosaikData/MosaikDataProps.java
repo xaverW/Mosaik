@@ -46,7 +46,7 @@ public class MosaikDataProps extends PDataVault<MosaikData> {
     }
 
     public enum THUMB_RESIZE {
-        DARK("DARK"), LIGHT("LIGHT"), ALL("ALL");
+        NON("NON"), ALL("ALL"), DARK("DARK"), LIGHT("LIGHT");
         private final String name;
 
         THUMB_RESIZE(String name) {
@@ -68,7 +68,7 @@ public class MosaikDataProps extends PDataVault<MosaikData> {
     private final IntegerProperty thumbCount = new SimpleIntegerProperty(0); // Anzahl wie oft ein Thumbs verwendet werden kann
     private final StringProperty thumbSrc = new SimpleStringProperty(THUMB_SRC.THUMBS.toString()); // Miniaturbilder die verwendet werden
     private final BooleanProperty blackWhite = new SimpleBooleanProperty(false); // Mosaik aus S/W-Bildern erstellen
-    private final StringProperty resizeThumb = new SimpleStringProperty(THUMB_RESIZE.ALL.toString()); // dunkle Thumbs werden etwas verkleinert
+    private final StringProperty resizeThumb = new SimpleStringProperty(THUMB_RESIZE.NON.toString()); // dunkle Thumbs werden etwas verkleinert
     private final IntegerProperty reduceSize = new SimpleIntegerProperty(0); // Anzahl Pixel um die ein Thumb verleinert wird
 
     public String getTag() {
@@ -86,7 +86,7 @@ public class MosaikDataProps extends PDataVault<MosaikData> {
                 new ConfigIntProp("thumb-count", 0, thumbCount),
                 new ConfigStringProp("thumb-src", THUMB_SRC.THUMBS.toString(), thumbSrc),
                 new ConfigBoolProp("black-white", Boolean.FALSE, blackWhite),
-                new ConfigStringProp("reduce-big", THUMB_RESIZE.ALL.toString(), resizeThumb),
+                new ConfigStringProp("reduce-big", THUMB_RESIZE.NON.toString(), resizeThumb),
                 new ConfigIntProp("reduce-size", 0, reduceSize)));
     }
 

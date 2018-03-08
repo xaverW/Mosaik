@@ -37,9 +37,10 @@ public class GuiMosaikExtendedSizePane extends AnchorPane {
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox contPane = new VBox();
 
-    private final RadioButton rbDark = new RadioButton("Dunkle Miniaturbilder verkleinern");
-    private final RadioButton rbLight = new RadioButton("Helle Miniaturbilder verkleinern");
-    private final RadioButton rbAll = new RadioButton("Alle Miniaturbilder verkleinern");
+    private final RadioButton rbNon = new RadioButton("Miniaturbilder nicht verkleinern");
+    private final RadioButton rbAll = new RadioButton("alle Miniaturbilder verkleinern");
+    private final RadioButton rbDark = new RadioButton("nur dunkle Miniaturbilder verkleinern");
+    private final RadioButton rbLight = new RadioButton("nur helle Miniaturbilder verkleinern");
     private final ToggleGroup tg = new ToggleGroup();
 
     private final Slider sliderSize = new Slider();
@@ -94,10 +95,12 @@ public class GuiMosaikExtendedSizePane extends AnchorPane {
         btnHelpSize.setOnAction(a -> new PAlert().showHelpAlert("Größe der Miniaturbilder", HelpText.THUMB_SIZE));
 
 
+        rbNon.setToggleGroup(tg);
+        rbAll.setToggleGroup(tg);
         rbDark.setToggleGroup(tg);
         rbLight.setToggleGroup(tg);
-        rbAll.setToggleGroup(tg);
 
+        rbNon.setOnAction(e -> mosaikData.setResizeThumb(MosaikData.THUMB_RESIZE.NON.toString()));
         rbAll.setOnAction(e -> mosaikData.setResizeThumb(MosaikData.THUMB_RESIZE.ALL.toString()));
         rbDark.setOnAction(e -> mosaikData.setResizeThumb(MosaikData.THUMB_RESIZE.DARK.toString()));
         rbLight.setOnAction(e -> mosaikData.setResizeThumb(MosaikData.THUMB_RESIZE.LIGHT.toString()));
@@ -124,10 +127,11 @@ public class GuiMosaikExtendedSizePane extends AnchorPane {
         GridPane.setHgrow(rbDark, Priority.ALWAYS);
 
         gridPaneDest.add(lbl, 0, row, 3, 1);
-        gridPaneDest.add(rbDark, 0, ++row);
+        gridPaneDest.add(rbNon, 0, ++row);
         gridPaneDest.add(btnHelpSize, 2, row);
-        gridPaneDest.add(rbLight, 0, ++row);
         gridPaneDest.add(rbAll, 0, ++row);
+        gridPaneDest.add(rbDark, 0, ++row);
+        gridPaneDest.add(rbLight, 0, ++row);
 
         gridPaneDest.add(new Label(" "), 0, ++row);
 
@@ -158,12 +162,14 @@ public class GuiMosaikExtendedSizePane extends AnchorPane {
             return;
         }
 
-        if (mosaikData.getResizeThumb().equals(MosaikData.THUMB_RESIZE.DARK.toString())) {
+        if (mosaikData.getResizeThumb().equals(MosaikData.THUMB_RESIZE.ALL.toString())) {
+            rbAll.setSelected(true);
+        } else if (mosaikData.getResizeThumb().equals(MosaikData.THUMB_RESIZE.DARK.toString())) {
             rbDark.setSelected(true);
         } else if (mosaikData.getResizeThumb().equals(MosaikData.THUMB_RESIZE.LIGHT.toString())) {
             rbLight.setSelected(true);
         } else {
-            rbAll.setSelected(true);
+            rbNon.setSelected(true);
         }
 
         // Resize

@@ -224,23 +224,24 @@ public class GuiMosaikPane extends AnchorPane {
         gridPaneDest.add(lblDestName, 0, ++row);
         gridPaneDest.add(txtDestName, 1, row);
 
-        lbl = new Label("Größe der Miniaturbilder (Pixel):");
+        lbl = new Label("Größe und Anzahl der Miniaturbilder");
+        Label lblSize = new Label("Größe (Pixel):");
+        Label lblSum = new Label("Anzahl pro Zeile:");
         lbl.getStyleClass().add("headerLabel");
         lbl.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lbl, Priority.ALWAYS);
+
         gridPaneDest.add(new Label(" "), 0, ++row);
         gridPaneDest.add(lbl, 0, ++row, 4, 1);
-        gridPaneDest.add(sliderSize, 0, ++row, 2, 1);
+
+        gridPaneDest.add(lblSize, 0, ++row);
+        gridPaneDest.add(sliderSize, 1, row);
         gridPaneDest.add(lblSlider, 2, row);
         gridPaneDest.add(btnHelpSlider, 3, row);
 
-        lbl = new Label("Anzahl Miniaturbilder im Mosaik pro Zeile");
-        lbl.getStyleClass().add("headerLabel");
-        lbl.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setHgrow(lbl, Priority.ALWAYS);
         gridPaneDest.add(new Label(" "), 0, ++row);
-        gridPaneDest.add(lbl, 0, ++row, 4, 1);
-        gridPaneDest.add(sliderCount, 0, ++row, 2, 1);
+        gridPaneDest.add(lblSum, 0, ++row);
+        gridPaneDest.add(sliderCount, 1, row);
         gridPaneDest.add(lblSliderCount, 2, row);
         gridPaneDest.add(btnHelpSliderCount, 3, row);
 
