@@ -16,10 +16,12 @@
 
 package de.p2tools.mosaik.gui.dialog;
 
+
 import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.config.ProgInfos;
 import de.p2tools.mosaik.gui.tools.MTOpen;
+import de.p2tools.p2Lib.dialog.MTDialogExtra;
 import de.p2tools.p2Lib.tools.Functions;
 import de.p2tools.p2Lib.tools.Log;
 import javafx.geometry.Insets;

@@ -22,7 +22,6 @@ import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.projectData.ProjectData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.gui.dialog.AddMosaikDialogController;
-import de.p2tools.mosaik.gui.dialog.MTAlert;
 import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
@@ -245,7 +244,7 @@ public class GuiStart extends AnchorPane {
 
         final Button btnDestDir = new Button();
         btnDestDir.setOnAction(event -> {
-            if (!new MTAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von:\n" +
+            if (!new PAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von:\n" +
                     txtDir.getText() + "\n\n" +
                     "verschoben werden?").equals(PAlert.BUTTON.YES)) {
                 return;
@@ -256,7 +255,7 @@ public class GuiStart extends AnchorPane {
 
         final Button btnDestDirHelp = new Button("");
         btnDestDirHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnDestDirHelp.setOnAction(a -> new MTAlert().showHelpAlert("Projektpfad", HelpText.PROJECT_PATH));
+        btnDestDirHelp.setOnAction(a -> new PAlert().showHelpAlert("Projektpfad", HelpText.PROJECT_PATH));
 
         // make Grid
         int row = 0;

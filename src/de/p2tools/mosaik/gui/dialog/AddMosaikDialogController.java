@@ -23,6 +23,8 @@ import de.p2tools.mosaik.controller.data.projectData.ProjectData;
 import de.p2tools.mosaik.gui.HelpText;
 import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
+import de.p2tools.p2Lib.dialog.MTDialogExtra;
+import de.p2tools.p2Lib.dialog.PAlert;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.geometry.Insets;
@@ -113,7 +115,7 @@ public class AddMosaikDialogController extends MTDialogExtra {
         btnDestDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
         btnDestDirHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnDestDirHelp.setOnAction(a -> new MTAlert().showHelpAlert("Projektpfad", HelpText.PROJECT_PATH));
+        btnDestDirHelp.setOnAction(a -> new PAlert().showHelpAlert("Projektpfad", HelpText.PROJECT_PATH));
 
         initColor();
     }

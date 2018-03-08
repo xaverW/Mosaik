@@ -20,7 +20,7 @@ import de.p2tools.mosaik.controller.RunEvent;
 import de.p2tools.mosaik.controller.RunListener;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
-import de.p2tools.mosaik.gui.tools.Listener;
+import de.p2tools.p2Lib.guiTools.Listener;
 import de.p2tools.p2Lib.tools.Log;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

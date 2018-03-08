@@ -21,9 +21,9 @@ import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
-import de.p2tools.mosaik.gui.dialog.MTAlert;
 import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
+import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -148,7 +148,7 @@ public class GuiMosaikPane extends AnchorPane {
 
         final Button btnHelpSrc = new Button("");
         btnHelpSrc.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSrc.setOnAction(a -> new MTAlert().showHelpAlert("Mosaikvorlage", HelpText.IMAGE_TAMPLATE));
+        btnHelpSrc.setOnAction(a -> new PAlert().showHelpAlert("Mosaikvorlage", HelpText.IMAGE_TAMPLATE));
 
         cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
         cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c ->
@@ -163,7 +163,7 @@ public class GuiMosaikPane extends AnchorPane {
 
         final Button btnHelpDest = new Button("");
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Mosaik", HelpText.MOSAIK_DEST));
+        btnHelpDest.setOnAction(a -> new PAlert().showHelpAlert("Mosaik", HelpText.MOSAIK_DEST));
 
         txtDestDir.setMaxWidth(Double.MAX_VALUE);
 
@@ -171,7 +171,7 @@ public class GuiMosaikPane extends AnchorPane {
         // Thumbsize
         final Button btnHelpSlider = new Button("");
         btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Pixelgröße", HelpText.MOSAIK_PIXEL_SIZE));
+        btnHelpSlider.setOnAction(a -> new PAlert().showHelpAlert("Pixelgröße", HelpText.MOSAIK_PIXEL_SIZE));
 
 
         sliderSize.setMin(5);
@@ -180,7 +180,7 @@ public class GuiMosaikPane extends AnchorPane {
         // Anzahl Thumbs
         final Button btnHelpSliderCount = new Button("");
         btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSliderCount.setOnAction(a -> new MTAlert().showHelpAlert("Mosaikgröße", HelpText.MOSAIK_PIXEL_COUNT));
+        btnHelpSliderCount.setOnAction(a -> new PAlert().showHelpAlert("Mosaikgröße", HelpText.MOSAIK_PIXEL_COUNT));
 
         sliderCount.setMin(1);
         sliderCount.setMax(100);

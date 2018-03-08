@@ -19,7 +19,7 @@ package de.p2tools.mosaik.gui;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
-import de.p2tools.mosaik.gui.dialog.MTAlert;
+import de.p2tools.p2Lib.dialog.PAlert;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -84,11 +84,11 @@ public class GuiMosaikExtendedPane extends AnchorPane {
         // make Grid
         final Button btnHelpSrcImage = new Button("");
         btnHelpSrcImage.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSrcImage.setOnAction(a -> new MTAlert().showHelpAlert("Fotos für das Mosaik", HelpText.MOSAIK_PIXEL_FOTO));
+        btnHelpSrcImage.setOnAction(a -> new PAlert().showHelpAlert("Fotos für das Mosaik", HelpText.MOSAIK_PIXEL_FOTO));
 
         final Button btnHelpBlackWhite = new Button("");
         btnHelpBlackWhite.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpBlackWhite.setOnAction(a -> new MTAlert().showHelpAlert("Schwarz/Weiß Mosaik", HelpText.MOSAIK_BW));
+        btnHelpBlackWhite.setOnAction(a -> new PAlert().showHelpAlert("Schwarz/Weiß Mosaik", HelpText.MOSAIK_BW));
 
         rbThumb.setToggleGroup(tg);
         rbSelf.setToggleGroup(tg);

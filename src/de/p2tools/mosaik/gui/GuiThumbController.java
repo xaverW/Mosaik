@@ -24,7 +24,6 @@ import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.controller.worker.genThumbList.GenThumbList;
-import de.p2tools.mosaik.gui.dialog.MTAlert;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.tools.Log;
@@ -166,7 +165,7 @@ public class GuiThumbController extends AnchorPane {
 
         final Button btnHelp = new Button("");
         btnHelp.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelp.setOnAction(event -> new MTAlert().showHelpAlert("Fotos hinzufügen", HelpText.GET_THUMB_DIR));
+        btnHelp.setOnAction(event -> new PAlert().showHelpAlert("Fotos hinzufügen", HelpText.GET_THUMB_DIR));
 
         final Button btnLod = new Button("Fotos hinzufügen");
         final Button btnReload = new Button("Gespeicherte Liste neu einlesen");

@@ -17,46 +17,46 @@
 
 package de.p2tools.mosaik.controller.config;
 
+import de.p2tools.p2Lib.configFile.pConfData.PConfData;
+import de.p2tools.p2Lib.configFile.pConfData.PConfList;
 import de.p2tools.p2Lib.configFile.pData.PData;
 import de.p2tools.p2Lib.image.ImgFile;
-import de.p2tools.p2Lib.tools.PConfig;
-import de.p2tools.p2Lib.tools.PConfigs;
 
-public class ProgConfig extends PConfig {
+public class ProgConfig extends PConfList {
 
     // wegen des Problems mit ext. Programmaufrufen und Leerzeichen
-    public static PConfigs SYSTEM_PROG_OPEN_DIR = addNewKey("Programm-Ordner-oeffnen");
-    public static PConfigs SYSTEM_PROG_OPEN_URL = addNewKey("Programm-Url-oeffnen");
-    public static PConfigs SYSTEM_PROG_PLAY_FILE = addNewKey("Programm-zum-Abspielen");
+    public static PConfData SYSTEM_PROG_OPEN_DIR = addNewKey("Programm-Ordner-oeffnen");
+    public static PConfData SYSTEM_PROG_OPEN_URL = addNewKey("Programm-Url-oeffnen");
+    public static PConfData SYSTEM_PROG_PLAY_FILE = addNewKey("Programm-zum-Abspielen");
 
     // Fenstereinstellungen
-    public static PConfigs SYSTEM_GROESSE_GUI = addNewKey("Groesse-Gui", "1000:900");
+    public static PConfData SYSTEM_GROESSE_GUI = addNewKey("Groesse-Gui", "1000:900");
 
     // Einstellungen zum Erstellen der Fotolisten
-    public static PConfigs FOTO_FORMAT = addNewKey("foto-format", ImgFile.IMAGE_FORMAT_JPG);
+    public static PConfData FOTO_FORMAT = addNewKey("foto-format", ImgFile.IMAGE_FORMAT_JPG);
 
     // GuiStart
-    public static PConfigs START_GUI_PROJECT_DATA = addNewKey("start-gui-project-data");
+    public static PConfData START_GUI_PROJECT_DATA = addNewKey("start-gui-project-data");
 
     // GuiThumb
-    public static PConfigs THUMB_GUI_DIVIDER = addNewKey("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
+    public static PConfData THUMB_GUI_DIVIDER = addNewKey("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
 
     // GuiChangeThumb
-    public static PConfigs CHANGE_THUMB_GUI_TABLE_WIDTH = addNewKey("change-thumb-gui-table-width");
-    public static PConfigs CHANGE_THUMB_GUI_TABLE_SORT = addNewKey("change-thumb-gui-table-sort");
-    public static PConfigs CHANGE_THUMB_GUI_TABLE_UPDOWN = addNewKey("change-thumb-gui-table-upDown");
-    public static PConfigs CHANGE_THUMB_GUI_TABLE_VIS = addNewKey("change-thumb-gui-table-vis");
-    public static PConfigs CHANGE_THUMB_GUI_TABLE_ORDER = addNewKey("change-thumb-gui-table-order");
+    public static PConfData CHANGE_THUMB_GUI_TABLE_WIDTH = addNewKey("change-thumb-gui-table-width");
+    public static PConfData CHANGE_THUMB_GUI_TABLE_SORT = addNewKey("change-thumb-gui-table-sort");
+    public static PConfData CHANGE_THUMB_GUI_TABLE_UPDOWN = addNewKey("change-thumb-gui-table-upDown");
+    public static PConfData CHANGE_THUMB_GUI_TABLE_VIS = addNewKey("change-thumb-gui-table-vis");
+    public static PConfData CHANGE_THUMB_GUI_TABLE_ORDER = addNewKey("change-thumb-gui-table-order");
 
     // ConfigDialog
-    public static PConfigs DIALOG_ADD_MOSAIK = addNewKey("dialog-add-mosaik");
+    public static PConfData DIALOG_ADD_MOSAIK = addNewKey("dialog-add-mosaik");
 
     // Programmpfade
-    public static PConfigs CONFIG_DIR_SRC_PHOTO_PATH = addNewKey("config-dir-src-photo-path", "");
+    public static PConfData CONFIG_DIR_SRC_PHOTO_PATH = addNewKey("config-dir-src-photo-path", "");
 
     public static PData getConfigsData() {
         // sonst werden die Keys nich vorher angelegt :)
-        return PConfig.getConfigsData();
+        return PConfList.getPData();
     }
 
 }

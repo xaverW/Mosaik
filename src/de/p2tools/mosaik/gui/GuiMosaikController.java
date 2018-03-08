@@ -18,7 +18,7 @@ package de.p2tools.mosaik.gui;
 
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
-import de.p2tools.mosaik.gui.dialog.MTAlert;
+import de.p2tools.p2Lib.dialog.PAlert;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -90,13 +90,13 @@ public class GuiMosaikController extends AnchorPane {
                 progData.worker.createMosaik(mosaikData, progData.selectedProjectData.getThumbCollection());
 
             } else if (mosaikData.getFotoSrc().isEmpty()) {
-                MTAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Vorlagenbild für das Mosaik angegeben.");
+                PAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Vorlagenbild für das Mosaik angegeben.");
 
             } else if (mosaikData.getFotoDestDir().isEmpty()) {
-                MTAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Speicherziel angegeben.");
+                PAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Speicherziel angegeben.");
 
             } else if (mosaikData.getFotoDestName().isEmpty()) {
-                MTAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Dateiname für das erstellte Mosaik angegeben.");
+                PAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Dateiname für das erstellte Mosaik angegeben.");
             }
         });
         btnCreate.disableProperty().

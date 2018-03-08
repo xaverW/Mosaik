@@ -30,7 +30,7 @@ import javafx.scene.layout.Region;
 
 import java.util.Optional;
 
-public class MTAlert extends PAlert {
+public class MAlert extends PAlert {
 
     public static String showAlertFileCooser(String title, String header, String content, boolean dir) {
         return showAlertFileCooser(title, header, content, dir, true, "");

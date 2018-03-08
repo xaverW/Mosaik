@@ -17,9 +17,12 @@
 package de.p2tools.mosaik.gui.tools;
 
 import de.p2tools.mosaik.controller.config.ProgConfig;
-import de.p2tools.mosaik.gui.dialog.MTAlert;
+import de.p2tools.mosaik.controller.config.ProgData;
+import de.p2tools.mosaik.controller.data.Icons;
+import de.p2tools.p2Lib.configFile.pConfData.PConfData;
+import de.p2tools.p2Lib.dialog.PAlert;
+import de.p2tools.p2Lib.dialog.PAlertFileChosser;
 import de.p2tools.p2Lib.tools.Log;
-import de.p2tools.p2Lib.tools.PConfigs;
 import javafx.application.Platform;
 
 import java.awt.*;
@@ -82,7 +85,7 @@ public class MTOpen {
         filmFile = new File(datei);
 
         if (!filmFile.exists()) {
-            new MTAlert().showErrorAlert("Fehler", "Kein Film", "Film existiert noch nicht!");
+            new PAlert().showErrorAlert("Fehler", "Kein Film", "Film existiert noch nicht!");
             return;
         }
 
@@ -158,7 +161,7 @@ public class MTOpen {
         String programm = "";
         boolean ok;
         String title, header, cont;
-        PConfigs conf;
+        PConfData conf;
 
         switch (t) {
             default:
@@ -186,7 +189,9 @@ public class MTOpen {
 
 
         try {
-            programm = new MTAlert().showAlertFileCooser(title, header, cont, false);
+            programm = new PAlertFileChosser().showAlertFileCooser(title, header, cont, false,
+                    ProgData.getInstance().primaryStage, new Icons().ICON_BUTTON_FILE_OPEN);
+
             if (!programm.isEmpty()) {
                 final String[] cmd = {programm, directory};
                 Runtime.getRuntime().exec(cmd);
@@ -205,7 +210,7 @@ public class MTOpen {
 
         if (!ok) {
             conf.setValue("");
-            new MTAlert().showErrorAlert("Fehler", "", "Kann das Programm nicht öffnen!");
+            new PAlert().showErrorAlert("Fehler", "", "Kann das Programm nicht öffnen!");
         }
     }
 

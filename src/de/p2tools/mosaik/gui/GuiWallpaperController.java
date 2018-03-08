@@ -20,9 +20,9 @@ import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.wallpaperData.WallpaperData;
-import de.p2tools.mosaik.gui.dialog.MTAlert;
 import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
+import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
@@ -130,13 +130,13 @@ public class GuiWallpaperController extends AnchorPane {
 
         final Button btnHelpDest = new Button("");
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpDest.setOnAction(a -> new MTAlert().showHelpAlert("Mosaik", HelpText.WALLPAPER_DEST));
+        btnHelpDest.setOnAction(a -> new PAlert().showHelpAlert("Mosaik", HelpText.WALLPAPER_DEST));
 
 
         // Thumbsize
         final Button btnHelpSlider = new Button("");
         btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSlider.setOnAction(a -> new MTAlert().showHelpAlert("Pixelgröße", HelpText.WALLPAPER_PIXEL_SIZE));
+        btnHelpSlider.setOnAction(a -> new PAlert().showHelpAlert("Pixelgröße", HelpText.WALLPAPER_PIXEL_SIZE));
 
         sliderSize.setMin(5);
         sliderSize.setMax(25);
@@ -145,7 +145,7 @@ public class GuiWallpaperController extends AnchorPane {
         // Anzahl Thumbs
         final Button btnHelpSliderCount = new Button("");
         btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSliderCount.setOnAction(a -> new MTAlert().showHelpAlert("Mosaikgröße", HelpText.WALLPAPER_PIXEL_COUNT));
+        btnHelpSliderCount.setOnAction(a -> new PAlert().showHelpAlert("Mosaikgröße", HelpText.WALLPAPER_PIXEL_COUNT));
 
         sliderCount.setMin(1);
         sliderCount.setMax(100);
@@ -225,7 +225,7 @@ public class GuiWallpaperController extends AnchorPane {
 
         btnCreate.setOnAction(a -> {
             if (wallpaperData.getNumberThumbsWidth() * wallpaperData.getThumbSize() >= ImgTools.JPEG_MAX_DIMENSION) {
-                MTAlert.showErrorAlert("Mosaik erstellen", "Die Maximale Größe des Mosaiks ist überschritten.\n" +
+                PAlert.showErrorAlert("Mosaik erstellen", "Die Maximale Größe des Mosaiks ist überschritten.\n" +
                         "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.");
                 return;
             }
@@ -234,7 +234,7 @@ public class GuiWallpaperController extends AnchorPane {
                 progData.worker.createWallpaper(progData.selectedProjectData.getThumbCollection(),
                         progData.selectedProjectData.getWallpaperData());
             } else {
-                MTAlert.showErrorAlert("Fototapete anlegen", "Es ist kein Speicherziel angegeben.");
+                PAlert.showErrorAlert("Fototapete anlegen", "Es ist kein Speicherziel angegeben.");
             }
         });
         btnCreate.disableProperty().bind(progData.worker.workingProperty());

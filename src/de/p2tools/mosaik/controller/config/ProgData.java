@@ -22,7 +22,7 @@ import de.p2tools.mosaik.controller.data.projectData.ProjectData;
 import de.p2tools.mosaik.controller.data.projectData.ProjectDataDataList;
 import de.p2tools.mosaik.controller.worker.Worker;
 import de.p2tools.mosaik.gui.*;
-import de.p2tools.mosaik.gui.tools.Listener;
+import de.p2tools.p2Lib.guiTools.Listener;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
