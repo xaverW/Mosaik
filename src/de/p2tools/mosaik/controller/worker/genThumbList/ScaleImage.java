@@ -175,8 +175,11 @@ public class ScaleImage {
                     }
                 }
 
-                ret = new Thumb((int) (r / count), (int) (g / count), (int) (b / count), img.getAbsolutePath());
+                ret = Thumb.getThumb((int) (r / count), (int) (g / count), (int) (b / count), img.getAbsolutePath());
 
+                if (ret == null) {
+                    Log.errorLog(945120369, "Thumb: " + img.getAbsolutePath());
+                }
             } catch (Exception ex) {
                 throw ex;
             }

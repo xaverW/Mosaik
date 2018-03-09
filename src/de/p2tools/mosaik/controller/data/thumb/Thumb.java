@@ -30,6 +30,14 @@ public final class Thumb extends ThumbProps {
         setFileName(path);
     }
 
+    public static Thumb getThumb(int r, int g, int b, String path) {
+        if (checkC(r) && checkC(g) && checkC(b)) {
+            return new Thumb(r, g, b, path);
+        }
+        return null;
+    }
+
+
     public boolean isDark() {
         // todo
         return (getRed() < DARK && getGreen() < DARK && getBlue() < DARK);

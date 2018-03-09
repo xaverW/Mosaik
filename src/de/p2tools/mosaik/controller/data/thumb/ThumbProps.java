@@ -86,8 +86,13 @@ public class ThumbProps extends PDataVault<Thumb> {
     }
 
     public void setRed(int red) {
-        this.red.set(red);
+        if (!checkC(red)) {
+            this.red.set(0);
+        } else {
+            this.red.set(red);
+        }
     }
+
 
     public int getGreen() {
         return green.get();
@@ -98,7 +103,11 @@ public class ThumbProps extends PDataVault<Thumb> {
     }
 
     public void setGreen(int green) {
-        this.green.set(green);
+        if (!checkC(green)) {
+            this.green.set(0);
+        } else {
+            this.green.set(green);
+        }
     }
 
     public int getBlue() {
@@ -110,7 +119,11 @@ public class ThumbProps extends PDataVault<Thumb> {
     }
 
     public void setBlue(int blue) {
-        this.blue.set(blue);
+        if (!checkC(blue)) {
+            this.blue.set(0);
+        } else {
+            this.blue.set(blue);
+        }
     }
 
     public String getFileName() {
@@ -130,6 +143,15 @@ public class ThumbProps extends PDataVault<Thumb> {
         return Color.rgb(getRed(), getGreen(), getBlue());
     }
 
+    public static boolean checkC(int c) {
+        if (c < 0) {
+            return false;
+        }
+        if (c > 255) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public int compareTo(Thumb arg0) {
