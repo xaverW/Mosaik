@@ -57,9 +57,6 @@ public class ProgData {
     public GuiThumbController guiThumbController = null;
     public GuiThumbChangeController guiThumbChangeController = null;
 
-    public GuiMosaikController guiMosaikController = null;
-    public GuiWallpaperController guiWallpaperController = null;
-
 
     private ProgData() {
         projectDataList = new ProjectDataDataList();

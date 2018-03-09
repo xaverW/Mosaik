@@ -153,6 +153,16 @@ public class ThumbProps extends PDataVault<Thumb> {
         return true;
     }
 
+    public static boolean checkC(long c) {
+        if (c < 0) {
+            return false;
+        }
+        if (c > 255) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public int compareTo(Thumb arg0) {
         if (getColor().getBrightness() > arg0.getColor().getBrightness()) {

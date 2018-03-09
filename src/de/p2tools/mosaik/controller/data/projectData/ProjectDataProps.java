@@ -18,8 +18,8 @@
 package de.p2tools.mosaik.controller.data.projectData;
 
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
+import de.p2tools.mosaik.controller.data.mosaikData.WallpaperData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
-import de.p2tools.mosaik.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigPData;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;

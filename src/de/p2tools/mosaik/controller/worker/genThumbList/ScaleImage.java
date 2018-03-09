@@ -155,7 +155,7 @@ public class ScaleImage {
 
     private static Thumb getThumb(Raster rast, File img) {
         Thumb ret = null;
-        int r = 0, g = 0, b = 0;
+        long r = 0, g = 0, b = 0;
         long count = 0;
         if (rast != null) {
 
@@ -175,11 +175,16 @@ public class ScaleImage {
                     }
                 }
 
-                ret = Thumb.getThumb((int) (r / count), (int) (g / count), (int) (b / count), img.getAbsolutePath());
+                r = r / count;
+                g = g / count;
+                b = b / count;
 
-                if (ret == null) {
-                    Log.errorLog(945120369, "Thumb: " + img.getAbsolutePath());
-                }
+//                if (!Thumb.checkC(r) || !Thumb.checkC(g) || !Thumb.checkC(b)) {
+//                    Log.errorLog(942103478, "getThumb");
+//                }
+
+                ret = new Thumb((int) r, (int) g, (int) b, img.getAbsolutePath());
+
             } catch (Exception ex) {
                 throw ex;
             }

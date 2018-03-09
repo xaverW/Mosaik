@@ -19,9 +19,10 @@ package de.p2tools.mosaik.controller.worker.genWallpaper;
 
 import de.p2tools.mosaik.controller.RunEvent;
 import de.p2tools.mosaik.controller.RunListener;
+import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
+import de.p2tools.mosaik.controller.data.mosaikData.WallpaperData;
 import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
-import de.p2tools.mosaik.controller.data.wallpaperData.WallpaperData;
 import de.p2tools.mosaik.controller.worker.genThumbList.ScaleImage;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
@@ -34,6 +35,7 @@ import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.event.EventListenerList;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Path;
@@ -50,7 +52,9 @@ public class GenWallpaper {
     private int numThumbWidth;
     private int thumbSize;
     private Path destPath = null;
-
+    String thumbResize;
+    int resize;
+    Color borderColor = Color.BLACK;
 
     public GenWallpaper() {
     }
@@ -72,6 +76,18 @@ public class GenWallpaper {
         this.destName = wallpaperData.getFotoDestName();
         this.numThumbWidth = wallpaperData.getNumberThumbsWidth();
         this.thumbSize = wallpaperData.getThumbSize();
+        this.thumbResize = wallpaperData.getResizeThumb();
+        this.resize = wallpaperData.getReduceSize();
+
+        try {
+            javafx.scene.paint.Color fx = javafx.scene.paint.Color.web(wallpaperData.getBorderColor());
+            this.borderColor = new java.awt.Color((float) fx.getRed(),
+                    (float) fx.getGreen(),
+                    (float) fx.getBlue(),
+                    (float) fx.getOpacity());
+        } catch (Exception ex) {
+            borderColor = Color.BLACK;
+        }
 
         if (destDir.isEmpty() || destName.isEmpty()) {
             Log.errorLog(945120364, "Keine Zieldatei angegeben!");
@@ -116,19 +132,45 @@ public class GenWallpaper {
                 final int thumbListSize = thumbCollection.getThumbList().getSize();
                 notifyEvent(thumbListSize, 0, "");
 
+                boolean isResize = false;
+                if (thumbResize.equals(MosaikData.THUMB_RESIZE.ALL.toString())) {
+                    isResize = true;
+                }
+
                 if (thumbListSize < numThumbWidth) {
                     numThumbWidth = thumbListSize;
                 }
 
-                int height = (thumbListSize / numThumbWidth) * thumbSize;
-                int width = numThumbWidth * thumbSize;
+                int height;
+                int width;
+
+                if (isResize) {
+                    height = (thumbListSize / numThumbWidth) * thumbSize + (1 + thumbListSize / numThumbWidth) * resize;
+                    width = numThumbWidth * thumbSize + (1 + numThumbWidth) * resize;
+                } else {
+                    height = (thumbListSize / numThumbWidth) * thumbSize;
+                    width = numThumbWidth * thumbSize;
+                }
+
                 if (thumbListSize % numThumbWidth != 0) {
                     height += thumbSize;
+                    if (isResize) {
+                        height += resize;
+                    }
                 }
+
                 int hh = 0, ww = 0;
                 boolean lineEnd = false;
 
+
                 BufferedImage imgOut = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+                Graphics2D g = imgOut.createGraphics();
+                g.setColor(borderColor);
+                g.fillRect(0, 0, imgOut.getWidth(), imgOut.getHeight());
+                g.dispose();
+
+
                 for (int i = 0; i < thumbListSize && !stopAll; ++i) {
                     notifyEvent(thumbListSize, i, "");
 
@@ -138,7 +180,14 @@ public class GenWallpaper {
                     if (img.getWidth() != thumbSize) {
                         img = ScaleImage.scaleBufferedImage(img, thumbSize, thumbSize);
                     }
-                    imgOut.getRaster().setRect(ww * thumbSize, hh * thumbSize, img.getData());
+
+                    if (isResize) {
+                        imgOut.getRaster().setRect(ww * thumbSize + (1 + ww) * resize,
+                                hh * thumbSize + (1 + hh) * resize,
+                                img.getData());
+                    } else {
+                        imgOut.getRaster().setRect(ww * thumbSize, hh * thumbSize, img.getData());
+                    }
 
                     ++ww;
                     if (ww >= numThumbWidth) {
@@ -158,6 +207,7 @@ public class GenWallpaper {
 
                 }
 
+
                 if (!stopAll) {
                     notifyEvent(thumbListSize, thumbListSize, "Datei schreiben");
                     writeImage(imgOut);
@@ -174,6 +224,7 @@ public class GenWallpaper {
             }
 
         }
+
     }
 
     private BufferedImage getBufferedImage(File source) {

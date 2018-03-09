@@ -70,6 +70,7 @@ public class MosaikDataProps extends PDataVault<MosaikData> {
     private final BooleanProperty blackWhite = new SimpleBooleanProperty(false); // Mosaik aus S/W-Bildern erstellen
     private final StringProperty resizeThumb = new SimpleStringProperty(THUMB_RESIZE.NON.toString()); // dunkle Thumbs werden etwas verkleinert
     private final IntegerProperty reduceSize = new SimpleIntegerProperty(0); // Anzahl Pixel um die ein Thumb verleinert wird
+    private final StringProperty borderColor = new SimpleStringProperty(""); // Farbe des Rahmens zwischen den Miniaturbildern
 
     public String getTag() {
         return TAG;
@@ -87,7 +88,8 @@ public class MosaikDataProps extends PDataVault<MosaikData> {
                 new ConfigStringProp("thumb-src", THUMB_SRC.THUMBS.toString(), thumbSrc),
                 new ConfigBoolProp("black-white", Boolean.FALSE, blackWhite),
                 new ConfigStringProp("reduce-big", THUMB_RESIZE.NON.toString(), resizeThumb),
-                new ConfigIntProp("reduce-size", 0, reduceSize)));
+                new ConfigIntProp("reduce-size", 0, reduceSize),
+                new ConfigStringProp("border-color", "", borderColor)));
     }
 
 
@@ -222,5 +224,17 @@ public class MosaikDataProps extends PDataVault<MosaikData> {
 
     public void setReduceSize(int reduceSize) {
         this.reduceSize.set(reduceSize);
+    }
+
+    public String getBorderColor() {
+        return borderColor.get();
+    }
+
+    public StringProperty borderColorProperty() {
+        return borderColor;
+    }
+
+    public void setBorderColor(String borderColor) {
+        this.borderColor.set(borderColor);
     }
 }

@@ -17,6 +17,8 @@
 package de.p2tools.mosaik.gui;
 
 import de.p2tools.mosaik.controller.config.ProgData;
+import de.p2tools.mosaik.gui.mosaik.GuiMosaikController;
+import de.p2tools.mosaik.gui.wallpaper.GuiWallpaperController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -29,6 +31,10 @@ public class GuiMosaik extends AnchorPane {
     private final StackPane stackPane = new StackPane();
     private final ProgData progData;
     private final ComboBox<OPTIONS> comboBox = new ComboBox();
+
+    private GuiMosaikController guiMosaikController = null;
+    private GuiWallpaperController guiWallpaperController = null;
+
 
     public enum OPTIONS {
 
@@ -47,13 +53,15 @@ public class GuiMosaik extends AnchorPane {
 
     public GuiMosaik() {
         progData = ProgData.getInstance();
+        guiMosaikController = new GuiMosaikController();
+        guiWallpaperController = new GuiWallpaperController();
 
         initCont();
     }
 
     public void isShown() {
-        progData.guiMosaikController.isShown();
-        progData.guiWallpaperController.isShown();
+        guiMosaikController.isShown();
+        guiWallpaperController.isShown();
     }
 
 
@@ -64,19 +72,19 @@ public class GuiMosaik extends AnchorPane {
         hBox.getChildren().add(comboBox);
 
 
-        stackPane.getChildren().addAll(progData.guiMosaikController, progData.guiWallpaperController);
+        stackPane.getChildren().addAll(guiMosaikController, guiWallpaperController);
 
         comboBox.getItems().addAll(OPTIONS.MOSAIK, OPTIONS.WALLPAPER);
         comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     switch (newValue) {
                         case MOSAIK:
-                            progData.guiMosaikController.toFront();
+                            guiMosaikController.toFront();
                             break;
                         case WALLPAPER:
-                            progData.guiWallpaperController.toFront();
+                            guiWallpaperController.toFront();
                             break;
                         default:
-                            progData.guiMosaikController.toFront();
+                            guiMosaikController.toFront();
                     }
                 }
         );

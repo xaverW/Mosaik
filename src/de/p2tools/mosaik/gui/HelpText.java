@@ -67,6 +67,12 @@ public class HelpText {
     public static final String THUMB_SIZE = "Die Größe der Miniaturbilder wird geringfügig verkleinert. " +
             "Werden z.B. die hellen \"Pixel\" des Mosaik " +
             "verkleinert, werden dadurch die dunklen \"Pixel\" hervorgehoben.";
+
     public static final String THUMB_RESIZE = "Um die Größe wird das Miniaturbild verkleinert.";
 
+    public static final String THUMB_BORDER = "Um die einzelnen Miniaturbilder wird ein Rahmen " +
+            "gezeichnet. Die Bilder haben dann also einen Abstand von 2 x Rahmen.";
+
+    public static final String THUMB_BORDER_SIZE = "Das ist die Breite des Rahmens der um jedes " +
+            "Miniaturbild gezeichnet wird.";
 }

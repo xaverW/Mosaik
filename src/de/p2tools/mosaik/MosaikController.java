@@ -101,8 +101,6 @@ public class MosaikController extends StackPane {
             progData.guiThumbChangeController = new GuiThumbChangeController();
             progData.guiThumb = new GuiThumb();
 
-            progData.guiMosaikController = new GuiMosaikController();
-            progData.guiWallpaperController = new GuiWallpaperController();
             progData.guiMosaik = new GuiMosaik();
 
             stackPaneCont.getChildren().addAll(progData.guiStart, progData.guiThumb, progData.guiMosaik);
