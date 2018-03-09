@@ -51,7 +51,7 @@ public class GenWallpaper {
     private boolean stopAll = false;
     private int numThumbWidth;
     private int thumbSize;
-    private Path destPath = null;
+    private Path destPathName = null;
     String thumbResize;
     int resize;
     Color borderColor = Color.BLACK;
@@ -102,13 +102,16 @@ public class GenWallpaper {
             destName += "." + ImgFile.IMAGE_FORMAT_JPG;
         }
 
-
-        destPath = Paths.get(destDir, destName);
-
-        if (destPath.toFile().exists() &&
-                !new PAlert().showAlert_yes_no("Ziel existiert", destPath.toString(),
+        destPathName = Paths.get(destDir, destName);
+        if (destPathName.toFile().exists() &&
+                !new PAlert().showAlert_yes_no("Ziel existiert", destPathName.toString(),
                         "Soll die bereits vorhandene Datei überschrieben werden?").equals(PAlert.BUTTON.YES)) {
             return;
+        }
+
+        Path p = Paths.get(destDir);
+        if (!p.toFile().exists()) {
+            p.toFile().mkdirs();
         }
 
         final int thumbListSize = thumbCollection.getThumbList().getSize();
@@ -254,7 +257,7 @@ public class GenWallpaper {
         ImageOutputStream ios = null;
         try {
             ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
-            ios = ImageIO.createImageOutputStream(destPath.toFile());
+            ios = ImageIO.createImageOutputStream(destPathName.toFile());
             writer.setOutput(ios);
             ImageWriteParam iwparam = new JPEGImageWriteParam(Locale.getDefault());
             iwparam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);

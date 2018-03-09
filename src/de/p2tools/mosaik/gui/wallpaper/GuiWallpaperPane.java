@@ -125,7 +125,7 @@ public class GuiWallpaperPane extends AnchorPane {
     private void initCont() {
         // DEST
         btnDest.setOnAction(event -> {
-            DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, txtDestDir);
+            DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDestDir);
         });
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
