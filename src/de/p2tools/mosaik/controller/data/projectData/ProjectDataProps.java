@@ -23,14 +23,14 @@ import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigPData;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
-import de.p2tools.p2Lib.configFile.pData.PDataVault;
+import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ProjectDataProps extends PDataVault<ProjectData> {
+public class ProjectDataProps extends PDataSample<ProjectData> {
     public static final String TAG = "ProjectData";
 
     private final StringProperty name = new SimpleStringProperty("Neues Mosaik");

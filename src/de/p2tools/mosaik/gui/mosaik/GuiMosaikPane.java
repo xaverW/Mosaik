@@ -25,13 +25,13 @@ import de.p2tools.mosaik.gui.HelpText;
 import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
+import de.p2tools.p2Lib.dialog.PComboBox;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -57,7 +57,7 @@ public class GuiMosaikPane extends AnchorPane {
     private final Label lblSlider = new Label("");
     private final Slider sliderCount = new Slider();
     private final Label lblSliderCount = new Label("");
-    private final ComboBox<String> cbSrcPhoto = new ComboBox<>();
+    private final PComboBox cbSrcPhoto = new PComboBox();
 
     private final TextField txtDestDir = new TextField();
     private final Button btnDest = new Button("");
@@ -142,9 +142,7 @@ public class GuiMosaikPane extends AnchorPane {
 
     private void initCont() {
         // SRC
-        btnSrc.setOnAction(event -> {
-            String foto = DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbSrcPhoto);
-        });
+        btnSrc.setOnAction(event -> DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbSrcPhoto));
         btnSrc.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
         final Button btnHelpSrc = new Button("");
@@ -152,9 +150,9 @@ public class GuiMosaikPane extends AnchorPane {
         btnHelpSrc.setOnAction(a -> new PAlert().showHelpAlert("Mosaikvorlage", HelpText.IMAGE_TAMPLATE));
 
         cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
-        cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c ->
-                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setActValue(saveComboPfad(cbSrcPhoto))
-        );
+        cbSrcPhoto.setEditable(true);
+        cbSrcPhoto.init(ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH_LIST.getStrList(),
+                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH_SEL.getActValueProperty());
 
         // DEST
         txtDestName.setMaxWidth(Double.MAX_VALUE);
@@ -285,9 +283,6 @@ public class GuiMosaikPane extends AnchorPane {
         }
 
         // SRC
-        String[] storedPhotoPath = {""};
-        storedPhotoPath = ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.getActValueString().split(ProgConst.DIR_SEPARATOR);
-        cbSrcPhoto.getItems().addAll(storedPhotoPath);
         if (!mosaikData.getFotoSrc().isEmpty() && !cbSrcPhoto.getItems().contains(mosaikData.getFotoSrc())) {
             cbSrcPhoto.getItems().add(mosaikData.getFotoSrc());
         }
@@ -317,37 +312,6 @@ public class GuiMosaikPane extends AnchorPane {
         lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
 
 
-    }
-
-    private String saveComboPfad(ComboBox<String> comboBox) {
-        final ArrayList<String> pfade = new ArrayList<>(comboBox.getItems());
-
-        final ArrayList<String> pfade2 = new ArrayList<>();
-        String sel = comboBox.getEditor().getText();
-        if (sel != null && !sel.isEmpty()) {
-            System.out.println(sel);
-            pfade2.add(sel);
-        }
-
-        pfade.stream().forEach(s1 -> {
-            // um doppelte auszusortieren
-
-            if (!s1.isEmpty() && !pfade2.contains(s1)) {
-                pfade2.add(s1);
-            }
-        });
-
-        String s = "";
-        if (!pfade2.isEmpty()) {
-            s = pfade2.get(0);
-            for (int i = 1; i < ProgConst.MAX_PFADE_SRC_PHOTO && i < pfade2.size(); ++i) {
-                if (!pfade2.get(i).isEmpty()) {
-                    s += ProgConst.DIR_SEPARATOR + pfade2.get(i);
-                }
-            }
-        }
-
-        return s;
     }
 
     private void initSizePane() {

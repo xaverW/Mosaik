@@ -19,7 +19,7 @@ package de.p2tools.mosaik.controller.data.thumb;
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
-import de.p2tools.p2Lib.configFile.pData.PDataVault;
+import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class ThumbProps extends PDataVault<Thumb> {
+public class ThumbProps extends PDataSample<Thumb> {
 
     public static final String TAG = "Thumb";
     private int anz = 0;

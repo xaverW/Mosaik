@@ -17,113 +17,46 @@
 
 package de.p2tools.mosaik.controller.config;
 
-import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigDoubleProp;
 import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
-import de.p2tools.p2Lib.configFile.pData.PDataVault;
+import de.p2tools.p2Lib.configFile.configList.ConfigList;
+import de.p2tools.p2Lib.configFile.configList.ConfigStringList;
+import de.p2tools.p2Lib.configFile.pData.PDataProgConfig;
 import de.p2tools.p2Lib.image.ImgFile;
-import javafx.beans.property.*;
 
-import java.util.ArrayList;
+public class ProgConfig extends PDataProgConfig {
 
-public class ProgConfig extends PDataVault<ProgConfig> {
-
-    public static final String TAG = "ProgConf";
-
-    public static ConfigStringProp SYSTEM_PROG_OPEN_DIR;
-    public static ConfigStringProp SYSTEM_PROG_OPEN_URL;
-    public static ConfigStringProp SYSTEM_PROG_PLAY_FILE;
+    public static ConfigStringProp SYSTEM_PROG_OPEN_DIR = addStrProp("system-prog-open-dir", "");
+    public static ConfigStringProp SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
+    public static ConfigStringProp SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
 
     // Fenstereinstellungen
-    public static ConfigStringProp SYSTEM_GROESSE_GUI;
+    public static ConfigStringProp SYSTEM_GROESSE_GUI = addStrProp("system-gui-size", "1000:900");
 
     // Einstellungen zum Erstellen der Fotolisten
-    public static ConfigStringProp FOTO_FORMAT;
+    public static ConfigStringProp FOTO_FORMAT = addStrProp("foto-format", ImgFile.IMAGE_FORMAT_JPG);
 
     // GuiStart
-    public static ConfigIntProp START_GUI_PROJECT_DATA;
+    public static ConfigIntProp START_GUI_PROJECT_DATA = addIntProp("start-gui-project-data", 0);
 
     // GuiThumb
-    public static ConfigDoubleProp THUMB_GUI_DIVIDER;
+    public static ConfigDoubleProp THUMB_GUI_DIVIDER = addDoubleProp("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
 
     // GuiChangeThumb
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_WIDTH;
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_SORT;
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_UPDOWN;
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_VIS;
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_ORDER;
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_WIDTH = addStrProp("change-thumb-gui-table-width");
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_SORT = addStrProp("change-thumb-gui-table-sort");
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_UPDOWN = addStrProp("change-thumb-gui-table-upDown");
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_VIS = addStrProp("change-thumb-gui-table-vis");
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_ORDER = addStrProp("change-thumb-gui-table-order");
 
     // ConfigDialog
-    public static ConfigStringProp DIALOG_ADD_MOSAIK;
+    public static ConfigStringProp DIALOG_ADD_MOSAIK = addStrProp("dialog-add-mosaik");
 
     // Programmpfade
-    public static ConfigStringProp CONFIG_DIR_SRC_PHOTO_PATH;
+    public static ConfigStringProp CONFIG_DIR_SRC_PHOTO_PATH_SEL = addStrProp("config-dir-src-photo-path-sel");
+    public static ConfigStringList CONFIG_DIR_SRC_PHOTO_PATH_LIST = addListProp("config-dir-src-photo-path-list");
 
-    private static final ArrayList<Config> arrayList = new ArrayList<>();
-
-    public ProgConfig() {
-        SYSTEM_PROG_OPEN_DIR = addStrProp("system-prog-open-dir", "");
-        SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
-        SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
-
-        SYSTEM_GROESSE_GUI = addStrProp("system-size-gui", "1000:900");
-
-        FOTO_FORMAT = addStrProp("foto-format", ImgFile.IMAGE_FORMAT_JPG);
-
-        START_GUI_PROJECT_DATA = addIntProp("start-gui-project-data", 0);
-
-        THUMB_GUI_DIVIDER = addDoubleProp("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
-
-        CHANGE_THUMB_GUI_TABLE_WIDTH = addStrProp("change-thumb-gui-table-width");
-        CHANGE_THUMB_GUI_TABLE_SORT = addStrProp("change-thumb-gui-table-sort");
-        CHANGE_THUMB_GUI_TABLE_UPDOWN = addStrProp("change-thumb-gui-table-upDown");
-        CHANGE_THUMB_GUI_TABLE_VIS = addStrProp("change-thumb-gui-table-vis");
-        CHANGE_THUMB_GUI_TABLE_ORDER = addStrProp("change-thumb-gui-table-order");
-
-        DIALOG_ADD_MOSAIK = addStrProp("dialog-add-mosaik");
-
-        CONFIG_DIR_SRC_PHOTO_PATH = addStrProp("config-dir-src-photo-path", "");
-    }
-
-    public String getTag() {
-        return TAG;
-    }
-
-    public String getComment() {
-        return "Programmeinstellungen";
-    }
-
-    public ArrayList<Config> getConfigsArr() {
-        return arrayList;
-    }
-
-    public static synchronized ConfigStringProp addStrProp(String key) {
-        StringProperty property = new SimpleStringProperty("");
-        ConfigStringProp c = new ConfigStringProp(key, "", property);
-        arrayList.add(c);
-        return c;
-    }
-
-    public static synchronized ConfigStringProp addStrProp(String key, String init) {
-        StringProperty property = new SimpleStringProperty(init);
-        ConfigStringProp c = new ConfigStringProp(key, init, property);
-        arrayList.add(c);
-        return c;
-    }
-
-    public static synchronized ConfigIntProp addIntProp(String key, int init) {
-        IntegerProperty property = new SimpleIntegerProperty(init);
-        ConfigIntProp c = new ConfigIntProp(key, init, property);
-        arrayList.add(c);
-        return c;
-    }
-
-    public static synchronized ConfigDoubleProp addDoubleProp(String key, double init) {
-        DoubleProperty property = new SimpleDoubleProperty(init);
-        ConfigDoubleProp c = new ConfigDoubleProp(key, init, property);
-        arrayList.add(c);
-        return c;
-    }
+    public static ConfigList CONFIG_DIR_DEST_PATH_FOTO = addListProp("config-dir-dest-path-foto");
 
 }

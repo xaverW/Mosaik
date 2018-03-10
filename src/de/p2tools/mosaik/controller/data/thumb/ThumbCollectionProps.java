@@ -20,7 +20,7 @@ import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigBoolProp;
 import de.p2tools.p2Lib.configFile.config.ConfigPDataList;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
-import de.p2tools.p2Lib.configFile.pData.PDataVault;
+import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import de.p2tools.p2Lib.image.ImgFile;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -30,7 +30,7 @@ import javafx.beans.property.StringProperty;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ThumbCollectionProps extends PDataVault<ThumbCollection> {
+public class ThumbCollectionProps extends PDataSample<ThumbCollection> {
 
     public static final String TAG = "ThumbCollection";
     private final BooleanProperty recursive = new SimpleBooleanProperty(true);

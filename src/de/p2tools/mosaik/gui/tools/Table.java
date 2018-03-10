@@ -18,7 +18,7 @@ package de.p2tools.mosaik.gui.tools;
 
 import de.p2tools.mosaik.controller.config.ProgConfig;
 import de.p2tools.p2Lib.configFile.config.Config;
-import de.p2tools.p2Lib.configFile.pData.PDataVault;
+import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import de.p2tools.p2Lib.tools.Log;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -62,7 +62,7 @@ public class Table {
         }
     }
 
-    private void initColumn(TABLE eTable, TableView<PDataVault> table) {
+    private void initColumn(TABLE eTable, TableView<PDataSample> table) {
         switch (eTable) {
             case CHANGE_THUMB:
                 tArray = new TableChangeThumb().initDownloadColumn(table);
@@ -97,7 +97,7 @@ public class Table {
     public void saveTable(TableView ta, TABLE eTable) {
         // Tabellendaten sichern
 
-        TableView<PDataVault> table = ta;
+        TableView<PDataSample> table = ta;
 
         initConf(eTable);
         maxSpalten = table.getColumns().size();
@@ -150,7 +150,7 @@ public class Table {
 
     public void setTable(TableView ta, TABLE eTable) {
         // Tabelle setzen
-        TableView<PDataVault> table = ta;
+        TableView<PDataSample> table = ta;
         try {
 
             initConf(eTable);
