@@ -50,7 +50,7 @@ public class GuiThumbController extends AnchorPane {
     ThumbCollection thumbCollection = null;
     TextField txtDir = new TextField("");
     ToggleSwitch tglRecursive = new ToggleSwitch("Auch Unterordner durchsuchen");
-    DoubleProperty splitPaneProperty = ProgConfig.THUMB_GUI_DIVIDER.getDoubleProperty();
+    DoubleProperty splitPaneProperty = ProgConfig.THUMB_GUI_DIVIDER.getActValueProperty();
 
     public GuiThumbController() {
         progData = ProgData.getInstance();

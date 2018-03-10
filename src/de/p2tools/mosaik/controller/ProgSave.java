@@ -16,7 +16,6 @@
 
 package de.p2tools.mosaik.controller;
 
-import de.p2tools.mosaik.controller.config.ProgConfig;
 import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.config.ProgInfos;
@@ -35,7 +34,7 @@ public class ProgSave {
     public void save() {
         final Path xmlFilePath = new ProgInfos().getXmlFilePath();
         ConfigFile configFile = new ConfigFile(ProgConst.XML_START, xmlFilePath);
-        configFile.addConfigs(ProgConfig.getConfigsData());
+        configFile.addConfigs(progData.progConfig);
         configFile.addConfigs(progData.projectDataList);
         configFile.writeConfigFile();
     }

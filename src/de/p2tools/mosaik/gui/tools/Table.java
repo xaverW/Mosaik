@@ -17,7 +17,7 @@
 package de.p2tools.mosaik.gui.tools;
 
 import de.p2tools.mosaik.controller.config.ProgConfig;
-import de.p2tools.p2Lib.configFile.pConfData.PConfData;
+import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.pData.PDataVault;
 import de.p2tools.p2Lib.tools.Log;
 import javafx.scene.control.TableColumn;
@@ -41,11 +41,11 @@ public class Table {
     private boolean[] visAr;
     private TableColumn[] tArray;
 
-    private PConfData confWidth; //Spaltenbreite
-    private PConfData confSort; //"Sortieren"  der Tabelle nach Spalte
-    private PConfData confUpDown; //Sortierung UP oder Down
-    private PConfData confVis; //Spalte ist sichtbar
-    private PConfData confOrder; //"Reihenfolge" der Spalten
+    private Config confWidth; //Spaltenbreite
+    private Config confSort; //"Sortieren"  der Tabelle nach Spalte
+    private Config confUpDown; //Sortierung UP oder Down
+    private Config confVis; //Spalte ist sichtbar
+    private Config confOrder; //"Reihenfolge" der Spalten
 
 
     private void initConf(TABLE eTable) {
@@ -69,9 +69,9 @@ public class Table {
                 break;
 
         }
-        String order = confOrder.get();
+        String order = confOrder.getActValueString();
         String[] arOrder = order.split(",");
-        if (confOrder.get().isEmpty() || arOrder.length != tArray.length) {
+        if (confOrder.getActValueString().isEmpty() || arOrder.length != tArray.length) {
             // dann gibts keine Einstellungen oder die Anzahl der Spalten hat sich geändert
             for (TableColumn tc : tArray) {
                 table.getColumns().add(tc);
@@ -121,11 +121,11 @@ public class Table {
             order += c.getText() + ",";
         });
 
-        confWidth.setValue(width);
-        confVis.setValue(vis);
-        confSort.setValue(sort);
-        confUpDown.setValue(upDown);
-        confOrder.setValue(order);
+        confWidth.setActValue(width);
+        confVis.setActValue(vis);
+        confSort.setActValue(sort);
+        confUpDown.setActValue(upDown);
+        confOrder.setActValue(order);
 
     }
 
@@ -162,8 +162,8 @@ public class Table {
             breite = getDoubleArray(maxSpalten);
             visAr = getBoolArray(maxSpalten);
 
-            if (!confWidth.get().isEmpty()) {
-                width = confWidth.get();
+            if (!confWidth.getActValueString().isEmpty()) {
+                width = confWidth.getActValueString();
                 if (arrLesen(width, breite)) {
                     for (int i = 0; i < breite.length; ++i) {
                         table.getColumns().get(i).setPrefWidth(breite[i]);
@@ -171,8 +171,8 @@ public class Table {
                 }
             }
 
-            if (!confVis.get().isEmpty()) {
-                vis = confVis.get();
+            if (!confVis.getActValueString().isEmpty()) {
+                vis = confVis.getActValueString();
                 if (arrLesen(vis, visAr)) {
                     for (int i = 0; i < visAr.length; ++i) {
                         table.getColumns().get(i).setVisible(visAr[i]);
@@ -180,10 +180,10 @@ public class Table {
                 }
             }
 
-            if (!confSort.get().isEmpty()) {
-                String sort = confSort.get();
+            if (!confSort.getActValueString().isEmpty()) {
+                String sort = confSort.getActValueString();
                 String[] arSort = sort.split(",");
-                String sortUp = confUpDown.get();
+                String sortUp = confUpDown.getActValueString();
                 String[] arSortUp = sortUp.split(",");
 
                 for (int i = 0; i < arSort.length; ++i) {
@@ -286,11 +286,11 @@ public class Table {
             set += visArray[i] + ",";
         }
 
-        confWidth.setValue("");
-        confVis.setValue(set);
-        confSort.setValue("");
-        confUpDown.setValue("");
-        confOrder.setValue("");
+        confWidth.setActValue("");
+        confVis.setActValue(set);
+        confSort.setActValue("");
+        confUpDown.setActValue("");
+        confOrder.setActValue("");
     }
 
 

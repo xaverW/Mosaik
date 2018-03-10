@@ -16,7 +16,6 @@
 
 package de.p2tools.mosaik.controller;
 
-import de.p2tools.mosaik.controller.config.ProgConfig;
 import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.config.ProgInfos;
@@ -71,7 +70,7 @@ public class ProgStart {
         ConfigFile configFile = new ConfigFile(ProgConst.XML_START, xmlFilePath);
         return configFile.readConfigFile(
                 new ArrayList<>(Arrays.asList(progData.projectDataList)),
-                new ArrayList<>(Arrays.asList(ProgConfig.getConfigsData())));
+                new ArrayList<>(Arrays.asList(progData.progConfig)));
     }
 
 }

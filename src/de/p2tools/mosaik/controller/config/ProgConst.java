@@ -42,7 +42,7 @@ public class ProgConst {
 
     public static final String XML_START = "Mosaik";
 
-    public static final String GUI_THUMB_DIVIDER_LOCATION = "0.7";
+    public static final double GUI_THUMB_DIVIDER_LOCATION = 0.7;
 
     public static final int THUMB_RESOLUTION = 600; // Auflösung der Thumbs in der ThumbCollection
 }

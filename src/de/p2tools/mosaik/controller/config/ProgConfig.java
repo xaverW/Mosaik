@@ -17,46 +17,89 @@
 
 package de.p2tools.mosaik.controller.config;
 
-import de.p2tools.p2Lib.configFile.pConfData.PConfData;
-import de.p2tools.p2Lib.configFile.pConfData.PConfList;
-import de.p2tools.p2Lib.configFile.pData.PData;
+import de.p2tools.p2Lib.configFile.config.Config;
+import de.p2tools.p2Lib.configFile.config.ConfigDoubleProp;
+import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
+import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.pData.PDataVault;
 import de.p2tools.p2Lib.image.ImgFile;
+import javafx.beans.property.*;
 
-public class ProgConfig extends PConfList {
+import java.util.ArrayList;
 
-    // wegen des Problems mit ext. Programmaufrufen und Leerzeichen
-    public static PConfData SYSTEM_PROG_OPEN_DIR = addNewKey("Programm-Ordner-oeffnen");
-    public static PConfData SYSTEM_PROG_OPEN_URL = addNewKey("Programm-Url-oeffnen");
-    public static PConfData SYSTEM_PROG_PLAY_FILE = addNewKey("Programm-zum-Abspielen");
+public class ProgConfig extends PDataVault<ProgConfig> {
+
+
+    public static final String TAG = "Thumb";
+    private static final ArrayList<Config> arrayList = new ArrayList<>();
+
+    public static final Config SYSTEM_PROG_OPEN_DIR = addStrProp("system-prog-open-dir", "");
+    public static final Config SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
+    public static final Config SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
 
     // Fenstereinstellungen
-    public static PConfData SYSTEM_GROESSE_GUI = addNewKey("Groesse-Gui", "1000:900");
+    public static final Config SYSTEM_GROESSE_GUI = addStrProp("system-size-gui", "1000:900");
 
     // Einstellungen zum Erstellen der Fotolisten
-    public static PConfData FOTO_FORMAT = addNewKey("foto-format", ImgFile.IMAGE_FORMAT_JPG);
+    public static final Config FOTO_FORMAT = addStrProp("foto-format", ImgFile.IMAGE_FORMAT_JPG);
 
     // GuiStart
-    public static PConfData START_GUI_PROJECT_DATA = addNewKey("start-gui-project-data");
+    public static final Config START_GUI_PROJECT_DATA = addIntProp("start-gui-project-data", 0);
 
     // GuiThumb
-    public static PConfData THUMB_GUI_DIVIDER = addNewKey("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
+    public static final ConfigDoubleProp THUMB_GUI_DIVIDER = addDoubleProp("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
 
     // GuiChangeThumb
-    public static PConfData CHANGE_THUMB_GUI_TABLE_WIDTH = addNewKey("change-thumb-gui-table-width");
-    public static PConfData CHANGE_THUMB_GUI_TABLE_SORT = addNewKey("change-thumb-gui-table-sort");
-    public static PConfData CHANGE_THUMB_GUI_TABLE_UPDOWN = addNewKey("change-thumb-gui-table-upDown");
-    public static PConfData CHANGE_THUMB_GUI_TABLE_VIS = addNewKey("change-thumb-gui-table-vis");
-    public static PConfData CHANGE_THUMB_GUI_TABLE_ORDER = addNewKey("change-thumb-gui-table-order");
+    public static Config CHANGE_THUMB_GUI_TABLE_WIDTH = addStrProp("change-thumb-gui-table-width");
+    public static Config CHANGE_THUMB_GUI_TABLE_SORT = addStrProp("change-thumb-gui-table-sort");
+    public static Config CHANGE_THUMB_GUI_TABLE_UPDOWN = addStrProp("change-thumb-gui-table-upDown");
+    public static Config CHANGE_THUMB_GUI_TABLE_VIS = addStrProp("change-thumb-gui-table-vis");
+    public static Config CHANGE_THUMB_GUI_TABLE_ORDER = addStrProp("change-thumb-gui-table-order");
 
     // ConfigDialog
-    public static PConfData DIALOG_ADD_MOSAIK = addNewKey("dialog-add-mosaik");
+    public static Config DIALOG_ADD_MOSAIK = addStrProp("dialog-add-mosaik");
 
     // Programmpfade
-    public static PConfData CONFIG_DIR_SRC_PHOTO_PATH = addNewKey("config-dir-src-photo-path", "");
+    public static Config CONFIG_DIR_SRC_PHOTO_PATH = addStrProp("config-dir-src-photo-path", "");
 
-    public static PData getConfigsData() {
-        // sonst werden die Keys nich vorher angelegt :)
-        return PConfList.getPData();
+
+    public ProgConfig() {
+    }
+
+    public String getTag() {
+        return TAG;
+    }
+
+    public ArrayList<Config> getConfigsArr() {
+        return arrayList;
+    }
+
+    public static synchronized ConfigStringProp addStrProp(String key) {
+        StringProperty property = new SimpleStringProperty("");
+        ConfigStringProp c = new ConfigStringProp(key, "", property);
+        arrayList.add(c);
+        return c;
+    }
+
+    public static synchronized ConfigStringProp addStrProp(String key, String init) {
+        StringProperty property = new SimpleStringProperty(init);
+        ConfigStringProp c = new ConfigStringProp(key, init, property);
+        arrayList.add(c);
+        return c;
+    }
+
+    public static synchronized ConfigIntProp addIntProp(String key, int init) {
+        IntegerProperty property = new SimpleIntegerProperty(init);
+        ConfigIntProp c = new ConfigIntProp(key, init, property);
+        arrayList.add(c);
+        return c;
+    }
+
+    public static synchronized ConfigDoubleProp addDoubleProp(String key, double init) {
+        DoubleProperty property = new SimpleDoubleProperty(init);
+        ConfigDoubleProp c = new ConfigDoubleProp(key, init, property);
+        arrayList.add(c);
+        return c;
     }
 
 }

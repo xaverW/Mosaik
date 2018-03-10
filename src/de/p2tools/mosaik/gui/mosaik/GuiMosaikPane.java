@@ -153,7 +153,7 @@ public class GuiMosaikPane extends AnchorPane {
 
         cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
         cbSrcPhoto.getItems().addListener((ListChangeListener<String>) c ->
-                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setValue(saveComboPfad(cbSrcPhoto))
+                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.setActValue(saveComboPfad(cbSrcPhoto))
         );
 
         // DEST
@@ -286,7 +286,7 @@ public class GuiMosaikPane extends AnchorPane {
 
         // SRC
         String[] storedPhotoPath = {""};
-        storedPhotoPath = ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.get().split(ProgConst.DIR_SEPARATOR);
+        storedPhotoPath = ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH.getActValueString().split(ProgConst.DIR_SEPARATOR);
         cbSrcPhoto.getItems().addAll(storedPhotoPath);
         if (!mosaikData.getFotoSrc().isEmpty() && !cbSrcPhoto.getItems().contains(mosaikData.getFotoSrc())) {
             cbSrcPhoto.getItems().add(mosaikData.getFotoSrc());

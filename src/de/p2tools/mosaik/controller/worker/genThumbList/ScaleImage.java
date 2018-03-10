@@ -102,7 +102,7 @@ public class ScaleImage {
             g.drawImage(scaledImage, 0, 0, null);
             g.dispose();
 
-            ImageIO.write(outImg, ProgConfig.FOTO_FORMAT.get(), dest);
+            ImageIO.write(outImg, ProgConfig.FOTO_FORMAT.getActValueString(), dest);
 
 
             Thumb thumb = getThumb(rasterDest, dest);
