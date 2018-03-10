@@ -29,45 +29,69 @@ import java.util.ArrayList;
 
 public class ProgConfig extends PDataVault<ProgConfig> {
 
+    public static final String TAG = "ProgConf";
 
-    public static final String TAG = "Thumb";
-    private static final ArrayList<Config> arrayList = new ArrayList<>();
-
-    public static final Config SYSTEM_PROG_OPEN_DIR = addStrProp("system-prog-open-dir", "");
-    public static final Config SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
-    public static final Config SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
+    public static ConfigStringProp SYSTEM_PROG_OPEN_DIR;
+    public static ConfigStringProp SYSTEM_PROG_OPEN_URL;
+    public static ConfigStringProp SYSTEM_PROG_PLAY_FILE;
 
     // Fenstereinstellungen
-    public static final Config SYSTEM_GROESSE_GUI = addStrProp("system-size-gui", "1000:900");
+    public static ConfigStringProp SYSTEM_GROESSE_GUI;
 
     // Einstellungen zum Erstellen der Fotolisten
-    public static final Config FOTO_FORMAT = addStrProp("foto-format", ImgFile.IMAGE_FORMAT_JPG);
+    public static ConfigStringProp FOTO_FORMAT;
 
     // GuiStart
-    public static final Config START_GUI_PROJECT_DATA = addIntProp("start-gui-project-data", 0);
+    public static ConfigIntProp START_GUI_PROJECT_DATA;
 
     // GuiThumb
-    public static final ConfigDoubleProp THUMB_GUI_DIVIDER = addDoubleProp("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
+    public static ConfigDoubleProp THUMB_GUI_DIVIDER;
 
     // GuiChangeThumb
-    public static Config CHANGE_THUMB_GUI_TABLE_WIDTH = addStrProp("change-thumb-gui-table-width");
-    public static Config CHANGE_THUMB_GUI_TABLE_SORT = addStrProp("change-thumb-gui-table-sort");
-    public static Config CHANGE_THUMB_GUI_TABLE_UPDOWN = addStrProp("change-thumb-gui-table-upDown");
-    public static Config CHANGE_THUMB_GUI_TABLE_VIS = addStrProp("change-thumb-gui-table-vis");
-    public static Config CHANGE_THUMB_GUI_TABLE_ORDER = addStrProp("change-thumb-gui-table-order");
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_WIDTH;
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_SORT;
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_UPDOWN;
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_VIS;
+    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_ORDER;
 
     // ConfigDialog
-    public static Config DIALOG_ADD_MOSAIK = addStrProp("dialog-add-mosaik");
+    public static ConfigStringProp DIALOG_ADD_MOSAIK;
 
     // Programmpfade
-    public static Config CONFIG_DIR_SRC_PHOTO_PATH = addStrProp("config-dir-src-photo-path", "");
+    public static ConfigStringProp CONFIG_DIR_SRC_PHOTO_PATH;
 
+    private static final ArrayList<Config> arrayList = new ArrayList<>();
 
     public ProgConfig() {
+        SYSTEM_PROG_OPEN_DIR = addStrProp("system-prog-open-dir", "");
+        SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
+        SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
+
+        SYSTEM_GROESSE_GUI = addStrProp("system-size-gui", "1000:900");
+
+        FOTO_FORMAT = addStrProp("foto-format", ImgFile.IMAGE_FORMAT_JPG);
+
+        START_GUI_PROJECT_DATA = addIntProp("start-gui-project-data", 0);
+
+        THUMB_GUI_DIVIDER = addDoubleProp("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
+
+        CHANGE_THUMB_GUI_TABLE_WIDTH = addStrProp("change-thumb-gui-table-width");
+        CHANGE_THUMB_GUI_TABLE_SORT = addStrProp("change-thumb-gui-table-sort");
+        CHANGE_THUMB_GUI_TABLE_UPDOWN = addStrProp("change-thumb-gui-table-upDown");
+        CHANGE_THUMB_GUI_TABLE_VIS = addStrProp("change-thumb-gui-table-vis");
+        CHANGE_THUMB_GUI_TABLE_ORDER = addStrProp("change-thumb-gui-table-order");
+
+        DIALOG_ADD_MOSAIK = addStrProp("dialog-add-mosaik");
+
+        CONFIG_DIR_SRC_PHOTO_PATH = addStrProp("config-dir-src-photo-path", "");
     }
 
     public String getTag() {
         return TAG;
+    }
+
+    public String getComment() {
+        return "Programmeinstellungen";
     }
 
     public ArrayList<Config> getConfigsArr() {

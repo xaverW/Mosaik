@@ -105,7 +105,7 @@ public class GuiStart extends AnchorPane {
         cbProjectDataList.setItems(progData.projectDataList);
 
         try {
-            int col = ProgConfig.START_GUI_PROJECT_DATA.getActValueInt();
+            int col = ProgConfig.START_GUI_PROJECT_DATA.getActValue();
             ProjectData projectData = progData.projectDataList.get(col);
             cbProjectDataList.getSelectionModel().select(projectData);
         } catch (Exception ex) {
