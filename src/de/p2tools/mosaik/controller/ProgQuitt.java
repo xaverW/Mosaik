@@ -18,7 +18,7 @@ package de.p2tools.mosaik.controller;
 
 import de.p2tools.mosaik.controller.config.ProgConfig;
 import de.p2tools.mosaik.controller.config.ProgData;
-import de.p2tools.mosaik.gui.tools.GuiSize;
+import de.p2tools.p2Lib.guiTools.GuiSize;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.Log;
 import javafx.application.Platform;

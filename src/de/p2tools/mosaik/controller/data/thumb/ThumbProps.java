@@ -17,10 +17,11 @@
 package de.p2tools.mosaik.controller.data.thumb;
 
 import de.p2tools.p2Lib.configFile.config.Config;
-import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
+import de.p2tools.p2Lib.configFile.config.ConfigInt;
 import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
 import de.p2tools.p2Lib.configFile.pData.PDataSample;
-import javafx.beans.property.*;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -31,10 +32,10 @@ public class ThumbProps extends PDataSample<Thumb> {
 
     public static final String TAG = "Thumb";
     private int anz = 0;
-    private final IntegerProperty nr = new SimpleIntegerProperty(0);
-    private final IntegerProperty red = new SimpleIntegerProperty(0);
-    private final IntegerProperty green = new SimpleIntegerProperty(0);
-    private final IntegerProperty blue = new SimpleIntegerProperty(0);
+    private int nr = 0;
+    private int red = 0;
+    private int green = 0;
+    private int blue = 0;
     private final StringProperty fileName = new SimpleStringProperty("");
 
 
@@ -44,14 +45,35 @@ public class ThumbProps extends PDataSample<Thumb> {
 
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<>(Arrays.asList(
-                new ConfigIntProp("nr", 0, nr),
-                new ConfigIntProp("red", 0, red),
-                new ConfigIntProp("green", 0, green),
-                new ConfigIntProp("blue", 0, blue),
+                new ConfigInt("red", 0, red) {
+                    public void setActValue(String act) {
+                        try {
+                            red = Integer.valueOf(act);
+                        } catch (Exception ex) {
+                            red = 0;
+                        }
+                    }
+                },
+                new ConfigInt("green", 0, green) {
+                    public void setActValue(String act) {
+                        try {
+                            green = Integer.valueOf(act);
+                        } catch (Exception ex) {
+                            green = 0;
+                        }
+                    }
+                },
+                new ConfigInt("blue", 0, blue) {
+                    public void setActValue(String act) {
+                        try {
+                            blue = Integer.valueOf(act);
+                        } catch (Exception ex) {
+                            blue = 0;
+                        }
+                    }
+                },
                 new ConfigStringProp("filename", "", fileName)));
     }
-
-    public final Property[] properties = {nr, red, green, blue, fileName};
 
     public int getAnz() {
         return anz;
@@ -66,63 +88,48 @@ public class ThumbProps extends PDataSample<Thumb> {
     }
 
     public int getNr() {
-        return nr.get();
-    }
-
-    public void setNr(int nr) {
-        this.nr.set(nr);
-    }
-
-    public IntegerProperty nrProperty() {
         return nr;
     }
 
-    public int getRed() {
-        return red.get();
+    public void setNr(int nr) {
+        this.nr = nr;
     }
 
-    public IntegerProperty redProperty() {
+    public int getRed() {
         return red;
     }
 
     public void setRed(int red) {
         if (!checkC(red)) {
-            this.red.set(0);
+            this.red = 0;
         } else {
-            this.red.set(red);
+            this.red = red;
         }
     }
 
 
     public int getGreen() {
-        return green.get();
-    }
-
-    public IntegerProperty greenProperty() {
         return green;
     }
 
     public void setGreen(int green) {
         if (!checkC(green)) {
-            this.green.set(0);
+            this.green = 0;
         } else {
-            this.green.set(green);
+            this.green = green;
         }
     }
 
     public int getBlue() {
-        return blue.get();
-    }
-
-    public IntegerProperty blueProperty() {
         return blue;
     }
 
+
     public void setBlue(int blue) {
         if (!checkC(blue)) {
-            this.blue.set(0);
+            this.blue = 0;
         } else {
-            this.blue.set(blue);
+            this.blue = blue;
         }
     }
 

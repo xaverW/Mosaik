@@ -105,7 +105,7 @@ public class GuiStart extends AnchorPane {
         cbProjectDataList.setItems(progData.projectDataList);
 
         try {
-            int col = ProgConfig.START_GUI_PROJECT_DATA.getActValue();
+            int col = ProgConfig.START_GUI_PROJECT_DATA.get();
             ProjectData projectData = progData.projectDataList.get(col);
             cbProjectDataList.getSelectionModel().select(projectData);
         } catch (Exception ex) {
@@ -233,7 +233,7 @@ public class GuiStart extends AnchorPane {
 
         } else {
 
-            ProgConfig.START_GUI_PROJECT_DATA.setActValue(cbProjectDataList.getSelectionModel().getSelectedIndex());
+            ProgConfig.START_GUI_PROJECT_DATA.set(cbProjectDataList.getSelectionModel().getSelectedIndex());
 
             txtName.textProperty().bindBidirectional(projectData.nameProperty());
             txtDir.textProperty().bindBidirectional(projectData.destDirProperty());

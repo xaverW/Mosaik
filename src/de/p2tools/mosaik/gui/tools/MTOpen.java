@@ -19,11 +19,11 @@ package de.p2tools.mosaik.gui.tools;
 import de.p2tools.mosaik.controller.config.ProgConfig;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
-import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.dialog.PAlertFileChosser;
 import de.p2tools.p2Lib.tools.Log;
 import javafx.application.Platform;
+import javafx.beans.property.StringProperty;
 
 import java.awt.*;
 import java.io.File;
@@ -48,9 +48,9 @@ public class MTOpen {
         }
 
 
-        if (!ProgConfig.SYSTEM_PROG_OPEN_DIR.getActValueString().isEmpty()) {
+        if (!ProgConfig.SYSTEM_PROG_OPEN_DIR.get().isEmpty()) {
             try {
-                final String programm = ProgConfig.SYSTEM_PROG_OPEN_DIR.getActValueString();
+                final String programm = ProgConfig.SYSTEM_PROG_OPEN_DIR.get();
                 final String[] arrProgCallArray = {programm, directory.getAbsolutePath()};
                 Runtime.getRuntime().exec(arrProgCallArray);
             } catch (final Exception ex) {
@@ -89,10 +89,10 @@ public class MTOpen {
         }
 
 
-        if (!ProgConfig.SYSTEM_PROG_PLAY_FILE.getActValueString().isEmpty()) {
+        if (!ProgConfig.SYSTEM_PROG_PLAY_FILE.get().isEmpty()) {
             // dann mit dem vorgegebenen Player starten
             try {
-                final String programm = ProgConfig.SYSTEM_PROG_PLAY_FILE.getActValueString();
+                final String programm = ProgConfig.SYSTEM_PROG_PLAY_FILE.get();
                 final String[] cmd = {programm, filmFile.getAbsolutePath()};
                 Runtime.getRuntime().exec(cmd);
             } catch (final Exception ex) {
@@ -125,10 +125,10 @@ public class MTOpen {
         }
 
 
-        if (!ProgConfig.SYSTEM_PROG_OPEN_URL.getActValueString().isEmpty()) {
+        if (!ProgConfig.SYSTEM_PROG_OPEN_URL.get().isEmpty()) {
             // dann mit dem vorgegebenen Player starten
             try {
-                final String programm = ProgConfig.SYSTEM_PROG_OPEN_URL.getActValueString();
+                final String programm = ProgConfig.SYSTEM_PROG_OPEN_URL.get();
                 final String[] cmd = {programm, url};
                 Runtime.getRuntime().exec(cmd);
             } catch (final Exception ex) {
@@ -160,7 +160,7 @@ public class MTOpen {
         String programm = "";
         boolean ok;
         String title, header, cont;
-        Config conf;
+        StringProperty conf;
 
         switch (t) {
             default:
@@ -194,7 +194,7 @@ public class MTOpen {
             if (!programm.isEmpty()) {
                 final String[] cmd = {programm, directory};
                 Runtime.getRuntime().exec(cmd);
-                conf.setActValue(programm);
+                conf.set(programm);
                 ok = true;
             } else {
                 // abgebrochen
@@ -208,7 +208,7 @@ public class MTOpen {
         }
 
         if (!ok) {
-            conf.setActValue("");
+            conf.set("");
             new PAlert().showErrorAlert("Fehler", "", "Kann das Programm nicht öffnen!");
         }
     }

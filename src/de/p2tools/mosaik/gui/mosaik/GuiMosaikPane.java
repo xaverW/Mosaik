@@ -42,7 +42,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class GuiMosaikPane extends AnchorPane {
@@ -151,8 +150,8 @@ public class GuiMosaikPane extends AnchorPane {
 
         cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
         cbSrcPhoto.setEditable(true);
-        cbSrcPhoto.init(ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH_LIST.getStrList(),
-                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH_SEL.getActValueProperty());
+        cbSrcPhoto.init(ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH_LIST,
+                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH_SEL);
 
         // DEST
         txtDestName.setMaxWidth(Double.MAX_VALUE);

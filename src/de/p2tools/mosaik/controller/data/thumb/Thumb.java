@@ -35,18 +35,18 @@ public final class Thumb extends ThumbProps {
         return (getRed() < DARK && getGreen() < DARK && getBlue() < DARK);
     }
 
-    public Thumb getCopy() {
-        final Thumb ret = new Thumb();
-        for (int i = 0; i < properties.length; ++i) {
-            ret.properties[i].setValue(this.properties[i].getValue());
-        }
-
-        return ret;
-    }
-
-    public void copyToMe(Thumb thumb) {
-        for (int i = 0; i < properties.length; ++i) {
-            properties[i].setValue(thumb.properties[i].getValue());
-        }
-    }
+//    public Thumb getCopy() {
+//        final Thumb ret = new Thumb();
+//        for (int i = 0; i < properties.length; ++i) {
+//            ret.properties[i].setValue(this.properties[i].getValue());
+//        }
+//
+//        return ret;
+//    }
+//
+//    public void copyToMe(Thumb thumb) {
+//        for (int i = 0; i < properties.length; ++i) {
+//            properties[i].setValue(thumb.properties[i].getValue());
+//        }
+//    }
 }

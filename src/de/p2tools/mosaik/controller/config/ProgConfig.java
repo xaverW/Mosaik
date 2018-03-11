@@ -17,46 +17,52 @@
 
 package de.p2tools.mosaik.controller.config;
 
-import de.p2tools.p2Lib.configFile.config.ConfigDoubleProp;
-import de.p2tools.p2Lib.configFile.config.ConfigIntProp;
-import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
-import de.p2tools.p2Lib.configFile.configList.ConfigList;
-import de.p2tools.p2Lib.configFile.configList.ConfigStringList;
 import de.p2tools.p2Lib.configFile.pData.PDataProgConfig;
 import de.p2tools.p2Lib.image.ImgFile;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 
 public class ProgConfig extends PDataProgConfig {
 
-    public static ConfigStringProp SYSTEM_PROG_OPEN_DIR = addStrProp("system-prog-open-dir", "");
-    public static ConfigStringProp SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
-    public static ConfigStringProp SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
+    public static StringProperty SYSTEM_PROG_OPEN_DIR = addStrProp("system-prog-open-dir", "");
 
+    public static StringProperty SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
+    public static StringProperty SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
     // Fenstereinstellungen
-    public static ConfigStringProp SYSTEM_GROESSE_GUI = addStrProp("system-gui-size", "1000:900");
 
+    public static StringProperty SYSTEM_GROESSE_GUI = addStrProp("system-gui-size", "1000:900");
     // Einstellungen zum Erstellen der Fotolisten
-    public static ConfigStringProp FOTO_FORMAT = addStrProp("foto-format", ImgFile.IMAGE_FORMAT_JPG);
 
+    public static StringProperty FOTO_FORMAT = addStrProp("foto-format", ImgFile.IMAGE_FORMAT_JPG);
     // GuiStart
-    public static ConfigIntProp START_GUI_PROJECT_DATA = addIntProp("start-gui-project-data", 0);
 
+    public static IntegerProperty START_GUI_PROJECT_DATA = addIntProp("start-gui-project-data", 0);
     // GuiThumb
-    public static ConfigDoubleProp THUMB_GUI_DIVIDER = addDoubleProp("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
 
+    public static DoubleProperty THUMB_GUI_DIVIDER = addDoubleProp("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
     // GuiChangeThumb
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_WIDTH = addStrProp("change-thumb-gui-table-width");
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_SORT = addStrProp("change-thumb-gui-table-sort");
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_UPDOWN = addStrProp("change-thumb-gui-table-upDown");
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_VIS = addStrProp("change-thumb-gui-table-vis");
-    public static ConfigStringProp CHANGE_THUMB_GUI_TABLE_ORDER = addStrProp("change-thumb-gui-table-order");
 
+    public static StringProperty CHANGE_THUMB_GUI_TABLE_WIDTH = addStrProp("change-thumb-gui-table-width");
+    public static StringProperty CHANGE_THUMB_GUI_TABLE_SORT = addStrProp("change-thumb-gui-table-sort");
+    public static StringProperty CHANGE_THUMB_GUI_TABLE_UPDOWN = addStrProp("change-thumb-gui-table-upDown");
+    public static StringProperty CHANGE_THUMB_GUI_TABLE_VIS = addStrProp("change-thumb-gui-table-vis");
+    public static StringProperty CHANGE_THUMB_GUI_TABLE_ORDER = addStrProp("change-thumb-gui-table-order");
     // ConfigDialog
-    public static ConfigStringProp DIALOG_ADD_MOSAIK = addStrProp("dialog-add-mosaik");
 
+    public static StringProperty DIALOG_ADD_MOSAIK = addStrProp("dialog-add-mosaik");
     // Programmpfade
-    public static ConfigStringProp CONFIG_DIR_SRC_PHOTO_PATH_SEL = addStrProp("config-dir-src-photo-path-sel");
-    public static ConfigStringList CONFIG_DIR_SRC_PHOTO_PATH_LIST = addListProp("config-dir-src-photo-path-list");
 
-    public static ConfigList CONFIG_DIR_DEST_PATH_FOTO = addListProp("config-dir-dest-path-foto");
+    public static StringProperty CONFIG_DIR_SRC_PHOTO_PATH_SEL = addStrProp("config-dir-src-photo-path-sel");
 
+    public static ObservableList<String> CONFIG_DIR_SRC_PHOTO_PATH_LIST = addListProp("config-dir-src-photo-path-list");
+    public static ObservableList<String> CONFIG_DIR_DEST_PATH_FOTO = addListProp("config-dir-dest-path-foto");
+
+
+    private static ProgConfig instance;
+
+    public static final ProgConfig getInstance() {
+        return instance == null ? instance = new ProgConfig() : instance;
+    }
 }

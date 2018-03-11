@@ -57,10 +57,8 @@ public class ProgData {
     public GuiThumbController guiThumbController = null;
     public GuiThumbChangeController guiThumbChangeController = null;
 
-    public ProgConfig progConfig;
 
     private ProgData() {
-        progConfig = new ProgConfig();
         projectDataList = new ProjectDataDataList();
         worker = new Worker(this);
 
