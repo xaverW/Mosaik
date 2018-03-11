@@ -46,8 +46,7 @@ import java.util.Locale;
 public class GenWallpaper {
     private EventListenerList listeners = new EventListenerList();
     private ThumbCollection thumbCollection;
-    private String destDir;
-    private String destName;
+    private String dest;
     private boolean stopAll = false;
     private int numThumbWidth;
     private int thumbSize;
@@ -72,8 +71,7 @@ public class GenWallpaper {
 
     public void create(ThumbCollection thumbCollection, WallpaperData wallpaperData) {
         this.thumbCollection = thumbCollection;
-        this.destDir = wallpaperData.getFotoDestDir();
-        this.destName = wallpaperData.getFotoDestName();
+        this.dest = wallpaperData.getFotoDest();
         this.numThumbWidth = wallpaperData.getNumberThumbsWidth();
         this.thumbSize = wallpaperData.getThumbSize();
         this.thumbResize = wallpaperData.getResizeThumb();
@@ -89,27 +87,27 @@ public class GenWallpaper {
             borderColor = Color.BLACK;
         }
 
-        if (destDir.isEmpty() || destName.isEmpty()) {
+        if (dest.isEmpty()) {
             Log.errorLog(945120364, "Keine Zieldatei angegeben!");
             return;
         }
 
         if (wallpaperData.getFormat().equals(ImgFile.IMAGE_FORMAT_PNG) &&
-                !destName.endsWith("." + ImgFile.IMAGE_FORMAT_PNG)) {
-            destName += "." + ImgFile.IMAGE_FORMAT_PNG;
+                !dest.endsWith("." + ImgFile.IMAGE_FORMAT_PNG)) {
+            dest += "." + ImgFile.IMAGE_FORMAT_PNG;
 
-        } else if (!destName.endsWith("." + ImgFile.IMAGE_FORMAT_JPG)) {
-            destName += "." + ImgFile.IMAGE_FORMAT_JPG;
+        } else if (!dest.endsWith("." + ImgFile.IMAGE_FORMAT_JPG)) {
+            dest += "." + ImgFile.IMAGE_FORMAT_JPG;
         }
 
-        destPathName = Paths.get(destDir, destName);
+        destPathName = Paths.get(dest);
         if (destPathName.toFile().exists() &&
                 !new PAlert().showAlert_yes_no("Ziel existiert", destPathName.toString(),
                         "Soll die bereits vorhandene Datei überschrieben werden?").equals(PAlert.BUTTON.YES)) {
             return;
         }
 
-        Path p = Paths.get(destDir);
+        Path p = Paths.get(dest);
         if (!p.toFile().exists()) {
             p.toFile().mkdirs();
         }

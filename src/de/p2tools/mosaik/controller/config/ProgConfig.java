@@ -54,10 +54,17 @@ public class ProgConfig extends PDataProgConfig {
     public static StringProperty DIALOG_ADD_MOSAIK = addStrProp("dialog-add-mosaik");
     // Programmpfade
 
-    public static StringProperty CONFIG_DIR_SRC_PHOTO_PATH_SEL = addStrProp("config-dir-src-photo-path-sel");
+    public static StringProperty CONFIG_SRC_PHOTO_PATH_SEL = addStrProp("config-src-photo-path-sel");
+    public static ObservableList<String> CONFIG_SRC_PHOTO_PATH_LIST = addListProp("config-src-photo-path-list");
 
-    public static ObservableList<String> CONFIG_DIR_SRC_PHOTO_PATH_LIST = addListProp("config-dir-src-photo-path-list");
-    public static ObservableList<String> CONFIG_DIR_DEST_PATH_FOTO = addListProp("config-dir-dest-path-foto");
+    public static StringProperty CONFIG_ADD_PHOTO_PATH_SEL = addStrProp("config-add-photo-path-sel");
+    public static ObservableList<String> CONFIG_ADD_PHOTO_PATH_LIST = addListProp("config-add-photo-path-list");
+
+    public static StringProperty CONFIG_DEST_PHOTO_PATH_SEL = addStrProp("config-dest-photo-path-sel");
+    public static ObservableList<String> CONFIG_DEST_PHOTO_PATH_LIST = addListProp("config-dest-photo-path-list");
+
+    public static StringProperty CONFIG_DEST_WALLPAPER_PATH_SEL = addStrProp("config-dest-wallpaper-path-sel");
+    public static ObservableList<String> CONFIG_DEST_WALLPAPER_PATH_LIST = addListProp("config-dest-wallpaper-path-list");
 
 
     private static ProgConfig instance;

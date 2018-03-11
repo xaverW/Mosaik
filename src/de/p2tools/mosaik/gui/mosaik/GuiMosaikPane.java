@@ -34,13 +34,18 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -51,19 +56,17 @@ public class GuiMosaikPane extends AnchorPane {
     private final VBox contPane = new VBox();
 
     private final Button btnSrc = new Button("");
-    private final TextField txtDestName = new TextField();
     private final Slider sliderSize = new Slider();
     private final Label lblSlider = new Label("");
     private final Slider sliderCount = new Slider();
     private final Label lblSliderCount = new Label("");
     private final PComboBox cbSrcPhoto = new PComboBox();
 
-    private final TextField txtDestDir = new TextField();
+    private final PComboBox cbDestDir = new PComboBox();
     private final Button btnDest = new Button("");
 
     private final Label lblSrcFile = new Label("Datei:");
-    private final Label lblDestDir = new Label("Verzeichnis:");
-    private final Label lblDestName = new Label("Dateiname:");
+    private final Label lblDestDir = new Label("Datei:");
 
     Label lblSize = new Label("Das Mosaik wird eine Größe haben von:");
 
@@ -110,32 +113,29 @@ public class GuiMosaikPane extends AnchorPane {
             mosaikData = progData.selectedProjectData.getMosaikData();
             bind();
         }
-        if (txtDestDir.getText().isEmpty()) {
-            txtDestDir.setText(progData.selectedProjectData.getDestDir());
-        }
-        if (txtDestName.getText().isEmpty()) {
-            txtDestName.setText(FileUtils.getNextFileName(txtDestDir.getText(), ProgConst.MOSAIK_STD_NAME));
+        if (cbDestDir.getSel().isEmpty()) {
+            Path p = Paths.get(progData.selectedProjectData.getDestDir(),
+                    FileUtils.getNextFileName(progData.selectedProjectData.getDestDir(), ProgConst.MOSAIK_STD_NAME));
+            cbDestDir.selectElement(p.toString());
         }
     }
 
     private void initColor() {
-        dirBinding = Bindings.createBooleanBinding(() -> txtDestDir.getText().trim().isEmpty(), txtDestDir.textProperty());
-        nameBinding = Bindings.createBooleanBinding(() -> txtDestName.getText().trim().isEmpty(), txtDestName.textProperty());
+        dirBinding = Bindings.createBooleanBinding(() -> cbDestDir.getSel().trim().isEmpty(),
+                cbDestDir.getSelProperty());
 
-        cbSrcPhoto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                    GuiTools.setColor(lblSrcFile, newValue == null || newValue.trim().isEmpty());
-                }
+        //todo
+        cbSrcPhoto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
+                GuiTools.setColor(lblSrcFile, newValue == null || newValue.trim().isEmpty())
         );
 
-        GuiTools.setColor(txtDestDir, dirBinding.get());
-        GuiTools.setColor(txtDestName, nameBinding.get());
+        GuiTools.setColor(cbDestDir, dirBinding.get());
+
         GuiTools.setColor(lblSrcFile, cbSrcPhoto.getSelectionModel().getSelectedItem() == null ||
                 cbSrcPhoto.getSelectionModel().getSelectedItem().trim().isEmpty());
 
-        dirBinding.addListener(l -> GuiTools.setColor(txtDestDir, dirBinding.get()));
+        dirBinding.addListener(l -> GuiTools.setColor(cbDestDir, dirBinding.get()));
         dirBinding.addListener(l -> GuiTools.setColor(lblDestDir, dirBinding.get()));
-        nameBinding.addListener(l -> GuiTools.setColor(txtDestName, nameBinding.get()));
-        nameBinding.addListener(l -> GuiTools.setColor(lblDestName, nameBinding.get()));
     }
 
 
@@ -143,27 +143,21 @@ public class GuiMosaikPane extends AnchorPane {
         // SRC
         btnSrc.setOnAction(event -> DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbSrcPhoto));
         btnSrc.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
+        cbSrcPhoto.init(ProgConfig.CONFIG_SRC_PHOTO_PATH_LIST, ProgConfig.CONFIG_SRC_PHOTO_PATH_SEL);
 
         final Button btnHelpSrc = new Button("");
         btnHelpSrc.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpSrc.setOnAction(a -> new PAlert().showHelpAlert("Mosaikvorlage", HelpText.IMAGE_TAMPLATE));
 
-        cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
-        cbSrcPhoto.setEditable(true);
-        cbSrcPhoto.init(ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH_LIST,
-                ProgConfig.CONFIG_DIR_SRC_PHOTO_PATH_SEL);
 
         // DEST
-        txtDestName.setMaxWidth(Double.MAX_VALUE);
-
-        btnDest.setOnAction(event -> DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDestDir));
+        btnDest.setOnAction(event -> DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbDestDir));
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
+        cbDestDir.init(ProgConfig.CONFIG_DEST_PHOTO_PATH_LIST, ProgConfig.CONFIG_DEST_PHOTO_PATH_SEL);
 
         final Button btnHelpDest = new Button("");
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpDest.setOnAction(a -> new PAlert().showHelpAlert("Mosaik", HelpText.MOSAIK_DEST));
-
-        txtDestDir.setMaxWidth(Double.MAX_VALUE);
 
 
         // Thumbsize
@@ -191,9 +185,11 @@ public class GuiMosaikPane extends AnchorPane {
         gridPaneDest.setVgap(10);
         gridPaneDest.setHgap(10);
 
+        cbSrcPhoto.setMaxWidth(Double.MAX_VALUE);
+        cbDestDir.setMaxWidth(Double.MAX_VALUE);
+
         GridPane.setHgrow(cbSrcPhoto, Priority.ALWAYS);
-        GridPane.setHgrow(txtDestName, Priority.ALWAYS);
-        GridPane.setHgrow(txtDestDir, Priority.ALWAYS);
+        GridPane.setHgrow(cbDestDir, Priority.ALWAYS);
         GridPane.setHgrow(sliderSize, Priority.ALWAYS);
         GridPane.setHgrow(sliderCount, Priority.ALWAYS);
 
@@ -215,12 +211,9 @@ public class GuiMosaikPane extends AnchorPane {
         gridPaneDest.add(lbl, 0, ++row, 4, 1);
 
         gridPaneDest.add(lblDestDir, 0, ++row);
-        gridPaneDest.add(txtDestDir, 1, row);
+        gridPaneDest.add(cbDestDir, 1, row);
         gridPaneDest.add(btnDest, 2, row);
         gridPaneDest.add(btnHelpDest, 3, row);
-
-        gridPaneDest.add(lblDestName, 0, ++row);
-        gridPaneDest.add(txtDestName, 1, row);
 
         lbl = new Label("Größe und Anzahl der Miniaturbilder");
         Label lblSize = new Label("Größe (Pixel):");
@@ -260,8 +253,7 @@ public class GuiMosaikPane extends AnchorPane {
         mosaikData.fotoSrcProperty().unbind();
 
         // DEST
-        txtDestName.textProperty().unbindBidirectional(mosaikData.fotoDestNameProperty());
-        txtDestDir.textProperty().unbindBidirectional(mosaikData.fotoDestDirProperty());
+        mosaikData.fotoDestProperty().unbind();
 
         // Thumbsize
         iPropSize.unbind();
@@ -282,15 +274,12 @@ public class GuiMosaikPane extends AnchorPane {
         }
 
         // SRC
-        if (!mosaikData.getFotoSrc().isEmpty() && !cbSrcPhoto.getItems().contains(mosaikData.getFotoSrc())) {
-            cbSrcPhoto.getItems().add(mosaikData.getFotoSrc());
-        }
-        cbSrcPhoto.getSelectionModel().select(mosaikData.getFotoSrc());
-        mosaikData.fotoSrcProperty().bind(cbSrcPhoto.getSelectionModel().selectedItemProperty());
+        cbSrcPhoto.selectElement(mosaikData.getFotoSrc());
+        mosaikData.fotoSrcProperty().bind(cbSrcPhoto.getSelProperty());
 
         // DEST
-        txtDestName.textProperty().bindBidirectional(mosaikData.fotoDestNameProperty());
-        txtDestDir.textProperty().bindBidirectional(mosaikData.fotoDestDirProperty());
+        cbDestDir.selectElement(mosaikData.getFotoDest());
+        mosaikData.fotoDestProperty().bind(cbDestDir.getSelProperty());
 
         // Thumbsize
         sliderSize.setValue(mosaikData.getThumbSize() / 10);
@@ -309,8 +298,6 @@ public class GuiMosaikPane extends AnchorPane {
         mosaikData.numberThumbsWidthProperty().bind(nbCount);
 
         lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
-
-
     }
 
     private void initSizePane() {

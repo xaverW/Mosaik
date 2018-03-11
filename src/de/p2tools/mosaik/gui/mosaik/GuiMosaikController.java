@@ -90,21 +90,26 @@ public class GuiMosaikController extends AnchorPane {
         tabPane.getTabs().add(tab);
 
         btnCreate.setOnAction(a -> {
-            if (mosaikData != null &&
-                    !mosaikData.getFotoSrc().isEmpty() &&
-                    !mosaikData.getFotoDestDir().isEmpty() &&
-                    !mosaikData.getFotoDestName().isEmpty()) {
-                progData.worker.createMosaik(mosaikData, progData.selectedProjectData.getThumbCollection());
-
-            } else if (mosaikData.getFotoSrc().isEmpty()) {
-                PAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Vorlagenbild für das Mosaik angegeben.");
-
-            } else if (mosaikData.getFotoDestDir().isEmpty()) {
-                PAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Speicherziel angegeben.");
-
-            } else if (mosaikData.getFotoDestName().isEmpty()) {
-                PAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Dateiname für das erstellte Mosaik angegeben.");
+            if (progData.selectedProjectData.getThumbCollection().getThumbList().isEmpty()) {
+                PAlert.showErrorAlert("Mosaik erstellen", "Es sind keine Miniaturbilder in der Sammlung.");
+                return;
             }
+            if (mosaikData == null) {
+                //todo kann das sein?
+                return;
+            }
+
+            if (mosaikData.getFotoSrc().isEmpty()) {
+                PAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Vorlagenbild für das Mosaik angegeben.");
+                return;
+            }
+
+            if (mosaikData.getFotoDest().isEmpty()) {
+                PAlert.showErrorAlert("Mosaik erstellen", "Es ist kein Speicherziel angegeben.");
+                return;
+            }
+
+            progData.worker.createMosaik(mosaikData, progData.selectedProjectData.getThumbCollection());
         });
         btnCreate.disableProperty().bind(progData.worker.workingProperty());
         btnCreate.getStyleClass().add("btnCreate");

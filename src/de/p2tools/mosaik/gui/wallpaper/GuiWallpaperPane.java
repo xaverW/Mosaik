@@ -16,6 +16,7 @@
 
 package de.p2tools.mosaik.gui.wallpaper;
 
+import de.p2tools.mosaik.controller.config.ProgConfig;
 import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
@@ -24,6 +25,7 @@ import de.p2tools.mosaik.gui.HelpText;
 import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
+import de.p2tools.p2Lib.dialog.PComboBox;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -31,13 +33,18 @@ import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -45,12 +52,10 @@ public class GuiWallpaperPane extends AnchorPane {
 
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox contPane = new VBox(10);
-    private final TextField txtDestName = new TextField();
-    private final TextField txtDestDir = new TextField();
+    private final PComboBox cbDest = new PComboBox();
     private final Button btnDest = new Button("");
     private final Label lblSize = new Label("Die Fototapete wird die Größe haben von:");
-    private final Label lblDestName = new Label("Dateiname: ");
-    private final Label lblDestDir = new Label("Verzeichnis:");
+    private final Label lblDest = new Label("Datei:");
 
     private final Slider sliderSize = new Slider();
     private final Label lblSlider = new Label("");
@@ -100,34 +105,30 @@ public class GuiWallpaperPane extends AnchorPane {
             bind();
         }
 
-        if (txtDestDir.getText().isEmpty()) {
-            txtDestDir.setText(progData.selectedProjectData.getDestDir());
-        }
-        if (txtDestName.getText().isEmpty()) {
-            txtDestName.setText(FileUtils.getNextFileName(txtDestDir.getText(), ProgConst.WALLPAPER_STD_NAME));
+        if (cbDest.getSel().isEmpty()) {
+            Path p = Paths.get(progData.selectedProjectData.getDestDir(),
+                    FileUtils.getNextFileName(progData.selectedProjectData.getDestDir(), ProgConst.WALLPAPER_STD_NAME));
+            cbDest.selectElement(p.toString());
         }
 
     }
 
     private void initColor() {
-        dirBinding = Bindings.createBooleanBinding(() -> txtDestDir.getText().trim().isEmpty(), txtDestDir.textProperty());
-        nameBinding = Bindings.createBooleanBinding(() -> txtDestName.getText().trim().isEmpty(), txtDestName.textProperty());
+        dirBinding = Bindings.createBooleanBinding(() -> cbDest.getSel().trim().isEmpty(), cbDest.getSelProperty());
 
-        GuiTools.setColor(txtDestDir, dirBinding.get());
-        GuiTools.setColor(txtDestName, nameBinding.get());
+        GuiTools.setColor(cbDest, dirBinding.get());
 
-        dirBinding.addListener(l -> GuiTools.setColor(txtDestDir, dirBinding.get()));
-        dirBinding.addListener(l -> GuiTools.setColor(lblDestDir, dirBinding.get()));
-        nameBinding.addListener(l -> GuiTools.setColor(txtDestName, nameBinding.get()));
-        nameBinding.addListener(l -> GuiTools.setColor(lblDestName, nameBinding.get()));
+        dirBinding.addListener(l -> GuiTools.setColor(cbDest, dirBinding.get()));
+        dirBinding.addListener(l -> GuiTools.setColor(lblDest, dirBinding.get()));
     }
 
     private void initCont() {
         // DEST
         btnDest.setOnAction(event -> {
-            DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDestDir);
+            DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbDest);
         });
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
+        cbDest.init(ProgConfig.CONFIG_DEST_WALLPAPER_PATH_LIST, ProgConfig.CONFIG_DEST_WALLPAPER_PATH_SEL);
 
         final Button btnHelpDest = new Button("");
         btnHelpDest.setGraphic(new Icons().ICON_BUTTON_HELP);
@@ -158,8 +159,8 @@ public class GuiWallpaperPane extends AnchorPane {
         gridPane.setVgap(10);
         gridPane.setHgap(10);
 
-        GridPane.setHgrow(txtDestDir, Priority.ALWAYS);
-        GridPane.setHgrow(txtDestName, Priority.ALWAYS);
+        cbDest.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(cbDest, Priority.ALWAYS);
         GridPane.setHgrow(sliderSize, Priority.ALWAYS);
         GridPane.setHgrow(sliderCount, Priority.ALWAYS);
 
@@ -168,13 +169,10 @@ public class GuiWallpaperPane extends AnchorPane {
         lbl.setMaxWidth(Double.MAX_VALUE);
 
         gridPane.add(lbl, 0, row, 4, 1);
-        gridPane.add(lblDestDir, 0, ++row);
-        gridPane.add(txtDestDir, 1, row);
+        gridPane.add(lblDest, 0, ++row);
+        gridPane.add(cbDest, 1, row);
         gridPane.add(btnDest, 2, row);
         gridPane.add(btnHelpDest, 3, row);
-
-        gridPane.add(lblDestName, 0, ++row);
-        gridPane.add(txtDestName, 1, row);
 
         lbl = new Label("Größe und Anzahl der Miniaturbilder");
         Label lblSize = new Label("Größe (Pixel):");
@@ -212,8 +210,7 @@ public class GuiWallpaperPane extends AnchorPane {
         }
 
         // DEST
-        txtDestDir.textProperty().unbindBidirectional(wallpaperData.fotoDestDirProperty());
-        txtDestName.textProperty().unbindBidirectional(wallpaperData.fotoDestNameProperty());
+        wallpaperData.fotoDestProperty().unbind();
 
         // Thumbsize
         iProp.bind(sliderSize.valueProperty());
@@ -232,8 +229,8 @@ public class GuiWallpaperPane extends AnchorPane {
         }
 
         // DEST
-        txtDestDir.textProperty().bindBidirectional(wallpaperData.fotoDestDirProperty());
-        txtDestName.textProperty().bindBidirectional(wallpaperData.fotoDestNameProperty());
+        cbDest.selectElement(wallpaperData.getFotoDest());
+        wallpaperData.fotoDestProperty().bind(cbDest.getSelProperty());
 
         // Thumbsize
         sliderSize.setValue(wallpaperData.getThumbSize() / 10);

@@ -23,7 +23,6 @@ import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
-import de.p2tools.p2Lib.tools.FileUtils;
 import de.p2tools.p2Lib.tools.Log;
 
 import javax.swing.event.EventListenerList;
@@ -71,7 +70,7 @@ public class GenMosaik {
     public void create(MosaikData mosaikData, ThumbCollection thumbCollection) {
         this.thumbCollection = thumbCollection;
 
-        dest = FileUtils.concatPaths(mosaikData.getFotoDestDir(), mosaikData.getFotoDestName());
+        dest = mosaikData.getFotoDest();
         src = mosaikData.getFotoSrc();
         anz = mosaikData.getThumbCount();
         progress = 0;

@@ -98,9 +98,19 @@ public class Mosaik extends Application {
         primaryStage.getIcons().add(GetIcon.getImage(ProgConst.ICON_NAME, ProgConst.ICON_PATH, 32, 32));
 
         Duration.staticPing("Erster Start");
-        primaryStage.setTitle(ProgConst.PROGRAMMNAME);
+        setTitle();
+        ProgConfig.START_GUI_PROJECT_DATA.addListener((observable, oldValue, newValue) -> setTitle());
 
         Duration.staticPing("Gui steht!");
+    }
+
+    private void setTitle() {
+        if (progData.selectedProjectData == null) {
+            primaryStage.setTitle(ProgConst.P2_PROGRAMMNAME);
+        } else {
+            String prj = progData.selectedProjectData.getName();
+            primaryStage.setTitle((prj.isEmpty() ? "" : "[ " + prj + " ] - ") + ProgConst.P2_PROGRAMMNAME);
+        }
     }
 
     private String readPfadFromArguments(final String[] aArguments) {

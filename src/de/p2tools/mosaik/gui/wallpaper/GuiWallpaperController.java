@@ -93,12 +93,18 @@ public class GuiWallpaperController extends AnchorPane {
                 return;
             }
 
-            if (!wallpaperData.getFotoDestDir().isEmpty() && !wallpaperData.getFotoDestName().isEmpty()) {
-                progData.worker.createWallpaper(progData.selectedProjectData.getThumbCollection(),
-                        progData.selectedProjectData.getWallpaperData());
-            } else {
-                PAlert.showErrorAlert("Fototapete anlegen", "Es ist kein Speicherziel angegeben.");
+            if (progData.selectedProjectData.getThumbCollection().getThumbList().isEmpty()) {
+                PAlert.showErrorAlert("Fototapete anlegen", "Es sind keine Miniaturbilder in der Sammlung.");
+                return;
             }
+
+            if (wallpaperData.getFotoDest().isEmpty()) {
+                PAlert.showErrorAlert("Fototapete anlegen", "Es ist kein Speicherziel angegeben.");
+                return;
+            }
+
+            progData.worker.createWallpaper(progData.selectedProjectData.getThumbCollection(),
+                    progData.selectedProjectData.getWallpaperData());
         });
         btnCreate.disableProperty().bind(progData.worker.workingProperty());
         btnCreate.getStyleClass().add("btnCreate");

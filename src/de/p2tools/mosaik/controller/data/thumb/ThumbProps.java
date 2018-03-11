@@ -18,10 +18,8 @@ package de.p2tools.mosaik.controller.data.thumb;
 
 import de.p2tools.p2Lib.configFile.config.Config;
 import de.p2tools.p2Lib.configFile.config.ConfigInt;
-import de.p2tools.p2Lib.configFile.config.ConfigStringProp;
+import de.p2tools.p2Lib.configFile.config.ConfigString;
 import de.p2tools.p2Lib.configFile.pData.PDataSample;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class ThumbProps extends PDataSample<Thumb> {
     private int red = 0;
     private int green = 0;
     private int blue = 0;
-    private final StringProperty fileName = new SimpleStringProperty("");
+    private String fileName = "";
 
 
     public String getTag() {
@@ -72,7 +70,12 @@ public class ThumbProps extends PDataSample<Thumb> {
                         }
                     }
                 },
-                new ConfigStringProp("filename", "", fileName)));
+                new ConfigString("filename", "", fileName) {
+                    public void setActValue(String act) {
+                        fileName = act;
+                    }
+                })
+        );
     }
 
     public int getAnz() {
@@ -134,15 +137,12 @@ public class ThumbProps extends PDataSample<Thumb> {
     }
 
     public String getFileName() {
-        return fileName.get();
-    }
-
-    public StringProperty fileNameProperty() {
         return fileName;
     }
 
+
     public void setFileName(String fileName) {
-        this.fileName.set(fileName);
+        this.fileName = fileName;
     }
 
 

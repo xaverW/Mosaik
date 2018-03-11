@@ -205,7 +205,7 @@ public class TableChangeThumb {
                 gridPane.setMaxWidth(Double.MAX_VALUE);
 
                 Label lblFile = new Label();
-                lblFile.textProperty().bind(thumb.fileNameProperty());
+                lblFile.setText(thumb.getFileName());
                 Button btnDel = new Button("Bild löschen");
                 btnDel.setOnAction(a -> {
                     if (de.p2tools.p2Lib.tools.FileUtils.deleteFile(thumb.getFileName())) {

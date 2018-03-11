@@ -279,6 +279,7 @@ public class GuiStart extends AnchorPane {
         lblPath.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lblPath, Priority.ALWAYS);
 
+        txtDir.setEditable(false);
         txtDir.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(txtDir, Priority.ALWAYS);
         txtName.setMaxWidth(Double.MAX_VALUE);

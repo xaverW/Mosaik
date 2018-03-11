@@ -61,8 +61,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
 
     private final StringProperty format = new SimpleStringProperty(ImgFile.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
-    private final StringProperty fotoDestName = new SimpleStringProperty(""); // File dest
-    private final StringProperty fotoDestDir = new SimpleStringProperty(""); // File dest
+    private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
     private final IntegerProperty numberThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
     private final IntegerProperty thumbCount = new SimpleIntegerProperty(0); // Anzahl wie oft ein Thumbs verwendet werden kann
@@ -80,8 +79,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
         return new ArrayList<>(Arrays.asList(
                 new ConfigStringProp("format", ImgFile.IMAGE_FORMAT_JPG, format),
                 new ConfigStringProp("foto-src", "", fotoSrc),
-                new ConfigStringProp("foto-dest-name", "", fotoDestName),
-                new ConfigStringProp("foto-dest-dir", "", fotoDestDir),
+                new ConfigStringProp("foto-dest-dir", "", fotoDest),
                 new ConfigIntProp("thumb-size", 50, thumbSize),
                 new ConfigIntProp("number-thumbs-width", 50, numberThumbsWidth),
                 new ConfigIntProp("thumb-count", 0, thumbCount),
@@ -117,28 +115,16 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
         this.fotoSrc.set(fotoSrc);
     }
 
-    public String getFotoDestName() {
-        return fotoDestName.get();
+    public String getFotoDest() {
+        return fotoDest.get();
     }
 
-    public StringProperty fotoDestNameProperty() {
-        return fotoDestName;
+    public StringProperty fotoDestProperty() {
+        return fotoDest;
     }
 
-    public void setFotoDestName(String fotoDestName) {
-        this.fotoDestName.set(fotoDestName);
-    }
-
-    public String getFotoDestDir() {
-        return fotoDestDir.get();
-    }
-
-    public StringProperty fotoDestDirProperty() {
-        return fotoDestDir;
-    }
-
-    public void setFotoDestDir(String fotoDestDir) {
-        this.fotoDestDir.set(fotoDestDir);
+    public void setFotoDest(String fotoDest) {
+        this.fotoDest.set(fotoDest);
     }
 
 

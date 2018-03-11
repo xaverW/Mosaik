@@ -26,6 +26,7 @@ import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
+import de.p2tools.p2Lib.dialog.PComboBox;
 import de.p2tools.p2Lib.tools.Log;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.HPos;
@@ -48,7 +49,7 @@ public class GuiThumbController extends AnchorPane {
     ScrollPane scrollPane = new ScrollPane();
     TilePane tilePane = new TilePane();
     ThumbCollection thumbCollection = null;
-    TextField txtDir = new TextField("");
+    PComboBox cbDir = new PComboBox();
     ToggleSwitch tglRecursive = new ToggleSwitch("Auch Unterordner durchsuchen");
     DoubleProperty splitPaneProperty = ProgConfig.THUMB_GUI_DIVIDER;
 
@@ -113,7 +114,7 @@ public class GuiThumbController extends AnchorPane {
         tilePane.getChildren().clear();
 
         if (thumbCollection != null) {
-            txtDir.textProperty().unbindBidirectional(thumbCollection.fotoSrcDirProperty());
+            thumbCollection.fotoSrcDirProperty().unbind();
             tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
         }
 
@@ -126,7 +127,8 @@ public class GuiThumbController extends AnchorPane {
         } else {
             vBoxCont.setDisable(false);
 
-            txtDir.textProperty().bindBidirectional(thumbCollection.fotoSrcDirProperty());
+            cbDir.selectElement(thumbCollection.getFotoSrcDir());
+            thumbCollection.fotoSrcDirProperty().bind(cbDir.getSelectionModel().selectedItemProperty());
             tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
 
             makeTilePane();
@@ -160,7 +162,7 @@ public class GuiThumbController extends AnchorPane {
     private void initCont() {
 
         final Button btnDir = new Button();
-        btnDir.setOnAction(event -> DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir));
+        btnDir.setOnAction(event -> DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, cbDir));
         btnDir.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
 
         final Button btnHelp = new Button("");
@@ -172,7 +174,7 @@ public class GuiThumbController extends AnchorPane {
         final Button btnClear = new Button("Gespeicherte Liste Löschen");
 
         btnLod.setOnAction(a -> {
-            if (txtDir.getText().isEmpty()) {
+            if (cbDir.getSelectionModel().getSelectedItem().isEmpty()) {
                 new PAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Zum Laden der Bilder wurde " +
                         "kein Verzeichnis angegeben");
                 return;
@@ -220,15 +222,16 @@ public class GuiThumbController extends AnchorPane {
         lblTitle.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lblTitle, Priority.ALWAYS);
 
-        Label lblDir = new Label("Ordner mit Fotos:");
+        Label lblDir = new Label("Verzeichnis:");
 
-        txtDir.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setHgrow(txtDir, Priority.ALWAYS);
+        cbDir.setMaxWidth(Double.MAX_VALUE);
+        cbDir.init(ProgConfig.CONFIG_ADD_PHOTO_PATH_LIST, ProgConfig.CONFIG_ADD_PHOTO_PATH_SEL);
+        GridPane.setHgrow(cbDir, Priority.ALWAYS);
         GridPane.setHalignment(btnLod, HPos.RIGHT);
 
         gridPaneDest.add(lblTitle, 0, row, 4, 1);
         gridPaneDest.add(lblDir, 0, ++row);
-        gridPaneDest.add(txtDir, 1, row);
+        gridPaneDest.add(cbDir, 1, row);
         gridPaneDest.add(btnDir, 2, row);
         gridPaneDest.add(btnHelp, 3, row);
         gridPaneDest.add(tglRecursive, 0, ++row, 4, 1);
