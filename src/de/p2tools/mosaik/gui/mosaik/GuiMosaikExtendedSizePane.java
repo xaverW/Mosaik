@@ -154,7 +154,7 @@ public class GuiMosaikExtendedSizePane extends AnchorPane {
 
         // Resize
         iPropSize.unbind();
-        mosaikData.reduceSizeProperty().unbind();
+        mosaikData.borderSizeProperty().unbind();
         lblSlider.textProperty().unbind();
     }
 
@@ -174,12 +174,12 @@ public class GuiMosaikExtendedSizePane extends AnchorPane {
         }
 
         // Resize
-        sliderSize.setValue(mosaikData.getReduceSize() / 2);
+        sliderSize.setValue(mosaikData.getBorderSize() / 2);
         iPropSize.bind(sliderSize.valueProperty());
 
         NumberBinding nb = Bindings.multiply(iPropSize, 2);
-        mosaikData.reduceSizeProperty().bind(nb);
+        mosaikData.borderSizeProperty().bind(nb);
 
-        lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.reduceSizeProperty()));
+        lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.borderSizeProperty()));
     }
 }

@@ -19,7 +19,6 @@ package de.p2tools.mosaik.gui.wallpaper;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
-import de.p2tools.mosaik.controller.data.mosaikData.WallpaperData;
 import de.p2tools.mosaik.gui.HelpText;
 import de.p2tools.p2Lib.dialog.PAlert;
 import javafx.beans.binding.Bindings;
@@ -42,7 +41,7 @@ public class GuiWallpaperBorderPane extends AnchorPane {
     private final Slider sliderBorder = new Slider();
     private final Label lblSlider = new Label("");
 
-    WallpaperData wallpaperData = null;
+    MosaikData wallpaperData = null;
 
     public GuiWallpaperBorderPane() {
         progData = ProgData.getInstance();
@@ -66,20 +65,35 @@ public class GuiWallpaperBorderPane extends AnchorPane {
         getChildren().addAll(scrollPane);
     }
 
-    public void isShown() {
-        if (progData.selectedProjectData == null) {
+    public void setMosaikData(MosaikData mosaikData) {
+        if (mosaikData == null) {
             contPane.setDisable(true);
             return;
         }
 
         contPane.setDisable(false);
 
-        if (!wallpaperData.equals(progData.selectedProjectData.getWallpaperData())) {
+        if (!wallpaperData.equals(mosaikData)) {
             unbind();
-            wallpaperData = progData.selectedProjectData.getWallpaperData();
+            wallpaperData = mosaikData;
             bind();
         }
     }
+
+//    public void isShown() {
+//        if (progData.selectedProjectData == null) {
+//            contPane.setDisable(true);
+//            return;
+//        }
+//
+//        contPane.setDisable(false);
+//
+//        if (!wallpaperData.equals(progData.selectedProjectData.getWallpaperData())) {
+//            unbind();
+//            wallpaperData = progData.selectedProjectData.getWallpaperData();
+//            bind();
+//        }
+//    }
 
 
     private void initCont() {
@@ -154,8 +168,9 @@ public class GuiWallpaperBorderPane extends AnchorPane {
             return;
         }
 
-        // Resize
-        wallpaperData.reduceSizeProperty().unbind();
+        chkBorder.selectedProperty().unbindBidirectional(wallpaperData.addBorderProperty());
+
+        wallpaperData.borderSizeProperty().unbind();
         lblSlider.textProperty().unbind();
     }
 
@@ -164,12 +179,10 @@ public class GuiWallpaperBorderPane extends AnchorPane {
             return;
         }
 
-        chkBorder.setSelected(wallpaperData.getResizeThumb().equals(MosaikData.THUMB_RESIZE.ALL.toString()));
+        chkBorder.selectedProperty().bindBidirectional(wallpaperData.addBorderProperty());
 
-        // Resize
-        sliderBorder.setValue(wallpaperData.getReduceSize());
-        wallpaperData.reduceSizeProperty().bind(sliderBorder.valueProperty());
-
-        lblSlider.textProperty().bind(Bindings.format("%d", wallpaperData.reduceSizeProperty()));
+        sliderBorder.setValue(wallpaperData.getBorderSize());
+        wallpaperData.borderSizeProperty().bind(sliderBorder.valueProperty());
+        lblSlider.textProperty().bind(Bindings.format("%d", wallpaperData.borderSizeProperty()));
     }
 }

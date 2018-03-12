@@ -26,6 +26,7 @@ import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.dialog.PComboBox;
+import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -114,8 +115,15 @@ public class GuiMosaikPane extends AnchorPane {
             bind();
         }
         if (cbDestDir.getSel().isEmpty()) {
+            String suff;
+            if (mosaikData.getFormat().equals(ImgFile.IMAGE_FORMAT_PNG)) {
+                suff = ImgFile.IMAGE_FORMAT_PNG;
+            } else {
+                suff = ImgFile.IMAGE_FORMAT_JPG;
+            }
             Path p = Paths.get(progData.selectedProjectData.getDestDir(),
-                    FileUtils.getNextFileName(progData.selectedProjectData.getDestDir(), ProgConst.MOSAIK_STD_NAME));
+                    FileUtils.getNextFileName(progData.selectedProjectData.getDestDir(),
+                            ProgConst.MOSAIK_STD_NAME, suff));
             cbDestDir.selectElement(p.toString());
         }
     }

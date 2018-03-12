@@ -68,13 +68,17 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
     private final StringProperty thumbSrc = new SimpleStringProperty(THUMB_SRC.THUMBS.toString()); // Miniaturbilder die verwendet werden
     private final BooleanProperty blackWhite = new SimpleBooleanProperty(false); // Mosaik aus S/W-Bildern erstellen
     private final StringProperty resizeThumb = new SimpleStringProperty(THUMB_RESIZE.NON.toString()); // dunkle Thumbs werden etwas verkleinert
-    private final IntegerProperty reduceSize = new SimpleIntegerProperty(0); // Anzahl Pixel um die ein Thumb verleinert wird
+
+    private final BooleanProperty addBorder = new SimpleBooleanProperty(false); // einen Rahmen um die Thumbs zeichnen
+    private final IntegerProperty borderSize = new SimpleIntegerProperty(0); // Anzahl Pixel um die ein Thumb verleinert wird
     private final StringProperty borderColor = new SimpleStringProperty(""); // Farbe des Rahmens zwischen den Miniaturbildern
 
+    @Override
     public String getTag() {
         return TAG;
     }
 
+    @Override
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<>(Arrays.asList(
                 new ConfigStringProp("format", ImgFile.IMAGE_FORMAT_JPG, format),
@@ -86,7 +90,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
                 new ConfigStringProp("thumb-src", THUMB_SRC.THUMBS.toString(), thumbSrc),
                 new ConfigBoolProp("black-white", Boolean.FALSE, blackWhite),
                 new ConfigStringProp("reduce-big", THUMB_RESIZE.NON.toString(), resizeThumb),
-                new ConfigIntProp("reduce-size", 0, reduceSize),
+                new ConfigIntProp("reduce-size", 0, borderSize),
                 new ConfigStringProp("border-color", "", borderColor)));
     }
 
@@ -200,16 +204,28 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
         this.resizeThumb.set(resizeThumb);
     }
 
-    public int getReduceSize() {
-        return reduceSize.get();
+    public boolean isAddBorder() {
+        return addBorder.get();
     }
 
-    public IntegerProperty reduceSizeProperty() {
-        return reduceSize;
+    public BooleanProperty addBorderProperty() {
+        return addBorder;
     }
 
-    public void setReduceSize(int reduceSize) {
-        this.reduceSize.set(reduceSize);
+    public void setAddBorder(boolean addBorder) {
+        this.addBorder.set(addBorder);
+    }
+
+    public int getBorderSize() {
+        return borderSize.get();
+    }
+
+    public IntegerProperty borderSizeProperty() {
+        return borderSize;
+    }
+
+    public void setBorderSize(int borderSize) {
+        this.borderSize.set(borderSize);
     }
 
     public String getBorderColor() {

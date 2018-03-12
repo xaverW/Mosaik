@@ -18,6 +18,7 @@ package de.p2tools.mosaik.gui.mosaik;
 
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
+import de.p2tools.mosaik.gui.wallpaper.GuiWallpaperBorderPane;
 import de.p2tools.p2Lib.dialog.PAlert;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,7 +38,8 @@ public class GuiMosaikController extends AnchorPane {
 
     private final GuiMosaikPane guiMosaikPane = new GuiMosaikPane();
     private final GuiMosaikExtendedThumbPane guiMosaikExtendedThumbPane = new GuiMosaikExtendedThumbPane();
-    private final GuiMosaikExtendedSizePane guiMosaikExtendedSizePane = new GuiMosaikExtendedSizePane();
+    //    private final GuiMosaikExtendedSizePane guiMosaikExtendedSizePane = new GuiMosaikExtendedSizePane();
+    private final GuiWallpaperBorderPane guiMosaikExtendedSizePane = new GuiWallpaperBorderPane();
     private final Button btnCreate = new Button("Mosaik erstellen");
 
     MosaikData mosaikData = null;
@@ -65,7 +67,7 @@ public class GuiMosaikController extends AnchorPane {
         vBox.setDisable(false);
         guiMosaikPane.isShown();
         guiMosaikExtendedThumbPane.isShown();
-        guiMosaikExtendedSizePane.isShown();
+        guiMosaikExtendedSizePane.setMosaikData(progData.selectedProjectData.getMosaikData());
 
         if (!progData.selectedProjectData.getMosaikData().equals(mosaikData)) {
             mosaikData = progData.selectedProjectData.getMosaikData();

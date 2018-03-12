@@ -68,24 +68,31 @@ public class MosaikThumb implements Runnable {
     }
 
 
+    @Override
     public synchronized void run() {
 
         Duration.counterStart("Mosaik erstellen");
         try {
-
             thumbCollection.getThumbList().resetAnz();
             BufferedImage srcImg = ImgFile.getBufferedImage(new File(src));
 
             final int srcHeight = srcImg.getRaster().getHeight();
             final int srcWidth = srcImg.getRaster().getWidth();
-            final int sizeThumb = mosaikData.getThumbSize();
+            final int thumbSize = mosaikData.getThumbSize();
 
             final int numThumbsWidth = mosaikData.getNumberThumbsWidth();
             final int numPixelProThumb = srcWidth / numThumbsWidth;
             final int numThumbsHeight = srcHeight / numPixelProThumb;
+            final int borderSize = mosaikData.getBorderSize();
 
-            final int destWidth = numThumbsWidth * sizeThumb;
-            final int destHeight = numThumbsHeight * sizeThumb;
+            int destWidth, destHeight;
+            if (mosaikData.isAddBorder()) {
+                destWidth = numThumbsWidth * thumbSize + (1 + numThumbsWidth) * borderSize;
+                destHeight = numThumbsHeight * thumbSize + (1 + numThumbsHeight) * borderSize;
+            } else {
+                destWidth = numThumbsWidth * thumbSize;
+                destHeight = numThumbsHeight * thumbSize;
+            }
 
             if (destWidth >= ImgTools.JPEG_MAX_DIMENSION || destHeight >= ImgTools.JPEG_MAX_DIMENSION) {
                 Platform.runLater(() ->
@@ -97,7 +104,8 @@ public class MosaikThumb implements Runnable {
 
 
             //Bild zusammenbauen
-            final BufferedImage imgOut = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
+            final BufferedImage imgOut = ImgFile.getBufferedImage(destWidth, destHeight, mosaikData.getBorderColor());
+
             final int maxRun = numThumbsHeight * numThumbsWidth;
             final Farbraum farbraum = new Farbraum(thumbCollection);
             final ArrayList<GenImgData> genImgDataArrayList = new ArrayList<>();
@@ -105,16 +113,16 @@ public class MosaikThumb implements Runnable {
             notifyEvent(maxRun, 0, "");
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
                 GenImgData genImgData = new GenImgData(imgOut, srcImg, farbraum,
-                        sizeThumb, yy, maxRun, numThumbsWidth, numThumbsHeight, numPixelProThumb,
-                        mosaikData.getResizeThumb(), mosaikData.getReduceSize());
+                        thumbSize, yy, maxRun, numThumbsWidth, numThumbsHeight, numPixelProThumb,
+                        mosaikData.getResizeThumb(), mosaikData.getBorderSize(), mosaikData.isAddBorder());
 
                 genImgDataArrayList.add(genImgData);
             }
 
             if (ProgData.saveMem) {
-                genImgDataArrayList.stream().forEach(genImgData -> run(genImgData));
+                genImgDataArrayList.stream().forEach(genImgData -> generatePixel(genImgData));
             } else {
-                genImgDataArrayList.parallelStream().forEach(genImgData -> run(genImgData));
+                genImgDataArrayList.parallelStream().forEach(genImgData -> generatePixel(genImgData));
             }
 
             if (stopAll) {
@@ -154,12 +162,13 @@ public class MosaikThumb implements Runnable {
         int numThumbsWidth;
         int numThumbsHeight;
         int numPixelProThumb;
-        String thumbResize;
-        int resize;
+        //        String thumbResize;
+        boolean addBorder;
+        int borderSize;
 
         public GenImgData(BufferedImage imgOut, BufferedImage srcImg, Farbraum farbraum,
                           int sizeThumb, int yy, int maxRun, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb,
-                          String thumbResize, int resize) {
+                          String thumbResize, int borderSize, boolean addBorder) {
             this.imgOut = imgOut;
             this.srcImg = srcImg;
             this.farbraum = farbraum;
@@ -169,13 +178,14 @@ public class MosaikThumb implements Runnable {
             this.numThumbsWidth = numThumbsWidth;
             this.numThumbsHeight = numThumbsHeight;
             this.numPixelProThumb = numPixelProThumb;
-            this.thumbResize = thumbResize;
-            this.resize = resize;
+//            this.thumbResize = thumbResize;
+            this.borderSize = borderSize;
+            this.addBorder = addBorder;
         }
     }
 
 
-    private void run(GenImgData genImgData) {
+    private void generatePixel(GenImgData genImgData) {
         try {
             if (stopAll) {
                 return;
@@ -196,38 +206,36 @@ public class MosaikThumb implements Runnable {
 
                     BufferedImage buffImg = ImgFile.getBufferedImage(file);
 
-                    if (genImgData.thumbResize.equals(MosaikData.THUMB_RESIZE.ALL.toString())) {
-                        // resize all
-                        buffImg = ScaleImage.scaleBufferedImage(buffImg,
-                                genImgData.sizeThumb - genImgData.resize,
-                                genImgData.sizeThumb - genImgData.resize);
+                    if (genImgData.addBorder) {
+                        // border
+                        buffImg = ScaleImage.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
 
-                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + genImgData.resize / 2,
-                                genImgData.yy * genImgData.sizeThumb + genImgData.resize / 2,
+                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + (1 + xx) * genImgData.borderSize,
+                                genImgData.yy * genImgData.sizeThumb + (1 + genImgData.yy) * genImgData.borderSize,
                                 buffImg.getData());
 
-                    } else if (genImgData.thumbResize.equals(MosaikData.THUMB_RESIZE.DARK.toString()) && thumb.isDark()) {
-                        // resize dark
-                        buffImg = ScaleImage.scaleBufferedImage(buffImg,
-                                genImgData.sizeThumb - genImgData.resize,
-                                genImgData.sizeThumb - genImgData.resize);
-
-                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + genImgData.resize / 2,
-                                genImgData.yy * genImgData.sizeThumb + genImgData.resize / 2,
-                                buffImg.getData());
-
-                    } else if (genImgData.thumbResize.equals(MosaikData.THUMB_RESIZE.LIGHT.toString()) && !thumb.isDark()) {
-                        // resize light
-                        buffImg = ScaleImage.scaleBufferedImage(buffImg,
-                                genImgData.sizeThumb - genImgData.resize,
-                                genImgData.sizeThumb - genImgData.resize);
-
-                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + genImgData.resize / 2,
-                                genImgData.yy * genImgData.sizeThumb + genImgData.resize / 2,
-                                buffImg.getData());
+//                    } else if (genImgData.thumbResize.equals(MosaikData.THUMB_RESIZE.DARK.toString()) && thumb.isDark()) {
+//                        // resize dark
+//                        buffImg = ScaleImage.scaleBufferedImage(buffImg,
+//                                genImgData.sizeThumb - genImgData.borderSize,
+//                                genImgData.sizeThumb - genImgData.borderSize);
+//
+//                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + genImgData.borderSize / 2,
+//                                genImgData.yy * genImgData.sizeThumb + genImgData.borderSize / 2,
+//                                buffImg.getData());
+//
+//                    } else if (genImgData.thumbResize.equals(MosaikData.THUMB_RESIZE.LIGHT.toString()) && !thumb.isDark()) {
+//                        // resize light
+//                        buffImg = ScaleImage.scaleBufferedImage(buffImg,
+//                                genImgData.sizeThumb - genImgData.borderSize,
+//                                genImgData.sizeThumb - genImgData.borderSize);
+//
+//                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + genImgData.borderSize / 2,
+//                                genImgData.yy * genImgData.sizeThumb + genImgData.borderSize / 2,
+//                                buffImg.getData());
 
                     } else {
-                        // dont resize
+                        // no border
                         buffImg = ScaleImage.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
                         genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb,
                                 genImgData.yy * genImgData.sizeThumb, buffImg.getData());

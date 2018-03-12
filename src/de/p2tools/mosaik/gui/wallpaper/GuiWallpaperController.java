@@ -68,6 +68,7 @@ public class GuiWallpaperController extends AnchorPane {
 
         vBox.setDisable(false);
         guiWallpaperPane.isShown();
+        guiWallpaperBorderPane.setMosaikData(progData.selectedProjectData.getWallpaperData());
 
         if (!progData.selectedProjectData.getWallpaperData().equals(wallpaperData)) {
             wallpaperData = progData.selectedProjectData.getWallpaperData();
