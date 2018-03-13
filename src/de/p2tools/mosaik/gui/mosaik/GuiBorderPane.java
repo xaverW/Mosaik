@@ -14,7 +14,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.p2tools.mosaik.gui.wallpaper;
+package de.p2tools.mosaik.gui.mosaik;
 
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
@@ -30,7 +30,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class GuiWallpaperBorderPane extends AnchorPane {
+public class GuiBorderPane extends AnchorPane {
 
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
@@ -40,15 +40,16 @@ public class GuiWallpaperBorderPane extends AnchorPane {
 
     private final Slider sliderBorder = new Slider();
     private final Label lblSlider = new Label("");
+    final ColorPicker colorPicker = new ColorPicker();
 
-    MosaikData wallpaperData = null;
+    MosaikData mosaikData = null;
 
-    public GuiWallpaperBorderPane() {
+    public GuiBorderPane() {
         progData = ProgData.getInstance();
 
-        if (progData.selectedProjectData != null) {
-            wallpaperData = progData.selectedProjectData.getWallpaperData();
-        }
+//        if (progData.selectedProjectData != null) {
+//            mosaikData = progData.selectedProjectData.getWallpaperData();
+//        }
 
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
@@ -73,28 +74,12 @@ public class GuiWallpaperBorderPane extends AnchorPane {
 
         contPane.setDisable(false);
 
-        if (!wallpaperData.equals(mosaikData)) {
+        if (this.mosaikData == null || !this.mosaikData.equals(mosaikData)) {
             unbind();
-            wallpaperData = mosaikData;
+            this.mosaikData = mosaikData;
             bind();
         }
     }
-
-//    public void isShown() {
-//        if (progData.selectedProjectData == null) {
-//            contPane.setDisable(true);
-//            return;
-//        }
-//
-//        contPane.setDisable(false);
-//
-//        if (!wallpaperData.equals(progData.selectedProjectData.getWallpaperData())) {
-//            unbind();
-//            wallpaperData = progData.selectedProjectData.getWallpaperData();
-//            bind();
-//        }
-//    }
-
 
     private void initCont() {
         // make Grid
@@ -105,9 +90,9 @@ public class GuiWallpaperBorderPane extends AnchorPane {
 
         chkBorder.setOnAction(e -> {
             if (chkBorder.isSelected()) {
-                wallpaperData.setResizeThumb(MosaikData.THUMB_RESIZE.ALL.toString());
+                mosaikData.setResizeThumb(MosaikData.THUMB_RESIZE.ALL.toString());
             } else {
-                wallpaperData.setResizeThumb(MosaikData.THUMB_RESIZE.NON.toString());
+                mosaikData.setResizeThumb(MosaikData.THUMB_RESIZE.NON.toString());
             }
         });
 
@@ -119,17 +104,10 @@ public class GuiWallpaperBorderPane extends AnchorPane {
         sliderBorder.setMin(1);
         sliderBorder.setMax(50);
 
-        final ColorPicker colorPicker = new ColorPicker();
         colorPicker.getStyleClass().add("split-button");
-        try {
-            colorPicker.setValue(Color.web(wallpaperData.getBorderColor()));
-        } catch (Exception ex) {
-            colorPicker.setValue(Color.BLACK);
-            wallpaperData.setBorderColor(Color.BLACK.toString());
-        }
         colorPicker.setOnAction(a -> {
             Color colorPickerValue = colorPicker.getValue();
-            wallpaperData.setBorderColor(colorPickerValue.toString());
+            mosaikData.setBorderColor(colorPickerValue.toString());
         });
 
         int row = 0;
@@ -164,25 +142,32 @@ public class GuiWallpaperBorderPane extends AnchorPane {
     }
 
     private void unbind() {
-        if (wallpaperData == null) {
+        if (mosaikData == null) {
             return;
         }
 
-        chkBorder.selectedProperty().unbindBidirectional(wallpaperData.addBorderProperty());
+        chkBorder.selectedProperty().unbindBidirectional(mosaikData.addBorderProperty());
 
-        wallpaperData.borderSizeProperty().unbind();
+        mosaikData.borderSizeProperty().unbind();
         lblSlider.textProperty().unbind();
     }
 
     private void bind() {
-        if (wallpaperData == null) {
+        if (mosaikData == null) {
             return;
         }
 
-        chkBorder.selectedProperty().bindBidirectional(wallpaperData.addBorderProperty());
+        try {
+            colorPicker.setValue(Color.web(mosaikData.getBorderColor()));
+        } catch (Exception ex) {
+            colorPicker.setValue(Color.BLACK);
+            mosaikData.setBorderColor(Color.BLACK.toString());
+        }
 
-        sliderBorder.setValue(wallpaperData.getBorderSize());
-        wallpaperData.borderSizeProperty().bind(sliderBorder.valueProperty());
-        lblSlider.textProperty().bind(Bindings.format("%d", wallpaperData.borderSizeProperty()));
+        chkBorder.selectedProperty().bindBidirectional(mosaikData.addBorderProperty());
+
+        sliderBorder.setValue(mosaikData.getBorderSize());
+        mosaikData.borderSizeProperty().bind(sliderBorder.valueProperty());
+        lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.borderSizeProperty()));
     }
 }

@@ -19,11 +19,11 @@ package de.p2tools.mosaik.controller.worker.genMosaik;
 
 import de.p2tools.mosaik.controller.RunEvent;
 import de.p2tools.mosaik.controller.RunListener;
+import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
 import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
-import de.p2tools.mosaik.controller.worker.genThumbList.ScaleImage;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
@@ -138,7 +138,7 @@ public class MosaikThumb implements Runnable {
 
             //fertig
             notifyEvent(maxRun, progress, "Speichern");
-            ImgFile.writeImage(imgOut, dest, mosaikData.getFormat());
+            ImgFile.writeImage(imgOut, dest, mosaikData.getFormat(), ProgConst.IMG_JPG_COMPRESSION);
             notifyEvent(0, 0, "");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -205,38 +205,16 @@ public class MosaikThumb implements Runnable {
                     File file = new File(thumb.getFileName());
 
                     BufferedImage buffImg = ImgFile.getBufferedImage(file);
+                    buffImg = ImgTools.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
 
                     if (genImgData.addBorder) {
                         // border
-                        buffImg = ScaleImage.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
-
                         genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + (1 + xx) * genImgData.borderSize,
                                 genImgData.yy * genImgData.sizeThumb + (1 + genImgData.yy) * genImgData.borderSize,
                                 buffImg.getData());
 
-//                    } else if (genImgData.thumbResize.equals(MosaikData.THUMB_RESIZE.DARK.toString()) && thumb.isDark()) {
-//                        // resize dark
-//                        buffImg = ScaleImage.scaleBufferedImage(buffImg,
-//                                genImgData.sizeThumb - genImgData.borderSize,
-//                                genImgData.sizeThumb - genImgData.borderSize);
-//
-//                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + genImgData.borderSize / 2,
-//                                genImgData.yy * genImgData.sizeThumb + genImgData.borderSize / 2,
-//                                buffImg.getData());
-//
-//                    } else if (genImgData.thumbResize.equals(MosaikData.THUMB_RESIZE.LIGHT.toString()) && !thumb.isDark()) {
-//                        // resize light
-//                        buffImg = ScaleImage.scaleBufferedImage(buffImg,
-//                                genImgData.sizeThumb - genImgData.borderSize,
-//                                genImgData.sizeThumb - genImgData.borderSize);
-//
-//                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + genImgData.borderSize / 2,
-//                                genImgData.yy * genImgData.sizeThumb + genImgData.borderSize / 2,
-//                                buffImg.getData());
-
                     } else {
                         // no border
-                        buffImg = ScaleImage.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
                         genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb,
                                 genImgData.yy * genImgData.sizeThumb, buffImg.getData());
                     }

@@ -19,12 +19,13 @@ package de.p2tools.mosaik.controller.worker.genWallpaper;
 
 import de.p2tools.mosaik.controller.RunEvent;
 import de.p2tools.mosaik.controller.RunListener;
+import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.data.mosaikData.WallpaperData;
 import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
-import de.p2tools.mosaik.controller.worker.genThumbList.ScaleImage;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
+import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.Log;
 import javafx.application.Platform;
@@ -156,7 +157,7 @@ public class GenWallpaper {
 
 
                     if (img.getWidth() != thumbSize) {
-                        img = ScaleImage.scaleBufferedImage(img, thumbSize, thumbSize);
+                        img = ImgTools.scaleBufferedImage(img, thumbSize, thumbSize);
                     }
 
                     if (addBorder) {
@@ -189,7 +190,7 @@ public class GenWallpaper {
 
                 if (!stopAll) {
                     notifyEvent(thumbListSize, thumbListSize, "Datei schreiben");
-                    ImgFile.writeImage(imgOut, destPathName, ImgFile.ImgFormat.PNG);
+                    ImgFile.writeImage(imgOut, destPathName, ImgFile.ImgFormat.JPG, ProgConst.IMG_JPG_COMPRESSION);
                 }
                 notifyEvent(0, 0, "");
 

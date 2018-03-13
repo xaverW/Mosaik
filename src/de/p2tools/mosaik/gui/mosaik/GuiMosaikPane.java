@@ -159,7 +159,8 @@ public class GuiMosaikPane extends AnchorPane {
 
 
         // DEST
-        btnDest.setOnAction(event -> DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbDestDir));
+        btnDest.setOnAction(event -> DirFileChooser.FileChooserSave(ProgData.getInstance().primaryStage, cbDestDir,
+                "Mosaik.jpg"));
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
         cbDestDir.init(ProgConfig.CONFIG_DEST_PHOTO_PATH_LIST, ProgConfig.CONFIG_DEST_PHOTO_PATH_SEL);
 

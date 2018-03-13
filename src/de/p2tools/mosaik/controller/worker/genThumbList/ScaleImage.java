@@ -37,20 +37,6 @@ import java.io.IOException;
 public class ScaleImage {
 
 
-    public static BufferedImage scaleBufferedImage(BufferedImage src, int w, int h) {
-        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        int x, y;
-        int ww = src.getWidth();
-        int hh = src.getHeight();
-        for (x = 0; x < w; x++) {
-            for (y = 0; y < h; y++) {
-                int col = src.getRGB(x * ww / w, y * hh / h);
-                img.setRGB(x, y, col);
-            }
-        }
-        return img;
-    }
-
     /**
      * @param source
      * @param dest
@@ -91,16 +77,18 @@ public class ScaleImage {
                 }
             }
 
-            Image scaledImage = imgRect.getScaledInstance(ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION, Image.SCALE_SMOOTH);
-            BufferedImage outImg = new BufferedImage(ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION, BufferedImage.TYPE_INT_RGB);
+            BufferedImage outImg = ImgTools.scaleBufferedImage(imgRect, ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION);
 
-            Graphics2D g = outImg.createGraphics();
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            g.drawImage(scaledImage, 0, 0, null);
-            g.dispose();
+//            Image scaledImage = imgRect.getScaledInstance(ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION, Image.SCALE_SMOOTH);
+//            BufferedImage outImg = new BufferedImage(ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION, BufferedImage.TYPE_INT_RGB);
+//
+//            Graphics2D g = outImg.createGraphics();
+//            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+//            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//
+//            g.drawImage(scaledImage, 0, 0, null);
+//            g.dispose();
 
             ImageIO.write(outImg, ProgConfig.FOTO_FORMAT.get(), dest);
 

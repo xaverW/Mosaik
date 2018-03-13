@@ -46,4 +46,5 @@ public class ProgConst {
     public static final double GUI_THUMB_DIVIDER_LOCATION = 0.7;
 
     public static final int THUMB_RESOLUTION = 600; // Auflösung der Thumbs in der ThumbCollection
+    public static final float IMG_JPG_COMPRESSION = 0.7f; // der Wert kann zwischen 0.0 .. 1.0 liegen, 1 ist keine
 }

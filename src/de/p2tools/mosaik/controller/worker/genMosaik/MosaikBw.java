@@ -19,10 +19,10 @@ package de.p2tools.mosaik.controller.worker.genMosaik;
 
 import de.p2tools.mosaik.controller.RunEvent;
 import de.p2tools.mosaik.controller.RunListener;
+import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
-import de.p2tools.mosaik.controller.worker.genThumbList.ScaleImage;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
@@ -66,6 +66,7 @@ public class MosaikBw implements Runnable {
     }
 
 
+    @Override
     public synchronized void run() {
 
         Duration.counterStart("Mosaik erstellen");
@@ -96,7 +97,7 @@ public class MosaikBw implements Runnable {
             }
 
             imgOut = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
-            imgSrcSmall = ScaleImage.scaleBufferedImage(srcImg, sizeThumb, sizeThumb);
+            imgSrcSmall = ImgTools.scaleBufferedImage(srcImg, sizeThumb, sizeThumb);
             final ArrayList<GenImgData> genImgDataArrayList = new ArrayList<>();
 
             //Bild zusammenbauen
@@ -123,7 +124,7 @@ public class MosaikBw implements Runnable {
 
             //fertig
             notifyEvent(maxRun, progress, "Speichern");
-            ImgFile.writeImage(imgOut, dest, mosaikData.getFormat());
+            ImgFile.writeImage(imgOut, dest, mosaikData.getFormat(), ProgConst.IMG_JPG_COMPRESSION);
             notifyEvent(0, 0, "");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -178,7 +179,7 @@ public class MosaikBw implements Runnable {
                     genImgData.yy * genImgData.numPixelProThumb, genImgData.numPixelProThumb, genImgData.numPixelProThumb));
 
             buffImg = getImgBw(genImgData.imgSrcSmall, c, genImgData.blackWhite);
-            buffImg = ScaleImage.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
+            buffImg = ImgTools.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
             genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb, genImgData.yy * genImgData.sizeThumb, buffImg.getData());
         }
     }

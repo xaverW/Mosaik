@@ -18,6 +18,7 @@ package de.p2tools.mosaik.gui.wallpaper;
 
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.mosaikData.WallpaperData;
+import de.p2tools.mosaik.gui.mosaik.GuiBorderPane;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgTools;
 import javafx.geometry.Insets;
@@ -37,7 +38,7 @@ public class GuiWallpaperController extends AnchorPane {
     private final TabPane tabPane = new TabPane();
 
     private final GuiWallpaperPane guiWallpaperPane = new GuiWallpaperPane();
-    private final GuiWallpaperBorderPane guiWallpaperBorderPane = new GuiWallpaperBorderPane();
+    private final GuiBorderPane guiBorderPane = new GuiBorderPane();
 
     private final Button btnCreate = new Button("Fototapete erstellen");
 
@@ -68,7 +69,7 @@ public class GuiWallpaperController extends AnchorPane {
 
         vBox.setDisable(false);
         guiWallpaperPane.isShown();
-        guiWallpaperBorderPane.setMosaikData(progData.selectedProjectData.getWallpaperData());
+        guiBorderPane.setMosaikData(progData.selectedProjectData.getWallpaperData());
 
         if (!progData.selectedProjectData.getWallpaperData().equals(wallpaperData)) {
             wallpaperData = progData.selectedProjectData.getWallpaperData();
@@ -84,7 +85,7 @@ public class GuiWallpaperController extends AnchorPane {
 
         tab = new Tab("Rahmen");
         tab.setClosable(false);
-        tab.setContent(guiWallpaperBorderPane);
+        tab.setContent(guiBorderPane);
         tabPane.getTabs().add(tab);
 
         btnCreate.setOnAction(a -> {

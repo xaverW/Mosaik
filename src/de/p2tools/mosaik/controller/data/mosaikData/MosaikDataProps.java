@@ -90,6 +90,8 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
                 new ConfigStringProp("thumb-src", THUMB_SRC.THUMBS.toString(), thumbSrc),
                 new ConfigBoolProp("black-white", Boolean.FALSE, blackWhite),
                 new ConfigStringProp("reduce-big", THUMB_RESIZE.NON.toString(), resizeThumb),
+                
+                new ConfigBoolProp("add-border", Boolean.FALSE, addBorder),
                 new ConfigIntProp("reduce-size", 0, borderSize),
                 new ConfigStringProp("border-color", "", borderColor)));
     }
