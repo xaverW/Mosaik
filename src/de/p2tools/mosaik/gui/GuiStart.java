@@ -34,7 +34,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.StringConverter;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class GuiStart extends AnchorPane {
@@ -167,27 +166,22 @@ public class GuiStart extends AnchorPane {
 
     private void moveProject() {
         String oldDir = progData.selectedProjectData.getDestDir();
-        String dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, txtDir);
-        if (dir.isEmpty()) {
+        String dir = progData.selectedProjectData.getDestDir();
+        dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, dir).trim();
+        if (dir.isEmpty() || oldDir.equals(dir)) {
             return;
         }
 
-        if (progData.selectedProjectData.getDestDir().isEmpty()) {
+        if (progData.selectedProjectData.getDestDir().isEmpty() ||
+                !Paths.get(oldDir).toFile().exists()) {
             // dann ist das Projektverzeichnis noch nicht angelegt
             progData.selectedProjectData.setDestDir(dir);
             return;
-        } else {
-            Path oldDirPath = Paths.get(oldDir);
-            if (!oldDirPath.toFile().exists()) {
-                // dann ist das Projektverzeichnis noch nicht angelegt
-                progData.selectedProjectData.setDestDir(dir);
-                return;
-            }
         }
 
 
-        if (!progData.worker.moveProject(dir)) {
-            progData.selectedProjectData.setDestDir(oldDir);
+        if (progData.worker.moveProject(dir)) {
+            progData.selectedProjectData.setDestDir(dir);
         }
 
         ThumbCollection thumbCollection = progData.selectedProjectData.getThumbCollection();

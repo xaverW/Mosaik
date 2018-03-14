@@ -27,7 +27,9 @@ import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.dialog.PComboBox;
 import de.p2tools.p2Lib.image.ImgFile;
+import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.FileUtils;
+import de.p2tools.p2Lib.tools.Log;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.NumberBinding;
@@ -45,6 +47,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
@@ -56,6 +60,7 @@ public class GuiMosaikPane extends AnchorPane {
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox contPane = new VBox();
 
+    private final Label lblSize = new Label("Das Mosaik wird eine Größe haben von:");
     private final Button btnSrc = new Button("");
     private final Slider sliderSize = new Slider();
     private final Label lblSlider = new Label("");
@@ -69,12 +74,14 @@ public class GuiMosaikPane extends AnchorPane {
     private final Label lblSrcFile = new Label("Datei:");
     private final Label lblDestDir = new Label("Datei:");
 
-    Label lblSize = new Label("Das Mosaik wird eine Größe haben von:");
+    private int srcHeight = 0;
+    private int srcWidth = 0;
+
 
     private final IntegerProperty iPropSize = new SimpleIntegerProperty();
     private final IntegerProperty iPropCount = new SimpleIntegerProperty();
+    private final NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
     BooleanBinding dirBinding;
-    BooleanBinding nameBinding;
 
     MosaikData mosaikData = null;
 
@@ -133,8 +140,10 @@ public class GuiMosaikPane extends AnchorPane {
                 cbDestDir.getSelProperty());
 
         //todo
-        cbSrcPhoto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
-                GuiTools.setColor(lblSrcFile, newValue == null || newValue.trim().isEmpty())
+        cbSrcPhoto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    GuiTools.setColor(lblSrcFile, newValue == null || newValue.trim().isEmpty());
+                    getSrcSize();
+                }
         );
 
         GuiTools.setColor(cbDestDir, dirBinding.get());
@@ -152,6 +161,7 @@ public class GuiMosaikPane extends AnchorPane {
         btnSrc.setOnAction(event -> DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbSrcPhoto));
         btnSrc.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
         cbSrcPhoto.init(ProgConfig.CONFIG_SRC_PHOTO_PATH_LIST, ProgConfig.CONFIG_SRC_PHOTO_PATH_SEL);
+        getSrcSize();
 
         final Button btnHelpSrc = new Button("");
         btnHelpSrc.setGraphic(new Icons().ICON_BUTTON_HELP);
@@ -172,17 +182,11 @@ public class GuiMosaikPane extends AnchorPane {
         // Thumbsize
         final Button btnHelpSlider = new Button("");
         btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSlider.setOnAction(a -> new PAlert().showHelpAlert("Pixelgröße", HelpText.MOSAIK_PIXEL_SIZE));
+        btnHelpSlider.setOnAction(a -> new PAlert().showHelpAlert("Pixel", HelpText.MOSAIK_PIXEL_SIZE));
 
 
         sliderSize.setMin(5);
         sliderSize.setMax(25);
-
-        // Anzahl Thumbs
-        final Button btnHelpSliderCount = new Button("");
-        btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSliderCount.setOnAction(a -> new PAlert().showHelpAlert("Mosaikgröße", HelpText.MOSAIK_PIXEL_COUNT));
-
         sliderCount.setMin(1);
         sliderCount.setMax(100);
 
@@ -243,7 +247,6 @@ public class GuiMosaikPane extends AnchorPane {
         gridPaneDest.add(lblSum, 0, ++row);
         gridPaneDest.add(sliderCount, 1, row);
         gridPaneDest.add(lblSliderCount, 2, row);
-        gridPaneDest.add(btnHelpSliderCount, 3, row);
 
         // import all
         contPane.setSpacing(25);
@@ -325,30 +328,48 @@ public class GuiMosaikPane extends AnchorPane {
         contPane.getChildren().add(vBox);
     }
 
+    private void getSrcSize() {
+        try {
+            if (mosaikData.getFotoSrc().isEmpty()) {
+                srcHeight = 0;
+                srcWidth = 0;
+                return;
+            }
+
+            BufferedImage srcImg = ImgFile.getBufferedImage(new File(mosaikData.getFotoSrc()));
+            srcHeight = srcImg.getRaster().getHeight();
+            srcWidth = srcImg.getRaster().getWidth();
+        } catch (Exception ex) {
+            srcHeight = 0;
+            srcWidth = 0;
+            Log.errorLog(945123690, ex);
+        } finally {
+            setSize();
+        }
+    }
+
     private Text setSize() {
         Text ret = new Text();
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
-        int pixelW = 100 * (int) sliderSize.getValue() * (int) sliderCount.getValue();
-        String count = numberFormat.format(pixelW);
-        long fSize = (long) (16.0 * pixelW * pixelW / 10.0 / 1024.0); // filesize kB and with jpg-compression
 
+        int pixelW, pixelH;
+        pixelW = 100 * (int) sliderSize.getValue() * (int) sliderCount.getValue();
 
-        String fileSize = numberFormat.format(fSize) + " KByte";
-        if (fSize > 1024) {
-            fSize /= 1024;
-            fileSize = numberFormat.format(fSize) + " MByte";
+        if (srcHeight > 0 && srcWidth > 0) {
+            pixelH = pixelW * srcHeight / srcWidth;
+        } else {
+            pixelH = pixelW;
         }
-        if (fSize > 1024) {
-            fSize /= 1024;
-            fileSize = numberFormat.format(fSize) + " GByte";
-        }
+//        System.out.println("Pixel W: " + pixelW + " Pixel H:" + pixelH);
 
-        ret.setText("Das Mosaik hat eine Breite und Höhe von je " + count + " Pixeln." +
+        String fileSize = ImgTools.getImgFileSizeStr(pixelW, pixelH);
+        ret.setText("Das Mosaik hat eine Breite von " + numberFormat.format(pixelW) +
+                " und eine Höhe von " + numberFormat.format(pixelH) + " Pixeln." +
                 "\n" +
                 "Die Dateigröße wird etwa " + fileSize + " haben.");
 
         lblSize.setText(ret.getText());
         return ret;
     }
+
 
 }

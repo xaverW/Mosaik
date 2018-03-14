@@ -27,7 +27,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import org.controlsfx.control.ToggleSwitch;
 
 public class GuiMosaikExtendedThumbPane extends AnchorPane {
 
@@ -38,7 +37,7 @@ public class GuiMosaikExtendedThumbPane extends AnchorPane {
     private final RadioButton rbThumb = new RadioButton("Miniaturbilder für das Mosaik verwenden");
     private final RadioButton rbSelf = new RadioButton("Vorlagenfoto für das Mosaik verwenden");
     private final ToggleGroup tg = new ToggleGroup();
-    private final ToggleSwitch tglBlackWhite = new ToggleSwitch("Schwarz/Weiß Mosaik erstellen");
+    private final CheckBox chkBlackWhite = new CheckBox("Schwarz/Weiß Mosaik erstellen");
 
     MosaikData mosaikData = null;
 
@@ -122,7 +121,7 @@ public class GuiMosaikExtendedThumbPane extends AnchorPane {
         GridPane.setHgrow(lbl, Priority.ALWAYS);
         gridPaneDest.add(new Label(" "), 1, ++row);
         gridPaneDest.add(lbl, 0, ++row, 2, 1);
-        gridPaneDest.add(tglBlackWhite, 0, ++row);
+        gridPaneDest.add(chkBlackWhite, 0, ++row);
         gridPaneDest.add(btnHelpBlackWhite, 1, row);
 
         // import all
@@ -153,8 +152,8 @@ public class GuiMosaikExtendedThumbPane extends AnchorPane {
             rbSelf.setSelected(true);
         }
 
-        tglBlackWhite.setSelected(mosaikData.isBlackWhite());
-        mosaikData.blackWhiteProperty().bind(tglBlackWhite.selectedProperty());
+        chkBlackWhite.setSelected(mosaikData.isBlackWhite());
+        mosaikData.blackWhiteProperty().bind(chkBlackWhite.selectedProperty());
 
 
     }

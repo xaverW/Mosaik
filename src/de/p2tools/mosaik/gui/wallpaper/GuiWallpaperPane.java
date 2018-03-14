@@ -27,6 +27,7 @@ import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.dialog.PComboBox;
 import de.p2tools.p2Lib.image.ImgFile;
+import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -34,6 +35,7 @@ import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -64,8 +66,9 @@ public class GuiWallpaperPane extends AnchorPane {
     private final Label lblSliderCount = new Label("");
     private final IntegerProperty iProp = new SimpleIntegerProperty();
     private final IntegerProperty iPropCount = new SimpleIntegerProperty();
+
+    private final NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
     BooleanBinding dirBinding;
-    BooleanBinding nameBinding;
 
     private final ProgData progData;
     private WallpaperData wallpaperData = null;
@@ -87,6 +90,7 @@ public class GuiWallpaperPane extends AnchorPane {
         AnchorPane.setTopAnchor(scrollPane, 0.0);
 
         initCont();
+        initSizePane();
         initColor();
         bind();
 
@@ -151,13 +155,6 @@ public class GuiWallpaperPane extends AnchorPane {
 
         sliderSize.setMin(5);
         sliderSize.setMax(25);
-
-
-        // Anzahl Thumbs
-        final Button btnHelpSliderCount = new Button("");
-        btnHelpSliderCount.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSliderCount.setOnAction(a -> new PAlert().showHelpAlert("Mosaikgröße", HelpText.WALLPAPER_PIXEL_COUNT));
-
         sliderCount.setMin(1);
         sliderCount.setMax(100);
 
@@ -202,7 +199,6 @@ public class GuiWallpaperPane extends AnchorPane {
         gridPane.add(lblSum, 0, ++row);
         gridPane.add(sliderCount, 1, row);
         gridPane.add(lblSliderCount, 2, row);
-        gridPane.add(btnHelpSliderCount, 3, row);
 
 
         setSize();
@@ -211,6 +207,22 @@ public class GuiWallpaperPane extends AnchorPane {
 
         contPane.setPadding(new Insets(10));
         contPane.getChildren().addAll(gridPane);
+    }
+
+    private void initSizePane() {
+        lblSize.getStyleClass().add("headerLabel");
+        lblSize.setMaxWidth(Double.MAX_VALUE);
+        lblSize.setWrapText(true);
+
+        sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
+        sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
+
+        VBox vBox = new VBox(10);
+        vBox.getChildren().addAll(lblSize);
+        VBox.setVgrow(vBox, Priority.ALWAYS);
+        vBox.setAlignment(Pos.BOTTOM_LEFT);
+
+        contPane.getChildren().add(vBox);
     }
 
     private void unbind() {
@@ -258,7 +270,6 @@ public class GuiWallpaperPane extends AnchorPane {
 
     private void setSize() {
         Text text = new Text();
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
         if (progData.selectedProjectData == null) {
             lblSize.setText("");
         }
@@ -279,19 +290,11 @@ public class GuiWallpaperPane extends AnchorPane {
 
         int pixelW = 10 * (int) sliderSize.getValue() * picW;
         int pixelH = 10 * (int) sliderSize.getValue() * picH;
-        long fSize = (long) (16.0 * pixelW * pixelH / 10.0 / 1024.0); // filesize kB and with jpg-compression
 
-        String fileSize = numberFormat.format(fSize) + " KByte";
-        if (fSize > 1024) {
-            fSize /= 1024;
-            fileSize = numberFormat.format(fSize) + " MByte";
-        }
-        if (fSize > 1024) {
-            fSize /= 1024;
-            fileSize = numberFormat.format(fSize) + " GByte";
-        }
-
-        text.setText("Die Fototapete hat eine Breite und Höhe von " + pixelW + " * " + pixelH + " Pixeln." +
+        String fileSize = ImgTools.getImgFileSizeStr(pixelW, pixelH);
+        text.setText("Die Fototapete hat eine Breite und Höhe von " +
+                numberFormat.format(pixelW) + " * " +
+                numberFormat.format(pixelH) + " Pixeln." +
                 "\n" +
                 "Die Dateigröße wird etwa " + fileSize + " haben.");
 

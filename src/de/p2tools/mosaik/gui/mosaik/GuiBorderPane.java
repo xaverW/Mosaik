@@ -47,10 +47,6 @@ public class GuiBorderPane extends AnchorPane {
     public GuiBorderPane() {
         progData = ProgData.getInstance();
 
-//        if (progData.selectedProjectData != null) {
-//            mosaikData = progData.selectedProjectData.getWallpaperData();
-//        }
-
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setContent(contPane);
@@ -96,11 +92,6 @@ public class GuiBorderPane extends AnchorPane {
             }
         });
 
-        // Resize
-        final Button btnHelpSlider = new Button("");
-        btnHelpSlider.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSlider.setOnAction(a -> new PAlert().showHelpAlert("Pixelgröße", HelpText.THUMB_BORDER_SIZE));
-
         sliderBorder.setMin(1);
         sliderBorder.setMax(50);
 
@@ -130,7 +121,6 @@ public class GuiBorderPane extends AnchorPane {
         gridPaneDest.add(new Label("Breite des Rahmen [Pixel]:"), 0, ++row);
         gridPaneDest.add(sliderBorder, 1, row);
         gridPaneDest.add(lblSlider, 2, row);
-        gridPaneDest.add(btnHelpSlider, 3, row);
 
         gridPaneDest.add(new Label("Farbe des Rahmen:"), 0, ++row);
         gridPaneDest.add(colorPicker, 1, row);

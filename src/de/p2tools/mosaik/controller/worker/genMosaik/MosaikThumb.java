@@ -193,7 +193,7 @@ public class MosaikThumb implements Runnable {
 
             ++progressLines;
             notifyEvent(maxLines, progressLines, "Zeile " + progressLines + " von " + maxLines +
-                    (maxLines == 0 ? "" : " [" + 100 * progressLines / maxLines + "Prozent]"));
+                    (maxLines == 0 ? "" : " [" + 100 * progressLines / maxLines + " Prozent]"));
 
             for (int xx = 0; xx < genImgData.numThumbsWidth && !stopAll; ++xx) {
 
