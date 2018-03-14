@@ -43,7 +43,8 @@ public class MosaikThumb implements Runnable {
     MosaikData mosaikData;
     private boolean stopAll = false;
     private int anz = 5;
-    private int progress = 0;
+    private int progressLines = 0;
+    private int maxLines = 0;
     private EventListenerList listeners;
 
     public MosaikThumb(String src, String dest, ThumbCollection thumbCollection, MosaikData mosaikData, EventListenerList listeners) {
@@ -106,14 +107,15 @@ public class MosaikThumb implements Runnable {
             //Bild zusammenbauen
             final BufferedImage imgOut = ImgFile.getBufferedImage(destWidth, destHeight, mosaikData.getBorderColor());
 
-            final int maxRun = numThumbsHeight * numThumbsWidth;
+            maxLines = numThumbsHeight;
             final Farbraum farbraum = new Farbraum(thumbCollection);
             final ArrayList<GenImgData> genImgDataArrayList = new ArrayList<>();
 
-            notifyEvent(maxRun, 0, "");
+            notifyEvent(maxLines, 0, "Mosaik erstellen");
+
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
                 GenImgData genImgData = new GenImgData(imgOut, srcImg, farbraum,
-                        thumbSize, yy, maxRun, numThumbsWidth, numThumbsHeight, numPixelProThumb,
+                        thumbSize, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb,
                         mosaikData.getResizeThumb(), mosaikData.getBorderSize(), mosaikData.isAddBorder());
 
                 genImgDataArrayList.add(genImgData);
@@ -126,7 +128,7 @@ public class MosaikThumb implements Runnable {
             }
 
             if (stopAll) {
-                notifyEvent(0, 0, "");
+                notifyEvent(0, 0, "Abbruch");
                 Duration.counterStop("Mosaik erstellen");
                 return;
             }
@@ -137,7 +139,7 @@ public class MosaikThumb implements Runnable {
             }
 
             //fertig
-            notifyEvent(maxRun, progress, "Speichern");
+            notifyEvent(maxLines, progressLines, "Speichern");
             ImgFile.writeImage(imgOut, dest, mosaikData.getFormat(), ProgConst.IMG_JPG_COMPRESSION);
             notifyEvent(0, 0, "");
         } catch (Exception ex) {
@@ -158,7 +160,6 @@ public class MosaikThumb implements Runnable {
         Farbraum farbraum;
         int sizeThumb;
         int yy;
-        int maxRun;
         int numThumbsWidth;
         int numThumbsHeight;
         int numPixelProThumb;
@@ -167,14 +168,13 @@ public class MosaikThumb implements Runnable {
         int borderSize;
 
         public GenImgData(BufferedImage imgOut, BufferedImage srcImg, Farbraum farbraum,
-                          int sizeThumb, int yy, int maxRun, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb,
+                          int sizeThumb, int yy, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb,
                           String thumbResize, int borderSize, boolean addBorder) {
             this.imgOut = imgOut;
             this.srcImg = srcImg;
             this.farbraum = farbraum;
             this.sizeThumb = sizeThumb;
             this.yy = yy;
-            this.maxRun = maxRun;
             this.numThumbsWidth = numThumbsWidth;
             this.numThumbsHeight = numThumbsHeight;
             this.numPixelProThumb = numPixelProThumb;
@@ -191,9 +191,11 @@ public class MosaikThumb implements Runnable {
                 return;
             }
 
-            notifyEvent(genImgData.maxRun, progress, "Pixel: " + progress);
+            ++progressLines;
+            notifyEvent(maxLines, progressLines, "Zeile " + progressLines + " von " + maxLines +
+                    (maxLines == 0 ? "" : " [" + 100 * progressLines / maxLines + "Prozent]"));
+
             for (int xx = 0; xx < genImgData.numThumbsWidth && !stopAll; ++xx) {
-                ++progress;
 
                 Color c = ImgTools.getColor(genImgData.srcImg.getSubimage(xx * genImgData.numPixelProThumb,
                         genImgData.yy * genImgData.numPixelProThumb,

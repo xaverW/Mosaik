@@ -35,16 +35,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
-public class MosaikBw implements Runnable {
-    String src, dest;
-    ThumbCollection thumbCollection;
-    MosaikData mosaikData;
+public class MosaikSrcImage implements Runnable {
+    private String src, dest;
+    private ThumbCollection thumbCollection;
+    private MosaikData mosaikData;
     private boolean stopAll = false;
     private int anz = 5;
-    private int progress = 0;
+    private int progressLines = 0;
+    private int maxLines = 0;
     private EventListenerList listeners;
 
-    public MosaikBw(String src, String dest, ThumbCollection thumbCollection, MosaikData mosaikData, EventListenerList listeners) {
+    public MosaikSrcImage(String src, String dest, ThumbCollection thumbCollection, MosaikData mosaikData, EventListenerList listeners) {
         this.src = src;
         this.dest = dest;
         this.thumbCollection = thumbCollection;
@@ -101,29 +102,29 @@ public class MosaikBw implements Runnable {
             final ArrayList<GenImgData> genImgDataArrayList = new ArrayList<>();
 
             //Bild zusammenbauen
-            int maxRun = numThumbsHeight * numThumbsWidth;
-            notifyEvent(maxRun, 0, "");
-            BufferedImage buffImg;
+            maxLines = numThumbsHeight;
+            notifyEvent(maxLines, 0, "Mosaik erstellen");
+
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
                 GenImgData genImgData = new GenImgData(imgOut, srcImg, imgSrcSmall, blackWhite,
-                        sizeThumb, yy, maxRun, numThumbsWidth, numThumbsHeight, numPixelProThumb);
+                        sizeThumb, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb);
                 genImgDataArrayList.add(genImgData);
             }
 
             if (ProgData.saveMem) {
-                genImgDataArrayList.stream().forEach(genImgData -> run(genImgData));
+                genImgDataArrayList.stream().forEach(genImgData -> genMosaik(genImgData));
             } else {
-                genImgDataArrayList.parallelStream().forEach(genImgData -> run(genImgData));
+                genImgDataArrayList.parallelStream().forEach(genImgData -> genMosaik(genImgData));
             }
 
             if (stopAll) {
-                notifyEvent(0, 0, "");
+                notifyEvent(0, 0, "Abbruch");
                 Duration.counterStop("Mosaik erstellen");
                 return;
             }
 
             //fertig
-            notifyEvent(maxRun, progress, "Speichern");
+            notifyEvent(maxLines, progressLines, "Speichern");
             ImgFile.writeImage(imgOut, dest, mosaikData.getFormat(), ProgConst.IMG_JPG_COMPRESSION);
             notifyEvent(0, 0, "");
         } catch (Exception ex) {
@@ -145,36 +146,36 @@ public class MosaikBw implements Runnable {
         boolean blackWhite;
         int sizeThumb;
         int yy;
-        int maxRun;
         int numThumbsWidth;
         int numThumbsHeight;
         int numPixelProThumb;
 
         public GenImgData(BufferedImage imgOut, BufferedImage srcImg, BufferedImage imgSrcSmall, boolean blackWhite,
-                          int sizeThumb, int yy, int maxRun, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb) {
+                          int sizeThumb, int yy, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb) {
             this.imgOut = imgOut;
             this.srcImg = srcImg;
             this.imgSrcSmall = imgSrcSmall;
             this.blackWhite = blackWhite;
             this.sizeThumb = sizeThumb;
             this.yy = yy;
-            this.maxRun = maxRun;
             this.numThumbsWidth = numThumbsWidth;
             this.numThumbsHeight = numThumbsHeight;
             this.numPixelProThumb = numPixelProThumb;
         }
     }
 
-    private void run(GenImgData genImgData) {
+    private void genMosaik(GenImgData genImgData) {
         BufferedImage buffImg;
 
         if (stopAll) {
             return;
         }
 
-        notifyEvent(genImgData.maxRun, progress, "Zeilen: " + genImgData.yy);
+        ++progressLines;
+        notifyEvent(maxLines, progressLines, "Zeile " + progressLines + " von " + maxLines +
+                (maxLines == 0 ? "" : " [" + 100 * progressLines / maxLines + " Prozent]"));
+
         for (int xx = 0; xx < genImgData.numThumbsWidth && !stopAll; ++xx) {
-            ++progress;
             Color c = ImgTools.getColor(genImgData.srcImg.getSubimage(xx * genImgData.numPixelProThumb,
                     genImgData.yy * genImgData.numPixelProThumb, genImgData.numPixelProThumb, genImgData.numPixelProThumb));
 

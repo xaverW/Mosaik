@@ -311,6 +311,7 @@ public class GuiStart extends AnchorPane {
         gridPaneDest.add(btnDestDir, 2, row);
         gridPaneDest.add(btnDestDirHelp, 3, row);
 
+        vBox.disableProperty().bind(progData.worker.workingProperty());
         vBox.getChildren().add(gridPaneDest);
     }
 

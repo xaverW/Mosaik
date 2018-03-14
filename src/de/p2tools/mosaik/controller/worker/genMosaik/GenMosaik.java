@@ -40,7 +40,7 @@ public class GenMosaik {
     private ProgData progData;
     private ThumbCollection thumbCollection;
     private MosaikThumb mosaikThumb = null;
-    private MosaikBw mosaikBw = null;
+    private MosaikSrcImage mosaikSrcImage = null;
 
     public GenMosaik(ProgData progData) {
         this.progData = progData;
@@ -59,8 +59,8 @@ public class GenMosaik {
         if (mosaikThumb != null) {
             mosaikThumb.setStop();
         }
-        if (mosaikBw != null) {
-            mosaikBw.setStop();
+        if (mosaikSrcImage != null) {
+            mosaikSrcImage.setStop();
         }
     }
 
@@ -107,9 +107,9 @@ public class GenMosaik {
             startenThread.setDaemon(true);
             startenThread.start();
         } else {
-            mosaikBw = new MosaikBw(src, dest, thumbCollection, mosaikData, listeners);
-            Thread startenThread = new Thread(mosaikBw);
-            startenThread.setName("MosaikBw");
+            mosaikSrcImage = new MosaikSrcImage(src, dest, thumbCollection, mosaikData, listeners);
+            Thread startenThread = new Thread(mosaikSrcImage);
+            startenThread.setName("MosaikSrcImage");
             startenThread.setDaemon(true);
             startenThread.start();
         }

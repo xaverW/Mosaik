@@ -120,7 +120,7 @@ public class GenWallpaper {
             Duration.counterStart("Mosaik erstellen");
             try {
                 final int thumbListSize = thumbCollection.getThumbList().getSize();
-                notifyEvent(thumbListSize, 0, "");
+                notifyEvent(thumbListSize, 0, "Fototapete erstellen");
 
                 if (thumbListSize < numThumbsWidth) {
                     numThumbsWidth = thumbListSize;
@@ -150,7 +150,7 @@ public class GenWallpaper {
                 final BufferedImage imgOut = ImgFile.getBufferedImage(destWidth, destHeight, borderColor);
 
                 for (int i = 0; i < thumbListSize && !stopAll; ++i) {
-                    notifyEvent(thumbListSize, i, "");
+                    notifyEvent(thumbListSize, i, thumbListSize == 0 ? "" : 100 * i / thumbListSize + " Prozent");
 
                     Thumb thumb = thumbCollection.getThumbList().get(i);
                     BufferedImage img = ImgFile.getBufferedImage(new File(thumb.getFileName()));

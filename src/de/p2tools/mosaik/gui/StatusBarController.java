@@ -139,7 +139,7 @@ public class StatusBarController extends AnchorPane {
         }
 
         progressBar.setProgress(prog);
-        lblProgress.setText(event.getText() + "  [" + event.getProgress() + " von " + event.getMax() + "]");
+        lblProgress.setText(event.getText());
     }
 
     public void setStatusbar() {

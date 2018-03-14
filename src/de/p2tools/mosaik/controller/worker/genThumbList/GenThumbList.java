@@ -25,6 +25,7 @@ import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.FileUtils;
+import de.p2tools.p2Lib.tools.Log;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;
@@ -36,9 +37,9 @@ public class GenThumbList {
 
     private ProgData progData;
     private EventListenerList listeners = new EventListenerList();
-    private int progress = 0;
     private boolean stopAll = false;
-    private int fileCount = 0;
+    private int maxFile = 0;
+    private int progressFile = 0;
     private LinkedList<File> fileListRead = new LinkedList<>();
     private LinkedList<File[]> filesCreateThumb = new LinkedList<>();
 
@@ -70,7 +71,7 @@ public class GenThumbList {
 
     public void create(ThumbCollection thumbCollection, String destDir) {
         Duration.counterStart("Thumb erstellen");
-        progress = 0;
+        progressFile = 0;
         stopAll = false;
         filesCreateThumb.clear();
         CreateListOfThumbs createListOfThumbs = new CreateListOfThumbs(thumbCollection, destDir);
@@ -80,29 +81,28 @@ public class GenThumbList {
     }
 
     public void read(ThumbCollection thumbCollection, String destDir) {
-        progress = 0;
+        progressFile = 0;
         stopAll = false;
         fileListRead.clear();
         thumbCollection.getThumbList().clear();
-        Einlesen einl = new Einlesen(thumbCollection, destDir);
-        Thread tErst = new Thread(einl);
+        ReadListOfThumbs readListOfThumbs = new ReadListOfThumbs(thumbCollection, destDir);
+        Thread tErst = new Thread(readListOfThumbs);
         tErst.setDaemon(true);
         tErst.start();
     }
 
     private void notifyEvent(int max, int progress, String text) {
-        RunEvent event;
-        event = new RunEvent(this, progress, max, text);
+        RunEvent event = new RunEvent(this, progress, max, text);
         for (RunListener l : listeners.getListeners(RunListener.class)) {
             l.notify(event);
         }
     }
 
-    private synchronized void addFileEinlesen(File file) {
+    private synchronized void addReadFile(File file) {
         fileListRead.add(file);
     }
 
-    private synchronized File getFileEinlesen() {
+    private synchronized File getReadFile() {
         return fileListRead.poll();
     }
 
@@ -127,21 +127,22 @@ public class GenThumbList {
             this.rekursiv = thumbCollection.isRecursive();
         }
 
+        @Override
         public synchronized void run() {
-            fileCount = 0;
+            maxFile = 0;
             try {
                 if (!fileDestDir.exists()) {
                     fileDestDir.mkdirs();
                 }
 
                 if (!fileSrcDir.isDirectory() || !fileDestDir.isDirectory()) {
-                    System.out.println("Quelle oder Ziel ist kein Verzeichnis!");
+                    Log.errorLog(912364587, "Quelle oder Ziel ist kein Verzeichnis!");
                     return;
                 }
 
                 // Dateien zählen
-                fileCount = FileUtils.countFilesInDirectory(fileSrcDir);
-                notifyEvent(fileCount, 0, "");
+                maxFile = FileUtils.countFilesInDirectory(fileSrcDir);
+                notifyEvent(maxFile, 0, maxFile + " Miniaturbilder erstellen");
 
                 // Fotos zum Erstellen der Thumbs suchen
                 createFileList(fileSrcDir);
@@ -155,7 +156,7 @@ public class GenThumbList {
                     t.start();
                 }
             } catch (Exception ex) {
-                System.out.println(ex.getMessage() + "BildArchiv_.CreateThumbList.start");
+                Log.errorLog(912020201, ex);
             }
         }
 
@@ -174,10 +175,9 @@ public class GenThumbList {
                                 str = dest.getAbsolutePath();
                                 addCreationsList(liste[i], dest);
                             } catch (Exception ex) {
-                                System.out.println(ex.getMessage() + "BildArchiv_.makeThumb");
-                                System.out.println("----------------------------------");
-                                System.out.println("Fehler - Src: " + liste[i].getAbsolutePath());
-                                System.out.println("Fehler - Dest: " + str);
+                                Log.errorLog(391201245, ex, new String[]{"GenThumbList.createFileList",
+                                        "Fehler - Src: " + liste[i].getAbsolutePath(),
+                                        "Fehler - Dest: " + str});
                             }
                         }
                     } else if (liste[i].isDirectory() && rekursiv) {
@@ -189,6 +189,7 @@ public class GenThumbList {
 
         private class CreateThumbs implements Runnable {
 
+            @Override
             public void run() {
                 File[] file;
                 while (!stopAll && (file = getFromCreationsList()) != null) {
@@ -203,62 +204,64 @@ public class GenThumbList {
             }
 
             private void create(File fileSrc, File fileDest) {
-                ++progress;
-                notifyEvent(fileCount, progress, fileSrc.getName());
+                ++progressFile;
+                notifyEvent(maxFile, progressFile, fileSrc.getName() +
+                        (maxFile == 0 ? "" : " [" + 100 * progressFile / maxFile + " Prozent]"));
                 ScaleImage.getScaledThumb(fileSrc, fileDest, thumbCollection);
             }
         }
 
     }
 
-    private class Einlesen implements Runnable {
+    private class ReadListOfThumbs implements Runnable {
 
         private File fileThumbDir;
         private ThumbCollection thumbCollection;
 
-        public Einlesen(ThumbCollection thumbCollection, String thumbDir) {
+        public ReadListOfThumbs(ThumbCollection thumbCollection, String thumbDir) {
             this.thumbCollection = thumbCollection;
             fileThumbDir = new File(thumbDir);
         }
 
+        @Override
         public synchronized void run() {
             try {
-                fileCount = 0;
+                maxFile = 0;
                 //src und prüfen
                 if (fileThumbDir.isDirectory()) {
                     //Dateien zählen
-                    fileCount = FileUtils.countFilesInDirectory(fileThumbDir);
-                    notifyEvent(fileCount, 0, "");
-                    einlesenGetFile(fileThumbDir);
+                    maxFile = FileUtils.countFilesInDirectory(fileThumbDir);
+                    notifyEvent(maxFile, 0, "Miniaturbilder einlesen");
+                    createFileList(fileThumbDir);
                 } else {
-                    System.out.println("Quelle ist kein Verzeichnis!");
+                    Log.errorLog(912020237, "Quelle ist kein Verzeichnis!");
                 }
             } catch (Exception ex) {
-                System.out.println(ex.getMessage() + "BildArchiv_.Einlesen.start");
+                Log.errorLog(975421310, ex);
             }
-            EinlesenGetColor gColor;
+            ReadColor readColor;
             Thread t;
             treeSet.clear();
             for (int i = 0; i < anzThread; ++i) {
                 ++threads;
-                gColor = new EinlesenGetColor();
-                t = new Thread(gColor);
+                readColor = new ReadColor();
+                t = new Thread(readColor);
                 t.setDaemon(true);
                 t.start();
             }
         }
 
-        private void einlesenGetFile(File file) {
+        private void createFileList(File file) {
             File[] liste;
             if (file.isDirectory()) {
                 liste = file.listFiles();
                 for (int i = 0; i < liste.length; i++) {
                     if (liste[i].isFile()) {
                         if (checkSuffix(liste[i])) {
-                            addFileEinlesen(liste[i]);
+                            addReadFile(liste[i]);
                         }
                     } else if (liste[i].isDirectory()) {
-                        einlesenGetFile(liste[i]);
+                        createFileList(liste[i]);
                     }
                 }
             }
@@ -267,20 +270,21 @@ public class GenThumbList {
 
         TreeSet<Thumb> treeSet = new TreeSet<>();
 
-        private class EinlesenGetColor implements Runnable {
+        private class ReadColor implements Runnable {
 
-
+            @Override
             public void run() {
                 File file;
-                while (!stopAll && (file = getFileEinlesen()) != null) {
+                while (!stopAll && (file = getReadFile()) != null) {
                     Thumb thumb;
                     if ((thumb = ScaleImage.getThumb(file)) != null) {
 //                        treeSet.add(thumb);
                         thumbCollection.getThumbList().add(thumb);
                     }
 
-                    ++progress;
-                    notifyEvent(fileCount, progress, "");
+                    ++progressFile;
+                    notifyEvent(maxFile, progressFile,
+                            maxFile == 0 ? "" : 100 * progressFile / maxFile + " Prozent");
                 }
                 --threads;
                 if (threads <= 0) {
