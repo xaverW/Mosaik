@@ -109,7 +109,7 @@ public class Mosaik extends Application {
             primaryStage.setTitle(ProgConst.P2_PROGRAMMNAME);
         } else {
             String prj = progData.selectedProjectData.getName();
-            primaryStage.setTitle((prj.isEmpty() ? "" : "[ " + prj + " ] - ") + ProgConst.P2_PROGRAMMNAME);
+            primaryStage.setTitle((prj.isEmpty() ? "" : (prj + " - ")) + " [ " + ProgConst.P2_PROGRAMMNAME + " ]");
         }
     }
 

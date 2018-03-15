@@ -18,7 +18,7 @@ package de.p2tools.mosaik.controller.config;
 
 public class ProgConst {
 
-    public static final String P2_PROGRAMMNAME = "P2Tools Mosaik";
+    public static final String P2_PROGRAMMNAME = "P2Tools - Mosaik";
     public static final String PROGRAMMNAME = "Mosaik";
     public static final String CONFIG_FILE = "mosaik.xml";
     public static final String CSS_FILE = "/de/p2tools/mosaik/mosik.css";

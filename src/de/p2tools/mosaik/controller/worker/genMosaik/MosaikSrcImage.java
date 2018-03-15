@@ -90,10 +90,8 @@ public class MosaikSrcImage implements Runnable {
             boolean blackWhite = mosaikData.isBlackWhite();
 
             if (destWidth >= ImgTools.JPEG_MAX_DIMENSION || destHeight >= ImgTools.JPEG_MAX_DIMENSION) {
-                Platform.runLater(() ->
-                        PAlert.showErrorAlert("Mosaik erstellen", "Die Maximale Größe des Mosaiks ist überschritten.\n" +
-                                "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.")
-                );
+                showErrMsg("Die Maximale Größe des Mosaiks ist überschritten.\n" +
+                        "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.");
                 return;
             }
 
@@ -126,16 +124,20 @@ public class MosaikSrcImage implements Runnable {
             //fertig
             notifyEvent(maxLines, progressLines, "Speichern");
             ImgFile.writeImage(imgOut, dest, mosaikData.getFormat(), ProgConst.IMG_JPG_COMPRESSION);
-            notifyEvent(0, 0, "");
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            showErrMsg("Das Mosaik kann nicht richtig erstellt werden!");
         } catch (OutOfMemoryError E) {
-            Platform.runLater(() ->
-                    PAlert.showErrorAlert("Mosaik erstellen", "Das Mosaik kann nicht erstellt werden, das Programm " +
-                            "hat zu wenig Arbeitsspeicher!")
-            );
+            showErrMsg("Das Mosaik kann nicht erstellt werden, das Programm " +
+                    "hat zu wenig Arbeitsspeicher!");
+        } finally {
+            notifyEvent(0, 0, "");
+            Duration.counterStop("Mosaik erstellen");
         }
-        Duration.counterStop("Mosaik erstellen");
+    }
+
+    private void showErrMsg(String msg) {
+        Platform.runLater(() ->
+                PAlert.showErrorAlert("Mosaik erstellen", msg));
 
     }
 

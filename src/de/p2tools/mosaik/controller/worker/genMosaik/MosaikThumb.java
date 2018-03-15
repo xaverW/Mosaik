@@ -29,6 +29,7 @@ import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.PException;
 import javafx.application.Platform;
 
 import javax.swing.event.EventListenerList;
@@ -46,8 +47,11 @@ public class MosaikThumb implements Runnable {
     private int progressLines = 0;
     private int maxLines = 0;
     private EventListenerList listeners;
+    private boolean loadErr = false;
+    private String errMsg = "";
 
-    public MosaikThumb(String src, String dest, ThumbCollection thumbCollection, MosaikData mosaikData, EventListenerList listeners) {
+    public MosaikThumb(String src, String dest, ThumbCollection thumbCollection,
+                       MosaikData mosaikData, EventListenerList listeners) {
         this.src = src;
         this.dest = dest;
         this.thumbCollection = thumbCollection;
@@ -96,23 +100,19 @@ public class MosaikThumb implements Runnable {
             }
 
             if (destWidth >= ImgTools.JPEG_MAX_DIMENSION || destHeight >= ImgTools.JPEG_MAX_DIMENSION) {
-                Platform.runLater(() ->
-                        PAlert.showErrorAlert("Mosaik erstellen", "Die Maximale Größe des Mosaiks ist überschritten.\n" +
-                                "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.")
-                );
+                showErrMsg("Die Maximale Größe des Mosaiks ist überschritten.\n" +
+                        "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.");
                 return;
             }
 
 
             //Bild zusammenbauen
             final BufferedImage imgOut = ImgFile.getBufferedImage(destWidth, destHeight, mosaikData.getBorderColor());
-
-            maxLines = numThumbsHeight;
             final Farbraum farbraum = new Farbraum(thumbCollection);
             final ArrayList<GenImgData> genImgDataArrayList = new ArrayList<>();
 
+            maxLines = numThumbsHeight;
             notifyEvent(maxLines, 0, "Mosaik erstellen");
-
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
                 GenImgData genImgData = new GenImgData(imgOut, srcImg, farbraum,
                         thumbSize, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb,
@@ -122,12 +122,32 @@ public class MosaikThumb implements Runnable {
             }
 
             if (ProgData.saveMem) {
-                genImgDataArrayList.stream().forEach(genImgData -> generatePixel(genImgData));
+                genImgDataArrayList.stream().forEach(genImgData -> {
+                    try {
+                        generatePixel(genImgData);
+                    } catch (PException e) {
+                        loadErr = true;
+                        errMsg = e.getMsg();
+                    }
+                });
+
+
             } else {
-                genImgDataArrayList.parallelStream().forEach(genImgData -> generatePixel(genImgData));
+                genImgDataArrayList.parallelStream().forEach(genImgData -> {
+                    try {
+                        generatePixel(genImgData);
+                    } catch (PException e) {
+                        loadErr = true;
+                        errMsg = e.getMsg();
+                    }
+                });
             }
 
-            if (stopAll) {
+
+            if (loadErr) {
+                showErrMsg("Das Mosaik kann nicht richtig erstellt werden!" + "\n\n" + errMsg);
+            }
+            if (loadErr || stopAll) {
                 notifyEvent(0, 0, "Abbruch");
                 Duration.counterStop("Mosaik erstellen");
                 return;
@@ -141,17 +161,25 @@ public class MosaikThumb implements Runnable {
             //fertig
             notifyEvent(maxLines, progressLines, "Speichern");
             ImgFile.writeImage(imgOut, dest, mosaikData.getFormat(), ProgConst.IMG_JPG_COMPRESSION);
-            notifyEvent(0, 0, "");
+
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            showErrMsg("Das Mosaik kann nicht richtig erstellt werden!");
         } catch (OutOfMemoryError E) {
-            Platform.runLater(() ->
-                    PAlert.showErrorAlert("Mosaik erstellen", "Das Mosaik kann nicht erstellt werden, das Programm " +
-                            "hat zu wenig Arbeitsspeicher!")
-            );
+            showErrMsg("Das Mosaik kann nicht erstellt werden, das Programm " +
+                    "hat zu wenig Arbeitsspeicher!");
+
+        } finally {
+            notifyEvent(maxLines, progressLines, "");
+            notifyEvent(0, 0, "");
+            Duration.counterStop("Mosaik erstellen");
         }
 
-        Duration.counterStop("Mosaik erstellen");
+    }
+
+    private void showErrMsg(String msg) {
+        Platform.runLater(() ->
+                PAlert.showErrorAlert("Mosaik erstellen", msg));
+
     }
 
     private class GenImgData {
@@ -185,7 +213,7 @@ public class MosaikThumb implements Runnable {
     }
 
 
-    private void generatePixel(GenImgData genImgData) {
+    private void generatePixel(GenImgData genImgData) throws PException {
         try {
             if (stopAll) {
                 return;
@@ -207,6 +235,11 @@ public class MosaikThumb implements Runnable {
                     File file = new File(thumb.getFileName());
 
                     BufferedImage buffImg = ImgFile.getBufferedImage(file);
+                    if (buffImg == null) {
+                        throw new PException("Es sind nicht mehr alle Miniaturbilder vorhanden. " +
+                                "Bitte die Liste der Miniaturbilder " +
+                                "neu einlesen.");
+                    }
                     buffImg = ImgTools.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
 
                     if (genImgData.addBorder) {
@@ -222,11 +255,13 @@ public class MosaikThumb implements Runnable {
                     }
 
                 } else {
-                    Log.errorLog(912365478, "MosaikErstellen.tus-Farbe fehlt!!");
+                    Log.errorLog(912365478, "thumb konnte nicht gefunden werden.");
                 }
             }
+        } catch (PException ex) {
+            throw ex;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            Log.errorLog(642101787, ex);
         }
     }
 }

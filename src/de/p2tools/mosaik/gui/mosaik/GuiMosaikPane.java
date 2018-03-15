@@ -359,7 +359,6 @@ public class GuiMosaikPane extends AnchorPane {
         } else {
             pixelH = pixelW;
         }
-//        System.out.println("Pixel W: " + pixelW + " Pixel H:" + pixelH);
 
         String fileSize = ImgTools.getImgFileSizeStr(pixelW, pixelH);
         ret.setText("Das Mosaik hat eine Breite von " + numberFormat.format(pixelW) +
