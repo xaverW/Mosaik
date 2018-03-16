@@ -37,7 +37,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.apache.commons.io.FileUtils;
-import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
 
@@ -50,7 +49,7 @@ public class GuiThumbController extends AnchorPane {
     TilePane tilePane = new TilePane();
     ThumbCollection thumbCollection = null;
     PComboBox cbDir = new PComboBox();
-    ToggleSwitch tglRecursive = new ToggleSwitch("Auch Unterordner durchsuchen");
+    CheckBox tglRecursive = new CheckBox("Auch Unterordner durchsuchen");
     DoubleProperty splitPaneProperty = ProgConfig.THUMB_GUI_DIVIDER;
 
     public GuiThumbController() {

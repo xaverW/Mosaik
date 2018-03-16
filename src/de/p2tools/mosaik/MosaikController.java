@@ -21,7 +21,6 @@ import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.gui.*;
 import de.p2tools.mosaik.gui.dialog.AboutDialogController;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -29,7 +28,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
-import org.controlsfx.control.MaskerPane;
 
 public class MosaikController extends StackPane {
 
@@ -43,7 +41,6 @@ public class MosaikController extends StackPane {
 
     BorderPane borderPane = new BorderPane();
     StackPane stackPaneCont = new StackPane();
-    private MaskerPane maskerPane = new MaskerPane();
     private StatusBarController statusBarController;
 
     private final ProgData progData;
@@ -109,11 +106,6 @@ public class MosaikController extends StackPane {
             statusBarController = new StatusBarController(progData);
 
 
-            // MaskerPane
-            maskerPane.setPadding(new Insets(3, 1, 1, 1));
-            StackPane.setAlignment(maskerPane, Pos.CENTER);
-            maskerPane.setVisible(false);
-
             // Button NEXT-PREV
             HBox hBoxPrev = new HBox();
             hBoxPrev.getChildren().addAll(btnPrev);
@@ -139,7 +131,7 @@ public class MosaikController extends StackPane {
             borderPane.setRight(hBoxNext);
 
             this.setPadding(new Insets(0));
-            this.getChildren().addAll(borderPane, maskerPane);
+            this.getChildren().addAll(borderPane);
 
             selPanelStart();
             addStartGuiBinding();
@@ -190,9 +182,6 @@ public class MosaikController extends StackPane {
     }
 
     private void selPanelStart() {
-        if (maskerPane.isVisible()) {
-            return;
-        }
         btnPrev.setDisable(true);
         btnNext.setDisable(false);
 
@@ -210,9 +199,6 @@ public class MosaikController extends StackPane {
     }
 
     private void selPanelTumb() {
-        if (maskerPane.isVisible()) {
-            return;
-        }
         btnPrev.setDisable(false);
         btnNext.setDisable(false);
 
@@ -230,9 +216,6 @@ public class MosaikController extends StackPane {
     }
 
     private void selPanelMosaik() {
-        if (maskerPane.isVisible()) {
-            return;
-        }
         btnPrev.setDisable(false);
         btnNext.setDisable(true);
 
@@ -247,15 +230,5 @@ public class MosaikController extends StackPane {
         progData.guiMosaik.toFront();
         progData.guiMosaik.isShown();
         statusBarController.setStatusbarIndex(StatusBarController.StatusbarIndex.Mosaik);
-    }
-
-    public void setMasker() {
-        maskerPane.setVisible(true);
-    }
-
-    public void resetMasker() {
-        Platform.runLater(() -> {
-            maskerPane.setVisible(false);
-        });
     }
 }

@@ -179,7 +179,6 @@ public class MosaikThumb implements Runnable {
     private void showErrMsg(String msg) {
         Platform.runLater(() ->
                 PAlert.showErrorAlert("Mosaik erstellen", msg));
-
     }
 
     private class GenImgData {

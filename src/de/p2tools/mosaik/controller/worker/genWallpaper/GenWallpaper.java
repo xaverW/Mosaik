@@ -143,6 +143,11 @@ public class GenWallpaper {
                     }
                 }
 
+                if (destWidth >= ImgTools.JPEG_MAX_DIMENSION || destHeight >= ImgTools.JPEG_MAX_DIMENSION) {
+                    showErrMsg("Die Maximale Größe des Mosaiks ist überschritten.\n" +
+                            "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.");
+                    return;
+                }
 
                 int hh = 0, ww = 0;
                 boolean lineEnd = false;
@@ -154,7 +159,13 @@ public class GenWallpaper {
 
                     Thumb thumb = thumbCollection.getThumbList().get(i);
                     BufferedImage img = ImgFile.getBufferedImage(new File(thumb.getFileName()));
-
+                    if (img == null) {
+                        showErrMsg("Es sind nicht mehr alle Miniaturbilder vorhanden. " +
+                                "Bitte die Liste der Miniaturbilder " +
+                                "neu einlesen.");
+                        stopAll = true;
+                        break;
+                    }
 
                     if (img.getWidth() != thumbSize) {
                         img = ImgTools.scaleBufferedImage(img, thumbSize, thumbSize);
@@ -195,16 +206,19 @@ public class GenWallpaper {
                 notifyEvent(0, 0, "");
 
             } catch (Exception ex) {
-                Log.errorLog(654102025, ex);
+                showErrMsg("Das Mosaik kann nicht richtig erstellt werden!");
             } catch (OutOfMemoryError E) {
-                Platform.runLater(() ->
-                        PAlert.showErrorAlert("Mosaik erstellen", "Das Mosaik kann nicht erstellt werden, das Programm " +
-                                "hat zu wenig Arbeitsspeicher!")
-                );
+                showErrMsg("Das Mosaik kann nicht erstellt werden, das Programm " +
+                        "hat zu wenig Arbeitsspeicher!");
             }
 
         }
 
+    }
+
+    private void showErrMsg(String msg) {
+        Platform.runLater(() ->
+                PAlert.showErrorAlert("Fototapete erstellen", msg));
     }
 
 
