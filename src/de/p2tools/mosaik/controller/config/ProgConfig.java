@@ -19,6 +19,7 @@ package de.p2tools.mosaik.controller.config;
 
 import de.p2tools.p2Lib.configFile.pData.PDataProgConfig;
 import de.p2tools.p2Lib.image.ImgFile;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -30,30 +31,31 @@ public class ProgConfig extends PDataProgConfig {
 
     public static StringProperty SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
     public static StringProperty SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
+
     // Fenstereinstellungen
-
     public static StringProperty SYSTEM_GROESSE_GUI = addStrProp("system-gui-size", "1000:900");
+
     // Einstellungen zum Erstellen der Fotolisten
-
     public static StringProperty FOTO_FORMAT = addStrProp("foto-format", ImgFile.IMAGE_FORMAT_JPG);
+
     // GuiStart
-
     public static IntegerProperty START_GUI_PROJECT_DATA = addIntProp("start-gui-project-data", 0);
+    public static BooleanProperty START_SHOW_MEM_DATA = addBoolProp("start-show-mem-data", false);
+
     // GuiThumb
-
     public static DoubleProperty THUMB_GUI_DIVIDER = addDoubleProp("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
-    // GuiChangeThumb
 
+    // GuiChangeThumb
     public static StringProperty CHANGE_THUMB_GUI_TABLE_WIDTH = addStrProp("change-thumb-gui-table-width");
     public static StringProperty CHANGE_THUMB_GUI_TABLE_SORT = addStrProp("change-thumb-gui-table-sort");
     public static StringProperty CHANGE_THUMB_GUI_TABLE_UPDOWN = addStrProp("change-thumb-gui-table-upDown");
     public static StringProperty CHANGE_THUMB_GUI_TABLE_VIS = addStrProp("change-thumb-gui-table-vis");
     public static StringProperty CHANGE_THUMB_GUI_TABLE_ORDER = addStrProp("change-thumb-gui-table-order");
+
     // ConfigDialog
-
     public static StringProperty DIALOG_ADD_MOSAIK = addStrProp("dialog-add-mosaik");
-    // Programmpfade
 
+    // Programmpfade
     public static StringProperty CONFIG_SRC_PHOTO_PATH_SEL = addStrProp("config-src-photo-path-sel");
     public static ObservableList<String> CONFIG_SRC_PHOTO_PATH_LIST = addListProp("config-src-photo-path-list");
 

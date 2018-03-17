@@ -268,10 +268,10 @@ public class GuiStart extends AnchorPane {
         lblCont.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lblCont, Priority.ALWAYS);
 
-        Label lblPath = new Label("Ordner in dem das Mosaik erstellt wird");
-        lblPath.getStyleClass().add("headerLabel");
-        lblPath.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setHgrow(lblPath, Priority.ALWAYS);
+//        Label lblPath = new Label("Ordner in dem das Mosaik erstellt wird");
+//        lblPath.getStyleClass().add("headerLabel");
+//        lblPath.setMaxWidth(Double.MAX_VALUE);
+//        GridPane.setHgrow(lblPath, Priority.ALWAYS);
 
         txtDir.setEditable(false);
         txtDir.setMaxWidth(Double.MAX_VALUE);
@@ -297,8 +297,8 @@ public class GuiStart extends AnchorPane {
         gridPaneDest.add(new Label("Projektname:"), 0, ++row);
         gridPaneDest.add(txtName, 1, row);
 
-        gridPaneDest.add(new Label(""), 0, ++row);
-        gridPaneDest.add(lblPath, 0, ++row, 4, 1);
+//        gridPaneDest.add(new Label(""), 0, ++row);
+//        gridPaneDest.add(lblPath, 0, ++row, 4, 1);
 
         gridPaneDest.add(new Label("Projektpfad:"), 0, ++row);
         gridPaneDest.add(txtDir, 1, row);

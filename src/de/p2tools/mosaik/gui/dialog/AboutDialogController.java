@@ -21,6 +21,7 @@ import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.config.ProgInfos;
 import de.p2tools.mosaik.gui.tools.MTOpen;
+import de.p2tools.mosaik.res.GetIcon;
 import de.p2tools.p2Lib.dialog.MTDialogExtra;
 import de.p2tools.p2Lib.tools.Functions;
 import de.p2tools.p2Lib.tools.Log;
@@ -37,7 +38,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class AboutDialogController extends MTDialogExtra {
 
@@ -64,15 +64,16 @@ public class AboutDialogController extends MTDialogExtra {
 
         ImageView iv = new ImageView();
         Image im = getImage();
-        iv.setSmooth(true);
-        iv.setCache(true);
-        iv.setImage(im);
-        iv.setFitWidth(250);
-        iv.setPreserveRatio(true);
-        iv.setSmooth(true);
+        if (im != null) {
+            iv.setSmooth(true);
+            iv.setCache(true);
+            iv.setImage(im);
+            iv.setFitWidth(250);
+            iv.setPreserveRatio(true);
+            iv.setSmooth(true);
 
-        hBox.getChildren().add(iv);
-
+            hBox.getChildren().add(iv);
+        }
         final GridPane gridPane = new GridPane();
         gridPane.setHgap(5);
         gridPane.setVgap(10);
@@ -178,8 +179,15 @@ public class AboutDialogController extends MTDialogExtra {
     }
 
     private javafx.scene.image.Image getImage() {
-        final String path = Paths.get(ProgConst.ICON_PATH, ProgConst.LOGO_NAME).toString();
-        return new javafx.scene.image.Image(path);
+        Image img = null;
+        try {
+            img = GetIcon.getImage(ProgConst.LOGO_NAME, ProgConst.ICON_PATH, 250, 250);
+//            final String path = Paths.get(ProgConst.ICON_PATH, ProgConst.LOGO_NAME).toString();
+//            img = new javafx.scene.image.Image(path);
+        } catch (Exception ex) {
+            Log.errorLog(975421305, ex);
+        }
+        return img;
     }
 
 }

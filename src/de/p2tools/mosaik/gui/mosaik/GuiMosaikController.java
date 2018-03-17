@@ -85,7 +85,7 @@ public class GuiMosaikController extends AnchorPane {
         tab.setContent(guiMosaikExtendedThumbPane);
         tabPane.getTabs().add(tab);
 
-        tab = new Tab("Größe verändern");
+        tab = new Tab("Rahmen");
         tab.setClosable(false);
         tab.setContent(guiBorderPane);
         tabPane.getTabs().add(tab);

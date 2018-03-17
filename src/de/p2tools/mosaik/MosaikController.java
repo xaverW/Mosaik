@@ -17,6 +17,7 @@
 package de.p2tools.mosaik;
 
 import de.p2tools.mosaik.controller.ProgQuitt;
+import de.p2tools.mosaik.controller.config.ProgConfig;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.gui.*;
@@ -25,6 +26,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
@@ -85,10 +87,14 @@ public class MosaikController extends StackPane {
             final MenuItem miAbout = new MenuItem("Über dieses Programm");
             miAbout.setOnAction(event -> new AboutDialogController(progData));
 
+            final CheckMenuItem miMem = new CheckMenuItem("Speicherverbrauch anzeigen");
+            miMem.selectedProperty().bindBidirectional(ProgConfig.START_SHOW_MEM_DATA);
+//            miMem.setOnAction(event -> new MemoryUsageDialog());
+
             menuButton.getStyleClass().add("btnFunction");
             menuButton.setText("");
             menuButton.setGraphic(new Icons().FX_ICON_TOOLBAR_MENUE_TOP);
-            menuButton.getItems().addAll(miAbout, miQuitt);
+            menuButton.getItems().addAll(miAbout, miMem, miQuitt);
 
 
             // Panes
