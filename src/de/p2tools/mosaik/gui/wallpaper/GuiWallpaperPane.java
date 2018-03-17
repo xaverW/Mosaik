@@ -126,15 +126,6 @@ public class GuiWallpaperPane extends AnchorPane {
 
     }
 
-    private void initColor() {
-        dirBinding = Bindings.createBooleanBinding(() -> cbDest.getSel().trim().isEmpty(), cbDest.getSelProperty());
-
-        GuiTools.setColor(cbDest, dirBinding.get());
-
-        dirBinding.addListener(l -> GuiTools.setColor(cbDest, dirBinding.get()));
-        dirBinding.addListener(l -> GuiTools.setColor(lblDest, dirBinding.get()));
-    }
-
     private void initCont() {
         // DEST
         btnDest.setOnAction(event -> {
@@ -200,13 +191,16 @@ public class GuiWallpaperPane extends AnchorPane {
         gridPane.add(sliderCount, 1, row);
         gridPane.add(lblSliderCount, 2, row);
 
-
-        setSize();
-        sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
-        sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
-
         contPane.setPadding(new Insets(10));
         contPane.getChildren().addAll(gridPane);
+    }
+
+    private void initColor() {
+        dirBinding = Bindings.createBooleanBinding(() -> cbDest.getSel().trim().isEmpty(), cbDest.getSelProperty());
+        GuiTools.setColor(cbDest, dirBinding.get());
+
+        dirBinding.addListener(l -> GuiTools.setColor(cbDest, dirBinding.get()));
+        dirBinding.addListener(l -> GuiTools.setColor(lblDest, dirBinding.get()));
     }
 
     private void initSizePane() {
@@ -216,6 +210,7 @@ public class GuiWallpaperPane extends AnchorPane {
 
         sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
         sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
+        setSize();
 
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(lblSize);
@@ -223,25 +218,6 @@ public class GuiWallpaperPane extends AnchorPane {
         vBox.setAlignment(Pos.BOTTOM_LEFT);
 
         contPane.getChildren().add(vBox);
-    }
-
-    private void unbind() {
-        if (wallpaperData == null) {
-            return;
-        }
-
-        // DEST
-        wallpaperData.fotoDestProperty().unbind();
-
-        // Thumbsize
-        iProp.bind(sliderSize.valueProperty());
-        wallpaperData.thumbSizeProperty().unbind();
-        lblSlider.textProperty().unbind();
-
-        // Anzahl Thumbs
-        iPropCount.unbind();
-        wallpaperData.numberThumbsWidthProperty().unbind();
-        lblSliderCount.textProperty().unbind();
     }
 
     private void bind() {
@@ -266,6 +242,25 @@ public class GuiWallpaperPane extends AnchorPane {
         NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
         wallpaperData.numberThumbsWidthProperty().bind(nbCount);
         lblSliderCount.textProperty().bind(Bindings.format("%d", wallpaperData.numberThumbsWidthProperty()));
+    }
+
+    private void unbind() {
+        if (wallpaperData == null) {
+            return;
+        }
+
+        // DEST
+        wallpaperData.fotoDestProperty().unbind();
+
+        // Thumbsize
+        iProp.bind(sliderSize.valueProperty());
+        wallpaperData.thumbSizeProperty().unbind();
+        lblSlider.textProperty().unbind();
+
+        // Anzahl Thumbs
+        iPropCount.unbind();
+        wallpaperData.numberThumbsWidthProperty().unbind();
+        lblSliderCount.textProperty().unbind();
     }
 
     private void setSize() {

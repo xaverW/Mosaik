@@ -319,7 +319,8 @@ public class GuiMosaikPane extends AnchorPane {
 
         sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
         sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
-
+        setSize();
+        
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(lblSize);
         VBox.setVgrow(vBox, Priority.ALWAYS);

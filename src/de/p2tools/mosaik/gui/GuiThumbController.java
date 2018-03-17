@@ -222,32 +222,42 @@ public class GuiThumbController extends AnchorPane {
         GridPane.setHgrow(lblTitle, Priority.ALWAYS);
 
         Label lblDir = new Label("Verzeichnis:");
-
         cbDir.setMaxWidth(Double.MAX_VALUE);
         cbDir.init(ProgConfig.CONFIG_ADD_PHOTO_PATH_LIST, ProgConfig.CONFIG_ADD_PHOTO_PATH_SEL);
         GridPane.setHgrow(cbDir, Priority.ALWAYS);
         GridPane.setHalignment(btnLod, HPos.RIGHT);
+        GridPane.setHalignment(tglRecursive, HPos.RIGHT);
+
+        HBox hBox = new HBox(10);
+        hBox.getChildren().addAll(tglRecursive, btnLod);
+        tglRecursive.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(tglRecursive, Priority.ALWAYS);
 
         gridPaneDest.add(lblTitle, 0, row, 4, 1);
         gridPaneDest.add(lblDir, 0, ++row);
         gridPaneDest.add(cbDir, 1, row);
         gridPaneDest.add(btnDir, 2, row);
         gridPaneDest.add(btnHelp, 3, row);
-        gridPaneDest.add(tglRecursive, 0, ++row, 4, 1);
-        gridPaneDest.add(btnLod, 0, ++row, 4, 1);
+        gridPaneDest.add(hBox, 0, ++row, 4, 1);
+
 
         lblTitle = new Label("Gespeicherte Liste");
         lblTitle.getStyleClass().add("headerLabel");
         lblTitle.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lblTitle, Priority.ALWAYS);
 
-        HBox hBox = new HBox(10);
-        hBox.setAlignment(Pos.CENTER_RIGHT);
-        hBox.getChildren().addAll(btnReload, btnClear);
+        TilePane tilePane = new TilePane(Orientation.VERTICAL);
+        tilePane.setPrefRows(2);
+        tilePane.setAlignment(Pos.TOP_RIGHT);
+        tilePane.setVgap(10);
+        tilePane.getChildren().addAll(btnReload, btnClear);
+        btnClear.setMaxWidth(Double.MAX_VALUE);
+        btnReload.setMaxWidth(Double.MAX_VALUE);
 
         gridPaneDest.add(new Label(" "), 0, ++row);
+        gridPaneDest.add(new Label(" "), 0, ++row);
         gridPaneDest.add(lblTitle, 0, ++row, 4, 1);
-        gridPaneDest.add(hBox, 0, ++row, 4, 1);
+        gridPaneDest.add(tilePane, 0, ++row, 4, 1);
 
         vBoxCont.getChildren().addAll(gridPaneDest);
     }
