@@ -25,7 +25,7 @@ import javafx.scene.control.TableView;
 
 public class Table {
     public enum TABLE {
-        CHANGE_THUMB
+        THUMB, CHANGE_THUMB
     }
 
     private static final String SORT_ASCENDING = "ASCENDING";
@@ -51,6 +51,14 @@ public class Table {
     private void initConf(TABLE eTable) {
         switch (eTable) {
 
+            case THUMB:
+                confWidth = ProgConfig.THUMB_GUI_TABLE_WIDTH;
+                confSort = ProgConfig.THUMB_GUI_TABLE_SORT;
+                confUpDown = ProgConfig.THUMB_GUI_TABLE_UPDOWN;
+                confVis = ProgConfig.THUMB_GUI_TABLE_VIS;
+                confOrder = ProgConfig.THUMB_GUI_TABLE_ORDER;
+                break;
+
             case CHANGE_THUMB:
                 confWidth = ProgConfig.CHANGE_THUMB_GUI_TABLE_WIDTH;
                 confSort = ProgConfig.CHANGE_THUMB_GUI_TABLE_SORT;
@@ -64,8 +72,12 @@ public class Table {
 
     private void initColumn(TABLE eTable, TableView<PDataSample> table) {
         switch (eTable) {
+            case THUMB:
+                tArray = new TableThumb().initColumn(table);
+                break;
+
             case CHANGE_THUMB:
-                tArray = new TableChangeThumb().initDownloadColumn(table);
+                tArray = new TableChangeThumb().initColumn(table);
                 break;
 
         }
@@ -139,6 +151,10 @@ public class Table {
         initConf(eTable);
         maxSpalten = ta.getColumns().size();
         switch (eTable) {
+
+            case THUMB:
+                resetThumb();
+                break;
 
             case CHANGE_THUMB:
                 resetChangeThumb();
@@ -272,6 +288,25 @@ public class Table {
             arr[i] = true;
         }
         return arr;
+    }
+
+    private void resetThumb() {
+        String[] visArray = new String[maxSpalten];
+        String set = "";
+
+        for (int i = 0; i < maxSpalten; ++i) {
+            visArray[i] = Boolean.TRUE.toString();
+        }
+
+        for (int i = 0; i < maxSpalten; ++i) {
+            set += visArray[i] + ",";
+        }
+
+        confWidth.set("");
+        confVis.set(set);
+        confSort.set("");
+        confUpDown.set("");
+        confOrder.set("");
     }
 
     private void resetChangeThumb() {

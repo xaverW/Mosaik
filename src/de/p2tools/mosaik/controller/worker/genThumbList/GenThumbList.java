@@ -22,6 +22,7 @@ import de.p2tools.mosaik.controller.RunListener;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
+import de.p2tools.mosaik.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.FileUtils;
@@ -215,6 +216,7 @@ public class GenThumbList {
 
     private class ReadListOfThumbs implements Runnable {
 
+        private ThumbDataList tmpList = new ThumbDataList();
         private File fileThumbDir;
         private ThumbCollection thumbCollection;
 
@@ -226,6 +228,7 @@ public class GenThumbList {
         @Override
         public synchronized void run() {
             try {
+                thumbCollection.getThumbList().clear();
                 maxFile = 0;
                 //src und prüfen
                 if (fileThumbDir.isDirectory()) {
@@ -249,6 +252,10 @@ public class GenThumbList {
                 t.setDaemon(true);
                 t.start();
             }
+        }
+
+        private synchronized void addThumb(Thumb thumb) {
+            tmpList.add(thumb);
         }
 
         private void createFileList(File file) {
@@ -279,7 +286,7 @@ public class GenThumbList {
                     Thumb thumb;
                     if ((thumb = ScaleImage.getThumb(file)) != null) {
 //                        treeSet.add(thumb);
-                        thumbCollection.getThumbList().add(thumb);
+                        addThumb(thumb);
                     }
 
                     ++progressFile;
@@ -288,8 +295,9 @@ public class GenThumbList {
                 }
                 --threads;
                 if (threads <= 0) {
-//                    thumbCollection.getThumbList().addAll(treeSet);
-                    thumbCollection.getThumbList().sort();
+                    tmpList.sort();
+                    thumbCollection.getThumbList().setAll(tmpList);
+                    tmpList.clear();
                     notifyEvent(0, 0, "");
                 }
             }

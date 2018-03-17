@@ -68,12 +68,13 @@ public class AboutDialogController extends MTDialogExtra {
             iv.setSmooth(true);
             iv.setCache(true);
             iv.setImage(im);
-            iv.setFitWidth(250);
+            iv.setFitWidth(150);
             iv.setPreserveRatio(true);
             iv.setSmooth(true);
 
             hBox.getChildren().add(iv);
         }
+
         final GridPane gridPane = new GridPane();
         gridPane.setHgap(5);
         gridPane.setVgap(10);
@@ -126,10 +127,6 @@ public class AboutDialogController extends MTDialogExtra {
         gridPane.add(hyperlink, 1, row);
 
 
-//        text = new Text("\n\nProgrammpfad");
-//        text.setFont(Font.font(null, FontWeight.BOLD, 15));
-//        gridPane.add(text, 0, ++row, 2, 1);
-
         text = new Text("Einstellungen:");
         text.setFont(new Font(15));
         text.setFill(GRAY);
@@ -181,9 +178,7 @@ public class AboutDialogController extends MTDialogExtra {
     private javafx.scene.image.Image getImage() {
         Image img = null;
         try {
-            img = GetIcon.getImage(ProgConst.LOGO_NAME, ProgConst.ICON_PATH, 250, 250);
-//            final String path = Paths.get(ProgConst.ICON_PATH, ProgConst.LOGO_NAME).toString();
-//            img = new javafx.scene.image.Image(path);
+            img = GetIcon.getImage(ProgConst.LOGO_NAME, ProgConst.ICON_PATH, 150, 150);
         } catch (Exception ex) {
             Log.errorLog(975421305, ex);
         }

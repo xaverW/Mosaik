@@ -40,7 +40,7 @@ public class TableChangeThumb {
 
     private TableView tableView;
 
-    public TableColumn[] initDownloadColumn(TableView tableView) {
+    public TableColumn[] initColumn(TableView tableView) {
         this.tableView = tableView;
 
         tableView.getColumns().clear();
@@ -170,7 +170,7 @@ public class TableChangeThumb {
                     return;
                 }
                 Image i = new Image(new File(item).toURI().toString(),
-                        150, 150, true, true);
+                        100, 100, true, true);
                 ImageView imageview = new ImageView(i);
                 setGraphic(imageview);
             }

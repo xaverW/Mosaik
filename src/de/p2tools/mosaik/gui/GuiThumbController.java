@@ -16,80 +16,46 @@
 
 package de.p2tools.mosaik.gui;
 
-import de.p2tools.mosaik.controller.RunEvent;
-import de.p2tools.mosaik.controller.RunListener;
 import de.p2tools.mosaik.controller.config.ProgConfig;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
-import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
-import de.p2tools.mosaik.controller.worker.genThumbList.GenThumbList;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.dialog.PComboBox;
 import de.p2tools.p2Lib.tools.Log;
-import javafx.beans.property.DoubleProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 
 public class GuiThumbController extends AnchorPane {
     private final ProgData progData;
-    SplitPane splitPane = new SplitPane();
     VBox vBoxCont = new VBox(10);
-    VBox vBoxFlowPane = new VBox(10);
-    ScrollPane scrollPane = new ScrollPane();
-    TilePane tilePane = new TilePane();
     ThumbCollection thumbCollection = null;
     PComboBox cbDir = new PComboBox();
     CheckBox tglRecursive = new CheckBox("Auch Unterordner durchsuchen");
-    DoubleProperty splitPaneProperty = ProgConfig.THUMB_GUI_DIVIDER;
 
     public GuiThumbController() {
         progData = ProgData.getInstance();
 
-        AnchorPane.setLeftAnchor(splitPane, 0.0);
-        AnchorPane.setBottomAnchor(splitPane, 0.0);
-        AnchorPane.setRightAnchor(splitPane, 0.0);
-        AnchorPane.setTopAnchor(splitPane, 0.0);
-        splitPane.setOrientation(Orientation.HORIZONTAL);
-        splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        splitPane.getItems().addAll(vBoxCont, vBoxFlowPane);
-        splitPane.getDividers().get(0).positionProperty().bindBidirectional(splitPaneProperty);
-        SplitPane.setResizableWithParent(vBoxFlowPane, Boolean.FALSE);
-        getChildren().addAll(splitPane);
+        AnchorPane.setLeftAnchor(vBoxCont, 0.0);
+        AnchorPane.setBottomAnchor(vBoxCont, 0.0);
+        AnchorPane.setRightAnchor(vBoxCont, 0.0);
+        AnchorPane.setTopAnchor(vBoxCont, 0.0);
+        getChildren().addAll(vBoxCont);
 
-        tilePane.setHgap(5);
-        tilePane.setVgap(5);
-        tilePane.setPadding(new Insets(5));
-
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setContent(tilePane);
-
-        vBoxFlowPane.setPadding(new Insets(10));
-        vBoxFlowPane.getChildren().add(scrollPane);
 
         vBoxCont.setPadding(new Insets(10));
         initCont();
         selectThumbCollection();
-
-        progData.worker.addAdListener(new RunListener() {
-            @Override
-            public void ping(RunEvent runEvent) {
-                if (runEvent.nixLos() && runEvent.getSource().getClass().equals(GenThumbList.class)) {
-                    makeTilePane();
-                }
-            }
-        });
-
     }
 
     public void isShown() {
@@ -100,62 +66,6 @@ public class GuiThumbController extends AnchorPane {
 
         vBoxCont.setDisable(false);
         selectThumbCollection();
-    }
-
-    private void selectThumbCollection() {
-        if (progData.selectedProjectData != null &&
-                thumbCollection != null &&
-                thumbCollection.equals(progData.selectedProjectData.getThumbCollection())) {
-            // dann hat sich nichts geänert
-            return;
-        }
-
-        tilePane.getChildren().clear();
-
-        if (thumbCollection != null) {
-            thumbCollection.fotoSrcDirProperty().unbind();
-            tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
-        }
-
-        if (progData.selectedProjectData != null) {
-            thumbCollection = progData.selectedProjectData.getThumbCollection();
-        }
-
-        if (thumbCollection == null) {
-            vBoxCont.setDisable(true);
-        } else {
-            vBoxCont.setDisable(false);
-
-            cbDir.selectElement(thumbCollection.getFotoSrcDir());
-            thumbCollection.fotoSrcDirProperty().bind(cbDir.getSelectionModel().selectedItemProperty());
-            tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
-
-            makeTilePane();
-        }
-    }
-
-    private void makeTilePane() {
-        tilePane.getChildren().clear();
-        int i = 1;
-        for (Thumb thumb : thumbCollection.getThumbList()) {
-            Label lbl = new Label("" + i++);
-            lbl.setAlignment(Pos.CENTER);
-            lbl.setPadding(new Insets(2));
-            lbl.setTextFill(Color.WHITE);
-            lbl.setMinHeight(30);
-            lbl.setMinWidth(30);
-            lbl.setMaxWidth(Double.MAX_VALUE);
-            lbl.setMaxHeight(Double.MAX_VALUE);
-
-            lbl.setTooltip(new Tooltip(thumb.getFileName()));
-
-            Color col = thumb.getColor();
-            CornerRadii corn = new CornerRadii(20);
-            Background background = new Background(new BackgroundFill(col, corn, Insets.EMPTY));
-            lbl.setBackground(background);
-
-            tilePane.getChildren().add(lbl);
-        }
     }
 
     private void initCont() {
@@ -185,7 +95,6 @@ public class GuiThumbController extends AnchorPane {
             }
 
             progData.worker.createThumbList(thumbCollection, thumbDir);
-            makeTilePane();
         });
         btnReload.setOnAction(a -> {
             String thumbDir = progData.selectedProjectData.getThumbDirString();
@@ -194,7 +103,6 @@ public class GuiThumbController extends AnchorPane {
             }
 
             progData.worker.readThumbList(thumbCollection, thumbDir);
-            makeTilePane();
         });
         btnClear.setOnAction(a -> {
             try {
@@ -203,7 +111,6 @@ public class GuiThumbController extends AnchorPane {
                 Log.errorLog(945121254, ex);
             }
             thumbCollection.getThumbList().clear();
-            makeTilePane();
         });
 
         btnLod.disableProperty().bind(progData.worker.workingProperty());
@@ -260,6 +167,34 @@ public class GuiThumbController extends AnchorPane {
         gridPaneDest.add(tilePane, 0, ++row, 4, 1);
 
         vBoxCont.getChildren().addAll(gridPaneDest);
+    }
+
+    private void selectThumbCollection() {
+        if (progData.selectedProjectData != null &&
+                thumbCollection != null &&
+                thumbCollection.equals(progData.selectedProjectData.getThumbCollection())) {
+            // dann hat sich nichts geänert
+            return;
+        }
+
+        if (thumbCollection != null) {
+            thumbCollection.fotoSrcDirProperty().unbind();
+            tglRecursive.selectedProperty().unbindBidirectional(thumbCollection.recursiveProperty());
+        }
+
+        if (progData.selectedProjectData != null) {
+            thumbCollection = progData.selectedProjectData.getThumbCollection();
+        }
+
+        if (thumbCollection == null) {
+            vBoxCont.setDisable(true);
+        } else {
+            vBoxCont.setDisable(false);
+
+            cbDir.selectElement(thumbCollection.getFotoSrcDir());
+            thumbCollection.fotoSrcDirProperty().bind(cbDir.getSelectionModel().selectedItemProperty());
+            tglRecursive.selectedProperty().bindBidirectional(thumbCollection.recursiveProperty());
+        }
     }
 
 }

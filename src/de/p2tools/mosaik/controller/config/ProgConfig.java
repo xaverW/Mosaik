@@ -45,6 +45,13 @@ public class ProgConfig extends PDataProgConfig {
     // GuiThumb
     public static DoubleProperty THUMB_GUI_DIVIDER = addDoubleProp("thumb-gui-divider", ProgConst.GUI_THUMB_DIVIDER_LOCATION);
 
+    // GuiThumb
+    public static StringProperty THUMB_GUI_TABLE_WIDTH = addStrProp("thumb-gui-table-width");
+    public static StringProperty THUMB_GUI_TABLE_SORT = addStrProp("thumb-gui-table-sort");
+    public static StringProperty THUMB_GUI_TABLE_UPDOWN = addStrProp("thumb-gui-table-upDown");
+    public static StringProperty THUMB_GUI_TABLE_VIS = addStrProp("thumb-gui-table-vis");
+    public static StringProperty THUMB_GUI_TABLE_ORDER = addStrProp("thumb-gui-table-order");
+
     // GuiChangeThumb
     public static StringProperty CHANGE_THUMB_GUI_TABLE_WIDTH = addStrProp("change-thumb-gui-table-width");
     public static StringProperty CHANGE_THUMB_GUI_TABLE_SORT = addStrProp("change-thumb-gui-table-sort");
