@@ -87,12 +87,14 @@ public class StatusBarController extends AnchorPane {
 
         // workerPane
         hBox = getHbox();
-        pProgressBar2.setMaxWidth(Double.MAX_VALUE);
-        pProgressBar2.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(pProgressBar2, Priority.ALWAYS);
 
-        hBox.getChildren().addAll(pProgressBar2, lblProgress, progressBar, btnStop);
+        HBox hb = new HBox();
+        hb.getChildren().add(pProgressBar2);
+        hb.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(hb, Priority.ALWAYS);
+
         progressBar.setPrefWidth(200);
+        hBox.getChildren().addAll(hb, lblProgress, progressBar, btnStop);
         workerPane.getChildren().add(hBox);
         workerPane.setStyle("-fx-background-color: -fx-background;");
 

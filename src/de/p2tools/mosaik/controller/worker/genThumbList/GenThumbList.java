@@ -116,6 +116,7 @@ public class GenThumbList {
     }
 
     private class CreateListOfThumbs implements Runnable {
+        private ThumbDataList tmpList = new ThumbDataList();
         ThumbCollection thumbCollection;
         private File fileSrcDir;
         private File fileDestDir;
@@ -198,7 +199,9 @@ public class GenThumbList {
                 }
                 --threads;
                 if (threads <= 0) {
-                    thumbCollection.getThumbList().sort();
+                    tmpList.sort();
+                    thumbCollection.getThumbList().setAll(tmpList);
+                    tmpList.clear();
                     notifyEvent(0, 0, "");
                     Duration.counterStop("Thumb erstellen");
                 }
@@ -208,7 +211,7 @@ public class GenThumbList {
                 ++progressFile;
                 notifyEvent(maxFile, progressFile, fileSrc.getName() +
                         (maxFile == 0 ? "" : " [" + 100 * progressFile / maxFile + " Prozent]"));
-                ScaleImage.getScaledThumb(fileSrc, fileDest, thumbCollection);
+                ScaleImage.getScaledThumb(fileSrc, fileDest, tmpList);
             }
         }
 
@@ -254,10 +257,6 @@ public class GenThumbList {
             }
         }
 
-        private synchronized void addThumb(Thumb thumb) {
-            tmpList.add(thumb);
-        }
-
         private void createFileList(File file) {
             File[] liste;
             if (file.isDirectory()) {
@@ -286,7 +285,7 @@ public class GenThumbList {
                     Thumb thumb;
                     if ((thumb = ScaleImage.getThumb(file)) != null) {
 //                        treeSet.add(thumb);
-                        addThumb(thumb);
+                        tmpList.add(thumb);
                     }
 
                     ++progressFile;

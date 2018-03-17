@@ -20,7 +20,7 @@ package de.p2tools.mosaik.controller.worker.genThumbList;
 import de.p2tools.mosaik.controller.config.ProgConfig;
 import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.data.thumb.Thumb;
-import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
+import de.p2tools.mosaik.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.Log;
@@ -42,7 +42,7 @@ public class ScaleImage {
      * @param dest
      * @throws IOException
      */
-    public static void getScaledThumb(File source, File dest, ThumbCollection thumbCollection) {
+    public static void getScaledThumb(File source, File dest, ThumbDataList thumbDataList) {
         try {
             BufferedImage imgSrc = ImageInCorrectOrientation.getImageInCorrectOrientation(source);
 
@@ -95,7 +95,7 @@ public class ScaleImage {
 
             Thumb thumb = getThumb(rasterDest, dest);
             if (thumb != null) {
-                thumbCollection.getThumbList().add(thumb);
+                thumbDataList.add(thumb);
             }
 
 
