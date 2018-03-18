@@ -166,6 +166,10 @@ public class GuiThumbController extends AnchorPane {
         gridPaneDest.add(lblTitle, 0, ++row, 4, 1);
         gridPaneDest.add(tilePane, 0, ++row, 4, 1);
 
+        ColumnConstraints c0 = new ColumnConstraints();
+        gridPaneDest.getColumnConstraints().addAll(c0);
+        c0.setMinWidth(GridPane.USE_PREF_SIZE);
+
         vBoxCont.getChildren().addAll(gridPaneDest);
     }
 

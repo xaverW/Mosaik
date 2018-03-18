@@ -88,18 +88,6 @@ public class GuiStart extends AnchorPane {
         return allOk;
     }
 
-    private void initColor() {
-        BooleanBinding dirBinding = Bindings.createBooleanBinding(() -> txtDir.getText().trim().isEmpty(), txtDir.textProperty());
-        BooleanBinding nameBinding = Bindings.createBooleanBinding(() -> txtName.getText().trim().isEmpty(), txtName.textProperty());
-        allOk.bind(dirBinding.not().and(nameBinding.not()));
-
-        GuiTools.setColor(txtDir, dirBinding.get());
-        GuiTools.setColor(txtName, nameBinding.get());
-
-        dirBinding.addListener(l -> GuiTools.setColor(txtDir, dirBinding.get()));
-        nameBinding.addListener(l -> GuiTools.setColor(txtName, nameBinding.get()));
-    }
-
     private void initCollection() {
         cbProjectDataList.setItems(progData.projectDataList);
 
@@ -164,76 +152,6 @@ public class GuiStart extends AnchorPane {
         });
     }
 
-    private void moveProject() {
-        String oldDir = progData.selectedProjectData.getDestDir();
-        String dir = progData.selectedProjectData.getDestDir();
-        dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, dir).trim();
-        if (dir.isEmpty() || oldDir.equals(dir)) {
-            return;
-        }
-
-        if (progData.selectedProjectData.getDestDir().isEmpty() ||
-                !Paths.get(oldDir).toFile().exists()) {
-            // dann ist das Projektverzeichnis noch nicht angelegt
-            progData.selectedProjectData.setDestDir(dir);
-            return;
-        }
-
-
-        if (progData.worker.moveProject(dir)) {
-            progData.selectedProjectData.setDestDir(dir);
-        }
-
-        ThumbCollection thumbCollection = progData.selectedProjectData.getThumbCollection();
-        if (thumbCollection == null) {
-            return;
-        }
-        String thumbDir = progData.selectedProjectData.getThumbDirString();
-        if (thumbDir.isEmpty()) {
-            return;
-        }
-        progData.worker.readThumbList(thumbCollection, thumbDir);
-
-    }
-
-    private void addProjectDataDialog() {
-        AddMosaikDialogController amc = new AddMosaikDialogController();
-        ProjectData pd = amc.getProjectData();
-
-        if (pd != null) {
-            progData.projectDataList.add(pd);
-            cbProjectDataList.getSelectionModel().select(pd);
-        }
-    }
-
-    private void selectProjectData() {
-        if (projectData != null) {
-            txtName.textProperty().unbindBidirectional(projectData.nameProperty());
-            txtDir.textProperty().unbindBidirectional(projectData.destDirProperty());
-            projectData.srcPhotoProperty().unbind();
-        }
-
-        projectData = cbProjectDataList.getSelectionModel().getSelectedItem();
-        progData.selectedProjectData = projectData;
-
-        txtName.setDisable(projectData == null);
-        txtDir.setDisable(projectData == null);
-        btnMov.setDisable(projectData == null);
-        btnDel.setDisable(projectData == null);
-
-        if (projectData == null) {
-            txtDir.setText("");
-            txtName.setText("");
-
-        } else {
-
-            ProgConfig.START_GUI_PROJECT_DATA.set(cbProjectDataList.getSelectionModel().getSelectedIndex());
-
-            txtName.textProperty().bindBidirectional(projectData.nameProperty());
-            txtDir.textProperty().bindBidirectional(projectData.destDirProperty());
-        }
-    }
-
     private void initCont() {
 
         final Button btnDestDir = new Button();
@@ -292,6 +210,7 @@ public class GuiStart extends AnchorPane {
         gridPaneDest.add(hBox, 1, ++row);
 
         gridPaneDest.add(new Label(" "), 0, ++row);
+        gridPaneDest.add(new Label(" "), 0, ++row);
         gridPaneDest.add(lblCont, 0, ++row, 4, 1);
 
         gridPaneDest.add(new Label("Projektname:"), 0, ++row);
@@ -305,8 +224,95 @@ public class GuiStart extends AnchorPane {
         gridPaneDest.add(btnDestDir, 2, row);
         gridPaneDest.add(btnDestDirHelp, 3, row);
 
+        ColumnConstraints c0 = new ColumnConstraints();
+        gridPaneDest.getColumnConstraints().addAll(c0);
+        c0.setMinWidth(GridPane.USE_PREF_SIZE);
+
+
         vBox.disableProperty().bind(progData.worker.workingProperty());
         vBox.getChildren().add(gridPaneDest);
+    }
+
+    private void selectProjectData() {
+        if (projectData != null) {
+            txtName.textProperty().unbindBidirectional(projectData.nameProperty());
+            txtDir.textProperty().unbindBidirectional(projectData.destDirProperty());
+            projectData.srcPhotoProperty().unbind();
+        }
+
+        projectData = cbProjectDataList.getSelectionModel().getSelectedItem();
+        progData.selectedProjectData = projectData;
+
+        txtName.setDisable(projectData == null);
+        txtDir.setDisable(projectData == null);
+        btnMov.setDisable(projectData == null);
+        btnDel.setDisable(projectData == null);
+
+        if (projectData == null) {
+            txtDir.setText("");
+            txtName.setText("");
+
+        } else {
+
+            ProgConfig.START_GUI_PROJECT_DATA.set(cbProjectDataList.getSelectionModel().getSelectedIndex());
+
+            txtName.textProperty().bindBidirectional(projectData.nameProperty());
+            txtDir.textProperty().bindBidirectional(projectData.destDirProperty());
+        }
+    }
+
+    private void initColor() {
+        BooleanBinding dirBinding = Bindings.createBooleanBinding(() -> txtDir.getText().trim().isEmpty(), txtDir.textProperty());
+        BooleanBinding nameBinding = Bindings.createBooleanBinding(() -> txtName.getText().trim().isEmpty(), txtName.textProperty());
+        allOk.bind(dirBinding.not().and(nameBinding.not()));
+
+        GuiTools.setColor(txtDir, dirBinding.get());
+        GuiTools.setColor(txtName, nameBinding.get());
+
+        dirBinding.addListener(l -> GuiTools.setColor(txtDir, dirBinding.get()));
+        nameBinding.addListener(l -> GuiTools.setColor(txtName, nameBinding.get()));
+    }
+
+    private void moveProject() {
+        String oldDir = progData.selectedProjectData.getDestDir();
+        String dir = progData.selectedProjectData.getDestDir();
+        dir = DirFileChooser.DirChooser(ProgData.getInstance().primaryStage, dir).trim();
+        if (dir.isEmpty() || oldDir.equals(dir)) {
+            return;
+        }
+
+        if (progData.selectedProjectData.getDestDir().isEmpty() ||
+                !Paths.get(oldDir).toFile().exists()) {
+            // dann ist das Projektverzeichnis noch nicht angelegt
+            progData.selectedProjectData.setDestDir(dir);
+            return;
+        }
+
+
+        if (progData.worker.moveProject(dir)) {
+            progData.selectedProjectData.setDestDir(dir);
+        }
+
+        ThumbCollection thumbCollection = progData.selectedProjectData.getThumbCollection();
+        if (thumbCollection == null) {
+            return;
+        }
+        String thumbDir = progData.selectedProjectData.getThumbDirString();
+        if (thumbDir.isEmpty()) {
+            return;
+        }
+        progData.worker.readThumbList(thumbCollection, thumbDir);
+
+    }
+
+    private void addProjectDataDialog() {
+        AddMosaikDialogController amc = new AddMosaikDialogController();
+        ProjectData pd = amc.getProjectData();
+
+        if (pd != null) {
+            progData.projectDataList.add(pd);
+            cbProjectDataList.getSelectionModel().select(pd);
+        }
     }
 
 }

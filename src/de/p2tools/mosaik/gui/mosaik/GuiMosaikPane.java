@@ -41,10 +41,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 import java.awt.image.BufferedImage;
@@ -133,26 +130,6 @@ public class GuiMosaikPane extends AnchorPane {
                             ProgConst.MOSAIK_STD_NAME, suff));
             cbDestDir.selectElement(p.toString());
         }
-    }
-
-    private void initColor() {
-        dirBinding = Bindings.createBooleanBinding(() -> cbDestDir.getSel().trim().isEmpty(),
-                cbDestDir.getSelProperty());
-
-        //todo
-        cbSrcPhoto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                    GuiTools.setColor(lblSrcFile, newValue == null || newValue.trim().isEmpty());
-                    getSrcSize();
-                }
-        );
-
-        GuiTools.setColor(cbDestDir, dirBinding.get());
-
-        GuiTools.setColor(lblSrcFile, cbSrcPhoto.getSelectionModel().getSelectedItem() == null ||
-                cbSrcPhoto.getSelectionModel().getSelectedItem().trim().isEmpty());
-
-        dirBinding.addListener(l -> GuiTools.setColor(cbDestDir, dirBinding.get()));
-        dirBinding.addListener(l -> GuiTools.setColor(lblDestDir, dirBinding.get()));
     }
 
 
@@ -248,12 +225,53 @@ public class GuiMosaikPane extends AnchorPane {
         gridPaneDest.add(sliderCount, 1, row);
         gridPaneDest.add(lblSliderCount, 2, row);
 
+        ColumnConstraints c0 = new ColumnConstraints();
+        gridPaneDest.getColumnConstraints().addAll(c0);
+        c0.setMinWidth(GridPane.USE_PREF_SIZE);
+
         // import all
         contPane.setSpacing(25);
         contPane.setPadding(new Insets(10));
         contPane.getChildren().addAll(gridPaneDest);
 
 
+    }
+
+    private void initSizePane() {
+        lblSize.getStyleClass().add("headerLabel");
+        lblSize.setMaxWidth(Double.MAX_VALUE);
+        lblSize.setWrapText(true);
+
+        sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
+        sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
+        setSize();
+
+        VBox vBox = new VBox(10);
+        vBox.getChildren().addAll(lblSize);
+        VBox.setVgrow(vBox, Priority.ALWAYS);
+        vBox.setAlignment(Pos.BOTTOM_LEFT);
+
+        contPane.getChildren().add(vBox);
+    }
+
+    private void initColor() {
+        dirBinding = Bindings.createBooleanBinding(() -> cbDestDir.getSel().trim().isEmpty(),
+                cbDestDir.getSelProperty());
+
+        //todo
+        cbSrcPhoto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    GuiTools.setColor(lblSrcFile, newValue == null || newValue.trim().isEmpty());
+                    getSrcSize();
+                }
+        );
+
+        GuiTools.setColor(cbDestDir, dirBinding.get());
+
+        GuiTools.setColor(lblSrcFile, cbSrcPhoto.getSelectionModel().getSelectedItem() == null ||
+                cbSrcPhoto.getSelectionModel().getSelectedItem().trim().isEmpty());
+
+        dirBinding.addListener(l -> GuiTools.setColor(cbDestDir, dirBinding.get()));
+        dirBinding.addListener(l -> GuiTools.setColor(lblDestDir, dirBinding.get()));
     }
 
     private void unbind() {
@@ -310,23 +328,6 @@ public class GuiMosaikPane extends AnchorPane {
         mosaikData.numberThumbsWidthProperty().bind(nbCount);
 
         lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
-    }
-
-    private void initSizePane() {
-        lblSize.getStyleClass().add("headerLabel");
-        lblSize.setMaxWidth(Double.MAX_VALUE);
-        lblSize.setWrapText(true);
-
-        sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
-        sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
-        setSize();
-        
-        VBox vBox = new VBox(10);
-        vBox.getChildren().addAll(lblSize);
-        VBox.setVgrow(vBox, Priority.ALWAYS);
-        vBox.setAlignment(Pos.BOTTOM_LEFT);
-
-        contPane.getChildren().add(vBox);
     }
 
     private void getSrcSize() {

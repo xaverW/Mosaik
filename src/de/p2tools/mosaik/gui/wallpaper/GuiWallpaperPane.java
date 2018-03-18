@@ -40,10 +40,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 import java.nio.file.Path;
@@ -191,16 +188,12 @@ public class GuiWallpaperPane extends AnchorPane {
         gridPane.add(sliderCount, 1, row);
         gridPane.add(lblSliderCount, 2, row);
 
+        ColumnConstraints c0 = new ColumnConstraints();
+        gridPane.getColumnConstraints().addAll(c0);
+        c0.setMinWidth(GridPane.USE_PREF_SIZE);
+
         contPane.setPadding(new Insets(10));
         contPane.getChildren().addAll(gridPane);
-    }
-
-    private void initColor() {
-        dirBinding = Bindings.createBooleanBinding(() -> cbDest.getSel().trim().isEmpty(), cbDest.getSelProperty());
-        GuiTools.setColor(cbDest, dirBinding.get());
-
-        dirBinding.addListener(l -> GuiTools.setColor(cbDest, dirBinding.get()));
-        dirBinding.addListener(l -> GuiTools.setColor(lblDest, dirBinding.get()));
     }
 
     private void initSizePane() {
@@ -218,6 +211,14 @@ public class GuiWallpaperPane extends AnchorPane {
         vBox.setAlignment(Pos.BOTTOM_LEFT);
 
         contPane.getChildren().add(vBox);
+    }
+
+    private void initColor() {
+        dirBinding = Bindings.createBooleanBinding(() -> cbDest.getSel().trim().isEmpty(), cbDest.getSelProperty());
+        GuiTools.setColor(cbDest, dirBinding.get());
+
+        dirBinding.addListener(l -> GuiTools.setColor(cbDest, dirBinding.get()));
+        dirBinding.addListener(l -> GuiTools.setColor(lblDest, dirBinding.get()));
     }
 
     private void bind() {
