@@ -135,7 +135,9 @@ public class GuiMosaikPane extends AnchorPane {
 
     private void initCont() {
         // SRC
-        btnSrc.setOnAction(event -> DirFileChooser.FileChooser(ProgData.getInstance().primaryStage, cbSrcPhoto));
+        btnSrc.setOnAction(event -> DirFileChooser.FileChooser(ProgData.getInstance().primaryStage,
+                cbSrcPhoto,
+                progData.selectedProjectData.getDestDir()));
         btnSrc.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
         cbSrcPhoto.init(ProgConfig.CONFIG_SRC_PHOTO_PATH_LIST, ProgConfig.CONFIG_SRC_PHOTO_PATH_SEL);
         getSrcSize();
@@ -147,6 +149,7 @@ public class GuiMosaikPane extends AnchorPane {
 
         // DEST
         btnDest.setOnAction(event -> DirFileChooser.FileChooserSave(ProgData.getInstance().primaryStage, cbDestDir,
+                progData.selectedProjectData.getDestDir(),
                 "Mosaik.jpg"));
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
         cbDestDir.init(ProgConfig.CONFIG_DEST_PHOTO_PATH_LIST, ProgConfig.CONFIG_DEST_PHOTO_PATH_SEL);
@@ -244,7 +247,6 @@ public class GuiMosaikPane extends AnchorPane {
 
         sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
         sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
-        setSize();
 
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(lblSize);
@@ -314,20 +316,18 @@ public class GuiMosaikPane extends AnchorPane {
         // Thumbsize
         sliderSize.setValue(mosaikData.getThumbSize() / 10);
         iPropSize.bind(sliderSize.valueProperty());
-
         NumberBinding nb = Bindings.multiply(iPropSize, 10);
         mosaikData.thumbSizeProperty().bind(nb);
-
         lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.thumbSizeProperty()));
 
         // Anzahl Thumbs
         sliderCount.setValue(mosaikData.getNumberThumbsWidth() / 10);
         iPropCount.bind(sliderCount.valueProperty());
-
         NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
         mosaikData.numberThumbsWidthProperty().bind(nbCount);
-
         lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
+
+        setSize();
     }
 
     private void getSrcSize() {
@@ -366,7 +366,7 @@ public class GuiMosaikPane extends AnchorPane {
         ret.setText("Das Mosaik hat eine Breite von " + numberFormat.format(pixelW) +
                 " und eine Höhe von " + numberFormat.format(pixelH) + " Pixeln." +
                 "\n" +
-                "Die Dateigröße wird etwa " + fileSize + " haben.");
+                "Die Dateigröße wird etwa " + fileSize + " betragen.");
 
         lblSize.setText(ret.getText());
         return ret;

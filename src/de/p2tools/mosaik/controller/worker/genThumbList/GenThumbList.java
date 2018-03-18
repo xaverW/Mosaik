@@ -74,7 +74,6 @@ public class GenThumbList {
         Duration.counterStart("Thumb erstellen");
         progressFile = 0;
         stopAll = false;
-        filesCreateThumb.clear();
         CreateListOfThumbs createListOfThumbs = new CreateListOfThumbs(thumbCollection, destDir);
         Thread thread = new Thread(createListOfThumbs);
         thread.setDaemon(true);
@@ -84,7 +83,7 @@ public class GenThumbList {
     public void read(ThumbCollection thumbCollection, String destDir) {
         progressFile = 0;
         stopAll = false;
-        fileListRead.clear();
+        fileListRead.clear(); // die Liste wird komplett neu eingelesen
         thumbCollection.getThumbList().clear();
         ReadListOfThumbs readListOfThumbs = new ReadListOfThumbs(thumbCollection, destDir);
         Thread tErst = new Thread(readListOfThumbs);
@@ -117,15 +116,15 @@ public class GenThumbList {
 
     private class CreateListOfThumbs implements Runnable {
         private ThumbDataList tmpList = new ThumbDataList();
-        ThumbCollection thumbCollection;
+        private ThumbCollection thumbCollection;
         private File fileSrcDir;
         private File fileDestDir;
         private boolean rekursiv;
 
         public CreateListOfThumbs(ThumbCollection thumbCollection, String thumbDir) {
             this.thumbCollection = thumbCollection;
-            fileSrcDir = new File(thumbCollection.getFotoSrcDir());
-            fileDestDir = new File(thumbDir);
+            this.fileSrcDir = new File(thumbCollection.getFotoSrcDir());
+            this.fileDestDir = new File(thumbDir);
             this.rekursiv = thumbCollection.isRecursive();
         }
 
@@ -199,9 +198,10 @@ public class GenThumbList {
                 }
                 --threads;
                 if (threads <= 0) {
-                    tmpList.sort();
-                    thumbCollection.getThumbList().setAll(tmpList);
+                    thumbCollection.getThumbList().addAll(tmpList);
                     tmpList.clear();
+                    
+                    thumbCollection.getThumbList().sort();
                     notifyEvent(0, 0, "");
                     Duration.counterStop("Thumb erstellen");
                 }

@@ -121,12 +121,15 @@ public class GuiWallpaperPane extends AnchorPane {
             cbDest.selectElement(p.toString());
         }
 
+        setSize(); // falls sich die Liste der Thumbs geändert hat
     }
 
     private void initCont() {
         // DEST
         btnDest.setOnAction(event -> {
-            DirFileChooser.FileChooserSave(ProgData.getInstance().primaryStage, cbDest, "");
+            DirFileChooser.FileChooserSave(ProgData.getInstance().primaryStage, cbDest,
+                    progData.selectedProjectData.getDestDir(),
+                    "");
         });
         btnDest.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
         cbDest.init(ProgConfig.CONFIG_DEST_WALLPAPER_PATH_LIST, ProgConfig.CONFIG_DEST_WALLPAPER_PATH_SEL);
@@ -203,7 +206,6 @@ public class GuiWallpaperPane extends AnchorPane {
 
         sliderSize.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
         sliderCount.valueProperty().addListener((observable, oldValue, newValue) -> setSize());
-        setSize();
 
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(lblSize);
@@ -265,36 +267,43 @@ public class GuiWallpaperPane extends AnchorPane {
     }
 
     private void setSize() {
-        Text text = new Text();
         if (progData.selectedProjectData == null) {
             lblSize.setText("");
+            return;
         }
-        int picW, picH;
 
+        Text text = new Text();
+        int picW, picH;
         int thumbs = progData.selectedProjectData.getThumbCollection().getThumbList().getSize();
 
-        if (10 * (int) sliderCount.getValue() >= thumbs) {
-            picW = thumbs;
-            picH = 1;
+        if (thumbs == 0) {
+            text.setText("Es sind keine Miniaturbilder in der Sammlung.");
+            lblSize.setText(text.getText());
+
         } else {
-            picW = 10 * (int) sliderCount.getValue();
-            picH = thumbs / picW;
-            if (thumbs % picW > 0) {
-                picH += 1;
+            if (10 * (int) sliderCount.getValue() >= thumbs) {
+                picW = thumbs;
+                picH = 1;
+            } else {
+                picW = 10 * (int) sliderCount.getValue();
+                picH = thumbs / picW;
+                if (thumbs % picW > 0) {
+                    picH += 1;
+                }
             }
+
+            int pixelW = 10 * (int) sliderSize.getValue() * picW;
+            int pixelH = 10 * (int) sliderSize.getValue() * picH;
+
+            String fileSize = ImgTools.getImgFileSizeStr(pixelW, pixelH);
+            text.setText("Die Fototapete hat eine Breite und Höhe von " +
+                    numberFormat.format(pixelW) + " * " +
+                    numberFormat.format(pixelH) + " Pixeln." +
+                    "\n" +
+                    "Die Dateigröße wird etwa " + fileSize + " betragen.");
+
+            lblSize.setText(text.getText());
         }
-
-        int pixelW = 10 * (int) sliderSize.getValue() * picW;
-        int pixelH = 10 * (int) sliderSize.getValue() * picH;
-
-        String fileSize = ImgTools.getImgFileSizeStr(pixelW, pixelH);
-        text.setText("Die Fototapete hat eine Breite und Höhe von " +
-                numberFormat.format(pixelW) + " * " +
-                numberFormat.format(pixelH) + " Pixeln." +
-                "\n" +
-                "Die Dateigröße wird etwa " + fileSize + " haben.");
-
-        lblSize.setText(text.getText());
     }
 
 }

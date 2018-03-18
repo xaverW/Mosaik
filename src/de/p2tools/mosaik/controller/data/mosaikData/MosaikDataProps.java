@@ -90,7 +90,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
                 new ConfigStringProp("thumb-src", THUMB_SRC.THUMBS.toString(), thumbSrc),
                 new ConfigBoolProp("black-white", Boolean.FALSE, blackWhite),
                 new ConfigStringProp("reduce-big", THUMB_RESIZE.NON.toString(), resizeThumb),
-                
+
                 new ConfigBoolProp("add-border", Boolean.FALSE, addBorder),
                 new ConfigIntProp("reduce-size", 0, borderSize),
                 new ConfigStringProp("border-color", "", borderColor)));
@@ -98,7 +98,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
 
 
     public String getFormat() {
-        return format.get();
+        return format.getValueSafe();
     }
 
     public StringProperty formatProperty() {
@@ -110,7 +110,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
     }
 
     public String getFotoSrc() {
-        return fotoSrc.get();
+        return fotoSrc.getValueSafe();
     }
 
     public StringProperty fotoSrcProperty() {
@@ -122,7 +122,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
     }
 
     public String getFotoDest() {
-        return fotoDest.get();
+        return fotoDest.getValueSafe();
     }
 
     public StringProperty fotoDestProperty() {
@@ -171,7 +171,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
     }
 
     public String getThumbSrc() {
-        return thumbSrc.get();
+        return thumbSrc.getValueSafe();
     }
 
     public StringProperty thumbSrcProperty() {
@@ -195,7 +195,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
     }
 
     public String getResizeThumb() {
-        return resizeThumb.get();
+        return resizeThumb.getValueSafe();
     }
 
     public StringProperty resizeThumbProperty() {
@@ -231,7 +231,7 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
     }
 
     public String getBorderColor() {
-        return borderColor.get();
+        return borderColor.getValueSafe();
     }
 
     public StringProperty borderColorProperty() {
