@@ -41,6 +41,7 @@ public class GenMosaik {
     private ThumbCollection thumbCollection;
     private MosaikThumb mosaikThumb = null;
     private MosaikSrcImage mosaikSrcImage = null;
+    private CreateMosaik createMosaik = null;
 
     public GenMosaik(ProgData progData) {
         this.progData = progData;
@@ -61,6 +62,9 @@ public class GenMosaik {
         }
         if (mosaikSrcImage != null) {
             mosaikSrcImage.setStop();
+        }
+        if (createMosaik != null) {
+            createMosaik.setStop();
         }
     }
 
@@ -101,17 +105,36 @@ public class GenMosaik {
         }
 
         if (mosaikData.getThumbSrc().equals(MosaikData.THUMB_SRC.THUMBS.toString())) {
-            mosaikThumb = new MosaikThumb(src, dest, thumbCollection, mosaikData, listeners);
-            Thread startenThread = new Thread(mosaikThumb);
+//            mosaikThumb = new MosaikThumb(src, dest, thumbCollection, mosaikData, listeners);
+//            Thread startenThread = new Thread(mosaikThumb);
+//            startenThread.setName("MosaikThumb");
+//            startenThread.setDaemon(true);
+
+
+            createMosaik = new CreateMosaik(MosaikData.THUMB_SRC.THUMBS,
+                    src, dest, thumbCollection, mosaikData, listeners);
+
+            Thread startenThread = new Thread(createMosaik);
             startenThread.setName("MosaikThumb");
             startenThread.setDaemon(true);
             startenThread.start();
+
         } else {
             mosaikSrcImage = new MosaikSrcImage(src, dest, thumbCollection, mosaikData, listeners);
             Thread startenThread = new Thread(mosaikSrcImage);
             startenThread.setName("MosaikSrcImage");
             startenThread.setDaemon(true);
             startenThread.start();
+
+
+//            createMosaik = new CreateMosaik(MosaikData.THUMB_SRC.SRC_FOTO,
+//                    src, dest, thumbCollection, mosaikData, listeners);
+//
+//            Thread startenThread = new Thread(createMosaik);
+//            startenThread.setName("MosaikSrcImage");
+//            startenThread.setDaemon(true);
+//            startenThread.start();
+
         }
 
     }

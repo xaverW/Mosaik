@@ -72,22 +72,26 @@ public class MosaikSrcImage implements Runnable {
 
         Duration.counterStart("Mosaik erstellen");
         try {
-
             thumbCollection.getThumbList().resetAnz();
-            BufferedImage imgOut, imgSrcSmall;
             BufferedImage srcImg = ImgFile.getBufferedImage(new File(src));
 
-            int srcHeight = srcImg.getRaster().getHeight();
-            int srcWidth = srcImg.getRaster().getWidth();
-            int sizeThumb = mosaikData.getThumbSize();
+            final int srcHeight = srcImg.getRaster().getHeight();
+            final int srcWidth = srcImg.getRaster().getWidth();
+            final int thumbSize = mosaikData.getThumbSize();
 
-            int numThumbsWidth = mosaikData.getNumberThumbsWidth();
-            int numPixelProThumb = srcWidth / numThumbsWidth;
-            int numThumbsHeight = srcHeight / numPixelProThumb;
+            final int numThumbsWidth = mosaikData.getNumberThumbsWidth();
+            final int numPixelProThumb = srcWidth / numThumbsWidth;
+            final int numThumbsHeight = srcHeight / numPixelProThumb;
+            final int borderSize = mosaikData.getBorderSize();
 
-            int destWidth = numThumbsWidth * sizeThumb;
-            int destHeight = numThumbsHeight * sizeThumb;
-            boolean blackWhite = mosaikData.isBlackWhite();
+            int destWidth, destHeight;
+            if (mosaikData.isAddBorder()) {
+                destWidth = numThumbsWidth * thumbSize + (1 + numThumbsWidth) * borderSize;
+                destHeight = numThumbsHeight * thumbSize + (1 + numThumbsHeight) * borderSize;
+            } else {
+                destWidth = numThumbsWidth * thumbSize;
+                destHeight = numThumbsHeight * thumbSize;
+            }
 
             if (destWidth >= ImgTools.JPEG_MAX_DIMENSION || destHeight >= ImgTools.JPEG_MAX_DIMENSION) {
                 showErrMsg("Die Maximale Größe des Mosaiks ist überschritten.\n" +
@@ -95,19 +99,30 @@ public class MosaikSrcImage implements Runnable {
                 return;
             }
 
-            imgOut = new BufferedImage(destWidth, destHeight, BufferedImage.TYPE_INT_RGB);
-            imgSrcSmall = ImgTools.scaleBufferedImage(srcImg, sizeThumb, sizeThumb);
+            BufferedImage imgSrcSmall = ImgTools.scaleBufferedImage(srcImg, thumbSize, thumbSize);
+            BufferedImage imgOut = ImgFile.getBufferedImage(destWidth, destHeight, mosaikData.getBorderColor());
             final ArrayList<GenImgData> genImgDataArrayList = new ArrayList<>();
 
+
             //Bild zusammenbauen
+//            maxLines = numThumbsHeight;
+//            notifyEvent(maxLines, 0, "Mosaik erstellen");
+//            for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
+//                GenImgData genImgData = new GenImgData(imgOut, srcImg, imgSrcSmall,
+//                        thumbSize, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb);
+//                genImgDataArrayList.add(genImgData);
+//            }
+
             maxLines = numThumbsHeight;
             notifyEvent(maxLines, 0, "Mosaik erstellen");
-
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
-                GenImgData genImgData = new GenImgData(imgOut, srcImg, imgSrcSmall, blackWhite,
-                        sizeThumb, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb);
+                GenImgData genImgData = new GenImgData(imgOut, srcImg, imgSrcSmall, null,
+                        thumbSize, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb,
+                        mosaikData.getResizeThumb(), mosaikData.getBorderSize(), mosaikData.isAddBorder());
+
                 genImgDataArrayList.add(genImgData);
             }
+
 
             if (ProgData.saveMem) {
                 genImgDataArrayList.stream().forEach(genImgData -> genMosaik(genImgData));
@@ -119,6 +134,11 @@ public class MosaikSrcImage implements Runnable {
                 notifyEvent(0, 0, "Abbruch");
                 Duration.counterStop("Mosaik erstellen");
                 return;
+            }
+
+            // Schwarz/Weis
+            if (mosaikData.isBlackWhite()) {
+                ImgTools.changeToGrayscale(imgOut);
             }
 
             //fertig
@@ -141,30 +161,28 @@ public class MosaikSrcImage implements Runnable {
 
     }
 
-    private class GenImgData {
-        BufferedImage imgOut;
-        BufferedImage srcImg;
-        BufferedImage imgSrcSmall;
-        boolean blackWhite;
-        int sizeThumb;
-        int yy;
-        int numThumbsWidth;
-        int numThumbsHeight;
-        int numPixelProThumb;
-
-        public GenImgData(BufferedImage imgOut, BufferedImage srcImg, BufferedImage imgSrcSmall, boolean blackWhite,
-                          int sizeThumb, int yy, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb) {
-            this.imgOut = imgOut;
-            this.srcImg = srcImg;
-            this.imgSrcSmall = imgSrcSmall;
-            this.blackWhite = blackWhite;
-            this.sizeThumb = sizeThumb;
-            this.yy = yy;
-            this.numThumbsWidth = numThumbsWidth;
-            this.numThumbsHeight = numThumbsHeight;
-            this.numPixelProThumb = numPixelProThumb;
-        }
-    }
+//    private class GenImgData {
+//        BufferedImage imgOut;
+//        BufferedImage srcImg;
+//        BufferedImage imgSrcSmall;
+//        int sizeThumb;
+//        int yy;
+//        int numThumbsWidth;
+//        int numThumbsHeight;
+//        int numPixelProThumb;
+//
+//        public GenImgData(BufferedImage imgOut, BufferedImage srcImg, BufferedImage imgSrcSmall,
+//                          int sizeThumb, int yy, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb) {
+//            this.imgOut = imgOut;
+//            this.srcImg = srcImg;
+//            this.imgSrcSmall = imgSrcSmall;
+//            this.sizeThumb = sizeThumb;
+//            this.yy = yy;
+//            this.numThumbsWidth = numThumbsWidth;
+//            this.numThumbsHeight = numThumbsHeight;
+//            this.numPixelProThumb = numPixelProThumb;
+//        }
+//    }
 
     private void genMosaik(GenImgData genImgData) {
         BufferedImage buffImg;
@@ -181,19 +199,17 @@ public class MosaikSrcImage implements Runnable {
             Color c = ImgTools.getColor(genImgData.srcImg.getSubimage(xx * genImgData.numPixelProThumb,
                     genImgData.yy * genImgData.numPixelProThumb, genImgData.numPixelProThumb, genImgData.numPixelProThumb));
 
-            buffImg = getImgBw(genImgData.imgSrcSmall, c, genImgData.blackWhite);
+            buffImg = getBufferedImg(genImgData.srcImgSmall, c);
             buffImg = ImgTools.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
             genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb, genImgData.yy * genImgData.sizeThumb, buffImg.getData());
         }
     }
 
-    private BufferedImage getImgBw(BufferedImage srcImg, Color c, boolean bw) {
+    private BufferedImage getBufferedImg(BufferedImage srcImg, Color c) {
         BufferedImage img = ImgFile.cloneImage(srcImg);
 
         int width = img.getWidth();
         int height = img.getHeight();
-
-        float avgSrc = 1.0f * (c.getRed() + c.getGreen() + c.getBlue()) * 255 / (3 * 255);
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -204,22 +220,12 @@ public class MosaikSrcImage implements Runnable {
                 int g = (p >> 8) & 0xff;
                 int b = p & 0xff;
 
-                if (bw) {
-                    //calculate average
-                    float avg = 1.0f * (r + g + b) / (3 * 255);
-                    int avgI = (int) (avg * avgSrc);
-
-                    p = (a << 24) | (avgI << 16) | (avgI << 8) | avgI;
-
-                } else {
-                    //calculate average
-                    float avg = 1.0f * (r + g + b) / (3 * 255);
-
-                    p = (a << 24) |
-                            ((int) (avg * c.getRed()) << 16) |
-                            ((int) (avg * c.getGreen()) << 8) |
-                            (int) (avg * c.getBlue());
-                }
+                //calculate average
+                float avg = 1.0f * (r + g + b) / (3 * 255);
+                p = (a << 24) |
+                        ((int) (avg * c.getRed()) << 16) |
+                        ((int) (avg * c.getGreen()) << 8) |
+                        (int) (avg * c.getBlue());
 
                 img.setRGB(x, y, p);
             }

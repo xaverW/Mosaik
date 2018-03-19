@@ -17,7 +17,7 @@
 
 package de.p2tools.mosaik.controller.worker.genMosaik;
 
-public class DataColor implements Comparable<DataColor> {
+public class ColorData implements Comparable<ColorData> {
 
     public String[] arr;
     public int anz = 0;
@@ -42,11 +42,11 @@ public class DataColor implements Comparable<DataColor> {
     public static final String[] FARBEN_COLUMN_NAMES = {FARBEN_PFAD, FARBEN_R, FARBEN_G, FARBEN_B, FARBEN_FARBE,
             FARBEN_BENUTZEN};
 
-    public DataColor() {
+    public ColorData() {
         makeArr();
     }
 
-    public DataColor(String pfad, String r, String g, String b) {
+    public ColorData(String pfad, String r, String g, String b) {
         makeArr();
         arr[FARBEN_PFAD_NR] = pfad;
         arr[FARBEN_R_NR] = r;
@@ -66,7 +66,7 @@ public class DataColor implements Comparable<DataColor> {
     }
 
     @Override
-    public int compareTo(DataColor arg0) {
+    public int compareTo(ColorData arg0) {
         boolean ret = false;
         if (Integer.parseInt(arr[FARBEN_R_NR]) +
                 Integer.parseInt(arr[FARBEN_G_NR]) +

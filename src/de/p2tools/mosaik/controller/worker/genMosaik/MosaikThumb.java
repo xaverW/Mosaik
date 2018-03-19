@@ -106,15 +106,15 @@ public class MosaikThumb implements Runnable {
             }
 
 
-            //Bild zusammenbauen
             final BufferedImage imgOut = ImgFile.getBufferedImage(destWidth, destHeight, mosaikData.getBorderColor());
-            final Farbraum farbraum = new Farbraum(thumbCollection);
             final ArrayList<GenImgData> genImgDataArrayList = new ArrayList<>();
+            final ColorCollection colorCollection = new ColorCollection(thumbCollection);
 
+            //Bild zusammenbauen
             maxLines = numThumbsHeight;
             notifyEvent(maxLines, 0, "Mosaik erstellen");
             for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
-                GenImgData genImgData = new GenImgData(imgOut, srcImg, farbraum,
+                GenImgData genImgData = new GenImgData(imgOut, srcImg, null, colorCollection,
                         thumbSize, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb,
                         mosaikData.getResizeThumb(), mosaikData.getBorderSize(), mosaikData.isAddBorder());
 
@@ -181,36 +181,6 @@ public class MosaikThumb implements Runnable {
                 PAlert.showErrorAlert("Mosaik erstellen", msg));
     }
 
-    private class GenImgData {
-        BufferedImage imgOut;
-        BufferedImage srcImg;
-        Farbraum farbraum;
-        int sizeThumb;
-        int yy;
-        int numThumbsWidth;
-        int numThumbsHeight;
-        int numPixelProThumb;
-        //        String thumbResize;
-        boolean addBorder;
-        int borderSize;
-
-        public GenImgData(BufferedImage imgOut, BufferedImage srcImg, Farbraum farbraum,
-                          int sizeThumb, int yy, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb,
-                          String thumbResize, int borderSize, boolean addBorder) {
-            this.imgOut = imgOut;
-            this.srcImg = srcImg;
-            this.farbraum = farbraum;
-            this.sizeThumb = sizeThumb;
-            this.yy = yy;
-            this.numThumbsWidth = numThumbsWidth;
-            this.numThumbsHeight = numThumbsHeight;
-            this.numPixelProThumb = numPixelProThumb;
-//            this.thumbResize = thumbResize;
-            this.borderSize = borderSize;
-            this.addBorder = addBorder;
-        }
-    }
-
 
     private void generatePixel(GenImgData genImgData) throws PException {
         try {
@@ -227,7 +197,7 @@ public class MosaikThumb implements Runnable {
                 Color c = ImgTools.getColor(genImgData.srcImg.getSubimage(xx * genImgData.numPixelProThumb,
                         genImgData.yy * genImgData.numPixelProThumb,
                         genImgData.numPixelProThumb, genImgData.numPixelProThumb));
-                Thumb thumb = genImgData.farbraum.getThumb(c, anz);
+                Thumb thumb = genImgData.colorCollection.getThumb(c, anz);
 
                 if (thumb != null) {
                     thumb.addAnz();

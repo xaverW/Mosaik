@@ -17,7 +17,6 @@
 
 package de.p2tools.mosaik.controller.worker.genMosaik;
 
-import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.tools.Log;
@@ -25,21 +24,19 @@ import de.p2tools.p2Lib.tools.Log;
 import java.awt.*;
 import java.util.Iterator;
 
-public class Farbraum {
+public class ColorCollection {
 
-    public final int FARBEN = 256;
-    public boolean[][][] suchraum = new boolean[FARBEN][FARBEN][FARBEN];
-    private final ProgData progData;
+    public final int COLORS = 256;
+    public boolean[][][] allColors = new boolean[COLORS][COLORS][COLORS];
     private final ThumbCollection thumbCollection;
 
-    public Farbraum(ThumbCollection thumbCollection) {
-        progData = ProgData.getInstance();
+    public ColorCollection(ThumbCollection thumbCollection) {
         this.thumbCollection = thumbCollection;
 
-        for (int i = 0; i < FARBEN - 1; ++i) {
-            for (int k = 0; k < FARBEN - 1; ++k) {
-                for (int l = 0; l < FARBEN - 1; ++l) {
-                    suchraum[i][k][l] = false;
+        for (int i = 0; i < COLORS - 1; ++i) {
+            for (int k = 0; k < COLORS - 1; ++k) {
+                for (int l = 0; l < COLORS - 1; ++l) {
+                    allColors[i][k][l] = false;
                 }
             }
         }
@@ -62,7 +59,7 @@ public class Farbraum {
         int g = c.getGreen();
         int b = c.getBlue();
         int rMin = r, rMax = r, gMin = g, gMax = g, bMin = b, bMax = b;
-        while (rMin > 0 || gMin > 0 || bMin > 0 || rMax < FARBEN - 1 || gMax < FARBEN - 1 || bMax < FARBEN - 1) {
+        while (rMin > 0 || gMin > 0 || bMin > 0 || rMax < COLORS - 1 || gMax < COLORS - 1 || bMax < COLORS - 1) {
             rMin -= sprung;
             gMin -= sprung;
             bMin -= sprung;
@@ -78,24 +75,24 @@ public class Farbraum {
             if (bMin < 0) {
                 bMin = 0;
             }
-            if (rMax >= FARBEN) {
-                rMax = FARBEN - 1;
+            if (rMax >= COLORS) {
+                rMax = COLORS - 1;
             }
-            if (gMax >= FARBEN) {
-                gMax = FARBEN - 1;
+            if (gMax >= COLORS) {
+                gMax = COLORS - 1;
             }
-            if (bMax >= FARBEN) {
-                bMax = FARBEN - 1;
+            if (bMax >= COLORS) {
+                bMax = COLORS - 1;
             }
             for (int i = rMin; i <= rMax; ++i) {
                 for (int k = gMin; k <= gMax; ++k) {
                     for (int l = bMin; l <= bMax; ++l) {
-                        if (suchraum[i][k][l] == true) {
+                        if (allColors[i][k][l] == true) {
                             thumb = thumbCollection.getThumbList().getThumb(i, k, l, anz);
                             if (thumb != null) {
                                 return thumb;
                             } else {
-                                suchraum[i][k][l] = false;
+                                allColors[i][k][l] = false;
                             }
                         }
                     }
@@ -106,7 +103,7 @@ public class Farbraum {
                 sprung = max;
             }
         }
-        Log.errorLog(987120365, "Farbraum.getThumb - keine Farbe!!");
+        Log.errorLog(987120365, "ColorCollection.getThumb - keine Farbe!!");
         return null;
     }
 
@@ -115,7 +112,7 @@ public class Farbraum {
         r = thumb.getRed();
         g = thumb.getGreen();
         b = thumb.getBlue();
-        suchraum[r][g][b] = true;
+        allColors[r][g][b] = true;
     }
 
 }
