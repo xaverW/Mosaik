@@ -20,7 +20,9 @@ public class HelpText {
 
     public static final String PROJECT_PATH = "Hier wird der Ordner ausgewählt, " +
             "in dem das Mosaik erstellt wird. In dem Ordner werden auch die " +
-            "erstellten Vorschaubilder zum Bauen des Mosaik gespeichert.";
+            "erstellten Vorschaubilder zum Bauen des Mosaik gespeichert." +
+            "\n\n" +
+            "Der Projektname dient nur der eigenen Erinnerung.";
 
     public static final String GET_THUMB_DIR = "Aus den Fotos in dem gewählten Ordner werden " +
             "Miniaturbilder erstellt. Diese werden dann im Verzeichnis des Projekts gespeichert. " +
