@@ -28,6 +28,7 @@ import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.PRandom;
 import javafx.application.Platform;
 
 import javax.swing.event.EventListenerList;
@@ -35,13 +36,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class GenWallpaper {
     private EventListenerList listeners = new EventListenerList();
     private ThumbCollection thumbCollection;
     private String dest;
     private boolean stopAll = false;
-    private int numThumbsWidth;
+    private int numThumbsWidth, numThumbsHeight, sumAllThumbs;
     private int thumbSize;
     private Path destPathName = null;
     //    private String thumbResize;
@@ -120,27 +122,23 @@ public class GenWallpaper {
             Duration.counterStart("Mosaik erstellen");
             try {
                 final int thumbListSize = thumbCollection.getThumbList().getSize();
-                notifyEvent(thumbListSize, 0, "Fototapete erstellen");
 
                 if (thumbListSize < numThumbsWidth) {
                     numThumbsWidth = thumbListSize;
                 }
 
-                int destHeight, destWidth;
-
-                if (addBorder) {
-                    destHeight = (thumbListSize / numThumbsWidth) * thumbSize + (1 + thumbListSize / numThumbsWidth) * borderSize;
-                    destWidth = numThumbsWidth * thumbSize + (1 + numThumbsWidth) * borderSize;
-                } else {
-                    destHeight = (thumbListSize / numThumbsWidth) * thumbSize;
-                    destWidth = numThumbsWidth * thumbSize;
-                }
-
+                numThumbsHeight = thumbListSize / numThumbsWidth;
                 if (thumbListSize % numThumbsWidth != 0) {
-                    destHeight += thumbSize;
-                    if (addBorder) {
-                        destHeight += borderSize;
-                    }
+                    ++numThumbsHeight;
+                }
+                sumAllThumbs = numThumbsWidth * numThumbsHeight;
+
+
+                int destHeight = numThumbsHeight * thumbSize;
+                int destWidth = numThumbsWidth * thumbSize;
+                if (addBorder) {
+                    destHeight += (1 + numThumbsHeight) * borderSize;
+                    destWidth += (1 + numThumbsWidth) * borderSize;
                 }
 
                 if (destWidth >= ImgTools.JPEG_MAX_DIMENSION || destHeight >= ImgTools.JPEG_MAX_DIMENSION) {
@@ -149,15 +147,20 @@ public class GenWallpaper {
                     return;
                 }
 
+
+                // =======================================
+                // los gehts
+                notifyEvent(thumbListSize, 0, "Fototapete erstellen");
+
                 int hh = 0, ww = 0;
-                boolean lineEnd = false;
-
                 final BufferedImage imgOut = ImgFile.getBufferedImage(destWidth, destHeight, borderColor);
+                List<Integer> getList = PRandom.getShuffleList(sumAllThumbs, thumbListSize - 1);
 
-                for (int i = 0; i < thumbListSize && !stopAll; ++i) {
-                    notifyEvent(thumbListSize, i, thumbListSize == 0 ? "" : 100 * i / thumbListSize + " Prozent");
+                for (int i = 0; i < sumAllThumbs && !stopAll; ++i) {
+                    notifyEvent(sumAllThumbs, i, thumbListSize == 0 ? "" : 100 * i / sumAllThumbs + " Prozent");
 
-                    Thumb thumb = thumbCollection.getThumbList().get(i);
+
+                    final Thumb thumb = thumbCollection.getThumbList().get(getList.get(i));
                     BufferedImage img = ImgFile.getBufferedImage(new File(thumb.getFileName()));
                     if (img == null) {
                         showErrMsg("Es sind nicht mehr alle Miniaturbilder vorhanden. " +
@@ -167,14 +170,15 @@ public class GenWallpaper {
                         break;
                     }
 
+
                     if (img.getWidth() != thumbSize) {
                         img = ImgTools.scaleBufferedImage(img, thumbSize, thumbSize);
                     }
 
+
                     if (addBorder) {
                         imgOut.getRaster().setRect(ww * thumbSize + (1 + ww) * borderSize,
-                                hh * thumbSize + (1 + hh) * borderSize,
-                                img.getData());
+                                hh * thumbSize + (1 + hh) * borderSize, img.getData());
                     } else {
                         imgOut.getRaster().setRect(ww * thumbSize, hh * thumbSize, img.getData());
                     }
@@ -184,18 +188,7 @@ public class GenWallpaper {
                     if (ww >= numThumbsWidth) {
                         ww = 0;
                         ++hh;
-
-                        if (lineEnd) {
-                            break;
-                        }
                     }
-
-                    if (i == thumbListSize - 1 && ww < numThumbsWidth) {
-                        // dann sind wir in der letzten Zeile und nicht am Zeilenende
-                        i = -1;
-                        lineEnd = true;
-                    }
-
                 }
 
 

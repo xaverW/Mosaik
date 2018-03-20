@@ -41,9 +41,9 @@ public class CreateMosaikSrcImage {
         this.maxLines = genImgDataArrayList.size();
 
         if (ProgData.saveMem) {
-            genImgDataArrayList.stream().forEach(genImgData -> genMosaik(genImgData));
+            genImgDataArrayList.stream().forEach(genImgData -> genPixel(genImgData));
         } else {
-            genImgDataArrayList.parallelStream().forEach(genImgData -> genMosaik(genImgData));
+            genImgDataArrayList.parallelStream().forEach(genImgData -> genPixel(genImgData));
         }
     }
 
@@ -60,7 +60,7 @@ public class CreateMosaikSrcImage {
         stopAll = true;
     }
 
-    private void genMosaik(GenImgData genImgData) {
+    private void genPixel(GenImgData genImgData) {
         BufferedImage buffImg;
 
         if (stopAll) {
@@ -77,7 +77,19 @@ public class CreateMosaikSrcImage {
 
             buffImg = getBufferedImg(genImgData.srcImgSmall, c);
             buffImg = ImgTools.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
-            genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb, genImgData.yy * genImgData.sizeThumb, buffImg.getData());
+
+            if (genImgData.addBorder) {
+                // border
+                genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + (1 + xx) * genImgData.borderSize,
+                        genImgData.yy * genImgData.sizeThumb + (1 + genImgData.yy) * genImgData.borderSize,
+                        buffImg.getData());
+
+            } else {
+                // no border
+                genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb,
+                        genImgData.yy * genImgData.sizeThumb,
+                        buffImg.getData());
+            }
         }
     }
 

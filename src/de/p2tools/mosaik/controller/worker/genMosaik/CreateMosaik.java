@@ -108,18 +108,17 @@ public class CreateMosaik implements Runnable {
             // los gehts
             notifyEvent(maxLines, 0, "Mosaik erstellen");
 
-            // ===================================================
-            // mosaik from thumbs
             if (thumbSrc.equals(MosaikData.THUMB_SRC.THUMBS)) {
+                // ===================================================
+                // mosaik from thumbs
                 if (!createMosThumb()) {
                     stopAll = true;
                 }
-            }
 
 
-            // ===================================================
-            // mosaik from source image
-            if (thumbSrc.equals(MosaikData.THUMB_SRC.SRC_FOTO)) {
+            } else if (thumbSrc.equals(MosaikData.THUMB_SRC.SRC_FOTO)) {
+                // ===================================================
+                // mosaik from source image
                 createMosSrcImg();
             }
 

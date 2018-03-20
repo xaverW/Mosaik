@@ -120,20 +120,20 @@ public class GenMosaik {
             startenThread.start();
 
         } else {
-            mosaikSrcImage = new MosaikSrcImage(src, dest, thumbCollection, mosaikData, listeners);
-            Thread startenThread = new Thread(mosaikSrcImage);
-            startenThread.setName("MosaikSrcImage");
-            startenThread.setDaemon(true);
-            startenThread.start();
-
-
-//            createMosaik = new CreateMosaik(MosaikData.THUMB_SRC.SRC_FOTO,
-//                    src, dest, thumbCollection, mosaikData, listeners);
-//
-//            Thread startenThread = new Thread(createMosaik);
+//            mosaikSrcImage = new MosaikSrcImage(src, dest, thumbCollection, mosaikData, listeners);
+//            Thread startenThread = new Thread(mosaikSrcImage);
 //            startenThread.setName("MosaikSrcImage");
 //            startenThread.setDaemon(true);
 //            startenThread.start();
+
+
+            createMosaik = new CreateMosaik(MosaikData.THUMB_SRC.SRC_FOTO,
+                    src, dest, thumbCollection, mosaikData, listeners);
+
+            Thread startenThread = new Thread(createMosaik);
+            startenThread.setName("MosaikSrcImage");
+            startenThread.setDaemon(true);
+            startenThread.start();
 
         }
 
