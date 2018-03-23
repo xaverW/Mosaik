@@ -156,7 +156,7 @@ public class StatusBarController extends AnchorPane {
         int progress = event.getProgress();
         double prog = 1.0;
         if (max > 0) {
-            prog = 1.0 * progress / max;
+            prog = (1.0 * progress) / max;
         }
 
         lblProgress.setText(event.getText());

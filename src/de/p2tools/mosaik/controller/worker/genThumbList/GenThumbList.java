@@ -39,8 +39,8 @@ public class GenThumbList {
     private ProgData progData;
     private EventListenerList listeners = new EventListenerList();
     private boolean stopAll = false;
-    private int maxFile = 0;
-    private int progressFile = 0;
+    //    private int maxFile = 0;
+//    private int progressFile = 0;
     private LinkedList<File> fileListRead = new LinkedList<>();
     private LinkedList<File[]> filesCreateThumb = new LinkedList<>();
 
@@ -72,7 +72,7 @@ public class GenThumbList {
 
     public void create(ThumbCollection thumbCollection, String destDir) {
         Duration.counterStart("Thumb erstellen");
-        progressFile = 0;
+//        progressFile = 0;
         stopAll = false;
         CreateListOfThumbs createListOfThumbs = new CreateListOfThumbs(thumbCollection, destDir);
         Thread thread = new Thread(createListOfThumbs);
@@ -81,7 +81,7 @@ public class GenThumbList {
     }
 
     public void read(ThumbCollection thumbCollection, String destDir) {
-        progressFile = 0;
+//        progressFile = 0;
         stopAll = false;
         fileListRead.clear(); // die Liste wird komplett neu eingelesen
         thumbCollection.getThumbList().clear();
@@ -120,12 +120,16 @@ public class GenThumbList {
         private File fileSrcDir;
         private File fileDestDir;
         private boolean rekursiv;
+        private int maxFile = 0;
+        private int progressFile = 0;
 
         public CreateListOfThumbs(ThumbCollection thumbCollection, String thumbDir) {
             this.thumbCollection = thumbCollection;
             this.fileSrcDir = new File(thumbCollection.getFotoSrcDir());
             this.fileDestDir = new File(thumbDir);
             this.rekursiv = thumbCollection.isRecursive();
+
+            Log.sysLog("CreateListOfThumbs");
         }
 
         @Override
@@ -200,7 +204,7 @@ public class GenThumbList {
                 if (threads <= 0) {
                     thumbCollection.getThumbList().addAll(tmpList);
                     tmpList.clear();
-                    
+
                     thumbCollection.getThumbList().sort();
                     notifyEvent(0, 0, "");
                     Duration.counterStop("Thumb erstellen");
@@ -222,10 +226,14 @@ public class GenThumbList {
         private ThumbDataList tmpList = new ThumbDataList();
         private File fileThumbDir;
         private ThumbCollection thumbCollection;
+        private int maxFile = 0;
+        private int progressFile = 0;
 
         public ReadListOfThumbs(ThumbCollection thumbCollection, String thumbDir) {
             this.thumbCollection = thumbCollection;
             fileThumbDir = new File(thumbDir);
+
+            Log.sysLog("ReadListOfThumbs");
         }
 
         @Override
