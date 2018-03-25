@@ -101,7 +101,23 @@ public class CreateMosaik implements Runnable {
                 return;
             }
 
-            imgOut = ImgFile.getBufferedImage(destWidth, destHeight, mosaikData.getBorderColor());
+            if (mosaikData.getBackGround().equals(MosaikData.BACKGROUND.IMAGE.toString()) &&
+                    mosaikData.getBgPic().isEmpty()) {
+                showErrMsg("Es soll ein Hintergrundbild verwendet werden, es ist aber keines angegeben.");
+                return;
+            }
+
+
+            if (!mosaikData.isAddBorder()) {
+                imgOut = ImgFile.getBufferedImage(destWidth, destHeight);
+
+            } else if (mosaikData.getBackGround().equals(MosaikData.BACKGROUND.IMAGE.toString())) {
+                BufferedImage bgImg = ImgFile.getBufferedImage(new File(mosaikData.getBgPic()));
+                imgOut = ImgFile.getBufferedImage(destWidth, destHeight, bgImg);
+
+            } else {
+                imgOut = ImgFile.getBufferedImage(destWidth, destHeight, mosaikData.getBorderColor());
+            }
 
 
             // ===================================================

@@ -93,7 +93,10 @@ public class HelpText {
 
     public static final String THUMB_BORDER = "Um die einzelnen Miniaturbilder kann ein Rahmen " +
             "gezeichnet werden. Die Miniaturbilder haben dann also einen Abstand von 2 x Rahmen. " +
-            "Mit dem Regler kann die Breite des Rahmens (in Pixel) eingestellt werden und mit der " +
-            "Farbauswahl dessen Farbe.";
+            "Mit dem Regler kann die Breite des Rahmens (in Pixel), also der Abstand der Miniaturbilder " +
+            "eingestellt werden." +
+            "\n" +
+            "Mit der Farbauswahl kann eine Hintergrundfarbe gesetzt werden die dann zwischen den Miniaturbilder " +
+            "zu sehen ist (oder aber ein Hintergrundbild).";
 
 }

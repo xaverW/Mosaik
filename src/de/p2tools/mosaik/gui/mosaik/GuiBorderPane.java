@@ -95,7 +95,7 @@ public class GuiBorderPane extends AnchorPane {
 
         final Button btnHelpSize = new Button("");
         btnHelpSize.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpSize.setOnAction(a -> new PAlert().showHelpAlert("Größe der Miniaturbilder", HelpText.THUMB_BORDER));
+        btnHelpSize.setOnAction(a -> new PAlert().showHelpAlert("Größe des Rahmen", HelpText.THUMB_BORDER));
 
         btnBgImg.setOnAction(event -> DirFileChooser.FileChooser(ProgData.getInstance().primaryStage,
                 cboBgImg,
@@ -111,6 +111,13 @@ public class GuiBorderPane extends AnchorPane {
             }
         });
 
+        rbBgImg.disableProperty().bind(chkBorder.selectedProperty().not());
+        rbColor.disableProperty().bind(chkBorder.selectedProperty().not());
+        cboBgImg.disableProperty().bind(chkBorder.selectedProperty().not());
+        btnBgImg.disableProperty().bind(chkBorder.selectedProperty().not());
+        colorPicker.disableProperty().bind(chkBorder.selectedProperty().not());
+        sliderBorder.disableProperty().bind(chkBorder.selectedProperty().not());
+        
         sliderBorder.setMin(1);
         sliderBorder.setMax(50);
 
@@ -126,7 +133,7 @@ public class GuiBorderPane extends AnchorPane {
         gridPaneDest.setVgap(10);
         gridPaneDest.setHgap(10);
 
-        Label lbl = new Label("Alle Miniaturbilder mit einem Rahmen versehen");
+        Label lbl = new Label("Einen Rahmen um die Miniaturbilder ziehen");
         lbl.getStyleClass().add("headerLabel");
         lbl.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lbl, Priority.ALWAYS);
@@ -199,10 +206,10 @@ public class GuiBorderPane extends AnchorPane {
         }
 
         chkBorder.selectedProperty().bindBidirectional(mosaikData.addBorderProperty());
-        mosaikData.borderSizeProperty().bind(sliderBorder.valueProperty());
 
-        lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.borderSizeProperty()));
         sliderBorder.setValue(mosaikData.getBorderSize());
+        mosaikData.borderSizeProperty().bind(sliderBorder.valueProperty());
+        lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.borderSizeProperty()));
 
         cboBgImg.selectElement(mosaikData.getBgPic());
         mosaikData.bgPicProperty().bind(cboBgImg.getSelProperty());
