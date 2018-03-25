@@ -37,7 +37,6 @@ public class GuiMosaikController extends AnchorPane {
 
     private final GuiMosaikPane guiMosaikPane = new GuiMosaikPane();
     private final GuiMosaikExtendedThumbPane guiMosaikExtendedThumbPane = new GuiMosaikExtendedThumbPane();
-    //    private final GuiMosaikExtendedSizePane guiMosaikExtendedSizePane = new GuiMosaikExtendedSizePane();
     private final GuiBorderPane guiBorderPane = new GuiBorderPane();
     private final Button btnCreate = new Button("Mosaik erstellen");
 

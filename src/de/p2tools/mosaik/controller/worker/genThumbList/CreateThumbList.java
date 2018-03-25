@@ -20,7 +20,6 @@ package de.p2tools.mosaik.controller.worker.genThumbList;
 import de.p2tools.mosaik.controller.RunEvent;
 import de.p2tools.mosaik.controller.RunListener;
 import de.p2tools.mosaik.controller.config.ProgData;
-import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.image.ImgFile;
@@ -30,18 +29,20 @@ import de.p2tools.p2Lib.tools.Log;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.TreeSet;
 
-public class GenThumbList {
+public class CreateThumbList {
 
     private ProgData progData;
     private EventListenerList listeners = new EventListenerList();
     private boolean stopAll = false;
-    //    private int maxFile = 0;
-//    private int progressFile = 0;
-    private LinkedList<File> fileListRead = new LinkedList<>();
     private LinkedList<File[]> filesCreateThumb = new LinkedList<>();
 
     private int anzThread = 1;
@@ -50,7 +51,7 @@ public class GenThumbList {
 
     /**
      */
-    public GenThumbList(ProgData progData) {
+    public CreateThumbList(ProgData progData) {
         this.progData = progData;
         anzThread = Runtime.getRuntime().availableProcessors();
     }
@@ -64,7 +65,7 @@ public class GenThumbList {
     }
 
     /**
-     *
+     * stop the process
      */
     public void setStop() {
         stopAll = true;
@@ -72,23 +73,11 @@ public class GenThumbList {
 
     public void create(ThumbCollection thumbCollection, String destDir) {
         Duration.counterStart("Thumb erstellen");
-//        progressFile = 0;
         stopAll = false;
         CreateListOfThumbs createListOfThumbs = new CreateListOfThumbs(thumbCollection, destDir);
         Thread thread = new Thread(createListOfThumbs);
         thread.setDaemon(true);
         thread.start();
-    }
-
-    public void read(ThumbCollection thumbCollection, String destDir) {
-//        progressFile = 0;
-        stopAll = false;
-        fileListRead.clear(); // die Liste wird komplett neu eingelesen
-        thumbCollection.getThumbList().clear();
-        ReadListOfThumbs readListOfThumbs = new ReadListOfThumbs(thumbCollection, destDir);
-        Thread tErst = new Thread(readListOfThumbs);
-        tErst.setDaemon(true);
-        tErst.start();
     }
 
     private void notifyEvent(int max, int progress, String text) {
@@ -98,13 +87,6 @@ public class GenThumbList {
         }
     }
 
-    private synchronized void addReadFile(File file) {
-        fileListRead.add(file);
-    }
-
-    private synchronized File getReadFile() {
-        return fileListRead.poll();
-    }
 
     private synchronized void addCreationsList(File file1, File file2) {
         filesCreateThumb.add(new File[]{file1, file2});
@@ -166,30 +148,99 @@ public class GenThumbList {
         }
 
         private void createFileList(File pfad) {
-            File[] liste;
+            Path dir = pfad.toPath();
             String str = "";
-            if (pfad.isDirectory()) {
-                liste = pfad.listFiles();
-                for (int i = 0; i < liste.length && !stopAll; i++) {
-                    if (liste[i].isFile()) {
-                        if (checkSuffix(liste[i])) {
-                            try {
-                                File dest = new File(fileDestDir.getAbsolutePath() + File.separator +
-                                        liste[i].getName() + "_" +
-                                        random.nextInt(Integer.MAX_VALUE) + "." + ImgFile.IMAGE_FORMAT_JPG);
-                                str = dest.getAbsolutePath();
-                                addCreationsList(liste[i], dest);
-                            } catch (Exception ex) {
-                                Log.errorLog(391201245, ex, new String[]{"GenThumbList.createFileList",
-                                        "Fehler - Src: " + liste[i].getAbsolutePath(),
-                                        "Fehler - Dest: " + str});
-                            }
+
+            try {
+                Path start = pfad.toPath();
+                Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+
+                        if (!checkSuffix(file.toFile())) {
+                            return FileVisitResult.CONTINUE;
                         }
-                    } else if (liste[i].isDirectory() && rekursiv) {
-                        createFileList(liste[i]);
+
+                        try {
+                            File dest = new File(fileDestDir.getAbsolutePath() + File.separator +
+                                    file.toFile().getName() + "_" +
+                                    random.nextInt(Integer.MAX_VALUE) + "." + ImgFile.IMAGE_FORMAT_JPG);
+                            final String str = dest.getAbsolutePath();
+                            addCreationsList(file.toFile(), dest);
+                        } catch (Exception ex) {
+                            Log.errorLog(391201245, ex, new String[]{"CreateThumbList.createFileList",
+                                    "Fehler - Src: " + file.toFile().getAbsolutePath(),
+                                    "Fehler - Dest: " + str});
+                        }
+
+                        return FileVisitResult.CONTINUE;
                     }
-                }
+
+                    @Override
+                    public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
+                        if (e == null) {
+                            return FileVisitResult.CONTINUE;
+                        } else {
+                            // directory iteration failed
+                            throw e;
+                        }
+                    }
+                });
+            } catch (IOException ex) {
+                Log.errorLog(965412014, ex);
             }
+
+//            try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+//                for (Path entry : stream) {
+//                    final File file = entry.toFile();
+//
+//                    if (file.isDirectory() && rekursiv) {
+//                        createFileList(file);
+//                    }
+//
+//                    if (!file.isFile() || !checkSuffix(file)) {
+//                        continue;
+//                    }
+//
+//                    try {
+//                        File dest = new File(fileDestDir.getAbsolutePath() + File.separator +
+//                                file.getName() + "_" +
+//                                random.nextInt(Integer.MAX_VALUE) + "." + ImgFile.IMAGE_FORMAT_JPG);
+//                        str = dest.getAbsolutePath();
+//                        addCreationsList(file, dest);
+//                    } catch (Exception ex) {
+//                        Log.errorLog(391201245, ex, new String[]{"CreateThumbList.createFileList",
+//                                "Fehler - Src: " + file.getAbsolutePath(),
+//                                "Fehler - Dest: " + str});
+//                    }
+//                }
+//            } catch (IOException ex) {
+//                Log.errorLog(965412014, ex);
+//            }
+
+//            File[] liste;
+//            if (pfad.isDirectory()) {
+//                liste = pfad.listFiles();
+//                for (int i = 0; i < liste.length && !stopAll; i++) {
+//                    if (liste[i].isFile()) {
+//                        if (checkSuffix(liste[i])) {
+//                            try {
+//                                File dest = new File(fileDestDir.getAbsolutePath() + File.separator +
+//                                        liste[i].getName() + "_" +
+//                                        random.nextInt(Integer.MAX_VALUE) + "." + ImgFile.IMAGE_FORMAT_JPG);
+//                                str = dest.getAbsolutePath();
+//                                addCreationsList(liste[i], dest);
+//                            } catch (Exception ex) {
+//                                Log.errorLog(391201245, ex, new String[]{"CreateThumbList.createFileList",
+//                                        "Fehler - Src: " + liste[i].getAbsolutePath(),
+//                                        "Fehler - Dest: " + str});
+//                            }
+//                        }
+//                    } else if (liste[i].isDirectory() && rekursiv) {
+//                        createFileList(liste[i]);
+//                    }
+//                }
+//            }
         }
 
         private class CreateThumbs implements Runnable {
@@ -221,99 +272,7 @@ public class GenThumbList {
 
     }
 
-    private class ReadListOfThumbs implements Runnable {
-
-        private ThumbDataList tmpList = new ThumbDataList();
-        private File fileThumbDir;
-        private ThumbCollection thumbCollection;
-        private int maxFile = 0;
-        private int progressFile = 0;
-
-        public ReadListOfThumbs(ThumbCollection thumbCollection, String thumbDir) {
-            this.thumbCollection = thumbCollection;
-            fileThumbDir = new File(thumbDir);
-
-            Log.sysLog("ReadListOfThumbs");
-        }
-
-        @Override
-        public synchronized void run() {
-            try {
-                thumbCollection.getThumbList().clear();
-                maxFile = 0;
-                //src und prüfen
-                if (fileThumbDir.isDirectory()) {
-                    //Dateien zählen
-                    maxFile = FileUtils.countFilesInDirectory(fileThumbDir);
-                    notifyEvent(maxFile, 0, "Miniaturbilder einlesen");
-                    createFileList(fileThumbDir);
-                } else {
-                    Log.errorLog(912020237, "Quelle ist kein Verzeichnis!");
-                }
-            } catch (Exception ex) {
-                Log.errorLog(975421310, ex);
-            }
-            ReadColor readColor;
-            Thread t;
-            treeSet.clear();
-            for (int i = 0; i < anzThread; ++i) {
-                ++threads;
-                readColor = new ReadColor();
-                t = new Thread(readColor);
-                t.setDaemon(true);
-                t.start();
-            }
-        }
-
-        private void createFileList(File file) {
-            File[] liste;
-            if (file.isDirectory()) {
-                liste = file.listFiles();
-                for (int i = 0; i < liste.length; i++) {
-                    if (liste[i].isFile()) {
-                        if (checkSuffix(liste[i])) {
-                            addReadFile(liste[i]);
-                        }
-                    } else if (liste[i].isDirectory()) {
-                        createFileList(liste[i]);
-                    }
-                }
-            }
-
-        }
-
-        TreeSet<Thumb> treeSet = new TreeSet<>();
-
-        private class ReadColor implements Runnable {
-
-            @Override
-            public void run() {
-                File file;
-                while (!stopAll && (file = getReadFile()) != null) {
-                    Thumb thumb;
-                    if ((thumb = ScaleImage.getThumb(file)) != null) {
-//                        treeSet.add(thumb);
-                        tmpList.add(thumb);
-                    }
-
-                    ++progressFile;
-                    notifyEvent(maxFile, progressFile,
-                            maxFile == 0 ? "" : 100 * progressFile / maxFile + " Prozent");
-                }
-                --threads;
-                if (threads <= 0) {
-                    tmpList.sort();
-                    thumbCollection.getThumbList().setAll(tmpList);
-                    tmpList.clear();
-                    notifyEvent(0, 0, "");
-                }
-            }
-
-        }
-
-    }
-
-    public boolean checkSuffix(File file) {
+    public static boolean checkSuffix(File file) {
         boolean ret = false;
         if (file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase(ImgFile.IMAGE_FORMAT_JPG) ||
                 file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf(".") + 1).equalsIgnoreCase("jpeg") ||
