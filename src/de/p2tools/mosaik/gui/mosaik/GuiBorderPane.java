@@ -131,21 +131,20 @@ public class GuiBorderPane extends AnchorPane {
         lbl.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lbl, Priority.ALWAYS);
 
-        GridPane.setHgrow(chkBorder, Priority.ALWAYS);
         GridPane.setHgrow(sliderBorder, Priority.ALWAYS);
 
         cboBgImg.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(cboBgImg, Priority.ALWAYS);
 
         gridPaneDest.add(lbl, 0, row, 4, 1);
-        gridPaneDest.add(chkBorder, 0, ++row, 2, 1);
+        gridPaneDest.add(chkBorder, 0, ++row);
         gridPaneDest.add(btnHelpSize, 3, row);
 
         gridPaneDest.add(new Label("Breite des Rahmen [Pixel]:"), 0, ++row);
         gridPaneDest.add(sliderBorder, 1, row);
         gridPaneDest.add(lblSlider, 2, row);
 
-        gridPaneDest.add(new Label(" "), 1, ++row);
+        gridPaneDest.add(new Label("    "), 2, ++row);
 
         Label lblBg = new Label("Als Hintergrund eine Farbe oder ein Bild wählen");
         lblBg.getStyleClass().add("headerLabel");
@@ -154,7 +153,7 @@ public class GuiBorderPane extends AnchorPane {
         gridPaneDest.add(lblBg, 0, ++row, 4, 1);
 
         gridPaneDest.add(rbBgImg, 0, ++row);
-        gridPaneDest.add(cboBgImg, 1, row, 2, 1);
+        gridPaneDest.add(cboBgImg, 1, row);
         gridPaneDest.add(btnBgImg, 3, row);
 
         gridPaneDest.add(rbColor, 0, ++row);
