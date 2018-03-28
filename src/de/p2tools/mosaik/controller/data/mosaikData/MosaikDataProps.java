@@ -31,6 +31,20 @@ import java.util.Arrays;
 public class MosaikDataProps extends PDataSample<MosaikData> {
     public static final String TAG = "MosaikData";
 
+    public enum BACKGROUND {
+        COLOR("COLOR"), IMAGE("IMAGE");
+        private final String name;
+
+        BACKGROUND(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
     public enum THUMB_SRC {
         THUMBS("THUMBS"), SRC_FOTO("SRC_FOTO");
         private final String name;
@@ -71,7 +85,9 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
 
     private final BooleanProperty addBorder = new SimpleBooleanProperty(false); // einen Rahmen um die Thumbs zeichnen
     private final IntegerProperty borderSize = new SimpleIntegerProperty(0); // Anzahl Pixel um die ein Thumb verleinert wird
+    private final StringProperty backGround = new SimpleStringProperty(BACKGROUND.COLOR.toString()); // Hintergrund ist eine Farbe/Bild
     private final StringProperty borderColor = new SimpleStringProperty(""); // Farbe des Rahmens zwischen den Miniaturbildern
+    private final StringProperty bgPic = new SimpleStringProperty(""); // File Hintergrundfoto
 
     @Override
     public String getTag() {
@@ -93,7 +109,9 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
 
                 new ConfigBoolProp("add-border", Boolean.FALSE, addBorder),
                 new ConfigIntProp("reduce-size", 0, borderSize),
-                new ConfigStringProp("border-color", "", borderColor)));
+                new ConfigStringProp("bg-color", BACKGROUND.COLOR.toString(), backGround),
+                new ConfigStringProp("border-color", "", borderColor),
+                new ConfigStringProp("bg-pic", "", bgPic)));
     }
 
 
@@ -230,6 +248,18 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
         this.borderSize.set(borderSize);
     }
 
+    public String getBackGround() {
+        return backGround.get();
+    }
+
+    public StringProperty backGroundProperty() {
+        return backGround;
+    }
+
+    public void setBackGround(String backGround) {
+        this.backGround.set(backGround);
+    }
+
     public String getBorderColor() {
         return borderColor.getValueSafe();
     }
@@ -240,5 +270,17 @@ public class MosaikDataProps extends PDataSample<MosaikData> {
 
     public void setBorderColor(String borderColor) {
         this.borderColor.set(borderColor);
+    }
+
+    public String getBgPic() {
+        return bgPic.get();
+    }
+
+    public StringProperty bgPicProperty() {
+        return bgPic;
+    }
+
+    public void setBgPic(String bgPic) {
+        this.bgPic.set(bgPic);
     }
 }

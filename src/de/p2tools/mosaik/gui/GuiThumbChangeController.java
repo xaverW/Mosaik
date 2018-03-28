@@ -20,7 +20,7 @@ import de.p2tools.mosaik.controller.RunEvent;
 import de.p2tools.mosaik.controller.RunListener;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
-import de.p2tools.mosaik.controller.worker.genThumbList.GenThumbList;
+import de.p2tools.mosaik.controller.worker.genThumbList.CreateThumbList;
 import de.p2tools.mosaik.gui.tools.Table;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
@@ -61,7 +61,7 @@ public class GuiThumbChangeController extends AnchorPane {
         progData.worker.addAdListener(new RunListener() {
             @Override
             public void ping(RunEvent runEvent) {
-                if (runEvent.nixLos() && runEvent.getSource().getClass().equals(GenThumbList.class)) {
+                if (runEvent.nixLos() && runEvent.getSource().getClass().equals(CreateThumbList.class)) {
                     new Table().resetTable(table, Table.TABLE.CHANGE_THUMB);
                 }
             }

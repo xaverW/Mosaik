@@ -105,12 +105,7 @@ public class GenMosaik {
         }
 
         if (mosaikData.getThumbSrc().equals(MosaikData.THUMB_SRC.THUMBS.toString())) {
-//            mosaikThumb = new MosaikThumb(src, dest, thumbCollection, mosaikData, listeners);
-//            Thread startenThread = new Thread(mosaikThumb);
-//            startenThread.setName("MosaikThumb");
-//            startenThread.setDaemon(true);
-
-
+            // Mosaik aus Thumbs
             createMosaik = new CreateMosaik(MosaikData.THUMB_SRC.THUMBS,
                     src, dest, thumbCollection, mosaikData, listeners);
 
@@ -120,13 +115,7 @@ public class GenMosaik {
             startenThread.start();
 
         } else {
-//            mosaikSrcImage = new MosaikSrcImage(src, dest, thumbCollection, mosaikData, listeners);
-//            Thread startenThread = new Thread(mosaikSrcImage);
-//            startenThread.setName("MosaikSrcImage");
-//            startenThread.setDaemon(true);
-//            startenThread.start();
-
-
+            // Mosaik aus dem SRC-Image
             createMosaik = new CreateMosaik(MosaikData.THUMB_SRC.SRC_FOTO,
                     src, dest, thumbCollection, mosaikData, listeners);
 

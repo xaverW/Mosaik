@@ -338,7 +338,12 @@ public class GuiMosaikPane extends AnchorPane {
                 return;
             }
 
-            BufferedImage srcImg = ImgFile.getBufferedImage(new File(mosaikData.getFotoSrc()));
+            BufferedImage srcImg = null;
+            File src = new File(mosaikData.getFotoSrc());
+            if (src.exists()) {
+                srcImg = ImgFile.getBufferedImage(src);
+            }
+
             if (srcImg != null) {
                 srcHeight = srcImg.getRaster().getHeight();
                 srcWidth = srcImg.getRaster().getWidth();

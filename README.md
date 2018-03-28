@@ -42,3 +42,7 @@ Sollte das Programm für große Mosaiks mehr Speicher brauchen, kann es aus eine
 oder für Windows
 
 *java -Xmx4G -jar "C:\Users\PFAD\Mosaik.jar"*
+
+
+## Systemvoraussetzungen
+Unterstützt wird Windows (Vista, 7, 8, 10) und Linux. Das Programm benötigt unter Windows und Linux eine aktuelle Java-VM ab Version: 1.8 (= Java 8). Für Linux-Benutzer wird OpenJDK8 empfohlen, außerdem benötigen Linux Benutzer die aktuelle Version von JavaFX (OpenJFX).

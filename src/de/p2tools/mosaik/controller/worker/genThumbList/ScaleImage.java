@@ -76,8 +76,15 @@ public class ScaleImage {
                     }
                 }
             }
+            Thumb thumb = getThumb(rasterDest, dest);
+            if (thumb != null) {
+                thumbDataList.add(thumb);
+            }
+
 
             BufferedImage outImg = ImgTools.scaleBufferedImage(imgRect, ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION);
+            ImageIO.write(outImg, ProgConfig.FOTO_FORMAT.get(), dest);
+
 
 //            Image scaledImage = imgRect.getScaledInstance(ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION, Image.SCALE_SMOOTH);
 //            BufferedImage outImg = new BufferedImage(ProgConst.THUMB_RESOLUTION, ProgConst.THUMB_RESOLUTION, BufferedImage.TYPE_INT_RGB);
@@ -89,15 +96,6 @@ public class ScaleImage {
 //
 //            g.drawImage(scaledImage, 0, 0, null);
 //            g.dispose();
-
-            ImageIO.write(outImg, ProgConfig.FOTO_FORMAT.get(), dest);
-
-
-            Thumb thumb = getThumb(rasterDest, dest);
-            if (thumb != null) {
-                thumbDataList.add(thumb);
-            }
-
 
         } catch (Exception ex) {
             Log.errorLog(701402586, ex);

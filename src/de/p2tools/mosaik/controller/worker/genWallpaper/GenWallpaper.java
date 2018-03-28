@@ -20,6 +20,7 @@ package de.p2tools.mosaik.controller.worker.genWallpaper;
 import de.p2tools.mosaik.controller.RunEvent;
 import de.p2tools.mosaik.controller.RunListener;
 import de.p2tools.mosaik.controller.config.ProgConst;
+import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
 import de.p2tools.mosaik.controller.data.mosaikData.WallpaperData;
 import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
@@ -47,6 +48,8 @@ public class GenWallpaper {
     private int thumbSize;
     private Path destPathName = null;
     //    private String thumbResize;
+    private String background = "";
+    private String backgroundImg = "";
 
     private boolean addBorder = false;
     private int borderSize = 0;
@@ -76,6 +79,8 @@ public class GenWallpaper {
         this.addBorder = wallpaperData.isAddBorder();
         this.borderSize = wallpaperData.getBorderSize();
         this.borderColor = wallpaperData.getBorderColor();
+        this.background = wallpaperData.getBackGround();
+        this.backgroundImg = wallpaperData.getBgPic();
 
         if (dest.isEmpty()) {
             Log.errorLog(945120364, "Keine Zieldatei angegeben!");
@@ -147,13 +152,32 @@ public class GenWallpaper {
                     return;
                 }
 
+                if (background.equals(MosaikData.BACKGROUND.IMAGE.toString()) &&
+                        backgroundImg.isEmpty()) {
+                    showErrMsg("Es soll ein Hintergrundbild verwendet werden, es ist aber keines angegeben.");
+                    return;
+                }
 
                 // =======================================
                 // los gehts
                 notifyEvent(thumbListSize, 0, "Fototapete erstellen");
 
                 int hh = 0, ww = 0;
-                final BufferedImage imgOut = ImgFile.getBufferedImage(destWidth, destHeight, borderColor);
+//                final BufferedImage imgOut =  ImgFile.getBufferedImage(destWidth, destHeight, borderColor);
+                final BufferedImage imgOut;
+
+                if (!addBorder) {
+                    imgOut = ImgFile.getBufferedImage(destWidth, destHeight);
+
+                } else if (background.equals(MosaikData.BACKGROUND.IMAGE.toString())) {
+                    BufferedImage bgImg = ImgFile.getBufferedImage(new File(backgroundImg));
+                    imgOut = ImgFile.getBufferedImage(destWidth, destHeight, bgImg);
+
+                } else {
+                    imgOut = ImgFile.getBufferedImage(destWidth, destHeight, borderColor);
+                }
+
+
                 List<Integer> getList = PRandom.getShuffleList(sumAllThumbs, thumbListSize - 1);
 
                 for (int i = 0; i < sumAllThumbs && !stopAll; ++i) {
