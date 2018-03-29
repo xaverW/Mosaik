@@ -26,6 +26,7 @@ import de.p2tools.mosaik.gui.tools.GuiTools;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.dialog.PComboBox;
+import de.p2tools.p2Lib.guiTools.PColumnConstraints;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.FileUtils;
@@ -40,7 +41,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.nio.file.Path;
@@ -191,9 +195,7 @@ public class GuiWallpaperPane extends AnchorPane {
         gridPane.add(sliderCount, 1, row);
         gridPane.add(lblSliderCount, 2, row);
 
-        ColumnConstraints c0 = new ColumnConstraints();
-        gridPane.getColumnConstraints().addAll(c0);
-        c0.setMinWidth(GridPane.USE_PREF_SIZE);
+        gridPane.getColumnConstraints().addAll(PColumnConstraints.getCcPrefSize());
 
         contPane.setPadding(new Insets(10));
         contPane.getChildren().addAll(gridPane);

@@ -1,8 +1,3 @@
 VERSION=1
-<<<<<<< HEAD
-BUILD=2
-DATE=21.03.18
-=======
-BUILD=3
-DATE=25.03.18
->>>>>>> develop
+BUILD=4
+DATE=29.03.18

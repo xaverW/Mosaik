@@ -25,6 +25,7 @@ import de.p2tools.mosaik.gui.HelpText;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.dialog.PComboBox;
+import de.p2tools.p2Lib.guiTools.PColumnConstraints;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -117,9 +118,9 @@ public class GuiBorderPane extends AnchorPane {
         btnBgImg.disableProperty().bind(chkBorder.selectedProperty().not());
         colorPicker.disableProperty().bind(chkBorder.selectedProperty().not());
         sliderBorder.disableProperty().bind(chkBorder.selectedProperty().not());
-        
+
         sliderBorder.setMin(1);
-        sliderBorder.setMax(50);
+        sliderBorder.setMax(250);
 
         colorPicker.getStyleClass().add("split-button");
         colorPicker.setOnAction(a -> {
@@ -128,10 +129,10 @@ public class GuiBorderPane extends AnchorPane {
         });
 
         int row = 0;
-        GridPane gridPaneDest = new GridPane();
-        gridPaneDest.setPadding(new Insets(0));
-        gridPaneDest.setVgap(10);
-        gridPaneDest.setHgap(10);
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(0));
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
 
         Label lbl = new Label("Einen Rahmen um die Miniaturbilder ziehen");
         lbl.getStyleClass().add("headerLabel");
@@ -143,33 +144,37 @@ public class GuiBorderPane extends AnchorPane {
         cboBgImg.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(cboBgImg, Priority.ALWAYS);
 
-        gridPaneDest.add(lbl, 0, row, 4, 1);
-        gridPaneDest.add(chkBorder, 0, ++row);
-        gridPaneDest.add(btnHelpSize, 3, row);
+        gridPane.add(lbl, 0, row, 4, 1);
+        gridPane.add(chkBorder, 0, ++row);
+        gridPane.add(btnHelpSize, 3, row);
 
-        gridPaneDest.add(new Label("Breite des Rahmen [Pixel]:"), 0, ++row);
-        gridPaneDest.add(sliderBorder, 1, row);
-        gridPaneDest.add(lblSlider, 2, row);
+        gridPane.add(new Label("Breite des Rahmen [Pixel]:"), 0, ++row);
+        gridPane.add(sliderBorder, 1, row);
+        gridPane.add(lblSlider, 2, row);
 
-        gridPaneDest.add(new Label("    "), 2, ++row);
+        gridPane.add(new Label("    "), 2, ++row);
 
         Label lblBg = new Label("Als Hintergrund eine Farbe oder ein Bild wählen");
         lblBg.getStyleClass().add("headerLabel");
         lblBg.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lblBg, Priority.ALWAYS);
-        gridPaneDest.add(lblBg, 0, ++row, 4, 1);
+        gridPane.add(lblBg, 0, ++row, 4, 1);
 
-        gridPaneDest.add(rbBgImg, 0, ++row);
-        gridPaneDest.add(cboBgImg, 1, row);
-        gridPaneDest.add(btnBgImg, 3, row);
+        gridPane.add(rbBgImg, 0, ++row);
+        gridPane.add(cboBgImg, 1, row);
+        gridPane.add(btnBgImg, 3, row);
 
-        gridPaneDest.add(rbColor, 0, ++row);
-        gridPaneDest.add(colorPicker, 1, row);
+        gridPane.add(rbColor, 0, ++row);
+        gridPane.add(colorPicker, 1, row);
+
+        gridPane.getColumnConstraints().addAll(PColumnConstraints.getCcPrefSize(),
+                PColumnConstraints.getCcComputedSize(),
+                PColumnConstraints.getCcPrefSize());
 
         // import all
         contPane.setSpacing(25);
         contPane.setPadding(new Insets(10));
-        contPane.getChildren().addAll(gridPaneDest);
+        contPane.getChildren().addAll(gridPane);
     }
 
     private void unbind() {
