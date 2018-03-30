@@ -128,8 +128,6 @@ public class GuiMosaikExtendedThumbPane extends AnchorPane {
         contPane.setSpacing(25);
         contPane.setPadding(new Insets(10));
         contPane.getChildren().addAll(gridPaneDest);
-
-
     }
 
     private void unbind() {
