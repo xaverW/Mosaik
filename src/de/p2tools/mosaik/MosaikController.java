@@ -18,17 +18,17 @@ package de.p2tools.mosaik;
 
 import de.p2tools.mosaik.controller.ProgQuitt;
 import de.p2tools.mosaik.controller.config.ProgConfig;
+import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.mosaik.gui.*;
 import de.p2tools.mosaik.gui.dialog.AboutDialogController;
+import de.p2tools.p2Lib.checkForUpdates.SearchProgInfo;
+import de.p2tools.p2Lib.tools.Functions;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 public class MosaikController extends StackPane {
@@ -81,20 +81,26 @@ public class MosaikController extends StackPane {
 
 
             // Menü
-            final MenuItem miQuitt = new MenuItem("Beenden");
-            miQuitt.setOnAction(e -> new ProgQuitt().beenden(true));
+            final CheckMenuItem miMem = new CheckMenuItem("Speicherverbrauch anzeigen");
+            miMem.selectedProperty().bindBidirectional(ProgConfig.START_SHOW_MEM_DATA);
+
+            final MenuItem miUpdate = new MenuItem("Gibt es ein Update?");
+            miUpdate.setOnAction(event -> new SearchProgInfo().checkUpdate(ProgConst.WEBSITE_PROG_UPDATE,
+                    Functions.getProgVersionInt(),
+                    ProgConfig.SYSTEM_INFOS_NR, true, true));
 
             final MenuItem miAbout = new MenuItem("Über dieses Programm");
             miAbout.setOnAction(event -> new AboutDialogController(progData));
 
-            final CheckMenuItem miMem = new CheckMenuItem("Speicherverbrauch anzeigen");
-            miMem.selectedProperty().bindBidirectional(ProgConfig.START_SHOW_MEM_DATA);
-//            miMem.setOnAction(event -> new MemoryUsageDialog());
+            final MenuItem miQuitt = new MenuItem("Beenden");
+            miQuitt.setOnAction(e -> new ProgQuitt().beenden(true));
 
             menuButton.getStyleClass().add("btnFunction");
             menuButton.setText("");
             menuButton.setGraphic(new Icons().FX_ICON_TOOLBAR_MENUE_TOP);
-            menuButton.getItems().addAll(miAbout, miMem, miQuitt);
+            menuButton.getItems().addAll(miMem,
+                    new SeparatorMenuItem(), miAbout, miUpdate,
+                    new SeparatorMenuItem(), miQuitt);
 
 
             // Panes

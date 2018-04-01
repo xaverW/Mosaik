@@ -24,6 +24,7 @@ public class ProgConst {
     public static final String CSS_FILE = "/de/p2tools/mosaik/mosik.css";
 
     public static final String WEBSITE_P2 = "https://www.p2tools.de";
+    public static final String WEBSITE_PROG_UPDATE = "https://www.p2tools.de/extra/mosaik-info.xml";
 
     public static final String LOGO_NAME = "P2.png";
     public static final String ICON_NAME = "Icon.png";

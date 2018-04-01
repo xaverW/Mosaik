@@ -31,6 +31,7 @@ public class ProgConfig extends PDataProgConfig {
 
     public static StringProperty SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
     public static StringProperty SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
+    public static IntegerProperty SYSTEM_INFOS_NR = addIntProp("system-info-nr", 0);
 
     // Fenstereinstellungen
     public static StringProperty SYSTEM_GROESSE_GUI = addStrProp("system-gui-size", "1000:900");
