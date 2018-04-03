@@ -2,6 +2,14 @@
 
 <br />
 
+**Release 2-1**
+
+* Hinter ein Mosaik kann ein Hintergrundbild gesetzt werden dass dann zwischen den Miniaturbildern zu sehen ist.
+* Ein paar Verbesserungen bei der Bedienung des Programms
+
+
+<br />
+
 **Release 1-2**
 
 * Mosaik aus Thumbs oder aus dem Quellbild
