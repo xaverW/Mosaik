@@ -28,8 +28,8 @@ import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.Duration;
-import de.p2tools.p2Lib.tools.Log;
 import de.p2tools.p2Lib.tools.PRandom;
+import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.application.Platform;
 
 import javax.swing.event.EventListenerList;
@@ -83,7 +83,7 @@ public class GenWallpaper {
         this.backgroundImg = wallpaperData.getBgPic();
 
         if (dest.isEmpty()) {
-            Log.errorLog(945120364, "Keine Zieldatei angegeben!");
+            PLog.errorLog(945120364, "Keine Zieldatei angegeben!");
             return;
         }
 

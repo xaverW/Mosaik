@@ -23,7 +23,7 @@ import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
-import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.log.PLog;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -47,7 +47,7 @@ public class ScaleImage {
             BufferedImage imgSrc = ImageInCorrectOrientation.getImageInCorrectOrientation(source);
 
             if (imgSrc == null) {
-                Log.errorLog(465323107, "Image==null");
+                PLog.errorLog(465323107, "Image==null");
                 return;
             }
 
@@ -98,7 +98,7 @@ public class ScaleImage {
 //            g.dispose();
 
         } catch (Exception ex) {
-            Log.errorLog(701402586, ex);
+            PLog.errorLog(701402586, ex);
             System.out.println(ex.getMessage() + "MakeThumb.thumb");
             System.out.println("----------------------------------");
             System.out.println("Fehler - Src: " + source.getAbsolutePath());

@@ -25,7 +25,7 @@ import de.p2tools.mosaik.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.FileUtils;
-import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.log.PLog;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;
@@ -111,7 +111,7 @@ public class CreateThumbList {
             this.fileDestDir = new File(thumbDir);
             this.rekursiv = thumbCollection.isRecursive();
 
-            Log.sysLog("CreateListOfThumbs");
+            PLog.sysLog("CreateListOfThumbs");
         }
 
         @Override
@@ -123,7 +123,7 @@ public class CreateThumbList {
                 }
 
                 if (!fileSrcDir.isDirectory() || !fileDestDir.isDirectory()) {
-                    Log.errorLog(912364587, "Quelle oder Ziel ist kein Verzeichnis!");
+                    PLog.errorLog(912364587, "Quelle oder Ziel ist kein Verzeichnis!");
                     return;
                 }
 
@@ -143,7 +143,7 @@ public class CreateThumbList {
                     t.start();
                 }
             } catch (Exception ex) {
-                Log.errorLog(912020201, ex);
+                PLog.errorLog(912020201, ex);
             }
         }
 
@@ -168,7 +168,7 @@ public class CreateThumbList {
                             final String str = dest.getAbsolutePath();
                             addCreationsList(file.toFile(), dest);
                         } catch (Exception ex) {
-                            Log.errorLog(391201245, ex, new String[]{"CreateThumbList.createFileList",
+                            PLog.errorLog(391201245, ex, new String[]{"CreateThumbList.createFileList",
                                     "Fehler - Src: " + file.toFile().getAbsolutePath(),
                                     "Fehler - Dest: " + str});
                         }
@@ -187,7 +187,7 @@ public class CreateThumbList {
                     }
                 });
             } catch (IOException ex) {
-                Log.errorLog(965412014, ex);
+                PLog.errorLog(965412014, ex);
             }
 
 //            try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {

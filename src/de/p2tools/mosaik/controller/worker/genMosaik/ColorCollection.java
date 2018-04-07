@@ -19,7 +19,7 @@ package de.p2tools.mosaik.controller.worker.genMosaik;
 
 import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
-import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.log.PLog;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -103,7 +103,7 @@ public class ColorCollection {
                 sprung = max;
             }
         }
-        Log.errorLog(987120365, "ColorCollection.getThumb - keine Farbe!!");
+        PLog.errorLog(987120365, "ColorCollection.getThumb - keine Farbe!!");
         return null;
     }
 

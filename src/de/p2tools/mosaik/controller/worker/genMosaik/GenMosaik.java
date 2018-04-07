@@ -23,7 +23,7 @@ import de.p2tools.mosaik.controller.data.mosaikData.MosaikData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
-import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.log.PLog;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;
@@ -81,7 +81,7 @@ public class GenMosaik {
         stopAll = false;
 
         if (dest.isEmpty()) {
-            Log.errorLog(945120365, "Keine Zieldatei angegeben!");
+            PLog.errorLog(945120365, "Keine Zieldatei angegeben!");
             return;
         }
 

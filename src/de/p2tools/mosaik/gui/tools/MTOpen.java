@@ -21,7 +21,7 @@ import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.dialog.PAlertFileChosser;
-import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 
@@ -203,7 +203,7 @@ public class MTOpen {
 
         } catch (final Exception eex) {
             ok = false;
-            Log.errorLog(959632369, eex, new String[]{"Kann nicht öffnen,", "Programm: " + programm,
+            PLog.errorLog(959632369, eex, new String[]{"Kann nicht öffnen,", "Programm: " + programm,
                     "File/Url: " + directory});
         }
 

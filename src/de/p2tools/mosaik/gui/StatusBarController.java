@@ -24,7 +24,7 @@ import de.p2tools.mosaik.controller.data.Icons;
 import de.p2tools.p2Lib.guiTools.Listener;
 import de.p2tools.p2Lib.guiTools.PProgressBar;
 import de.p2tools.p2Lib.tools.Functions;
-import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -145,7 +145,7 @@ public class StatusBarController extends AnchorPane {
                         setStatusbar();
                     }
                 } catch (final Exception ex) {
-                    Log.errorLog(936251087, ex);
+                    PLog.errorLog(936251087, ex);
                 }
             }
         });

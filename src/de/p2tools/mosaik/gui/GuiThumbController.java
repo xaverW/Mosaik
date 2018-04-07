@@ -23,7 +23,7 @@ import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.dialog.PComboBox;
-import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -108,7 +108,7 @@ public class GuiThumbController extends AnchorPane {
             try {
                 FileUtils.deleteDirectory(new File(progData.selectedProjectData.getThumbDirString()));
             } catch (Exception ex) {
-                Log.errorLog(945121254, ex);
+                PLog.errorLog(945121254, ex);
             }
             thumbCollection.getThumbList().clear();
         });

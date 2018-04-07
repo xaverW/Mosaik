@@ -29,7 +29,7 @@ import de.p2tools.p2Lib.dialog.PComboBox;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.FileUtils;
-import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.NumberBinding;
@@ -351,7 +351,7 @@ public class GuiMosaikPane extends AnchorPane {
         } catch (Exception ex) {
             srcHeight = 0;
             srcWidth = 0;
-            Log.errorLog(945123690, ex);
+            PLog.errorLog(945123690, ex);
         } finally {
             setSize();
         }

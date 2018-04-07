@@ -23,7 +23,7 @@ import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.res.GetIcon;
 import de.p2tools.p2Lib.guiTools.GuiSize;
 import de.p2tools.p2Lib.tools.Duration;
-import de.p2tools.p2Lib.tools.SysMsg;
+import de.p2tools.p2Lib.tools.log.SysMsg;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

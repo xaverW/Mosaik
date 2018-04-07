@@ -24,7 +24,7 @@ import de.p2tools.mosaik.controller.data.thumb.Thumb;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.tools.FileUtils;
-import de.p2tools.p2Lib.tools.Log;
+import de.p2tools.p2Lib.tools.log.PLog;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;
@@ -100,7 +100,7 @@ public class ReadThumbList {
             this.thumbCollection = thumbCollection;
             fileThumbDir = new File(thumbDir);
 
-            Log.sysLog("ReadListOfThumbs");
+            PLog.sysLog("ReadListOfThumbs");
         }
 
         @Override
@@ -115,10 +115,10 @@ public class ReadThumbList {
                     notifyEvent(maxFile, 0, "Miniaturbilder einlesen");
                     createFileList(fileThumbDir);
                 } else {
-                    Log.errorLog(912020237, "Quelle ist kein Verzeichnis!");
+                    PLog.errorLog(912020237, "Quelle ist kein Verzeichnis!");
                 }
             } catch (Exception ex) {
-                Log.errorLog(975421310, ex);
+                PLog.errorLog(975421310, ex);
             }
             ReadColor readColor;
             Thread t;

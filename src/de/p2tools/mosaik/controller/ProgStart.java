@@ -22,14 +22,12 @@ import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.config.ProgInfos;
 import de.p2tools.p2Lib.PInit;
 import de.p2tools.p2Lib.configFile.ConfigFile;
-import de.p2tools.p2Lib.tools.Log;
-import de.p2tools.p2Lib.tools.SysMsg;
+import de.p2tools.p2Lib.tools.log.PLog;
+import de.p2tools.p2Lib.tools.log.SysMsg;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static de.p2tools.p2Lib.tools.Log.LILNE;
 
 public class ProgStart {
     ProgData progData;
@@ -40,11 +38,11 @@ public class ProgStart {
     }
 
     public static void startMsg() {
-        Log.versionMsg(ProgConst.PROGRAMMNAME);
+        PLog.versionMsg(ProgConst.PROGRAMMNAME);
         SysMsg.sysMsg("Programmpfad: " + ProgInfos.getPathJar());
         SysMsg.sysMsg("Verzeichnis Einstellungen: " + ProgInfos.getSettingsDirectory_String());
         SysMsg.sysMsg("");
-        SysMsg.sysMsg(LILNE);
+        SysMsg.sysMsg(PLog.LILNE);
         SysMsg.sysMsg("");
         SysMsg.sysMsg("");
     }

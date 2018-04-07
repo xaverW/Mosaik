@@ -28,8 +28,8 @@ import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.Duration;
-import de.p2tools.p2Lib.tools.Log;
 import de.p2tools.p2Lib.tools.PException;
+import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.application.Platform;
 
 import javax.swing.event.EventListenerList;
@@ -224,13 +224,13 @@ public class MosaikThumb implements Runnable {
                     }
 
                 } else {
-                    Log.errorLog(912365478, "thumb konnte nicht gefunden werden.");
+                    PLog.errorLog(912365478, "thumb konnte nicht gefunden werden.");
                 }
             }
         } catch (PException ex) {
             throw ex;
         } catch (Exception ex) {
-            Log.errorLog(642101787, ex);
+            PLog.errorLog(642101787, ex);
         }
     }
 }
