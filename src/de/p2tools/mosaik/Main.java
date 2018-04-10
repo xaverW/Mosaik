@@ -19,7 +19,7 @@ import de.p2tools.mosaik.controller.Messages;
 import de.p2tools.mosaik.controller.ProgStart;
 import de.p2tools.mosaik.controller.config.ProgConst;
 import de.p2tools.mosaik.controller.config.ProgData;
-import de.p2tools.p2Lib.tools.log.PLog;
+import de.p2tools.p2Lib.tools.log.LogMsg;
 import javafx.application.Application;
 import javafx.application.Platform;
 import org.apache.commons.lang3.SystemUtils;
@@ -116,7 +116,7 @@ public class Main {
                 case ProgramArguments.STARTUPMODE_VERBOSE:
                     EventQueue.invokeLater(() -> {
                         ProgStart.startMsg();
-                        PLog.endMsg();
+                        LogMsg.endMsg();
                         System.exit(0);
                     });
                     break;

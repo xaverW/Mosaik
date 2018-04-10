@@ -23,8 +23,8 @@ import de.p2tools.mosaik.controller.config.ProgData;
 import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaik.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.image.ImgFile;
-import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.FileUtils;
+import de.p2tools.p2Lib.tools.log.Duration;
 import de.p2tools.p2Lib.tools.log.PLog;
 
 import javax.swing.event.EventListenerList;

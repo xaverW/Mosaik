@@ -25,7 +25,7 @@ import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
-import de.p2tools.p2Lib.tools.Duration;
+import de.p2tools.p2Lib.tools.log.Duration;
 import javafx.application.Platform;
 
 import javax.swing.event.EventListenerList;

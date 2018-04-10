@@ -27,8 +27,8 @@ import de.p2tools.mosaik.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
-import de.p2tools.p2Lib.tools.Duration;
 import de.p2tools.p2Lib.tools.PException;
+import de.p2tools.p2Lib.tools.log.Duration;
 import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.application.Platform;
 
