@@ -35,15 +35,15 @@ public class CreateMosaicFromSrcImage {
     private boolean stopAll = false;
     private int progressLines = 0;
 
-    public void create(EventListenerList listeners, ArrayList<GenImgData> genImgDataArrayList) {
+    public void create(EventListenerList listeners, ArrayList<CreateMosaicData> createMosaicDataArrayList) {
 
         this.listeners = listeners;
-        this.maxLines = genImgDataArrayList.size();
+        this.maxLines = createMosaicDataArrayList.size();
 
         if (ProgData.saveMem) {
-            genImgDataArrayList.stream().forEach(genImgData -> genPixel(genImgData));
+            createMosaicDataArrayList.stream().forEach(createMosaicData -> genPixel(createMosaicData));
         } else {
-            genImgDataArrayList.parallelStream().forEach(genImgData -> genPixel(genImgData));
+            createMosaicDataArrayList.parallelStream().forEach(createMosaicData -> genPixel(createMosaicData));
         }
     }
 
@@ -60,7 +60,7 @@ public class CreateMosaicFromSrcImage {
         stopAll = true;
     }
 
-    private void genPixel(GenImgData genImgData) {
+    private void genPixel(CreateMosaicData createMosaicData) {
         BufferedImage buffImg;
 
         if (stopAll) {
@@ -71,23 +71,23 @@ public class CreateMosaicFromSrcImage {
         notifyEvent(maxLines, progressLines, "Zeile " + progressLines + " von " + maxLines +
                 (maxLines == 0 ? "" : " [" + 100 * progressLines / maxLines + " Prozent]"));
 
-        for (int xx = 0; xx < genImgData.numThumbsWidth && !stopAll; ++xx) {
-            Color c = ImgTools.getColor(genImgData.srcImg.getSubimage(xx * genImgData.numPixelProThumb,
-                    genImgData.yy * genImgData.numPixelProThumb, genImgData.numPixelProThumb, genImgData.numPixelProThumb));
+        for (int xx = 0; xx < createMosaicData.numThumbsWidth && !stopAll; ++xx) {
+            Color c = ImgTools.getColor(createMosaicData.srcImg.getSubimage(xx * createMosaicData.numPixelProThumb,
+                    createMosaicData.yy * createMosaicData.numPixelProThumb, createMosaicData.numPixelProThumb, createMosaicData.numPixelProThumb));
 
-            buffImg = getBufferedImg(genImgData.srcImgSmall, c);
-            buffImg = ImgTools.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
+            buffImg = getBufferedImg(createMosaicData.srcImgSmall, c);
+            buffImg = ImgTools.scaleBufferedImage(buffImg, createMosaicData.sizeThumb, createMosaicData.sizeThumb);
 
-            if (genImgData.addBorder) {
+            if (createMosaicData.addBorder) {
                 // border
-                genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + (1 + xx) * genImgData.borderSize,
-                        genImgData.yy * genImgData.sizeThumb + (1 + genImgData.yy) * genImgData.borderSize,
+                createMosaicData.imgOut.getRaster().setRect(xx * createMosaicData.sizeThumb + (1 + xx) * createMosaicData.borderSize,
+                        createMosaicData.yy * createMosaicData.sizeThumb + (1 + createMosaicData.yy) * createMosaicData.borderSize,
                         buffImg.getData());
 
             } else {
                 // no border
-                genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb,
-                        genImgData.yy * genImgData.sizeThumb,
+                createMosaicData.imgOut.getRaster().setRect(xx * createMosaicData.sizeThumb,
+                        createMosaicData.yy * createMosaicData.sizeThumb,
                         buffImg.getData());
             }
         }

@@ -19,7 +19,7 @@ package de.p2tools.mosaic.controller.worker.genMosaic;
 
 import java.awt.image.BufferedImage;
 
-class GenImgData {
+class CreateMosaicData {
     BufferedImage imgOut;
     BufferedImage srcImg;
     BufferedImage srcImgSmall;
@@ -33,9 +33,9 @@ class GenImgData {
     boolean addBorder;
     int borderSize;
 
-    public GenImgData(BufferedImage imgOut, BufferedImage srcImg, BufferedImage srcImgSmall, ColorCollection colorCollection,
-                      int sizeThumb, int yy, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb,
-                      String thumbResize, int borderSize, boolean addBorder) {
+    public CreateMosaicData(BufferedImage imgOut, BufferedImage srcImg, BufferedImage srcImgSmall, ColorCollection colorCollection,
+                            int sizeThumb, int yy, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb,
+                            String thumbResize, int borderSize, boolean addBorder) {
         this.imgOut = imgOut;
         this.srcImg = srcImg;
         this.srcImgSmall = srcImgSmall;

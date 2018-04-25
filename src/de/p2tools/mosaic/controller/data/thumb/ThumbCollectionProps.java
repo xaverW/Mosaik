@@ -39,10 +39,12 @@ public class ThumbCollectionProps extends PDataSample<ThumbCollection> {
 
     private ThumbDataList thumbList = new ThumbDataList();
 
+    @Override
     public String getTag() {
         return TAG;
     }
 
+    @Override
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList(Arrays.asList(
                 new ConfigBoolProp("recursiv", true, recursive),

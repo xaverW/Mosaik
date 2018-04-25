@@ -37,13 +37,16 @@ public class ThumbProps extends PDataSample<Thumb> {
     private String fileName = "";
 
 
+    @Override
     public String getTag() {
         return TAG;
     }
 
+    @Override
     public ArrayList<Config> getConfigsArr() {
         return new ArrayList<>(Arrays.asList(
                 new ConfigInt("red", 0, red) {
+                    @Override
                     public void setActValue(String act) {
                         try {
                             red = Integer.valueOf(act);
@@ -53,6 +56,7 @@ public class ThumbProps extends PDataSample<Thumb> {
                     }
                 },
                 new ConfigInt("green", 0, green) {
+                    @Override
                     public void setActValue(String act) {
                         try {
                             green = Integer.valueOf(act);
@@ -62,6 +66,7 @@ public class ThumbProps extends PDataSample<Thumb> {
                     }
                 },
                 new ConfigInt("blue", 0, blue) {
+                    @Override
                     public void setActValue(String act) {
                         try {
                             blue = Integer.valueOf(act);
@@ -71,6 +76,7 @@ public class ThumbProps extends PDataSample<Thumb> {
                     }
                 },
                 new ConfigString("filename", "", fileName) {
+                    @Override
                     public void setActValue(String act) {
                         fileName = act;
                     }

@@ -44,14 +44,14 @@ public class CreateMosaicFromThumbs {
     private String errMsg = "";
     private boolean loadOk = true;
 
-    public boolean create(EventListenerList listeners, ArrayList<GenImgData> genImgDataArrayList) {
+    public boolean create(EventListenerList listeners, ArrayList<CreateMosaicData> createMosaicDataArrayList) {
         this.listeners = listeners;
-        this.maxLines = genImgDataArrayList.size();
+        this.maxLines = createMosaicDataArrayList.size();
 
         if (ProgData.saveMem) {
-            genImgDataArrayList.stream().forEach(genImgData -> {
+            createMosaicDataArrayList.stream().forEach(createMosaicData -> {
                 try {
-                    generatePixel(genImgData);
+                    generatePixel(createMosaicData);
                 } catch (PException e) {
                     loadOk = false;
                     errMsg = e.getMsg();
@@ -60,9 +60,9 @@ public class CreateMosaicFromThumbs {
 
 
         } else {
-            genImgDataArrayList.parallelStream().forEach(genImgData -> {
+            createMosaicDataArrayList.parallelStream().forEach(createMosaicData -> {
                 try {
-                    generatePixel(genImgData);
+                    generatePixel(createMosaicData);
                 } catch (PException e) {
                     loadOk = false;
                     errMsg = e.getMsg();
@@ -92,7 +92,7 @@ public class CreateMosaicFromThumbs {
         stopAll = true;
     }
 
-    private void generatePixel(GenImgData genImgData) throws PException {
+    private void generatePixel(CreateMosaicData createMosaicData) throws PException {
         try {
             if (stopAll) {
                 return;
@@ -102,12 +102,12 @@ public class CreateMosaicFromThumbs {
             notifyEvent(maxLines, progressLines, "Zeile " + progressLines + " von " + maxLines +
                     (maxLines == 0 ? "" : " [" + 100 * progressLines / maxLines + " Prozent]"));
 
-            for (int xx = 0; xx < genImgData.numThumbsWidth && !stopAll; ++xx) {
+            for (int xx = 0; xx < createMosaicData.numThumbsWidth && !stopAll; ++xx) {
 
-                Color c = ImgTools.getColor(genImgData.srcImg.getSubimage(xx * genImgData.numPixelProThumb,
-                        genImgData.yy * genImgData.numPixelProThumb,
-                        genImgData.numPixelProThumb, genImgData.numPixelProThumb));
-                Thumb thumb = genImgData.colorCollection.getThumb(c, anz);
+                Color c = ImgTools.getColor(createMosaicData.srcImg.getSubimage(xx * createMosaicData.numPixelProThumb,
+                        createMosaicData.yy * createMosaicData.numPixelProThumb,
+                        createMosaicData.numPixelProThumb, createMosaicData.numPixelProThumb));
+                Thumb thumb = createMosaicData.colorCollection.getThumb(c, anz);
 
                 if (thumb != null) {
                     thumb.addAnz();
@@ -119,18 +119,18 @@ public class CreateMosaicFromThumbs {
                                 "Bitte die Liste der Miniaturbilder " +
                                 "neu einlesen.");
                     }
-                    buffImg = ImgTools.scaleBufferedImage(buffImg, genImgData.sizeThumb, genImgData.sizeThumb);
+                    buffImg = ImgTools.scaleBufferedImage(buffImg, createMosaicData.sizeThumb, createMosaicData.sizeThumb);
 
-                    if (genImgData.addBorder) {
+                    if (createMosaicData.addBorder) {
                         // border
-                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb + (1 + xx) * genImgData.borderSize,
-                                genImgData.yy * genImgData.sizeThumb + (1 + genImgData.yy) * genImgData.borderSize,
+                        createMosaicData.imgOut.getRaster().setRect(xx * createMosaicData.sizeThumb + (1 + xx) * createMosaicData.borderSize,
+                                createMosaicData.yy * createMosaicData.sizeThumb + (1 + createMosaicData.yy) * createMosaicData.borderSize,
                                 buffImg.getData());
 
                     } else {
                         // no border
-                        genImgData.imgOut.getRaster().setRect(xx * genImgData.sizeThumb,
-                                genImgData.yy * genImgData.sizeThumb, buffImg.getData());
+                        createMosaicData.imgOut.getRaster().setRect(xx * createMosaicData.sizeThumb,
+                                createMosaicData.yy * createMosaicData.sizeThumb, buffImg.getData());
                     }
 
                 } else {

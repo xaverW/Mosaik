@@ -23,7 +23,7 @@ import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.mosaikData.MosaicData;
 import de.p2tools.mosaic.controller.data.mosaikData.WallpaperData;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
-import de.p2tools.mosaic.controller.worker.genMosaic.GenMosaic;
+import de.p2tools.mosaic.controller.worker.genMosaic.CreateMosaic;
 import de.p2tools.mosaic.controller.worker.genThumbList.CreateThumbList;
 import de.p2tools.mosaic.controller.worker.genThumbList.ReadThumbList;
 import de.p2tools.mosaic.controller.worker.genWallpaper.GenWallpaper;
@@ -39,7 +39,7 @@ public class Worker {
 
     private final CreateThumbList createThumbList;
     private final ReadThumbList readThumbList;
-    private final GenMosaic genMosaic;
+    private final CreateMosaic createMosaic;
     private final GenWallpaper genWallpaper;
 
     private EventListenerList listeners = new EventListenerList();
@@ -47,7 +47,7 @@ public class Worker {
 
     public Worker(ProgData progData) {
         this.progData = progData;
-        genMosaic = new GenMosaic(progData);
+        createMosaic = new CreateMosaic(progData);
         createThumbList = new CreateThumbList(progData);
         readThumbList = new ReadThumbList(progData);
         genWallpaper = new GenWallpaper();
@@ -64,7 +64,7 @@ public class Worker {
                 notifyEvent(runEvent);
             }
         });
-        genMosaic.addAdListener(new RunListener() {
+        createMosaic.addAdListener(new RunListener() {
             @Override
             public void ping(RunEvent runEvent) {
                 notifyEvent(runEvent);
@@ -97,9 +97,10 @@ public class Worker {
         createThumbList.setStop();
         readThumbList.setStop();
         genWallpaper.setStop();
-        genMosaic.setStop();
+        createMosaic.setStop();
     }
 
+    // thumblist
     public void createThumbList(ThumbCollection thumbCollection, String thumbDir) {
         createThumbList.create(thumbCollection, thumbDir);
     }
@@ -108,11 +109,14 @@ public class Worker {
         readThumbList.read(thumbCollection, thumbDir);
     }
 
+
+    // mosaic
     public void createMosaic(MosaicData mosaikData, ThumbCollection thumbCollection) {
-        genMosaic.create(mosaikData, thumbCollection);
+        createMosaic.create(mosaikData, thumbCollection);
     }
 
 
+    // wallpaper
     public void createWallpaper(ThumbCollection thumbCollection, WallpaperData wallpaperData) {
         genWallpaper.create(thumbCollection, wallpaperData);
     }

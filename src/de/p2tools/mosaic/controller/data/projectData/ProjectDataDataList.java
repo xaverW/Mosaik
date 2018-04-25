@@ -38,19 +38,23 @@ public class ProjectDataDataList extends SimpleListProperty<ProjectData> impleme
                 new Observable[]{callback.nameProperty()}));
     }
 
+    @Override
     public String getTag() {
         return TAG;
     }
 
+    @Override
     public String getComment() {
         return "list of the project data";
     }
 
 
+    @Override
     public ProjectData getNewItem() {
         return new ProjectData();
     }
 
+    @Override
     public void addNewItem(Object obj) {
         if (obj.getClass().equals(ProjectData.class)) {
             add((ProjectData) obj);
@@ -73,6 +77,7 @@ public class ProjectDataDataList extends SimpleListProperty<ProjectData> impleme
         return this.stream().filter(projectData -> projectData.getName().equals(name)).findFirst().orElse(null);
     }
 
+    @Override
     public synchronized boolean add(ProjectData projectData) {
         boolean ret = super.add(projectData);
         sort();
