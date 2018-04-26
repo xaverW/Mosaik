@@ -22,28 +22,34 @@ import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.tools.log.PLog;
 
 import java.awt.*;
-import java.util.Iterator;
 
 public class ColorCollection {
 
+    private boolean change = false;
+
     public final int COLORS = 256;
+    public final int COLOR_MAX = COLORS - 1;
+
     public boolean[][][] allColors = new boolean[COLORS][COLORS][COLORS];
+    public int[][][] allColorsCount = new int[COLORS][COLORS][COLORS];
+
     private final ThumbCollection thumbCollection;
 
     public ColorCollection(ThumbCollection thumbCollection) {
         this.thumbCollection = thumbCollection;
 
-        for (int i = 0; i < COLORS - 1; ++i) {
-            for (int k = 0; k < COLORS - 1; ++k) {
-                for (int l = 0; l < COLORS - 1; ++l) {
+        for (int i = 0; i < COLOR_MAX; ++i) {
+            for (int k = 0; k < COLOR_MAX; ++k) {
+                for (int l = 0; l < COLOR_MAX; ++l) {
+
                     allColors[i][k][l] = false;
+                    allColorsCount[i][k][l] = 0;
+
                 }
             }
         }
-        Iterator<Thumb> it = thumbCollection.getThumbList().iterator();
-        while (it.hasNext()) {
-            addFarbe(it.next());
-        }
+
+        thumbCollection.getThumbList().stream().forEach(thumb -> addColor(thumb));
     }
 
     /**
@@ -53,19 +59,26 @@ public class ColorCollection {
      */
     public Thumb getThumb(Color c, int anz) {
         Thumb thumb;
+        int mod = 4;
         int sprung = 0;
         int max = 10;
+
         int r = c.getRed();
         int g = c.getGreen();
         int b = c.getBlue();
+
         int rMin = r, rMax = r, gMin = g, gMax = g, bMin = b, bMax = b;
-        while (rMin > 0 || gMin > 0 || bMin > 0 || rMax < COLORS - 1 || gMax < COLORS - 1 || bMax < COLORS - 1) {
+
+        while (rMin > 0 || gMin > 0 || bMin > 0 ||
+                rMax < COLOR_MAX || gMax < COLOR_MAX || bMax < COLOR_MAX) {
+
             rMin -= sprung;
             gMin -= sprung;
             bMin -= sprung;
             rMax += sprung;
             gMax += sprung;
             bMax += sprung;
+
             if (rMin < 0) {
                 rMin = 0;
             }
@@ -75,19 +88,31 @@ public class ColorCollection {
             if (bMin < 0) {
                 bMin = 0;
             }
-            if (rMax >= COLORS) {
-                rMax = COLORS - 1;
+
+            if (rMax > COLOR_MAX) {
+                rMax = COLOR_MAX;
             }
-            if (gMax >= COLORS) {
-                gMax = COLORS - 1;
+            if (gMax > COLOR_MAX) {
+                gMax = COLOR_MAX;
             }
-            if (bMax >= COLORS) {
-                bMax = COLORS - 1;
+            if (bMax > COLOR_MAX) {
+                bMax = COLOR_MAX;
             }
+
+            mainloop:
+//            if (change) {
             for (int i = rMin; i <= rMax; ++i) {
                 for (int k = gMin; k <= gMax; ++k) {
                     for (int l = bMin; l <= bMax; ++l) {
                         if (allColors[i][k][l] == true) {
+                            ++allColorsCount[i][k][l];
+
+                            if (allColorsCount[i][k][l] % mod == 0) {
+                                // dann suchen wir einen ähnlichen
+//                                continue;
+                                break mainloop;
+                            }
+
                             thumb = thumbCollection.getThumbList().getThumb(i, k, l, anz);
                             if (thumb != null) {
                                 return thumb;
@@ -98,16 +123,54 @@ public class ColorCollection {
                     }
                 }
             }
+//            } else {
+//            for (int i = rMax; i >= rMin; --i) {
+//                for (int k = gMax; k >= gMin; --k) {
+//                    for (int l = bMax; l >= bMin; --l) {
+//                        if (allColors[i][k][l] == true) {
+//                            ++allColorsCount[i][k][l];
+//
+//                            if (allColorsCount[i][k][l] % mod == 0) {
+//                                // dann suchen wir einen ähnlichen
+////                                continue;
+//                                break mainloop;
+//                            }
+//
+//                            thumb = thumbCollection.getThumbList().getThumb(i, k, l, anz);
+//                            if (thumb != null) {
+//                                return thumb;
+//                            } else {
+//                                allColors[i][k][l] = false;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            }
+
+            change = !change;
+
+//            --mod;
+//            if (mod < 2) {
+//                mod = 2;
+//            }
+
             sprung += 2;
             if (sprung > max) {
                 sprung = max;
             }
+
+            --anz;
+            if (anz < 0) {
+                anz = 0;
+            }
+
         }
         PLog.errorLog(987120365, "ColorCollection.getThumb - keine Farbe!!");
         return null;
     }
 
-    private void addFarbe(Thumb thumb) {
+    private void addColor(Thumb thumb) {
         int r, g, b;
         r = thumb.getRed();
         g = thumb.getGreen();

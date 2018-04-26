@@ -74,7 +74,14 @@ public class CreateMosaicThread implements Runnable {
         Duration.counterStart("Mosaik erstellen");
         try {
             thumbCollection.getThumbList().resetAnz();
-            srcImg = ImgFile.getBufferedImage(new File(this.srcImgStr));
+            File srcImgFile = new File(this.srcImgStr);
+            if (!srcImgFile.exists()) {
+                showErrMsg("Das Bild für die Vorlage des Mosaiks: \n" +
+                        srcImgStr + "\n" +
+                        "existiert nicht, das Mosaik kann nicht erstellt werden.");
+                return;
+            }
+            srcImg = ImgFile.getBufferedImage(srcImgFile);
 
             srcHeight = srcImg.getRaster().getHeight();
             srcWidth = srcImg.getRaster().getWidth();
@@ -172,6 +179,7 @@ public class CreateMosaicThread implements Runnable {
     private boolean createMosaicFromThumbs() {
         // mosaik from thumbs
         final ColorCollection colorCollection = new ColorCollection(thumbCollection);
+
         for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
             CreateMosaicData createMosaicData = new CreateMosaicData(imgOut, srcImg, null, colorCollection,
                     thumbSize, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb,

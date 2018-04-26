@@ -100,17 +100,17 @@ public class ThumbDataList extends SimpleListProperty<Thumb> implements PDataLis
     }
 
     public Thumb getThumb(int red, int green, int blue, int anz) {
-        if (anz == 0) {
-            return this.parallelStream().filter(thumb ->
-                    thumb.getRed() == red &&
-                            thumb.getGreen() == green &&
-                            thumb.getBlue() == blue).findFirst().orElse(null);
-        } else {
-            return this.parallelStream().filter(thumb ->
-                    thumb.getRed() == red &&
-                            thumb.getGreen() == green &&
-                            thumb.getBlue() == blue &&
-                            thumb.getAnz() <= anz).findFirst().orElse(null);
-        }
+//        if (anz == 0) {
+        return this.parallelStream().filter(thumb ->
+                thumb.getRed() == red &&
+                        thumb.getGreen() == green &&
+                        thumb.getBlue() == blue).findFirst().orElse(null);
+//        } else {
+//            return this.parallelStream().filter(thumb ->
+//                    thumb.getRed() == red &&
+//                            thumb.getGreen() == green &&
+//                            thumb.getBlue() == blue &&
+//                            thumb.getAnz() <= anz).findFirst().orElse(null);
+//        }
     }
 }
