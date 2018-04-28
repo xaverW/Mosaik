@@ -27,9 +27,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class ThumbCollectionProps extends PDataSample<ThumbCollection> {
 
     public static final String TAG = "ThumbCollection";
@@ -45,12 +42,11 @@ public class ThumbCollectionProps extends PDataSample<ThumbCollection> {
     }
 
     @Override
-    public ArrayList<Config> getConfigsArr() {
-        return new ArrayList(Arrays.asList(
-                new ConfigBoolProp("recursiv", true, recursive),
-                new ConfigStringProp("foto-format", ImgFile.IMAGE_FORMAT_JPG, format),
-                new ConfigStringProp("dir-foto-src", "", fotoSrcDir),
-                new ConfigPDataList(thumbList)));
+    public Config[] getConfigsArr() {
+        return new Config[]{new ConfigBoolProp("recursiv", recursive),
+                new ConfigStringProp("foto-format", format),
+                new ConfigStringProp("dir-foto-src", fotoSrcDir),
+                new ConfigPDataList(thumbList)};
     }
 
     public ThumbDataList getThumbList() {

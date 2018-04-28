@@ -25,9 +25,6 @@ import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import de.p2tools.p2Lib.image.ImgFile;
 import javafx.beans.property.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class MosaicDataProps extends PDataSample<MosaicData> {
     public static final String TAG = "MosaicData";
 
@@ -95,23 +92,23 @@ public class MosaicDataProps extends PDataSample<MosaicData> {
     }
 
     @Override
-    public ArrayList<Config> getConfigsArr() {
-        return new ArrayList<>(Arrays.asList(
-                new ConfigStringProp("format", ImgFile.IMAGE_FORMAT_JPG, format),
-                new ConfigStringProp("foto-src", "", fotoSrc),
-                new ConfigStringProp("foto-dest-dir", "", fotoDest),
-                new ConfigIntProp("thumb-size", 50, thumbSize),
-                new ConfigIntProp("number-thumbs-width", 50, numberThumbsWidth),
-                new ConfigIntProp("thumb-count", 0, thumbCount),
-                new ConfigStringProp("thumb-src", THUMB_SRC.THUMBS.toString(), thumbSrc),
-                new ConfigBoolProp("black-white", Boolean.FALSE, blackWhite),
-                new ConfigStringProp("reduce-big", THUMB_RESIZE.NON.toString(), resizeThumb),
+    public Config[] getConfigsArr() {
+        return new Config[]{
+                new ConfigStringProp("format", format),
+                new ConfigStringProp("foto-src", fotoSrc),
+                new ConfigStringProp("foto-dest-dir", fotoDest),
+                new ConfigIntProp("thumb-size", thumbSize),
+                new ConfigIntProp("number-thumbs-width", numberThumbsWidth),
+                new ConfigIntProp("thumb-count", thumbCount),
+                new ConfigStringProp("thumb-src", thumbSrc),
+                new ConfigBoolProp("black-white", blackWhite),
+                new ConfigStringProp("reduce-big", resizeThumb),
 
-                new ConfigBoolProp("add-border", Boolean.FALSE, addBorder),
-                new ConfigIntProp("reduce-size", 0, borderSize),
-                new ConfigStringProp("bg-color", BACKGROUND.COLOR.toString(), backGround),
-                new ConfigStringProp("border-color", "", borderColor),
-                new ConfigStringProp("bg-pic", "", bgPic)));
+                new ConfigBoolProp("add-border", addBorder),
+                new ConfigIntProp("reduce-size", borderSize),
+                new ConfigStringProp("bg-color", backGround),
+                new ConfigStringProp("border-color", borderColor),
+                new ConfigStringProp("bg-pic", bgPic)};
     }
 
 

@@ -27,9 +27,6 @@ import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class ProjectDataProps extends PDataSample<ProjectData> {
     public static final String TAG = "ProjectData";
 
@@ -47,14 +44,14 @@ public class ProjectDataProps extends PDataSample<ProjectData> {
     }
 
     @Override
-    public ArrayList<Config> getConfigsArr() {
-        return new ArrayList(Arrays.asList(
-                new ConfigStringProp("name", "Neues Mosaik", name),
-                new ConfigStringProp("dest-dir", "", destDir),
-                new ConfigStringProp("src-photo", "", srcPhoto),
+    public Config[] getConfigsArr() {
+        return new Config[]{
+                new ConfigStringProp("name", name),
+                new ConfigStringProp("dest-dir", destDir),
+                new ConfigStringProp("src-photo", srcPhoto),
                 new ConfigPData(mosaikData),
                 new ConfigPData(wallpaperData),
-                new ConfigPData(thumbCollection)));
+                new ConfigPData(thumbCollection)};
     }
 
     public MosaicData getMosaicData() {

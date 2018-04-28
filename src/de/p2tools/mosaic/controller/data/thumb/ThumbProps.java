@@ -22,9 +22,6 @@ import de.p2tools.p2Lib.configFile.config.ConfigString;
 import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 
 public class ThumbProps extends PDataSample<Thumb> {
 
@@ -43,9 +40,9 @@ public class ThumbProps extends PDataSample<Thumb> {
     }
 
     @Override
-    public ArrayList<Config> getConfigsArr() {
-        return new ArrayList<>(Arrays.asList(
-                new ConfigInt("red", 0, red) {
+    public Config[] getConfigsArr() {
+        return new Config[]{
+                new ConfigInt("red", red) {
                     @Override
                     public void setActValue(String act) {
                         try {
@@ -55,7 +52,7 @@ public class ThumbProps extends PDataSample<Thumb> {
                         }
                     }
                 },
-                new ConfigInt("green", 0, green) {
+                new ConfigInt("green", green) {
                     @Override
                     public void setActValue(String act) {
                         try {
@@ -65,7 +62,7 @@ public class ThumbProps extends PDataSample<Thumb> {
                         }
                     }
                 },
-                new ConfigInt("blue", 0, blue) {
+                new ConfigInt("blue", blue) {
                     @Override
                     public void setActValue(String act) {
                         try {
@@ -75,13 +72,12 @@ public class ThumbProps extends PDataSample<Thumb> {
                         }
                     }
                 },
-                new ConfigString("filename", "", fileName) {
+                new ConfigString("filename", fileName) {
                     @Override
                     public void setActValue(String act) {
                         fileName = act;
                     }
-                })
-        );
+                }};
     }
 
     public int getAnz() {
