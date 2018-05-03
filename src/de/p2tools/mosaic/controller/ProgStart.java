@@ -52,7 +52,7 @@ public class ProgStart {
     }
 
     public boolean loadConfigData() {
-        if (!loadConnfig(new ProgInfos().getXmlFilePath())) {
+        if (!loadConnfig(new ProgInfos().getSettingsFile())) {
             // teils geladene Reste entfernen
             initKonfig();
         }

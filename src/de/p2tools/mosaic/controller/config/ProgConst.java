@@ -20,7 +20,12 @@ public class ProgConst {
 
     public static final String P2_PROGRAMMNAME = "P2Tools - Mosaik";
     public static final String PROGRAMMNAME = "Mosaik";
+
+    // config file
     public static final String CONFIG_FILE = "mosaik.xml";
+    public static final String CONFIG_DIRECTORY = "p2Mosaik"; // im Homeverzeichnis
+    public static final String XML_START = "Mosaik";
+
     public static final String CSS_FILE = "/de/p2tools/mosaic/mosik.css";
     public static final String LOG_DIR = "Log";
 
@@ -33,13 +38,11 @@ public class ProgConst {
 
     // Dateien/Verzeichnisse
     public static final String DIR_PROGRAM_ICONS = "Icons/Programm"; // Unterverzeichnis im Programmverzeichnis
-    public static final String DIR_CONFIG = ".mosaik"; // im Homeverzeichnis
     public static final String DIR_THUMBS = "Bilder"; // im Projektverzeichnis für die Thumbs
     public static final String DIR_STANDARD_PROJECT = "Mosaik"; // Standardname fürs Projektverzeichnis
     public static final String MOSAIC_STD_NAME = "Mosaik";
     public static final String WALLPAPER_STD_NAME = "Tapete";
 
-    public static final String XML_START = "Mosaik";
 
     public static final double GUI_THUMB_DIVIDER_LOCATION = 0.7;
 
