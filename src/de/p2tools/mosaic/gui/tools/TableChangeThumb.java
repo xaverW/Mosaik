@@ -23,6 +23,7 @@ import de.p2tools.mosaic.controller.data.thumb.Thumb;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaic.controller.worker.genThumbList.ScaleImage;
 import de.p2tools.p2Lib.dialog.PAlert;
+import de.p2tools.p2Lib.guiTools.POpen;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -214,7 +215,11 @@ public class TableChangeThumb {
                 });
 
                 Button btnOpenDir = new Button("Ordner öffnen");
-                btnOpenDir.setOnAction(a -> MTOpen.openDestDir(de.p2tools.p2Lib.tools.FileUtils.getPath(thumb.getFileName())));
+                btnOpenDir.setOnAction(a -> POpen.openDir(de.p2tools.p2Lib.tools.FileUtils.getPath(thumb.getFileName())));
+
+                // erst wenns einen Config-Dialog gibt
+                // btnOpenDir.setOnAction(a -> POpen.openDir(de.p2tools.p2Lib.tools.FileUtils.getPath(thumb.getFileName()),
+                //      ProgConfig.SYSTEM_PROG_OPEN_DIR, new Icons().ICON_BUTTON_FILE_OPEN));
 
                 Button rotateLeft = new Button("");
                 rotateLeft.setGraphic(new Icons().ICON_BUTTON_ROTATE_LEFT);

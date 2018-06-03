@@ -28,7 +28,6 @@ import javafx.collections.ObservableList;
 public class ProgConfig extends PDataProgConfig {
 
     public static StringProperty SYSTEM_PROG_OPEN_DIR = addStrProp("system-prog-open-dir", "");
-
     public static StringProperty SYSTEM_PROG_OPEN_URL = addStrProp("system-prog-open-uri", "");
     public static StringProperty SYSTEM_PROG_PLAY_FILE = addStrProp("system-prog-open-media", "");
     public static IntegerProperty SYSTEM_INFOS_NR = addIntProp("system-info-nr", 0);

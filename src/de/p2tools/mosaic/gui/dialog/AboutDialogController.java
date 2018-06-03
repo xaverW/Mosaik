@@ -20,7 +20,6 @@ package de.p2tools.mosaic.gui.dialog;
 import de.p2tools.mosaic.controller.config.ProgConst;
 import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.config.ProgInfos;
-import de.p2tools.mosaic.gui.tools.MTOpen;
 import de.p2tools.mosaic.res.GetIcon;
 import de.p2tools.p2Lib.dialog.MTDialogExtra;
 import de.p2tools.p2Lib.guiTools.PHyperlink;
@@ -112,14 +111,6 @@ public class AboutDialogController extends MTDialogExtra {
         gridPane.add(text, 0, ++row, 2, 1);
 
         Hyperlink hyperlink = new PHyperlink(ProgConst.WEBSITE_P2);
-        hyperlink.setStyle("-fx-font-size: 15px;");
-        hyperlink.setOnAction(a -> {
-            try {
-                MTOpen.openURL(ProgConst.WEBSITE_P2);
-            } catch (Exception e) {
-                PLog.errorLog(974125469, e);
-            }
-        });
 
         text = new Text("Website:");
         text.setFont(new Font(15));
