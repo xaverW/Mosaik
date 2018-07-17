@@ -111,7 +111,7 @@ public class GuiWallpaperPane extends AnchorPane {
             bind();
         }
 
-        if (cbDest.getSel().isEmpty()) {
+        if (cbDest.getSelValue().isEmpty()) {
             String suff;
             if (wallpaperData.getFormat().equals(ImgFile.IMAGE_FORMAT_PNG)) {
                 suff = ImgFile.IMAGE_FORMAT_PNG;
@@ -218,7 +218,7 @@ public class GuiWallpaperPane extends AnchorPane {
     }
 
     private void initColor() {
-        dirBinding = Bindings.createBooleanBinding(() -> cbDest.getSel().trim().isEmpty(), cbDest.getSelProperty());
+        dirBinding = Bindings.createBooleanBinding(() -> cbDest.getSelValue().trim().isEmpty(), cbDest.getSelValueProperty());
         GuiTools.setColor(cbDest, dirBinding.get());
 
         dirBinding.addListener(l -> GuiTools.setColor(cbDest, dirBinding.get()));
@@ -232,7 +232,7 @@ public class GuiWallpaperPane extends AnchorPane {
 
         // DEST
         cbDest.selectElement(wallpaperData.getFotoDest());
-        wallpaperData.fotoDestProperty().bind(cbDest.getSelProperty());
+        wallpaperData.fotoDestProperty().bind(cbDest.getSelValueProperty());
 
         // Thumbsize
         sliderSize.setValue(wallpaperData.getThumbSize() / 10);

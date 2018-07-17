@@ -60,7 +60,7 @@ public class AddMosaicDialogController extends MTDialogExtra {
             btnCancel.setDisable(true);
         }
 
-        getTilePaneOk().getChildren().addAll(btnOk, btnCancel);
+        getHboxOk().getChildren().addAll(btnOk, btnCancel);
         init(getvBoxDialog(), true);
     }
 

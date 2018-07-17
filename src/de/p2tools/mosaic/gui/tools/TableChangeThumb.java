@@ -217,6 +217,7 @@ public class TableChangeThumb {
                 Button btnOpenDir = new Button("Ordner öffnen");
                 btnOpenDir.setOnAction(a -> POpen.openDir(de.p2tools.p2Lib.tools.FileUtils.getPath(thumb.getFileName())));
 
+                // todo
                 // erst wenns einen Config-Dialog gibt
                 // btnOpenDir.setOnAction(a -> POpen.openDir(de.p2tools.p2Lib.tools.FileUtils.getPath(thumb.getFileName()),
                 //      ProgConfig.SYSTEM_PROG_OPEN_DIR, new Icons().ICON_BUTTON_FILE_OPEN));

@@ -51,7 +51,7 @@ public class AboutDialogController extends MTDialogExtra {
 
         this.progData = progData;
 
-        getTilePaneOk().getChildren().addAll(btnOk);
+        getHboxOk().getChildren().addAll(btnOk);
         init(getvBoxDialog(), true);
     }
 

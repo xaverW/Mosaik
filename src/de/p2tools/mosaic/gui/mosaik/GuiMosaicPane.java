@@ -118,7 +118,7 @@ public class GuiMosaicPane extends AnchorPane {
             mosaikData = progData.selectedProjectData.getMosaicData();
             bind();
         }
-        if (cbDestDir.getSel().isEmpty()) {
+        if (cbDestDir.getSelValue().isEmpty()) {
             String suff;
             if (mosaikData.getFormat().equals(ImgFile.IMAGE_FORMAT_PNG)) {
                 suff = ImgFile.IMAGE_FORMAT_PNG;
@@ -257,8 +257,8 @@ public class GuiMosaicPane extends AnchorPane {
     }
 
     private void initColor() {
-        dirBinding = Bindings.createBooleanBinding(() -> cbDestDir.getSel().trim().isEmpty(),
-                cbDestDir.getSelProperty());
+        dirBinding = Bindings.createBooleanBinding(() -> cbDestDir.getSelValue().trim().isEmpty(),
+                cbDestDir.getSelValueProperty());
 
         //todo
         cbSrcPhoto.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -307,11 +307,11 @@ public class GuiMosaicPane extends AnchorPane {
 
         // SRC
         cbSrcPhoto.selectElement(mosaikData.getFotoSrc());
-        mosaikData.fotoSrcProperty().bind(cbSrcPhoto.getSelProperty());
+        mosaikData.fotoSrcProperty().bind(cbSrcPhoto.getSelValueProperty());
 
         // DEST
         cbDestDir.selectElement(mosaikData.getFotoDest());
-        mosaikData.fotoDestProperty().bind(cbDestDir.getSelProperty());
+        mosaikData.fotoDestProperty().bind(cbDestDir.getSelValueProperty());
 
         // Thumbsize
         sliderSize.setValue(mosaikData.getThumbSize() / 10);

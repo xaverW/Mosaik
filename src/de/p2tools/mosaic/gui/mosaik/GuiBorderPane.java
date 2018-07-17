@@ -217,6 +217,6 @@ public class GuiBorderPane extends AnchorPane {
         lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.borderSizeProperty()));
 
         cboBgImg.selectElement(mosaikData.getBgPic());
-        mosaikData.bgPicProperty().bind(cboBgImg.getSelProperty());
+        mosaikData.bgPicProperty().bind(cboBgImg.getSelValueProperty());
     }
 }
