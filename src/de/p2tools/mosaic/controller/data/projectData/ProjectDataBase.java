@@ -27,7 +27,7 @@ import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class ProjectDataProps extends PDataSample<ProjectData> {
+public class ProjectDataBase extends PDataSample<ProjectData> {
     public static final String TAG = "ProjectData";
 
     private final StringProperty name = new SimpleStringProperty("Neues Mosaik");

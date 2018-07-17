@@ -23,7 +23,7 @@ import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import javafx.scene.paint.Color;
 
 
-public class ThumbProps extends PDataSample<Thumb> {
+public class ThumbBase extends PDataSample<Thumb> {
 
     public static final String TAG = "Thumb";
     private int anz = 0;

@@ -26,7 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ProjectData extends ProjectDataProps {
+public class ProjectData extends ProjectDataBase {
     private int nr = 1;
 
     public ProjectData() {

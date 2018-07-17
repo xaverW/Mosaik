@@ -18,6 +18,7 @@ package de.p2tools.mosaic.controller;
 
 import de.p2tools.mosaic.controller.config.ProgConfig;
 import de.p2tools.mosaic.controller.config.ProgData;
+import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.guiTools.GuiSize;
 import de.p2tools.p2Lib.tools.log.LogMsg;
 import javafx.application.Platform;
@@ -41,14 +42,12 @@ public class ProgQuitt {
     }
 
     /**
-     * Quit the MTPlayer application
-     *
-     * @param showOptionTerminate show options dialog when downloads are running
+     * Quit the application
      */
-    public void beenden(boolean showOptionTerminate) {
-        if (beenden_()) {
+    public void quitt() {
+        if (quitt_()) {
 
-            // dann jetzt beenden -> Thüss
+            // dann jetzt beenden -> Tschüss
             Platform.runLater(() -> {
                 Platform.exit();
                 System.exit(0);
@@ -57,14 +56,21 @@ public class ProgQuitt {
         }
     }
 
-    private boolean beenden_() {
-        writeTabSettings();
-        writeWindowSizes();
+    private boolean quitt_() {
+        boolean ret = false;
 
-        new ProgSave().save();
-        LogMsg.endMsg();
+        if (PAlert.BUTTON.YES == PAlert.showAlert_yes_no("Frage", "Programm beenden", "Soll das Programm beendet werden?")) {
+            ret = true;
 
-        return true;
+            writeTabSettings();
+            writeWindowSizes();
+            new ProgSave().save();
+
+            LogMsg.endMsg();
+        }
+
+
+        return ret;
     }
 
 }

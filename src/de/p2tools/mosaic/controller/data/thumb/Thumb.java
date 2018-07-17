@@ -16,7 +16,7 @@
 
 package de.p2tools.mosaic.controller.data.thumb;
 
-public final class Thumb extends ThumbProps {
+public final class Thumb extends ThumbBase {
 
     private final int DARK = 125;
 

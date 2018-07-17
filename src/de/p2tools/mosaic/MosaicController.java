@@ -93,7 +93,7 @@ public class MosaicController extends StackPane {
             miAbout.setOnAction(event -> new AboutDialogController(progData));
 
             final MenuItem miQuitt = new MenuItem("Beenden");
-            miQuitt.setOnAction(e -> new ProgQuitt().beenden(true));
+            miQuitt.setOnAction(e -> new ProgQuitt().quitt());
 
             menuButton.getStyleClass().add("btnFunction");
             menuButton.setText("");

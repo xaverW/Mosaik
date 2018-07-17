@@ -79,7 +79,7 @@ public class GenWallpaper {
         this.addBorder = wallpaperData.isAddBorder();
         this.borderSize = wallpaperData.getBorderSize();
         this.borderColor = wallpaperData.getBorderColor();
-        this.background = wallpaperData.getBackGround();
+        this.background = wallpaperData.getBackground();
         this.backgroundImg = wallpaperData.getBgPic();
 
         if (dest.isEmpty()) {

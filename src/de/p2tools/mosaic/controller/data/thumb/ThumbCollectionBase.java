@@ -27,7 +27,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class ThumbCollectionProps extends PDataSample<ThumbCollection> {
+public class ThumbCollectionBase extends PDataSample<ThumbCollection> {
 
     public static final String TAG = "ThumbCollection";
     private final BooleanProperty recursive = new SimpleBooleanProperty(true);

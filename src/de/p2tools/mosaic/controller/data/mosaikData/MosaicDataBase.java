@@ -25,7 +25,7 @@ import de.p2tools.p2Lib.configFile.pData.PDataSample;
 import de.p2tools.p2Lib.image.ImgFile;
 import javafx.beans.property.*;
 
-public class MosaicDataProps extends PDataSample<MosaicData> {
+public class MosaicDataBase extends PDataSample<MosaicData> {
     public static final String TAG = "MosaicData";
 
     public enum BACKGROUND {
@@ -82,7 +82,7 @@ public class MosaicDataProps extends PDataSample<MosaicData> {
 
     private final BooleanProperty addBorder = new SimpleBooleanProperty(false); // einen Rahmen um die Thumbs zeichnen
     private final IntegerProperty borderSize = new SimpleIntegerProperty(0); // Anzahl Pixel um die ein Thumb verleinert wird
-    private final StringProperty backGround = new SimpleStringProperty(BACKGROUND.COLOR.toString()); // Hintergrund ist eine Farbe/Bild
+    private final StringProperty background = new SimpleStringProperty(BACKGROUND.COLOR.toString()); // Hintergrund ist eine Farbe/Bild
     private final StringProperty borderColor = new SimpleStringProperty(""); // Farbe des Rahmens zwischen den Miniaturbildern
     private final StringProperty bgPic = new SimpleStringProperty(""); // File Hintergrundfoto
 
@@ -106,7 +106,7 @@ public class MosaicDataProps extends PDataSample<MosaicData> {
 
                 new ConfigBoolProp("add-border", addBorder),
                 new ConfigIntProp("reduce-size", borderSize),
-                new ConfigStringProp("bg-color", backGround),
+                new ConfigStringProp("bg-color", background),
                 new ConfigStringProp("border-color", borderColor),
                 new ConfigStringProp("bg-pic", bgPic)};
     }
@@ -245,16 +245,16 @@ public class MosaicDataProps extends PDataSample<MosaicData> {
         this.borderSize.set(borderSize);
     }
 
-    public String getBackGround() {
-        return backGround.get();
+    public String getBackground() {
+        return background.get();
     }
 
-    public StringProperty backGroundProperty() {
-        return backGround;
+    public StringProperty backgroundProperty() {
+        return background;
     }
 
-    public void setBackGround(String backGround) {
-        this.backGround.set(backGround);
+    public void setBackground(String background) {
+        this.background.set(background);
     }
 
     public String getBorderColor() {

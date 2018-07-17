@@ -20,7 +20,7 @@ import de.p2tools.mosaic.controller.config.ProgConfig;
 import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.Icons;
 import de.p2tools.mosaic.controller.data.mosaikData.MosaicData;
-import de.p2tools.mosaic.controller.data.mosaikData.MosaicDataProps;
+import de.p2tools.mosaic.controller.data.mosaikData.MosaicDataBase;
 import de.p2tools.mosaic.gui.HelpText;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
@@ -91,8 +91,8 @@ public class GuiBorderPane extends AnchorPane {
         rbBgImg.setToggleGroup(tg);
         rbColor.setToggleGroup(tg);
 
-        rbBgImg.setOnAction(e -> mosaikData.setBackGround(MosaicData.BACKGROUND.IMAGE.toString()));
-        rbColor.setOnAction(e -> mosaikData.setBackGround(MosaicData.BACKGROUND.COLOR.toString()));
+        rbBgImg.setOnAction(e -> mosaikData.setBackground(MosaicData.BACKGROUND.IMAGE.toString()));
+        rbColor.setOnAction(e -> mosaikData.setBackground(MosaicData.BACKGROUND.COLOR.toString()));
 
         final Button btnHelpSize = new Button("");
         btnHelpSize.setGraphic(new Icons().ICON_BUTTON_HELP);
@@ -201,13 +201,13 @@ public class GuiBorderPane extends AnchorPane {
             mosaikData.setBorderColor(Color.BLACK.toString());
         }
 
-        if (mosaikData.getBackGround().equals(MosaicData.BACKGROUND.COLOR.toString())) {
+        if (mosaikData.getBackground().equals(MosaicData.BACKGROUND.COLOR.toString())) {
             rbColor.setSelected(true);
-        } else if (mosaikData.getBackGround().equals(MosaicData.BACKGROUND.IMAGE.toString())) {
+        } else if (mosaikData.getBackground().equals(MosaicData.BACKGROUND.IMAGE.toString())) {
             rbBgImg.setSelected(true);
         } else {
             rbColor.setSelected(true);
-            mosaikData.setBackGround(MosaicDataProps.BACKGROUND.COLOR.toString());
+            mosaikData.setBackground(MosaicDataBase.BACKGROUND.COLOR.toString());
         }
 
         chkBorder.selectedProperty().bindBidirectional(mosaikData.addBorderProperty());

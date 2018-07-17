@@ -17,7 +17,7 @@
 
 package de.p2tools.mosaic.controller.data.mosaikData;
 
-public class MosaicData extends MosaicDataProps {
+public class MosaicData extends MosaicDataBase {
 
     public MosaicData() {
     }

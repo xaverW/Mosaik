@@ -16,7 +16,7 @@
 
 package de.p2tools.mosaic.controller.data.thumb;
 
-public final class ThumbCollection extends ThumbCollectionProps {
+public final class ThumbCollection extends ThumbCollectionBase {
 
     public ThumbCollection() {
     }

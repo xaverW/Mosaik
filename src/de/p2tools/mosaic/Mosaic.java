@@ -67,7 +67,7 @@ public class Mosaic extends Application {
             primaryStage.setScene(scene);
             primaryStage.setOnCloseRequest(e -> {
                 e.consume();
-                new ProgQuitt().beenden(true);
+                new ProgQuitt().quitt();
             });
 
             GuiSize.setPos(ProgConfig.SYSTEM_GROESSE_GUI, primaryStage);

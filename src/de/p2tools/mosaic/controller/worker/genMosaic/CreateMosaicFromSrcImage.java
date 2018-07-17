@@ -93,15 +93,46 @@ public class CreateMosaicFromSrcImage {
         }
     }
 
+//    private BufferedImage getBufferedImg(BufferedImage srcImg, Color c) {
+//        BufferedImage img = ImgFile.cloneImage(srcImg);
+//
+//        int width = img.getWidth();
+//        int height = img.getHeight();
+//
+//        for (int y = 0; y < height; y++) {
+//            for (int x = 0; x < width; x++) {
+//                int p = img.getRGB(x, y);
+//
+//                int a = (p >> 24) & 0xff;
+//                int r = (p >> 16) & 0xff;
+//                int g = (p >> 8) & 0xff;
+//                int b = p & 0xff;
+//
+//                //calculate average
+//                float avg = 1.0f * (r + g + b) / (3 * 255);
+//                p = (a << 24) |
+//                        ((int) (avg * c.getRed()) << 16) |
+//                        ((int) (avg * c.getGreen()) << 8) |
+//                        (int) (avg * c.getBlue());
+//
+//                img.setRGB(x, y, p);
+//            }
+//        }
+//        return img;
+//    }
+
     private BufferedImage getBufferedImg(BufferedImage srcImg, Color c) {
         BufferedImage img = ImgFile.cloneImage(srcImg);
 
         int width = img.getWidth();
         int height = img.getHeight();
 
+        long count = 0;
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                int p = img.getRGB(x, y);
+
+                int p = srcImg.getRGB(x, y);
 
                 int a = (p >> 24) & 0xff;
                 int r = (p >> 16) & 0xff;
@@ -109,15 +140,29 @@ public class CreateMosaicFromSrcImage {
                 int b = p & 0xff;
 
                 //calculate average
-                float avg = 1.0f * (r + g + b) / (3 * 255);
-                p = (a << 24) |
-                        ((int) (avg * c.getRed()) << 16) |
-                        ((int) (avg * c.getGreen()) << 8) |
-                        (int) (avg * c.getBlue());
+                float avg = (float) (r + g + b) / 255;
+                int rr = (int) (avg * c.getRed());
+                int gg = (int) (avg * c.getGreen());
+                int bb = (int) (avg * c.getBlue());
+                if (rr > 255) {
+                    ++count;
+                    rr = 255;
+                }
+                if (gg > 255) {
+                    ++count;
+                    gg = 255;
+                }
+                if (bb > 255) {
+                    ++count;
+                    bb = 255;
+                }
+
+                p = (a << 24) | (rr << 16) | (gg << 8) | bb;
 
                 img.setRGB(x, y, p);
             }
         }
+//        System.out.println("Count Überlauf: " + count);
         return img;
     }
 }

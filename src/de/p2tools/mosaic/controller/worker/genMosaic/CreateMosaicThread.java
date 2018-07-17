@@ -108,7 +108,7 @@ public class CreateMosaicThread implements Runnable {
                 return;
             }
 
-            if (mosaicData.getBackGround().equals(MosaicData.BACKGROUND.IMAGE.toString()) &&
+            if (mosaicData.getBackground().equals(MosaicData.BACKGROUND.IMAGE.toString()) &&
                     mosaicData.getBgPic().isEmpty()) {
                 showErrMsg("Es soll ein Hintergrundbild verwendet werden, es ist aber keines angegeben.");
                 return;
@@ -118,7 +118,7 @@ public class CreateMosaicThread implements Runnable {
             if (!mosaicData.isAddBorder()) {
                 imgOut = ImgFile.getBufferedImage(destWidth, destHeight);
 
-            } else if (mosaicData.getBackGround().equals(MosaicData.BACKGROUND.IMAGE.toString())) {
+            } else if (mosaicData.getBackground().equals(MosaicData.BACKGROUND.IMAGE.toString())) {
                 BufferedImage bgImg = ImgFile.getBufferedImage(new File(mosaicData.getBgPic()));
                 imgOut = ImgFile.getBufferedImage(destWidth, destHeight, bgImg);
 
