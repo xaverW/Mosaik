@@ -99,6 +99,16 @@ public class CreateMosaic {
             startenThread.setDaemon(true);
             startenThread.start();
 
+        } else if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_COLOR.toString())) {
+            // Mosaik aus ColoredThumbs
+            createMosaicThread = new CreateMosaicThread(MosaicData.THUMB_SRC.THUMBS_COLOR,
+                    src, dest, thumbCollection, mosaikData, listeners);
+
+            Thread startenThread = new Thread(createMosaicThread);
+            startenThread.setName("MosaicColoredThumb");
+            startenThread.setDaemon(true);
+            startenThread.start();
+
         } else {
             // Mosaik aus dem SRC-Image
             createMosaicThread = new CreateMosaicThread(MosaicData.THUMB_SRC.SRC_FOTO,

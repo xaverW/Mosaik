@@ -20,15 +20,18 @@ package de.p2tools.mosaic.controller.worker.genMosaic;
 import de.p2tools.mosaic.controller.RunEvent;
 import de.p2tools.mosaic.controller.RunListener;
 import de.p2tools.mosaic.controller.config.ProgData;
+import de.p2tools.mosaic.controller.data.thumb.Thumb;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
+import de.p2tools.p2Lib.tools.PException;
 
 import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
-public class CreateMosaicFromSrcImage {
+public class CreateMosaicFromColoredThumb {
     private EventListenerList listeners;
     private int maxLines = 0;
 
@@ -75,7 +78,27 @@ public class CreateMosaicFromSrcImage {
             Color c = ImgTools.getColor(createMosaicData.srcImg.getSubimage(xx * createMosaicData.numPixelProThumb,
                     createMosaicData.yy * createMosaicData.numPixelProThumb, createMosaicData.numPixelProThumb, createMosaicData.numPixelProThumb));
 
-            buffImg = getBufferedImg(createMosaicData.srcImgSmall, c);
+
+            int thumbNr = createMosaicData.listForColoredThumbs.get(createMosaicData.yy * createMosaicData.numThumbsWidth + xx);
+            Thumb thumb = createMosaicData.thumbCollection.getThumbList().get(thumbNr);
+            if (thumb == null) {
+                throw new PException("Es sind nicht mehr alle Miniaturbilder vorhanden. " +
+                        "Bitte die Liste der Miniaturbilder " +
+                        "neu einlesen.");
+            }
+
+            thumb.addAnz();
+            File file = new File(thumb.getFileName());
+            buffImg = ImgFile.getBufferedImage(file);
+
+            if (buffImg == null) {
+                throw new PException("Es sind nicht mehr alle Miniaturbilder vorhanden. " +
+                        "Bitte die Liste der Miniaturbilder " +
+                        "neu einlesen.");
+            }
+
+
+            buffImg = getBufferedImg(buffImg, c);
             buffImg = ImgTools.scaleBufferedImage(buffImg, createMosaicData.sizeThumb, createMosaicData.sizeThumb);
 
             if (createMosaicData.addBorder) {

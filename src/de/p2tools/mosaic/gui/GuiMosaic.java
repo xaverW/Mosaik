@@ -17,8 +17,8 @@
 package de.p2tools.mosaic.gui;
 
 import de.p2tools.mosaic.controller.config.ProgData;
-import de.p2tools.mosaic.gui.mosaik.GuiMosaicController;
-import de.p2tools.mosaic.gui.wallpaper.GuiWallpaperController;
+import de.p2tools.mosaic.gui.mosaik.GuiMosaicControllerPane;
+import de.p2tools.mosaic.gui.wallpaper.GuiWallpaperControllerPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -32,8 +32,8 @@ public class GuiMosaic extends AnchorPane {
     private final ProgData progData;
     private final ComboBox<OPTIONS> comboBox = new ComboBox();
 
-    private GuiMosaicController guiMosaicController = null;
-    private GuiWallpaperController guiWallpaperController = null;
+    private GuiMosaicControllerPane guiMosaicControllerPane = null;
+    private GuiWallpaperControllerPane guiWallpaperControllerPanePane = null;
 
 
     public enum OPTIONS {
@@ -53,15 +53,15 @@ public class GuiMosaic extends AnchorPane {
 
     public GuiMosaic() {
         progData = ProgData.getInstance();
-        guiMosaicController = new GuiMosaicController();
-        guiWallpaperController = new GuiWallpaperController();
+        guiMosaicControllerPane = new GuiMosaicControllerPane();
+        guiWallpaperControllerPanePane = new GuiWallpaperControllerPane();
 
         initCont();
     }
 
     public void isShown() {
-        guiMosaicController.isShown();
-        guiWallpaperController.isShown();
+        guiMosaicControllerPane.isShown();
+        guiWallpaperControllerPanePane.isShown();
     }
 
 
@@ -72,19 +72,19 @@ public class GuiMosaic extends AnchorPane {
         hBox.getChildren().add(comboBox);
 
 
-        stackPane.getChildren().addAll(guiMosaicController, guiWallpaperController);
+        stackPane.getChildren().addAll(guiMosaicControllerPane, guiWallpaperControllerPanePane);
 
         comboBox.getItems().addAll(OPTIONS.MOSAIC, OPTIONS.WALLPAPER);
         comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     switch (newValue) {
                         case MOSAIC:
-                            guiMosaicController.toFront();
+                            guiMosaicControllerPane.toFront();
                             break;
                         case WALLPAPER:
-                            guiWallpaperController.toFront();
+                            guiWallpaperControllerPanePane.toFront();
                             break;
                         default:
-                            guiMosaicController.toFront();
+                            guiMosaicControllerPane.toFront();
                     }
                 }
         );

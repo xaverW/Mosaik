@@ -43,7 +43,7 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
     }
 
     public enum THUMB_SRC {
-        THUMBS("THUMBS"), SRC_FOTO("SRC_FOTO");
+        THUMBS("THUMBS"), THUMBS_COLOR("THUMBS_COLOR"), SRC_FOTO("SRC_FOTO");
         private final String name;
 
         THUMB_SRC(String name) {
@@ -74,7 +74,7 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
-    private final IntegerProperty numberThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
+    private final IntegerProperty quantityThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
     private final IntegerProperty thumbCount = new SimpleIntegerProperty(0); // Anzahl wie oft ein Thumbs verwendet werden kann
     private final StringProperty thumbSrc = new SimpleStringProperty(THUMB_SRC.THUMBS.toString()); // Miniaturbilder die verwendet werden
     private final BooleanProperty blackWhite = new SimpleBooleanProperty(false); // Mosaik aus S/W-Bildern erstellen
@@ -98,7 +98,7 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
                 new ConfigStringProp("foto-src", fotoSrc),
                 new ConfigStringProp("foto-dest-dir", fotoDest),
                 new ConfigIntProp("thumb-size", thumbSize),
-                new ConfigIntProp("number-thumbs-width", numberThumbsWidth),
+                new ConfigIntProp("number-thumbs-width", quantityThumbsWidth),
                 new ConfigIntProp("thumb-count", thumbCount),
                 new ConfigStringProp("thumb-src", thumbSrc),
                 new ConfigBoolProp("black-white", blackWhite),
@@ -161,16 +161,16 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
         this.thumbSize.set(thumbSize);
     }
 
-    public int getNumberThumbsWidth() {
-        return numberThumbsWidth.get();
+    public int getQuantityThumbsWidth() {
+        return quantityThumbsWidth.get();
     }
 
-    public IntegerProperty numberThumbsWidthProperty() {
-        return numberThumbsWidth;
+    public IntegerProperty quantityThumbsWidthProperty() {
+        return quantityThumbsWidth;
     }
 
-    public void setNumberThumbsWidth(int numberThumbsWidth) {
-        this.numberThumbsWidth.set(numberThumbsWidth);
+    public void setQuantityThumbsWidth(int quantityThumbsWidth) {
+        this.quantityThumbsWidth.set(quantityThumbsWidth);
     }
 
     public int getThumbCount() {

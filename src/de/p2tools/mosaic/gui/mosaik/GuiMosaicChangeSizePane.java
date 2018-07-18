@@ -32,7 +32,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class GuiMosaicExtendedSizePane extends AnchorPane {
+public class GuiMosaicChangeSizePane extends AnchorPane {
 
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
@@ -50,7 +50,7 @@ public class GuiMosaicExtendedSizePane extends AnchorPane {
 
     MosaicData mosaicData = null;
 
-    public GuiMosaicExtendedSizePane() {
+    public GuiMosaicChangeSizePane() {
         progData = ProgData.getInstance();
 
         if (progData.selectedProjectData != null) {

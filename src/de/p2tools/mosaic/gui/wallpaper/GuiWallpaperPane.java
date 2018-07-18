@@ -242,11 +242,11 @@ public class GuiWallpaperPane extends AnchorPane {
         lblSlider.textProperty().bind(Bindings.format("%d", wallpaperData.thumbSizeProperty()));
 
         // Anzahl Thumbs
-        sliderCount.setValue(wallpaperData.getNumberThumbsWidth() / 10);
+        sliderCount.setValue(wallpaperData.getQuantityThumbsWidth() / 10);
         iPropCount.bind(sliderCount.valueProperty());
         NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
-        wallpaperData.numberThumbsWidthProperty().bind(nbCount);
-        lblSliderCount.textProperty().bind(Bindings.format("%d", wallpaperData.numberThumbsWidthProperty()));
+        wallpaperData.quantityThumbsWidthProperty().bind(nbCount);
+        lblSliderCount.textProperty().bind(Bindings.format("%d", wallpaperData.quantityThumbsWidthProperty()));
     }
 
     private void unbind() {
@@ -264,7 +264,7 @@ public class GuiWallpaperPane extends AnchorPane {
 
         // Anzahl Thumbs
         iPropCount.unbind();
-        wallpaperData.numberThumbsWidthProperty().unbind();
+        wallpaperData.quantityThumbsWidthProperty().unbind();
         lblSliderCount.textProperty().unbind();
     }
 

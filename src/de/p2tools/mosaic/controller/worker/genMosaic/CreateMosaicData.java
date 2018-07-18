@@ -17,13 +17,18 @@
 
 package de.p2tools.mosaic.controller.worker.genMosaic;
 
+import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
+
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 class CreateMosaicData {
     BufferedImage imgOut;
     BufferedImage srcImg;
     BufferedImage srcImgSmall;
     ColorCollection colorCollection;
+    List<Integer> listForColoredThumbs;
+    ThumbCollection thumbCollection;
     int sizeThumb;
     int yy;
     int numThumbsWidth;
@@ -33,13 +38,17 @@ class CreateMosaicData {
     boolean addBorder;
     int borderSize;
 
-    public CreateMosaicData(BufferedImage imgOut, BufferedImage srcImg, BufferedImage srcImgSmall, ColorCollection colorCollection,
+    public CreateMosaicData(BufferedImage imgOut, BufferedImage srcImg,
+                            BufferedImage srcImgSmall, ColorCollection colorCollection,
+                            List<Integer> listForColoredThumbs, ThumbCollection thumbCollection,
                             int sizeThumb, int yy, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb,
                             String thumbResize, int borderSize, boolean addBorder) {
         this.imgOut = imgOut;
         this.srcImg = srcImg;
         this.srcImgSmall = srcImgSmall;
         this.colorCollection = colorCollection;
+        this.listForColoredThumbs = listForColoredThumbs;
+        this.thumbCollection = thumbCollection;
         this.sizeThumb = sizeThumb;
         this.yy = yy;
         this.numThumbsWidth = numThumbsWidth;

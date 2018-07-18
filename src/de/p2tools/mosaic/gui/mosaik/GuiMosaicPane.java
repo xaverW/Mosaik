@@ -294,7 +294,7 @@ public class GuiMosaicPane extends AnchorPane {
 
         // Anzahl Thumbs
         iPropCount.unbind();
-        mosaikData.numberThumbsWidthProperty().unbind();
+        mosaikData.quantityThumbsWidthProperty().unbind();
         lblSliderCount.textProperty().unbind();
 
 
@@ -321,11 +321,11 @@ public class GuiMosaicPane extends AnchorPane {
         lblSlider.textProperty().bind(Bindings.format("%d", mosaikData.thumbSizeProperty()));
 
         // Anzahl Thumbs
-        sliderCount.setValue(mosaikData.getNumberThumbsWidth() / 10);
+        sliderCount.setValue(mosaikData.getQuantityThumbsWidth() / 10);
         iPropCount.bind(sliderCount.valueProperty());
         NumberBinding nbCount = Bindings.multiply(iPropCount, 10);
-        mosaikData.numberThumbsWidthProperty().bind(nbCount);
-        lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.numberThumbsWidthProperty()));
+        mosaikData.quantityThumbsWidthProperty().bind(nbCount);
+        lblSliderCount.textProperty().bind(Bindings.format("%d", mosaikData.quantityThumbsWidthProperty()));
 
         setSize();
     }

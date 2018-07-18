@@ -29,20 +29,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class GuiMosaicController extends AnchorPane {
+public class GuiMosaicControllerPane extends AnchorPane {
 
     private final ProgData progData;
     private final VBox vBox = new VBox();
     private final TabPane tabPane = new TabPane();
 
     private final GuiMosaicPane guiMosaicPane = new GuiMosaicPane();
-    private final GuiMosaicExtendedThumbPane guiMosaicExtendedThumbPane = new GuiMosaicExtendedThumbPane();
-    private final GuiBorderPane guiBorderPane = new GuiBorderPane();
+    private final GuiMosaicChangePane guiMosaicChangePane = new GuiMosaicChangePane();
+    private final GuiChangeBorderPane guiChangeBorderPane = new GuiChangeBorderPane();
     private final Button btnCreate = new Button("Mosaik erstellen");
 
     MosaicData mosaicData = null;
 
-    public GuiMosaicController() {
+    public GuiMosaicControllerPane() {
         progData = ProgData.getInstance();
 
         AnchorPane.setLeftAnchor(vBox, 0.0);
@@ -64,8 +64,8 @@ public class GuiMosaicController extends AnchorPane {
 
         vBox.setDisable(false);
         guiMosaicPane.isShown();
-        guiMosaicExtendedThumbPane.isShown();
-        guiBorderPane.setMosaicData(progData.selectedProjectData.getMosaicData());
+        guiMosaicChangePane.isShown();
+        guiChangeBorderPane.setMosaicData(progData.selectedProjectData.getMosaicData());
 
         if (!progData.selectedProjectData.getMosaicData().equals(mosaicData)) {
             mosaicData = progData.selectedProjectData.getMosaicData();
@@ -81,12 +81,12 @@ public class GuiMosaicController extends AnchorPane {
 
         tab = new Tab("Miniaturbilder verändern");
         tab.setClosable(false);
-        tab.setContent(guiMosaicExtendedThumbPane);
+        tab.setContent(guiMosaicChangePane);
         tabPane.getTabs().add(tab);
 
         tab = new Tab("Rahmen");
         tab.setClosable(false);
-        tab.setContent(guiBorderPane);
+        tab.setContent(guiChangeBorderPane);
         tabPane.getTabs().add(tab);
 
         btnCreate.setOnAction(a -> {

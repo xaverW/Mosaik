@@ -72,7 +72,7 @@ public class GenWallpaper {
     public void create(ThumbCollection thumbCollection, WallpaperData wallpaperData) {
         this.thumbCollection = thumbCollection;
         this.dest = wallpaperData.getFotoDest();
-        this.numThumbsWidth = wallpaperData.getNumberThumbsWidth();
+        this.numThumbsWidth = wallpaperData.getQuantityThumbsWidth();
         this.thumbSize = wallpaperData.getThumbSize();
 //        this.thumbResize = wallpaperData.getResizeThumb();
 

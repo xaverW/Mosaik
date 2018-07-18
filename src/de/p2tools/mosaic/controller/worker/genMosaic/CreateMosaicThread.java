@@ -25,6 +25,7 @@ import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
+import de.p2tools.p2Lib.tools.PRandom;
 import de.p2tools.p2Lib.tools.log.Duration;
 import javafx.application.Platform;
 
@@ -32,12 +33,14 @@ import javax.swing.event.EventListenerList;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CreateMosaicThread implements Runnable {
     private final ThumbCollection thumbCollection;
     private final MosaicData mosaicData;
     private final CreateMosaicFromThumbs createMosaicFromThumbs = new CreateMosaicFromThumbs();
     private final CreateMosaicFromSrcImage createMosaicFromSrcImage = new CreateMosaicFromSrcImage();
+    private final CreateMosaicFromColoredThumb createMosaicFromColoredThumb = new CreateMosaicFromColoredThumb();
     private final EventListenerList listeners;
     private final MosaicData.THUMB_SRC thumbSrc;
 
@@ -46,10 +49,10 @@ public class CreateMosaicThread implements Runnable {
 
     private final ArrayList<CreateMosaicData> createMosaicDataArrayList = new ArrayList<>();
     private final String srcImgStr, destImgStr;
-    private int maxLines = 0;
+    private int quantityLinesDestImage = 0;
     private BufferedImage srcImg, imgOut;
     private int srcHeight, srcWidth, thumbSize, borderSize;
-    private int numThumbsWidth, numPixelProThumb, numThumbsHeight;
+    private int quantityThumbsWidth, quantityPixelProThumb, quantityThumbsHeight;
 
     public CreateMosaicThread(MosaicData.THUMB_SRC thumbSrc, String srcImgStr, String destImgStr,
                               ThumbCollection thumbCollection,
@@ -65,6 +68,7 @@ public class CreateMosaicThread implements Runnable {
     public void setStop() {
         stopAll = true;
         createMosaicFromThumbs.setStop();
+        createMosaicFromColoredThumb.setStop();
         createMosaicFromSrcImage.setStop();
     }
 
@@ -87,19 +91,19 @@ public class CreateMosaicThread implements Runnable {
             srcWidth = srcImg.getRaster().getWidth();
             thumbSize = mosaicData.getThumbSize();
 
-            numThumbsWidth = mosaicData.getNumberThumbsWidth();
-            numPixelProThumb = srcWidth / numThumbsWidth;
-            numThumbsHeight = srcHeight / numPixelProThumb;
-            maxLines = numThumbsHeight;
+            quantityThumbsWidth = mosaicData.getQuantityThumbsWidth();
+            quantityPixelProThumb = srcWidth / quantityThumbsWidth;
+            quantityThumbsHeight = srcHeight / quantityPixelProThumb;
+            quantityLinesDestImage = quantityThumbsHeight;
             borderSize = mosaicData.getBorderSize();
 
             int destWidth, destHeight;
             if (mosaicData.isAddBorder()) {
-                destWidth = numThumbsWidth * thumbSize + (1 + numThumbsWidth) * borderSize;
-                destHeight = numThumbsHeight * thumbSize + (1 + numThumbsHeight) * borderSize;
+                destWidth = quantityThumbsWidth * thumbSize + (1 + quantityThumbsWidth) * borderSize;
+                destHeight = quantityThumbsHeight * thumbSize + (1 + quantityThumbsHeight) * borderSize;
             } else {
-                destWidth = numThumbsWidth * thumbSize;
-                destHeight = numThumbsHeight * thumbSize;
+                destWidth = quantityThumbsWidth * thumbSize;
+                destHeight = quantityThumbsHeight * thumbSize;
             }
 
             if (destWidth >= ImgTools.JPEG_MAX_DIMENSION || destHeight >= ImgTools.JPEG_MAX_DIMENSION) {
@@ -129,7 +133,8 @@ public class CreateMosaicThread implements Runnable {
 
             // ===================================================
             // los gehts
-            notifyEvent(maxLines, 0, "Mosaik erstellen");
+            notifyEvent(quantityLinesDestImage, 0, "Mosaik erstellen");
+
 
             if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS)) {
                 // ===================================================
@@ -137,6 +142,12 @@ public class CreateMosaicThread implements Runnable {
                 if (!createMosaicFromThumbs()) {
                     stopAll = true;
                 }
+
+
+            } else if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS_COLOR)) {
+                // ===================================================
+                // mosaik from thumbs
+                createMosaicFromColoredThumbs();
 
 
             } else if (thumbSrc.equals(MosaicData.THUMB_SRC.SRC_FOTO)) {
@@ -159,17 +170,19 @@ public class CreateMosaicThread implements Runnable {
 
             // ===================================================
             //fertig
-            notifyEvent(maxLines, progressLines, "Speichern");
+            notifyEvent(quantityLinesDestImage, progressLines, "Speichern");
             ImgFile.writeImage(imgOut, destImgStr, mosaicData.getFormat(), ProgConst.IMG_JPG_COMPRESSION);
 
         } catch (Exception ex) {
+            setStop(); // damit andere Threads auch stoppen
             showErrMsg("Das Mosaik kann nicht richtig erstellt werden!");
         } catch (OutOfMemoryError E) {
+            setStop(); // damit andere Threads auch stoppen
             showErrMsg("Das Mosaik kann nicht erstellt werden, das Programm " +
                     "hat zu wenig Arbeitsspeicher!");
 
         } finally {
-            notifyEvent(maxLines, progressLines, "");
+            notifyEvent(quantityLinesDestImage, progressLines, "");
             notifyEvent(0, 0, "");
             Duration.counterStop("Mosaik erstellen");
         }
@@ -180,9 +193,10 @@ public class CreateMosaicThread implements Runnable {
         // mosaik from thumbs
         final ColorCollection colorCollection = new ColorCollection(thumbCollection);
 
-        for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
-            CreateMosaicData createMosaicData = new CreateMosaicData(imgOut, srcImg, null, colorCollection,
-                    thumbSize, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb,
+        for (int yy = 0; yy < quantityThumbsHeight && !stopAll; ++yy) {
+            CreateMosaicData createMosaicData = new CreateMosaicData(imgOut, srcImg,
+                    null, colorCollection, null, thumbCollection,
+                    thumbSize, yy, quantityThumbsWidth, quantityThumbsHeight, quantityPixelProThumb,
                     mosaicData.getResizeThumb(), mosaicData.getBorderSize(), mosaicData.isAddBorder());
 
             createMosaicDataArrayList.add(createMosaicData);
@@ -192,11 +206,29 @@ public class CreateMosaicThread implements Runnable {
         return createMosaicFromThumbs.create(listeners, createMosaicDataArrayList);
     }
 
+    private void createMosaicFromColoredThumbs() {
+        final int thumbListSize = thumbCollection.getThumbList().getSize();
+
+        final int quantityAllThumbs = quantityThumbsHeight * quantityThumbsWidth;
+        List<Integer> getList = PRandom.getShuffleList(quantityAllThumbs, thumbListSize - 1);
+
+        for (int yy = 0; yy < quantityThumbsHeight && !stopAll; ++yy) {
+            CreateMosaicData createMosaicData = new CreateMosaicData(imgOut, srcImg,
+                    null, null, getList, thumbCollection,
+                    thumbSize, yy, quantityThumbsWidth, quantityThumbsHeight, quantityPixelProThumb,
+                    mosaicData.getResizeThumb(), mosaicData.getBorderSize(), mosaicData.isAddBorder());
+
+            createMosaicDataArrayList.add(createMosaicData);
+        }
+        createMosaicFromColoredThumb.create(listeners, createMosaicDataArrayList);
+    }
+
     private void createMosaicFromSrcImg() {
         BufferedImage imgSrcSmall = ImgTools.scaleBufferedImage(srcImg, thumbSize, thumbSize);
-        for (int yy = 0; yy < numThumbsHeight && !stopAll; ++yy) {
-            CreateMosaicData createMosaicData = new CreateMosaicData(imgOut, srcImg, imgSrcSmall, null,
-                    thumbSize, yy, numThumbsWidth, numThumbsHeight, numPixelProThumb,
+        for (int yy = 0; yy < quantityThumbsHeight && !stopAll; ++yy) {
+            CreateMosaicData createMosaicData = new CreateMosaicData(imgOut, srcImg,
+                    imgSrcSmall, null, null, thumbCollection,
+                    thumbSize, yy, quantityThumbsWidth, quantityThumbsHeight, quantityPixelProThumb,
                     mosaicData.getResizeThumb(), mosaicData.getBorderSize(), mosaicData.isAddBorder());
 
             createMosaicDataArrayList.add(createMosaicData);

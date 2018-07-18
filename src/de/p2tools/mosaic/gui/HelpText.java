@@ -80,7 +80,11 @@ public class HelpText {
             "\n\n" +
             "Möglichkeit 1: Es werden die erstellten Miniaturbilder des Projekts verwendet." +
             "\n\n" +
-            "Möglichkeit 2: Aus der Fotovorlage werden Miniaturbilder erstellt, " +
+            "Möglichkeit 2: Es werden die erstellten Miniaturbilder des Projekts verwendet. Diese werden aber Farblich so " +
+            "verändert, dass sie zur Vorlage besser passen. Das ist eine Möglichkeit, bei wenigen Miniaturbildern ein Mosaik zu " +
+            "erstellen." +
+            "\n\n" +
+            "Möglichkeit 3: Aus der Fotovorlage werden Miniaturbilder erstellt, " +
             "diese werden dann passend \"eingefärbt\" und dann zum Bauen des Mosaik verwendet.";
 
     public static final String MOSAIC_BW = "Das Mosaik wird als Schwarz-Weiß Bild erstellt.";

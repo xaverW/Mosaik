@@ -18,7 +18,7 @@ package de.p2tools.mosaic.gui.wallpaper;
 
 import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.mosaikData.WallpaperData;
-import de.p2tools.mosaic.gui.mosaik.GuiBorderPane;
+import de.p2tools.mosaic.gui.mosaik.GuiChangeBorderPane;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgTools;
 import javafx.geometry.Insets;
@@ -31,20 +31,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class GuiWallpaperController extends AnchorPane {
+public class GuiWallpaperControllerPane extends AnchorPane {
 
     private final ProgData progData;
     private final VBox vBox = new VBox();
     private final TabPane tabPane = new TabPane();
 
     private final GuiWallpaperPane guiWallpaperPane = new GuiWallpaperPane();
-    private final GuiBorderPane guiBorderPane = new GuiBorderPane();
+    private final GuiChangeBorderPane guiChangeBorderPane = new GuiChangeBorderPane();
 
     private final Button btnCreate = new Button("Fototapete erstellen");
 
     WallpaperData wallpaperData = null;
 
-    public GuiWallpaperController() {
+    public GuiWallpaperControllerPane() {
         this.progData = ProgData.getInstance();
         if (progData.selectedProjectData != null) {
             this.wallpaperData = progData.selectedProjectData.getWallpaperData();
@@ -69,7 +69,7 @@ public class GuiWallpaperController extends AnchorPane {
 
         vBox.setDisable(false);
         guiWallpaperPane.isShown();
-        guiBorderPane.setMosaicData(progData.selectedProjectData.getWallpaperData());
+        guiChangeBorderPane.setMosaicData(progData.selectedProjectData.getWallpaperData());
 
         if (!progData.selectedProjectData.getWallpaperData().equals(wallpaperData)) {
             wallpaperData = progData.selectedProjectData.getWallpaperData();
@@ -85,11 +85,11 @@ public class GuiWallpaperController extends AnchorPane {
 
         tab = new Tab("Rahmen");
         tab.setClosable(false);
-        tab.setContent(guiBorderPane);
+        tab.setContent(guiChangeBorderPane);
         tabPane.getTabs().add(tab);
 
         btnCreate.setOnAction(a -> {
-            if (wallpaperData.getNumberThumbsWidth() * wallpaperData.getThumbSize() >= ImgTools.JPEG_MAX_DIMENSION) {
+            if (wallpaperData.getQuantityThumbsWidth() * wallpaperData.getThumbSize() >= ImgTools.JPEG_MAX_DIMENSION) {
                 PAlert.showErrorAlert("Mosaik erstellen", "Die Maximale Größe des Mosaiks ist überschritten.\n" +
                         "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.");
                 return;

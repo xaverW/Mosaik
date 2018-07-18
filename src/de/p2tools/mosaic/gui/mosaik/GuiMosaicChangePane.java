@@ -28,20 +28,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class GuiMosaicExtendedThumbPane extends AnchorPane {
+public class GuiMosaicChangePane extends AnchorPane {
 
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox contPane = new VBox();
 
     private final RadioButton rbThumb = new RadioButton("Miniaturbilder für das Mosaik verwenden");
+    private final RadioButton rbThumbColor = new RadioButton("Miniaturbilder verwenden und farblich anpassen");
     private final RadioButton rbSelf = new RadioButton("Vorlagenfoto für das Mosaik verwenden");
     private final ToggleGroup tg = new ToggleGroup();
     private final CheckBox chkBlackWhite = new CheckBox("Schwarz/Weiß Mosaik erstellen");
 
     MosaicData mosaikData = null;
 
-    public GuiMosaicExtendedThumbPane() {
+    public GuiMosaicChangePane() {
         progData = ProgData.getInstance();
 
         if (progData.selectedProjectData != null) {
@@ -91,9 +92,11 @@ public class GuiMosaicExtendedThumbPane extends AnchorPane {
         btnHelpBlackWhite.setOnAction(a -> new PAlert().showHelpAlert("Schwarz/Weiß Mosaik", HelpText.MOSAIC_BW));
 
         rbThumb.setToggleGroup(tg);
+        rbThumbColor.setToggleGroup(tg);
         rbSelf.setToggleGroup(tg);
 
         rbThumb.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.THUMBS.toString()));
+        rbThumbColor.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.THUMBS_COLOR.toString()));
         rbSelf.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.SRC_FOTO.toString()));
 
         int row = 0;
@@ -104,6 +107,7 @@ public class GuiMosaicExtendedThumbPane extends AnchorPane {
 
         GridPane.setHgrow(rbThumb, Priority.ALWAYS);
         rbThumb.setMaxWidth(Double.MAX_VALUE);
+        rbThumbColor.setMaxWidth(Double.MAX_VALUE);
         rbSelf.setMaxWidth(Double.MAX_VALUE);
 
         Label lbl = new Label("Fotos aus denen das Mosaik gebaut wird");
@@ -113,6 +117,7 @@ public class GuiMosaicExtendedThumbPane extends AnchorPane {
         gridPaneDest.add(lbl, 0, row, 2, 1);
         gridPaneDest.add(rbThumb, 0, ++row);
         gridPaneDest.add(btnHelpSrcImage, 1, row);
+        gridPaneDest.add(rbThumbColor, 0, ++row);
         gridPaneDest.add(rbSelf, 0, ++row);
 
         lbl = new Label("Mosaik aus Schwarz/Weiß Fotos bauen");
@@ -146,6 +151,8 @@ public class GuiMosaicExtendedThumbPane extends AnchorPane {
 
         if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS.toString())) {
             rbThumb.setSelected(true);
+        } else if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_COLOR.toString())) {
+            rbThumbColor.setSelected(true);
         } else {
             rbSelf.setSelected(true);
         }

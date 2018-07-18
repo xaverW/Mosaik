@@ -35,7 +35,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class GuiBorderPane extends AnchorPane {
+public class GuiChangeBorderPane extends AnchorPane {
 
     private final ProgData progData;
     private final ScrollPane scrollPane = new ScrollPane();
@@ -54,7 +54,7 @@ public class GuiBorderPane extends AnchorPane {
 
     MosaicData mosaikData = null;
 
-    public GuiBorderPane() {
+    public GuiChangeBorderPane() {
         progData = ProgData.getInstance();
 
         scrollPane.setFitToHeight(true);
