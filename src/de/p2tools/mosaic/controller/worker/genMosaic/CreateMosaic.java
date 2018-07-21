@@ -57,20 +57,19 @@ public class CreateMosaic {
     }
 
     /**
-     * @param mosaikData
+     * @param mosaicData
      */
-    public void create(MosaicData mosaikData, ThumbCollection thumbCollection) {
-
-        dest = mosaikData.getFotoDest();
-        src = mosaikData.getFotoSrc();
-        anz = mosaikData.getThumbCount();
+    public void create(MosaicData mosaicData, ThumbCollection thumbCollection) {
+        dest = mosaicData.getFotoDest();
+        src = mosaicData.getFotoSrc();
+        anz = mosaicData.getThumbCount();
 
         if (dest.isEmpty()) {
             PLog.errorLog(945120365, "Keine Zieldatei angegeben!");
             return;
         }
 
-        if (mosaikData.getFormat().equals(ImgFile.IMAGE_FORMAT_PNG) &&
+        if (mosaicData.getFormat().equals(ImgFile.IMAGE_FORMAT_PNG) &&
                 !dest.endsWith("." + ImgFile.IMAGE_FORMAT_PNG)) {
             dest += "." + ImgFile.IMAGE_FORMAT_PNG;
 
@@ -86,41 +85,40 @@ public class CreateMosaic {
 
         int len = thumbCollection.getThumbList().getSize();
         if (len <= 0) {
+            PLog.errorLog(912030578, "Es gibt keine Miniaturbilder!");
             return;
         }
 
-        if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS.toString())) {
+
+        MosaicData.THUMB_SRC thumbSrc;
+        String threadName;
+        if (mosaicData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS.toString())) {
             // Mosaik aus Thumbs
-            createMosaicThread = new CreateMosaicThread(MosaicData.THUMB_SRC.THUMBS,
-                    src, dest, thumbCollection, mosaikData, listeners);
+            thumbSrc = MosaicData.THUMB_SRC.THUMBS;
+            threadName = "MosaicThumb";
 
-            Thread startenThread = new Thread(createMosaicThread);
-            startenThread.setName("MosaicThumb");
-            startenThread.setDaemon(true);
-            startenThread.start();
-
-        } else if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_COLOR.toString())) {
+        } else if (mosaicData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_COLOR.toString())) {
             // Mosaik aus ColoredThumbs
-            createMosaicThread = new CreateMosaicThread(MosaicData.THUMB_SRC.THUMBS_COLOR,
-                    src, dest, thumbCollection, mosaikData, listeners);
+            thumbSrc = MosaicData.THUMB_SRC.THUMBS_COLOR;
+            threadName = "MosaicColoredThumb";
 
-            Thread startenThread = new Thread(createMosaicThread);
-            startenThread.setName("MosaicColoredThumb");
-            startenThread.setDaemon(true);
-            startenThread.start();
+        } else if (mosaicData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_ALL_PIXEL_COLOR.toString())) {
+            // Mosaik aus Thumbs und alles colored
+            thumbSrc = MosaicData.THUMB_SRC.THUMBS_ALL_PIXEL_COLOR;
+            threadName = "MosaicAllPixelColored";
 
         } else {
             // Mosaik aus dem SRC-Image
-            createMosaicThread = new CreateMosaicThread(MosaicData.THUMB_SRC.SRC_FOTO,
-                    src, dest, thumbCollection, mosaikData, listeners);
-
-            Thread startenThread = new Thread(createMosaicThread);
-            startenThread.setName("MosaicFromSrcImage");
-            startenThread.setDaemon(true);
-            startenThread.start();
+            thumbSrc = MosaicData.THUMB_SRC.SRC_FOTO;
+            threadName = "MosaicFromSrcImage";
 
         }
 
+        createMosaicThread = new CreateMosaicThread(thumbSrc, src, dest, thumbCollection, mosaicData, listeners);
+        Thread thread = new Thread(createMosaicThread);
+        thread.setName(threadName);
+        thread.setDaemon(true);
+        thread.start();
     }
 
 }

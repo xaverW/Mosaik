@@ -27,6 +27,7 @@ import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.PRandom;
 import de.p2tools.p2Lib.tools.log.Duration;
+import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.application.Platform;
 
 import javax.swing.event.EventListenerList;
@@ -41,6 +42,7 @@ public class CreateMosaicThread implements Runnable {
     private final CreateMosaicFromThumbs createMosaicFromThumbs = new CreateMosaicFromThumbs();
     private final CreateMosaicFromSrcImage createMosaicFromSrcImage = new CreateMosaicFromSrcImage();
     private final CreateMosaicFromColoredThumb createMosaicFromColoredThumb = new CreateMosaicFromColoredThumb();
+    private final CreateMosaicFromThumbsAllPixelColored createMosaicFromThumbsAllPixelColored = new CreateMosaicFromThumbsAllPixelColored();
     private final EventListenerList listeners;
     private final MosaicData.THUMB_SRC thumbSrc;
 
@@ -146,7 +148,14 @@ public class CreateMosaicThread implements Runnable {
 
             } else if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS_COLOR)) {
                 // ===================================================
-                // mosaik from thumbs
+                // mosaik from colored thumbs
+                createMosaicFromThumbsAllPixelColored();
+//                createMosaicFromColoredThumbs();
+
+
+            } else if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS_ALL_PIXEL_COLOR)) {
+                // ===================================================
+                // mosaik from thumbs with color from the src
                 createMosaicFromColoredThumbs();
 
 
@@ -175,9 +184,11 @@ public class CreateMosaicThread implements Runnable {
 
         } catch (Exception ex) {
             setStop(); // damit andere Threads auch stoppen
+            PLog.errorLog(95120124, ex);
             showErrMsg("Das Mosaik kann nicht richtig erstellt werden!");
         } catch (OutOfMemoryError E) {
             setStop(); // damit andere Threads auch stoppen
+            PLog.errorLog(951203547, E.getMessage());
             showErrMsg("Das Mosaik kann nicht erstellt werden, das Programm " +
                     "hat zu wenig Arbeitsspeicher!");
 
@@ -221,6 +232,23 @@ public class CreateMosaicThread implements Runnable {
             createMosaicDataArrayList.add(createMosaicData);
         }
         createMosaicFromColoredThumb.create(listeners, createMosaicDataArrayList);
+    }
+
+    private void createMosaicFromThumbsAllPixelColored() {
+        final int thumbListSize = thumbCollection.getThumbList().getSize();
+
+        final int quantityAllThumbs = quantityThumbsHeight * quantityThumbsWidth;
+        List<Integer> getList = PRandom.getShuffleList(quantityAllThumbs, thumbListSize - 1);
+
+        for (int yy = 0; yy < quantityThumbsHeight && !stopAll; ++yy) {
+            CreateMosaicData createMosaicData = new CreateMosaicData(imgOut, srcImg,
+                    null, null, getList, thumbCollection,
+                    thumbSize, yy, quantityThumbsWidth, quantityThumbsHeight, quantityPixelProThumb,
+                    mosaicData.getResizeThumb(), mosaicData.getBorderSize(), mosaicData.isAddBorder());
+
+            createMosaicDataArrayList.add(createMosaicData);
+        }
+        createMosaicFromThumbsAllPixelColored.create(listeners, createMosaicDataArrayList);
     }
 
     private void createMosaicFromSrcImg() {

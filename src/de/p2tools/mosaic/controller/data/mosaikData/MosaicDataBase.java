@@ -43,7 +43,7 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
     }
 
     public enum THUMB_SRC {
-        THUMBS("THUMBS"), THUMBS_COLOR("THUMBS_COLOR"), SRC_FOTO("SRC_FOTO");
+        THUMBS("THUMBS"), THUMBS_COLOR("THUMBS_COLOR"), THUMBS_ALL_PIXEL_COLOR("THUMBS_ALL_PIXEL_COLOR"), SRC_FOTO("SRC_FOTO");
         private final String name;
 
         THUMB_SRC(String name) {
