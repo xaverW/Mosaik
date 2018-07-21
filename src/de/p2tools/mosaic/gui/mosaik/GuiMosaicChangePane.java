@@ -35,10 +35,10 @@ public class GuiMosaicChangePane extends AnchorPane {
     private final VBox contPane = new VBox();
 
     private final RadioButton rbThumb = new RadioButton("Miniaturbilder für das Mosaik verwenden");
+    private final RadioButton rbGrayThumb = new RadioButton("Miniaturbilder für ein Schwarz/Weiß Mosaik verwenden");
     private final RadioButton rbThumbColor = new RadioButton("Miniaturbilder verwenden und farblich anpassen");
     private final RadioButton rbSelf = new RadioButton("Vorlagenfoto für das Mosaik verwenden");
     private final ToggleGroup tg = new ToggleGroup();
-    private final CheckBox chkBlackWhite = new CheckBox("Schwarz/Weiß Mosaik erstellen");
 
     MosaicData mosaikData = null;
 
@@ -87,15 +87,13 @@ public class GuiMosaicChangePane extends AnchorPane {
         btnHelpSrcImage.setGraphic(new Icons().ICON_BUTTON_HELP);
         btnHelpSrcImage.setOnAction(a -> new PAlert().showHelpAlert("Fotos für das Mosaik", HelpText.MOSAIC_PIXEL_FOTO));
 
-        final Button btnHelpBlackWhite = new Button("");
-        btnHelpBlackWhite.setGraphic(new Icons().ICON_BUTTON_HELP);
-        btnHelpBlackWhite.setOnAction(a -> new PAlert().showHelpAlert("Schwarz/Weiß Mosaik", HelpText.MOSAIC_BW));
-
         rbThumb.setToggleGroup(tg);
+        rbGrayThumb.setToggleGroup(tg);
         rbThumbColor.setToggleGroup(tg);
         rbSelf.setToggleGroup(tg);
 
         rbThumb.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.THUMBS.toString()));
+        rbGrayThumb.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.THUMBS_GRAY.toString()));
         rbThumbColor.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.THUMBS_COLOR.toString()));
         rbSelf.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.SRC_FOTO.toString()));
 
@@ -107,6 +105,7 @@ public class GuiMosaicChangePane extends AnchorPane {
 
         GridPane.setHgrow(rbThumb, Priority.ALWAYS);
         rbThumb.setMaxWidth(Double.MAX_VALUE);
+        rbGrayThumb.setMaxWidth(Double.MAX_VALUE);
         rbThumbColor.setMaxWidth(Double.MAX_VALUE);
         rbSelf.setMaxWidth(Double.MAX_VALUE);
 
@@ -117,17 +116,9 @@ public class GuiMosaicChangePane extends AnchorPane {
         gridPaneDest.add(lbl, 0, row, 2, 1);
         gridPaneDest.add(rbThumb, 0, ++row);
         gridPaneDest.add(btnHelpSrcImage, 1, row);
+        gridPaneDest.add(rbGrayThumb, 0, ++row);
         gridPaneDest.add(rbThumbColor, 0, ++row);
         gridPaneDest.add(rbSelf, 0, ++row);
-
-        lbl = new Label("Mosaik aus Schwarz/Weiß Fotos bauen");
-        lbl.getStyleClass().add("headerLabel");
-        lbl.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setHgrow(lbl, Priority.ALWAYS);
-        gridPaneDest.add(new Label(" "), 1, ++row);
-        gridPaneDest.add(lbl, 0, ++row, 2, 1);
-        gridPaneDest.add(chkBlackWhite, 0, ++row);
-        gridPaneDest.add(btnHelpBlackWhite, 1, row);
 
         // import all
         contPane.setSpacing(25);
@@ -139,9 +130,6 @@ public class GuiMosaicChangePane extends AnchorPane {
         if (mosaikData == null) {
             return;
         }
-
-        mosaikData.blackWhiteProperty().unbind();
-
     }
 
     private void bind() {
@@ -151,15 +139,12 @@ public class GuiMosaicChangePane extends AnchorPane {
 
         if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS.toString())) {
             rbThumb.setSelected(true);
+        } else if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_GRAY.toString())) {
+            rbGrayThumb.setSelected(true);
         } else if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_COLOR.toString())) {
             rbThumbColor.setSelected(true);
         } else {
             rbSelf.setSelected(true);
         }
-
-        chkBlackWhite.setSelected(mosaikData.isBlackWhite());
-        mosaikData.blackWhiteProperty().bind(chkBlackWhite.selectedProperty());
-
-
     }
 }

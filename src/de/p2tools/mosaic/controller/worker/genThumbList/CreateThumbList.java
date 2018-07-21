@@ -139,6 +139,7 @@ public class CreateThumbList {
                 for (int i = 0; i < anzThread; ++i) {
                     ++threads;
                     t = new Thread(new CreateThumbs());
+                    t.setName("CreateThumList");
                     t.setDaemon(true);
                     t.start();
                 }

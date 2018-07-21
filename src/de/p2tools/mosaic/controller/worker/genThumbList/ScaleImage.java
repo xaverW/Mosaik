@@ -169,7 +169,8 @@ public class ScaleImage {
 //                    Log.errorLog(942103478, "getThumb");
 //                }
 
-                ret = new Thumb((int) r, (int) g, (int) b, img.getAbsolutePath());
+                long avg = (r + g + b) / 3;
+                ret = new Thumb((int) r, (int) g, (int) b, (int) avg, img.getAbsolutePath());
 
             } catch (Exception ex) {
                 throw ex;

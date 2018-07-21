@@ -99,12 +99,12 @@ public class ThumbDataList extends SimpleListProperty<Thumb> implements PDataLis
         this.parallelStream().forEach(thumb -> thumb.setAnz(0));
     }
 
-    public Thumb getThumb(int red, int green, int blue, int anz) {
+    public Thumb getThumbWithColor(int red, int green, int blue, int anz) {
 //        if (anz == 0) {
         return this.parallelStream().filter(thumb ->
                 thumb.getRed() == red &&
                         thumb.getGreen() == green &&
-                        thumb.getBlue() == blue).findFirst().orElse(null);
+                        thumb.getBlue() == blue).findAny().orElse(null);
 //        } else {
 //            return this.parallelStream().filter(thumb ->
 //                    thumb.getRed() == red &&
@@ -112,5 +112,10 @@ public class ThumbDataList extends SimpleListProperty<Thumb> implements PDataLis
 //                            thumb.getBlue() == blue &&
 //                            thumb.getAnz() <= anz).findFirst().orElse(null);
 //        }
+    }
+
+    public Thumb getThumbWithGrayValue(int avg, int anz) {
+        return this.parallelStream().filter(thumb ->
+                thumb.getAvg() == avg).findAny().orElse(null);
     }
 }

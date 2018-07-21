@@ -40,6 +40,7 @@ public class CreateMosaicThread implements Runnable {
     private final ThumbCollection thumbCollection;
     private final MosaicData mosaicData;
     private final CreateMosaicFromThumbs createMosaicFromThumbs = new CreateMosaicFromThumbs();
+    private final CreateMosaicFromGrayThumbs createMosaicFromGrayThumbs = new CreateMosaicFromGrayThumbs();
     private final CreateMosaicFromSrcImage createMosaicFromSrcImage = new CreateMosaicFromSrcImage();
     private final CreateMosaicFromColoredThumb createMosaicFromColoredThumb = new CreateMosaicFromColoredThumb();
     private final CreateMosaicFromThumbsAllPixelColored createMosaicFromThumbsAllPixelColored = new CreateMosaicFromThumbsAllPixelColored();
@@ -146,6 +147,14 @@ public class CreateMosaicThread implements Runnable {
                 }
 
 
+            } else if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS_GRAY)) {
+                // ===================================================
+                // gray mosaik from thumbs
+                if (!createMosaicFromGrayThumbs()) {
+                    stopAll = true;
+                }
+
+
             } else if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS_COLOR)) {
                 // ===================================================
                 // mosaik from colored thumbs
@@ -172,10 +181,10 @@ public class CreateMosaicThread implements Runnable {
                 return;
             }
 
-            // Schwarz/Weis
-            if (mosaicData.isBlackWhite()) {
-                ImgTools.changeToGrayscale(imgOut);
-            }
+//            // Schwarz/Weis
+//            if (mosaicData.isBlackWhite()) {
+//                ImgTools.changeToGrayscale(imgOut);
+//            }
 
             // ===================================================
             //fertig
@@ -211,10 +220,25 @@ public class CreateMosaicThread implements Runnable {
                     mosaicData.getResizeThumb(), mosaicData.getBorderSize(), mosaicData.isAddBorder());
 
             createMosaicDataArrayList.add(createMosaicData);
-
         }
 
         return createMosaicFromThumbs.create(listeners, createMosaicDataArrayList);
+    }
+
+    private boolean createMosaicFromGrayThumbs() {
+        // mosaik from thumbs
+        final GrayValueCollection colorCollection = new GrayValueCollection(thumbCollection);
+
+        for (int yy = 0; yy < quantityThumbsHeight && !stopAll; ++yy) {
+            CreateMosaicData createMosaicData = new CreateMosaicData(imgOut, srcImg,
+                    null, colorCollection, null, thumbCollection,
+                    thumbSize, yy, quantityThumbsWidth, quantityThumbsHeight, quantityPixelProThumb,
+                    mosaicData.getResizeThumb(), mosaicData.getBorderSize(), mosaicData.isAddBorder());
+
+            createMosaicDataArrayList.add(createMosaicData);
+        }
+
+        return createMosaicFromGrayThumbs.create(listeners, createMosaicDataArrayList);
     }
 
     private void createMosaicFromColoredThumbs() {

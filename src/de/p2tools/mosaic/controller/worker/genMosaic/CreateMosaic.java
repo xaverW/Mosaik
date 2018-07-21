@@ -97,6 +97,11 @@ public class CreateMosaic {
             thumbSrc = MosaicData.THUMB_SRC.THUMBS;
             threadName = "MosaicThumb";
 
+        } else if (mosaicData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_GRAY.toString())) {
+            // Mosaik aus GayThumbs
+            thumbSrc = MosaicData.THUMB_SRC.THUMBS_GRAY;
+            threadName = "MosaicGrayThumb";
+
         } else if (mosaicData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_COLOR.toString())) {
             // Mosaik aus ColoredThumbs
             thumbSrc = MosaicData.THUMB_SRC.THUMBS_COLOR;

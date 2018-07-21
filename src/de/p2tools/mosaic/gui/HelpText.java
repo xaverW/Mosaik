@@ -87,8 +87,6 @@ public class HelpText {
             "Möglichkeit 3: Aus der Fotovorlage werden Miniaturbilder erstellt, " +
             "diese werden dann passend \"eingefärbt\" und dann zum Bauen des Mosaik verwendet.";
 
-    public static final String MOSAIC_BW = "Das Mosaik wird als Schwarz-Weiß Bild erstellt.";
-
     public static final String THUMB_SIZE = "Die Größe der Miniaturbilder wird geringfügig verkleinert. " +
             "Werden z.B. die hellen \"Pixel\" des Mosaik " +
             "verkleinert, werden dadurch die dunklen \"Pixel\" hervorgehoben.";

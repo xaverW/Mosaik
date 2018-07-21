@@ -35,6 +35,10 @@ public class ColorCollection {
 
     private final ThumbCollection thumbCollection;
 
+    public ColorCollection() {
+        thumbCollection = null;
+    }
+
     public ColorCollection(ThumbCollection thumbCollection) {
         this.thumbCollection = thumbCollection;
 
@@ -113,7 +117,7 @@ public class ColorCollection {
                                 break mainloop;
                             }
 
-                            thumb = thumbCollection.getThumbList().getThumb(i, k, l, anz);
+                            thumb = thumbCollection.getThumbList().getThumbWithColor(i, k, l, anz);
                             if (thumb != null) {
                                 return thumb;
                             } else {
@@ -166,7 +170,7 @@ public class ColorCollection {
             }
 
         }
-        PLog.errorLog(987120365, "ColorCollection.getThumb - keine Farbe!!");
+        PLog.errorLog(987120365, "ColorCollection.getThumbWithColor - keine Farbe!!");
         return null;
     }
 

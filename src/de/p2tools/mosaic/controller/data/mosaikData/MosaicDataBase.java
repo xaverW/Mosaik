@@ -43,7 +43,9 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
     }
 
     public enum THUMB_SRC {
-        THUMBS("THUMBS"), THUMBS_COLOR("THUMBS_COLOR"), THUMBS_ALL_PIXEL_COLOR("THUMBS_ALL_PIXEL_COLOR"), SRC_FOTO("SRC_FOTO");
+        THUMBS("THUMBS"), THUMBS_GRAY("THUMBS_GRAY"),
+        THUMBS_COLOR("THUMBS_COLOR"), THUMBS_ALL_PIXEL_COLOR("THUMBS_ALL_PIXEL_COLOR"),
+        SRC_FOTO("SRC_FOTO");
         private final String name;
 
         THUMB_SRC(String name) {
@@ -77,7 +79,6 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
     private final IntegerProperty quantityThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
     private final IntegerProperty thumbCount = new SimpleIntegerProperty(0); // Anzahl wie oft ein Thumbs verwendet werden kann
     private final StringProperty thumbSrc = new SimpleStringProperty(THUMB_SRC.THUMBS.toString()); // Miniaturbilder die verwendet werden
-    private final BooleanProperty blackWhite = new SimpleBooleanProperty(false); // Mosaik aus S/W-Bildern erstellen
     private final StringProperty resizeThumb = new SimpleStringProperty(THUMB_RESIZE.NON.toString()); // dunkle Thumbs werden etwas verkleinert
 
     private final BooleanProperty addBorder = new SimpleBooleanProperty(false); // einen Rahmen um die Thumbs zeichnen
@@ -101,7 +102,6 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
                 new ConfigIntProp("number-thumbs-width", quantityThumbsWidth),
                 new ConfigIntProp("thumb-count", thumbCount),
                 new ConfigStringProp("thumb-src", thumbSrc),
-                new ConfigBoolProp("black-white", blackWhite),
                 new ConfigStringProp("reduce-big", resizeThumb),
 
                 new ConfigBoolProp("add-border", addBorder),
@@ -195,18 +195,6 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
 
     public void setThumbSrc(String thumbSrc) {
         this.thumbSrc.set(thumbSrc);
-    }
-
-    public boolean isBlackWhite() {
-        return blackWhite.get();
-    }
-
-    public BooleanProperty blackWhiteProperty() {
-        return blackWhite;
-    }
-
-    public void setBlackWhite(boolean blackWhite) {
-        this.blackWhite.set(blackWhite);
     }
 
     public String getResizeThumb() {

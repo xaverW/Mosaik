@@ -23,10 +23,11 @@ public final class Thumb extends ThumbBase {
     public Thumb() {
     }
 
-    public Thumb(int r, int g, int b, String path) {
+    public Thumb(int r, int g, int b, int avg, String path) {
         setRed(r);
         setGreen(g);
         setBlue(b);
+        setAvg(avg);
         setFileName(path);
     }
 

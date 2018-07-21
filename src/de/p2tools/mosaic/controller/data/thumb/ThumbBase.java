@@ -31,6 +31,7 @@ public class ThumbBase extends PDataSample<Thumb> {
     private int red = 0;
     private int green = 0;
     private int blue = 0;
+    private int avg = 0;
     private String fileName = "";
 
 
@@ -69,6 +70,16 @@ public class ThumbBase extends PDataSample<Thumb> {
                             blue = Integer.valueOf(act);
                         } catch (Exception ex) {
                             blue = 0;
+                        }
+                    }
+                },
+                new ConfigInt("avg", avg) {
+                    @Override
+                    public void setActValue(String act) {
+                        try {
+                            avg = Integer.valueOf(act);
+                        } catch (Exception ex) {
+                            avg = 0;
                         }
                     }
                 },
@@ -135,6 +146,18 @@ public class ThumbBase extends PDataSample<Thumb> {
             this.blue = 0;
         } else {
             this.blue = blue;
+        }
+    }
+
+    public int getAvg() {
+        return avg;
+    }
+
+    public void setAvg(int avg) {
+        if (!checkC(avg)) {
+            this.avg = 0;
+        } else {
+            this.avg = avg;
         }
     }
 
