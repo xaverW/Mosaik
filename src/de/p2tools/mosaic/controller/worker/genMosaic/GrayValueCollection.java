@@ -60,8 +60,8 @@ public class GrayValueCollection extends ColorCollection {
         int sprung = 0;
         int max = 10;
 
-        int avg = (c.getRed() + c.getGreen() + c.getBlue()) / 3;
-        int avgMin = avg, avgMax = avg;
+        long avg = (c.getRed() + c.getGreen() + c.getBlue()) / 3;
+        int avgMin = (int) avg, avgMax = (int) avg;
 
         while (avgMin > 0 || avgMax < COLOR_MAX) {
 

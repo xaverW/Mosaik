@@ -20,6 +20,7 @@ package de.p2tools.mosaic.controller.worker.genMosaic;
 import de.p2tools.mosaic.controller.RunListener;
 import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.mosaikData.MosaicData;
+import de.p2tools.mosaic.controller.data.mosaikData.MosaicDataBase;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
@@ -90,36 +91,36 @@ public class CreateMosaic {
         }
 
 
-        MosaicData.THUMB_SRC thumbSrc;
+        MosaicDataBase.MOSAIC_TYPE mosaicType;
         String threadName;
-        if (mosaicData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS.toString())) {
+        if (mosaicData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS.toString())) {
             // Mosaik aus Thumbs
-            thumbSrc = MosaicData.THUMB_SRC.THUMBS;
+            mosaicType = MosaicDataBase.MOSAIC_TYPE.THUMBS;
             threadName = "MosaicThumb";
 
-        } else if (mosaicData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_GRAY.toString())) {
+        } else if (mosaicData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_GRAY.toString())) {
             // Mosaik aus GayThumbs
-            thumbSrc = MosaicData.THUMB_SRC.THUMBS_GRAY;
+            mosaicType = MosaicDataBase.MOSAIC_TYPE.THUMBS_GRAY;
             threadName = "MosaicGrayThumb";
 
-        } else if (mosaicData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_COLOR.toString())) {
+        } else if (mosaicData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_COLORED.toString())) {
             // Mosaik aus ColoredThumbs
-            thumbSrc = MosaicData.THUMB_SRC.THUMBS_COLOR;
+            mosaicType = MosaicDataBase.MOSAIC_TYPE.THUMBS_COLORED;
             threadName = "MosaicColoredThumb";
 
-        } else if (mosaicData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_ALL_PIXEL_COLOR.toString())) {
+        } else if (mosaicData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_ALL_PIXEL_COLORED.toString())) {
             // Mosaik aus Thumbs und alles colored
-            thumbSrc = MosaicData.THUMB_SRC.THUMBS_ALL_PIXEL_COLOR;
+            mosaicType = MosaicDataBase.MOSAIC_TYPE.THUMBS_ALL_PIXEL_COLORED;
             threadName = "MosaicAllPixelColored";
 
         } else {
             // Mosaik aus dem SRC-Image
-            thumbSrc = MosaicData.THUMB_SRC.SRC_FOTO;
+            mosaicType = MosaicDataBase.MOSAIC_TYPE.FROM_SRC_IMG;
             threadName = "MosaicFromSrcImage";
 
         }
 
-        createMosaicThread = new CreateMosaicThread(thumbSrc, src, dest, thumbCollection, mosaicData, listeners);
+        createMosaicThread = new CreateMosaicThread(mosaicType, src, dest, thumbCollection, mosaicData, listeners);
         Thread thread = new Thread(createMosaicThread);
         thread.setName(threadName);
         thread.setDaemon(true);

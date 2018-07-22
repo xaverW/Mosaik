@@ -19,14 +19,12 @@ package de.p2tools.mosaic.gui.mosaik;
 import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.Icons;
 import de.p2tools.mosaic.controller.data.mosaikData.MosaicData;
+import de.p2tools.mosaic.controller.data.mosaikData.MosaicDataBase;
 import de.p2tools.mosaic.gui.HelpText;
 import de.p2tools.p2Lib.dialog.PAlert;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 public class GuiMosaicChangePane extends AnchorPane {
 
@@ -38,6 +36,7 @@ public class GuiMosaicChangePane extends AnchorPane {
     private final RadioButton rbGrayThumb = new RadioButton("Miniaturbilder für ein Schwarz/Weiß Mosaik verwenden");
     private final RadioButton rbThumbColor = new RadioButton("Miniaturbilder verwenden und farblich anpassen");
     private final RadioButton rbSelf = new RadioButton("Vorlagenfoto für das Mosaik verwenden");
+    private final CheckBox chkAllPixel = new CheckBox("Miniaturbilder immer mit der gleichen Farbe einfärben");
     private final ToggleGroup tg = new ToggleGroup();
 
     MosaicData mosaikData = null;
@@ -92,10 +91,10 @@ public class GuiMosaicChangePane extends AnchorPane {
         rbThumbColor.setToggleGroup(tg);
         rbSelf.setToggleGroup(tg);
 
-        rbThumb.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.THUMBS.toString()));
-        rbGrayThumb.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.THUMBS_GRAY.toString()));
-        rbThumbColor.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.THUMBS_COLOR.toString()));
-        rbSelf.setOnAction(e -> mosaikData.setThumbSrc(MosaicData.THUMB_SRC.SRC_FOTO.toString()));
+        rbThumb.setOnAction(e -> mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS.toString()));
+        rbGrayThumb.setOnAction(e -> mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS_GRAY.toString()));
+        rbThumbColor.setOnAction(e -> mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS_COLORED.toString()));
+        rbSelf.setOnAction(e -> mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.FROM_SRC_IMG.toString()));
 
         int row = 0;
         GridPane gridPaneDest = new GridPane();
@@ -109,6 +108,11 @@ public class GuiMosaicChangePane extends AnchorPane {
         rbThumbColor.setMaxWidth(Double.MAX_VALUE);
         rbSelf.setMaxWidth(Double.MAX_VALUE);
 
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(0, 0, 0, 25));
+        hBox.getChildren().add(chkAllPixel);
+        VBox vBox = new VBox(10);
+        vBox.getChildren().addAll(rbThumbColor, hBox);
         Label lbl = new Label("Fotos aus denen das Mosaik gebaut wird");
         lbl.getStyleClass().add("headerLabel");
         lbl.setMaxWidth(Double.MAX_VALUE);
@@ -117,8 +121,10 @@ public class GuiMosaicChangePane extends AnchorPane {
         gridPaneDest.add(rbThumb, 0, ++row);
         gridPaneDest.add(btnHelpSrcImage, 1, row);
         gridPaneDest.add(rbGrayThumb, 0, ++row);
-        gridPaneDest.add(rbThumbColor, 0, ++row);
+        gridPaneDest.add(vBox, 0, ++row);
         gridPaneDest.add(rbSelf, 0, ++row);
+
+        gridPaneDest.setVgap(25);
 
         // import all
         contPane.setSpacing(25);
@@ -130,6 +136,7 @@ public class GuiMosaicChangePane extends AnchorPane {
         if (mosaikData == null) {
             return;
         }
+        chkAllPixel.selectedProperty().unbindBidirectional(mosaikData.allThumbSameColorProperty());
     }
 
     private void bind() {
@@ -137,11 +144,13 @@ public class GuiMosaicChangePane extends AnchorPane {
             return;
         }
 
-        if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS.toString())) {
+        chkAllPixel.selectedProperty().bindBidirectional(mosaikData.allThumbSameColorProperty());
+
+        if (mosaikData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS.toString())) {
             rbThumb.setSelected(true);
-        } else if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_GRAY.toString())) {
+        } else if (mosaikData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_GRAY.toString())) {
             rbGrayThumb.setSelected(true);
-        } else if (mosaikData.getThumbSrc().equals(MosaicData.THUMB_SRC.THUMBS_COLOR.toString())) {
+        } else if (mosaikData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_COLORED.toString())) {
             rbThumbColor.setSelected(true);
         } else {
             rbSelf.setSelected(true);

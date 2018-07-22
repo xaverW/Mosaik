@@ -42,13 +42,13 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
         }
     }
 
-    public enum THUMB_SRC {
+    public enum MOSAIC_TYPE {
         THUMBS("THUMBS"), THUMBS_GRAY("THUMBS_GRAY"),
-        THUMBS_COLOR("THUMBS_COLOR"), THUMBS_ALL_PIXEL_COLOR("THUMBS_ALL_PIXEL_COLOR"),
-        SRC_FOTO("SRC_FOTO");
+        THUMBS_COLORED("THUMBS_COLORED"), THUMBS_ALL_PIXEL_COLORED("THUMBS_ALL_PIXEL_COLORED"),
+        FROM_SRC_IMG("FROM_SRC_IMG");
         private final String name;
 
-        THUMB_SRC(String name) {
+        MOSAIC_TYPE(String name) {
             this.name = name;
         }
 
@@ -78,10 +78,11 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
     private final IntegerProperty thumbSize = new SimpleIntegerProperty(50); // Größe des Thumbs Width==Height
     private final IntegerProperty quantityThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
     private final IntegerProperty thumbCount = new SimpleIntegerProperty(0); // Anzahl wie oft ein Thumbs verwendet werden kann
-    private final StringProperty thumbSrc = new SimpleStringProperty(THUMB_SRC.THUMBS.toString()); // Miniaturbilder die verwendet werden
+    private final StringProperty mosaicType = new SimpleStringProperty(MOSAIC_TYPE.THUMBS.toString()); // Miniaturbilder die verwendet werden
     private final StringProperty resizeThumb = new SimpleStringProperty(THUMB_RESIZE.NON.toString()); // dunkle Thumbs werden etwas verkleinert
 
     private final BooleanProperty addBorder = new SimpleBooleanProperty(false); // einen Rahmen um die Thumbs zeichnen
+    private final BooleanProperty allThumbSameColor = new SimpleBooleanProperty(false); // alle Thumbs mit der gleichen Farbe einfärben
     private final IntegerProperty borderSize = new SimpleIntegerProperty(0); // Anzahl Pixel um die ein Thumb verleinert wird
     private final StringProperty background = new SimpleStringProperty(BACKGROUND.COLOR.toString()); // Hintergrund ist eine Farbe/Bild
     private final StringProperty borderColor = new SimpleStringProperty(""); // Farbe des Rahmens zwischen den Miniaturbildern
@@ -101,10 +102,11 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
                 new ConfigIntProp("thumb-size", thumbSize),
                 new ConfigIntProp("number-thumbs-width", quantityThumbsWidth),
                 new ConfigIntProp("thumb-count", thumbCount),
-                new ConfigStringProp("thumb-src", thumbSrc),
+                new ConfigStringProp("mosaic-type", mosaicType),
                 new ConfigStringProp("reduce-big", resizeThumb),
 
                 new ConfigBoolProp("add-border", addBorder),
+                new ConfigBoolProp("all-thumb-same-color", allThumbSameColor),
                 new ConfigIntProp("reduce-size", borderSize),
                 new ConfigStringProp("bg-color", background),
                 new ConfigStringProp("border-color", borderColor),
@@ -185,16 +187,16 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
         this.thumbCount.set(thumbCount);
     }
 
-    public String getThumbSrc() {
-        return thumbSrc.getValueSafe();
+    public String getMosaicType() {
+        return mosaicType.getValueSafe();
     }
 
-    public StringProperty thumbSrcProperty() {
-        return thumbSrc;
+    public StringProperty mosaicTypeProperty() {
+        return mosaicType;
     }
 
-    public void setThumbSrc(String thumbSrc) {
-        this.thumbSrc.set(thumbSrc);
+    public void setMosaicType(String mosaicType) {
+        this.mosaicType.set(mosaicType);
     }
 
     public String getResizeThumb() {
@@ -219,6 +221,18 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
 
     public void setAddBorder(boolean addBorder) {
         this.addBorder.set(addBorder);
+    }
+
+    public boolean isAllThumbSameColor() {
+        return allThumbSameColor.get();
+    }
+
+    public BooleanProperty allThumbSameColorProperty() {
+        return allThumbSameColor;
+    }
+
+    public void setAllThumbSameColor(boolean allThumbSameColor) {
+        this.allThumbSameColor.set(allThumbSameColor);
     }
 
     public int getBorderSize() {

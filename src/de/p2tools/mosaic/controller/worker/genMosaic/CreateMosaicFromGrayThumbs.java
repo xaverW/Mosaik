@@ -120,7 +120,8 @@ public class CreateMosaicFromGrayThumbs {
                                 "neu einlesen.");
                     }
                     buffImg = ImgTools.scaleBufferedImage(buffImg, createMosaicData.sizeThumb, createMosaicData.sizeThumb);
-
+                    ImgTools.changeToGrayscale(buffImg);
+                    
                     if (createMosaicData.addBorder) {
                         // border
                         createMosaicData.imgOut.getRaster().setRect(xx * createMosaicData.sizeThumb + (1 + xx) * createMosaicData.borderSize,

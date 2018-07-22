@@ -21,6 +21,7 @@ import de.p2tools.mosaic.controller.RunEvent;
 import de.p2tools.mosaic.controller.RunListener;
 import de.p2tools.mosaic.controller.config.ProgConst;
 import de.p2tools.mosaic.controller.data.mosaikData.MosaicData;
+import de.p2tools.mosaic.controller.data.mosaikData.MosaicDataBase;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
@@ -41,26 +42,25 @@ public class CreateMosaicThread implements Runnable {
     private final MosaicData mosaicData;
     private final CreateMosaicFromThumbs createMosaicFromThumbs = new CreateMosaicFromThumbs();
     private final CreateMosaicFromGrayThumbs createMosaicFromGrayThumbs = new CreateMosaicFromGrayThumbs();
-    private final CreateMosaicFromSrcImage createMosaicFromSrcImage = new CreateMosaicFromSrcImage();
     private final CreateMosaicFromColoredThumb createMosaicFromColoredThumb = new CreateMosaicFromColoredThumb();
     private final CreateMosaicFromThumbsAllPixelColored createMosaicFromThumbsAllPixelColored = new CreateMosaicFromThumbsAllPixelColored();
+    private final CreateMosaicFromSrcImage createMosaicFromSrcImage = new CreateMosaicFromSrcImage();
     private final EventListenerList listeners;
-    private final MosaicData.THUMB_SRC thumbSrc;
+    private final MosaicDataBase.MOSAIC_TYPE mosaicType;
 
     private boolean stopAll = false;
     private int progressLines = 0;
 
     private final ArrayList<CreateMosaicData> createMosaicDataArrayList = new ArrayList<>();
     private final String srcImgStr, destImgStr;
-    private int quantityLinesDestImage = 0;
     private BufferedImage srcImg, imgOut;
     private int srcHeight, srcWidth, thumbSize, borderSize;
     private int quantityThumbsWidth, quantityPixelProThumb, quantityThumbsHeight;
 
-    public CreateMosaicThread(MosaicData.THUMB_SRC thumbSrc, String srcImgStr, String destImgStr,
-                              ThumbCollection thumbCollection,
+    public CreateMosaicThread(MosaicDataBase.MOSAIC_TYPE mosaicType,
+                              String srcImgStr, String destImgStr, ThumbCollection thumbCollection,
                               MosaicData mosaicData, EventListenerList listeners) {
-        this.thumbSrc = thumbSrc;
+        this.mosaicType = mosaicType;
         this.srcImgStr = srcImgStr;
         this.destImgStr = destImgStr;
         this.thumbCollection = thumbCollection;
@@ -71,7 +71,9 @@ public class CreateMosaicThread implements Runnable {
     public void setStop() {
         stopAll = true;
         createMosaicFromThumbs.setStop();
+        createMosaicFromGrayThumbs.setStop();
         createMosaicFromColoredThumb.setStop();
+        createMosaicFromThumbsAllPixelColored.setStop();
         createMosaicFromSrcImage.setStop();
     }
 
@@ -81,6 +83,7 @@ public class CreateMosaicThread implements Runnable {
         Duration.counterStart("Mosaik erstellen");
         try {
             thumbCollection.getThumbList().resetAnz();
+
             File srcImgFile = new File(this.srcImgStr);
             if (!srcImgFile.exists()) {
                 showErrMsg("Das Bild für die Vorlage des Mosaiks: \n" +
@@ -97,7 +100,6 @@ public class CreateMosaicThread implements Runnable {
             quantityThumbsWidth = mosaicData.getQuantityThumbsWidth();
             quantityPixelProThumb = srcWidth / quantityThumbsWidth;
             quantityThumbsHeight = srcHeight / quantityPixelProThumb;
-            quantityLinesDestImage = quantityThumbsHeight;
             borderSize = mosaicData.getBorderSize();
 
             int destWidth, destHeight;
@@ -136,10 +138,10 @@ public class CreateMosaicThread implements Runnable {
 
             // ===================================================
             // los gehts
-            notifyEvent(quantityLinesDestImage, 0, "Mosaik erstellen");
+            notifyEvent(quantityThumbsHeight, 0, "Mosaik erstellen");
 
 
-            if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS)) {
+            if (mosaicType.equals(MosaicDataBase.MOSAIC_TYPE.THUMBS)) {
                 // ===================================================
                 // mosaik from thumbs
                 if (!createMosaicFromThumbs()) {
@@ -147,7 +149,7 @@ public class CreateMosaicThread implements Runnable {
                 }
 
 
-            } else if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS_GRAY)) {
+            } else if (mosaicType.equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_GRAY)) {
                 // ===================================================
                 // gray mosaik from thumbs
                 if (!createMosaicFromGrayThumbs()) {
@@ -155,20 +157,20 @@ public class CreateMosaicThread implements Runnable {
                 }
 
 
-            } else if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS_COLOR)) {
+            } else if (mosaicType.equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_COLORED)) {
                 // ===================================================
                 // mosaik from colored thumbs
                 createMosaicFromThumbsAllPixelColored();
 //                createMosaicFromColoredThumbs();
 
 
-            } else if (thumbSrc.equals(MosaicData.THUMB_SRC.THUMBS_ALL_PIXEL_COLOR)) {
+            } else if (mosaicType.equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_ALL_PIXEL_COLORED)) {
                 // ===================================================
                 // mosaik from thumbs with color from the src
                 createMosaicFromColoredThumbs();
 
 
-            } else if (thumbSrc.equals(MosaicData.THUMB_SRC.SRC_FOTO)) {
+            } else if (mosaicType.equals(MosaicDataBase.MOSAIC_TYPE.FROM_SRC_IMG)) {
                 // ===================================================
                 // mosaik from source image
                 createMosaicFromSrcImg();
@@ -181,14 +183,9 @@ public class CreateMosaicThread implements Runnable {
                 return;
             }
 
-//            // Schwarz/Weis
-//            if (mosaicData.isBlackWhite()) {
-//                ImgTools.changeToGrayscale(imgOut);
-//            }
-
             // ===================================================
             //fertig
-            notifyEvent(quantityLinesDestImage, progressLines, "Speichern");
+            notifyEvent(quantityThumbsHeight, progressLines, "Speichern");
             ImgFile.writeImage(imgOut, destImgStr, mosaicData.getFormat(), ProgConst.IMG_JPG_COMPRESSION);
 
         } catch (Exception ex) {
@@ -202,7 +199,7 @@ public class CreateMosaicThread implements Runnable {
                     "hat zu wenig Arbeitsspeicher!");
 
         } finally {
-            notifyEvent(quantityLinesDestImage, progressLines, "");
+            notifyEvent(quantityThumbsHeight, progressLines, "");
             notifyEvent(0, 0, "");
             Duration.counterStop("Mosaik erstellen");
         }
