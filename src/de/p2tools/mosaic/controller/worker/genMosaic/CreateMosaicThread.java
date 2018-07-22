@@ -160,14 +160,13 @@ public class CreateMosaicThread implements Runnable {
             } else if (mosaicType.equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_COLORED)) {
                 // ===================================================
                 // mosaik from colored thumbs
-                createMosaicFromThumbsAllPixelColored();
-//                createMosaicFromColoredThumbs();
+                createMosaicFromColoredThumbs();
 
 
             } else if (mosaicType.equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_ALL_PIXEL_COLORED)) {
                 // ===================================================
                 // mosaik from thumbs with color from the src
-                createMosaicFromColoredThumbs();
+                createMosaicFromThumbsAllPixelColored();
 
 
             } else if (mosaicType.equals(MosaicDataBase.MOSAIC_TYPE.FROM_SRC_IMG)) {

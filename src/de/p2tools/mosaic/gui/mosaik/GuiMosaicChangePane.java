@@ -33,10 +33,10 @@ public class GuiMosaicChangePane extends AnchorPane {
     private final VBox contPane = new VBox();
 
     private final RadioButton rbThumb = new RadioButton("Miniaturbilder für das Mosaik verwenden");
-    private final RadioButton rbGrayThumb = new RadioButton("Miniaturbilder für ein Schwarz/Weiß Mosaik verwenden");
     private final RadioButton rbThumbColor = new RadioButton("Miniaturbilder verwenden und farblich anpassen");
     private final RadioButton rbSelf = new RadioButton("Vorlagenfoto für das Mosaik verwenden");
-    private final CheckBox chkAllPixel = new CheckBox("Miniaturbilder immer mit der gleichen Farbe einfärben");
+    private final CheckBox chkColorComplete = new CheckBox("Mosaik gleichmäßig einfärben");
+    private final CheckBox chkBlackWhite = new CheckBox("Schwarz/Weiß Mosaik erstellen");
     private final ToggleGroup tg = new ToggleGroup();
 
     MosaicData mosaikData = null;
@@ -87,14 +87,17 @@ public class GuiMosaicChangePane extends AnchorPane {
         btnHelpSrcImage.setOnAction(a -> new PAlert().showHelpAlert("Fotos für das Mosaik", HelpText.MOSAIC_PIXEL_FOTO));
 
         rbThumb.setToggleGroup(tg);
-        rbGrayThumb.setToggleGroup(tg);
         rbThumbColor.setToggleGroup(tg);
         rbSelf.setToggleGroup(tg);
 
-        rbThumb.setOnAction(e -> mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS.toString()));
-        rbGrayThumb.setOnAction(e -> mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS_GRAY.toString()));
-        rbThumbColor.setOnAction(e -> mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS_COLORED.toString()));
-        rbSelf.setOnAction(e -> mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.FROM_SRC_IMG.toString()));
+        rbThumb.setOnAction(e -> setMosaicType());
+        rbThumbColor.setOnAction(e -> setMosaicType());
+        rbSelf.setOnAction(e -> setMosaicType());
+
+        chkColorComplete.setOnAction(a -> setMosaicType());
+        chkBlackWhite.setOnAction(a -> setMosaicType());
+        chkColorComplete.disableProperty().bind(rbThumbColor.selectedProperty().not());
+        chkBlackWhite.disableProperty().bind(rbThumb.selectedProperty().not());
 
         int row = 0;
         GridPane gridPaneDest = new GridPane();
@@ -104,24 +107,33 @@ public class GuiMosaicChangePane extends AnchorPane {
 
         GridPane.setHgrow(rbThumb, Priority.ALWAYS);
         rbThumb.setMaxWidth(Double.MAX_VALUE);
-        rbGrayThumb.setMaxWidth(Double.MAX_VALUE);
         rbThumbColor.setMaxWidth(Double.MAX_VALUE);
         rbSelf.setMaxWidth(Double.MAX_VALUE);
 
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(0, 0, 0, 25));
-        hBox.getChildren().add(chkAllPixel);
-        VBox vBox = new VBox(10);
-        vBox.getChildren().addAll(rbThumbColor, hBox);
+        HBox hBoxColor = new HBox();
+        hBoxColor.setPadding(new Insets(0, 0, 0, 25));
+        hBoxColor.getChildren().add(chkColorComplete);
+        VBox vBoxColor = new VBox(10);
+        vBoxColor.getChildren().addAll(rbThumbColor, hBoxColor);
+
+        HBox hBoxBlack = new HBox();
+        hBoxBlack.setPadding(new Insets(0, 0, 0, 25));
+        hBoxBlack.getChildren().add(chkBlackWhite);
+        VBox vBoxBlack = new VBox(10);
+        vBoxBlack.getChildren().addAll(rbThumb, hBoxBlack);
+
+
         Label lbl = new Label("Fotos aus denen das Mosaik gebaut wird");
         lbl.getStyleClass().add("headerLabel");
         lbl.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(lbl, Priority.ALWAYS);
+        GridPane.setHgrow(vBoxBlack, Priority.ALWAYS);
+
         gridPaneDest.add(lbl, 0, row, 2, 1);
-        gridPaneDest.add(rbThumb, 0, ++row);
+
+        gridPaneDest.add(vBoxBlack, 0, ++row);
         gridPaneDest.add(btnHelpSrcImage, 1, row);
-        gridPaneDest.add(rbGrayThumb, 0, ++row);
-        gridPaneDest.add(vBox, 0, ++row);
+        gridPaneDest.add(vBoxColor, 0, ++row);
         gridPaneDest.add(rbSelf, 0, ++row);
 
         gridPaneDest.setVgap(25);
@@ -132,11 +144,28 @@ public class GuiMosaicChangePane extends AnchorPane {
         contPane.getChildren().addAll(gridPaneDest);
     }
 
+    private void setMosaicType() {
+        if (rbThumb.isSelected()) {
+            if (chkBlackWhite.isSelected()) {
+                mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS_GRAY.toString());
+            } else {
+                mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS.toString());
+            }
+        } else if (rbThumbColor.isSelected()) {
+            if (chkColorComplete.isSelected()) {
+                mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS_ALL_PIXEL_COLORED.toString());
+            } else {
+                mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.THUMBS_COLORED.toString());
+            }
+        } else {
+            mosaikData.setMosaicType(MosaicDataBase.MOSAIC_TYPE.FROM_SRC_IMG.toString());
+        }
+    }
+
     private void unbind() {
         if (mosaikData == null) {
             return;
         }
-        chkAllPixel.selectedProperty().unbindBidirectional(mosaikData.allThumbSameColorProperty());
     }
 
     private void bind() {
@@ -144,14 +173,18 @@ public class GuiMosaicChangePane extends AnchorPane {
             return;
         }
 
-        chkAllPixel.selectedProperty().bindBidirectional(mosaikData.allThumbSameColorProperty());
-
         if (mosaikData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS.toString())) {
             rbThumb.setSelected(true);
+            chkBlackWhite.setSelected(false);
         } else if (mosaikData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_GRAY.toString())) {
-            rbGrayThumb.setSelected(true);
+            rbThumb.setSelected(true);
+            chkBlackWhite.setSelected(true);
         } else if (mosaikData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_COLORED.toString())) {
             rbThumbColor.setSelected(true);
+            chkColorComplete.setSelected(false);
+        } else if (mosaikData.getMosaicType().equals(MosaicDataBase.MOSAIC_TYPE.THUMBS_ALL_PIXEL_COLORED.toString())) {
+            rbThumbColor.setSelected(true);
+            chkColorComplete.setSelected(true);
         } else {
             rbSelf.setSelected(true);
         }

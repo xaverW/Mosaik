@@ -55,13 +55,6 @@ public class HelpText {
             "Miniaturbild und einer Anzahl von 100 Miniaturbildern hat etwa eine Größe von 25 MByte. " +
             "Die resultierende Dateigröße des Mosaiks hängt auch sehr vom Inhalt des Bildes ab.";
 
-//    public static final String MOSAIK_PIXEL_COUNT = "Dadurch wird die Größe des erstellten Mosaik vorgegeben. " +
-//            "Das Mosaik wird mit \"Anzahl\" Miniaturbildern pro Zeile aufgebaut. Dadurch hat " +
-//            "das erstellte Mosaik eine Breite von \"Anzahl\" * \"Pixelgröße\" in Pixeln. " +
-//            "Je größer das Mosaik wird, desto größer wird auch die erstellte Datei. " +
-//            "Ein gutes Ergebnis bekommt man etwa ab 100 " +
-//            "Miniaturbildern pro Zeile.";
-
     public static final String WALLPAPER_DEST = "Die erstellte Fototapete wird in der angegebenen Datei " +
             "gespeichert.";
 
@@ -75,14 +68,18 @@ public class HelpText {
             "Anzahl Zeilen = Anzahl Miniaturbilder in der Liste / Anzahl " +
             "Miniaturbilder pro Zeile";
 
-    public static final String MOSAIC_PIXEL_FOTO = "Hier kann ausgewählt werden, was als Miniaturbilder " +
-            "zum Bauen des Mosaik verwendet wird." +
+    public static final String MOSAIC_PIXEL_FOTO = "Hier kann ausgewählt werden, wie die Miniaturbilder " +
+            "zum Bauen des Mosaik verwendet werden." +
             "\n\n" +
-            "Möglichkeit 1: Es werden die erstellten Miniaturbilder des Projekts verwendet." +
+            "Möglichkeit 1: Es werden die erstellten Miniaturbilder des Projekts verwendet. " +
+            "Zusätzlich kann das Mosaik als Schwarz-Weiß-Bild erstellt werden" +
             "\n\n" +
             "Möglichkeit 2: Es werden die erstellten Miniaturbilder des Projekts verwendet. Diese werden aber Farblich so " +
             "verändert, dass sie zur Vorlage besser passen. Das ist eine Möglichkeit, bei wenigen Miniaturbildern ein Mosaik zu " +
-            "erstellen." +
+            "erstellen. " +
+            "Hier kann noch angegeben werden, ob beim Einfärben die einzelnen Miniaturbilder immer komplett in " +
+            "der gleichen Farbe gefärbt werden oder das ganze Mosaik gleichmäßig eingefärbt werden soll. Bei wenigen " +
+            "Miniaturbildern im Projekt führt letzteres zu besseren Ergebnissen. " +
             "\n\n" +
             "Möglichkeit 3: Aus der Fotovorlage werden Miniaturbilder erstellt, " +
             "diese werden dann passend \"eingefärbt\" und dann zum Bauen des Mosaik verwendet.";
