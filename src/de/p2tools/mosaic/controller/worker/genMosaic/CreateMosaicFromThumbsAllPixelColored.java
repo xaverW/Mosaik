@@ -50,7 +50,6 @@ public class CreateMosaicFromThumbsAllPixelColored {
         }
 
         colorTheImage(createMosaicDataArrayList.get(0));
-
     }
 
     private void notifyEvent(int max, int progress, String text) {
@@ -77,9 +76,6 @@ public class CreateMosaicFromThumbsAllPixelColored {
         notifyEvent(maxLines, progressLines, "Zeile " + progressLines + " von " + maxLines +
                 (maxLines == 0 ? "" : " [" + 100 * progressLines / maxLines + " Prozent]"));
 
-
-//        Raster raster = createMosaicData.srcImg.getRaster();
-
         for (int xx = 0; xx < createMosaicData.numThumbsWidth && !stopAll; ++xx) {
 
             int thumbNr = createMosaicData.listForColoredThumbs.get(createMosaicData.yy * createMosaicData.numThumbsWidth + xx);
@@ -101,14 +97,9 @@ public class CreateMosaicFromThumbsAllPixelColored {
             }
 
 
-//            Color c = ImgTools.getColor(createMosaicData.srcImg.getSubimage(xx * createMosaicData.numPixelProThumb,
-//                    createMosaicData.yy * createMosaicData.numPixelProThumb,
-//                    createMosaicData.numPixelProThumb, createMosaicData.numPixelProThumb));
-
             buffImg = ImgTools.scaleBufferedImage(buffImg, createMosaicData.sizeThumb, createMosaicData.sizeThumb);
             ImgTools.changeToGrayscale(buffImg);
 
-//            buffImg = getBufferedImg(buffImg, raster, createMosaicData.numPixelProThumb, xx, createMosaicData.yy);
             if (createMosaicData.addBorder) {
                 // border
                 createMosaicData.imgOut.getRaster().setRect(xx * createMosaicData.sizeThumb + (1 + xx) * createMosaicData.borderSize,
@@ -134,12 +125,51 @@ public class CreateMosaicFromThumbsAllPixelColored {
         int height = img.getHeight();
         double hFactor = 1.0 * height / srcRaster.getHeight();
 
+
 //        if (srcRaster.getHeight() != height && srcRaster.getWidth() != width) {
 //            throw new PException("Fehler beim Erstellen des Mosaik");
 //        }
 
+        boolean borderX = true, borderY = true;
+        int thumbSize = createMosaicData.sizeThumb;
+        int borderSize = createMosaicData.borderSize;
+        int countThumbX = 0, countThumbY = 0;
+        int countBorderX = 1, countBorderY = 1;
+
         for (int y = 0; y < height; y++) {
+            if (borderY) {
+                if (y < countBorderY * borderSize + countThumbY * thumbSize) {
+                    continue;
+                } else {
+                    ++countThumbY;
+                    borderY = false;
+                }
+
+            } else {
+                if (y >= countBorderY * borderSize + countThumbY * thumbSize) {
+                    ++countBorderY;
+                    borderY = true;
+                }
+            }
+
+            countBorderX = 1;
+            countThumbX = 0;
             for (int x = 0; x < width; x++) {
+
+                if (borderX) {
+                    if (x < countBorderX * borderSize + countThumbX * thumbSize) {
+                        continue;
+                    } else {
+                        ++countThumbX;
+                        borderX = false;
+                    }
+
+                } else {
+                    if (x >= countBorderX * borderSize + countThumbX * thumbSize) {
+                        ++countBorderX;
+                        borderX = true;
+                    }
+                }
 
                 int p = img.getRGB(x, y);
                 int a = (p >> 24) & 0xff;
@@ -172,6 +202,7 @@ public class CreateMosaicFromThumbsAllPixelColored {
                 }
 
                 p = (a << 24) | (rr << 16) | (gg << 8) | bb;
+
                 img.setRGB(x, y, p);
             }
         }
