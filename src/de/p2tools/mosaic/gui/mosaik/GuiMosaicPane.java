@@ -23,6 +23,7 @@ import de.p2tools.mosaic.controller.data.Icons;
 import de.p2tools.mosaic.controller.data.mosaikData.MosaicData;
 import de.p2tools.mosaic.gui.HelpText;
 import de.p2tools.mosaic.gui.tools.GuiTools;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.guiTools.PComboBox;
@@ -372,7 +373,7 @@ public class GuiMosaicPane extends AnchorPane {
         String fileSize = ImgTools.getImgFileSizeStr(pixelW, pixelH);
         ret.setText("Das Mosaik hat eine Breite von " + numberFormat.format(pixelW) +
                 " und eine Höhe von " + numberFormat.format(pixelH) + " Pixeln." +
-                "\n" +
+                PConst.LINE_SEPARATOR +
                 "Die Dateigröße wird etwa " + fileSize + " betragen.");
 
         lblSize.setText(ret.getText());

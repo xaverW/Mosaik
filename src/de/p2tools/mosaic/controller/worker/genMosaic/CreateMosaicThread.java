@@ -23,6 +23,7 @@ import de.p2tools.mosaic.controller.config.ProgConst;
 import de.p2tools.mosaic.controller.data.mosaikData.MosaicData;
 import de.p2tools.mosaic.controller.data.mosaikData.MosaicDataBase;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
@@ -86,8 +87,8 @@ public class CreateMosaicThread implements Runnable {
 
             File srcImgFile = new File(this.srcImgStr);
             if (!srcImgFile.exists()) {
-                showErrMsg("Das Bild für die Vorlage des Mosaiks: \n" +
-                        srcImgStr + "\n" +
+                showErrMsg("Das Bild für die Vorlage des Mosaiks:  " + PConst.LINE_SEPARATOR +
+                        srcImgStr + PConst.LINE_SEPARATOR +
                         "existiert nicht, das Mosaik kann nicht erstellt werden.");
                 return;
             }
@@ -112,7 +113,7 @@ public class CreateMosaicThread implements Runnable {
             }
 
             if (destWidth >= ImgTools.JPEG_MAX_DIMENSION || destHeight >= ImgTools.JPEG_MAX_DIMENSION) {
-                showErrMsg("Die Maximale Größe des Mosaiks ist überschritten.\n" +
+                showErrMsg("Die Maximale Größe des Mosaiks ist überschritten. " + PConst.LINE_SEPARATOR +
                         "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.");
                 return;
             }

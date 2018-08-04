@@ -21,6 +21,7 @@ import de.p2tools.mosaic.controller.RunEvent;
 import de.p2tools.mosaic.controller.RunListener;
 import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.thumb.Thumb;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
@@ -73,7 +74,7 @@ public class CreateMosaicFromThumbs {
         if (!loadOk) {
             Platform.runLater(() ->
                     PAlert.showErrorAlert("Mosaik erstellen",
-                            "Das Mosaik kann nicht richtig erstellt werden!" + "\n\n" + errMsg));
+                            "Das Mosaik kann nicht richtig erstellt werden!" + PConst.LINE_SEPARATORx2 + errMsg));
         }
 
         return loadOk;

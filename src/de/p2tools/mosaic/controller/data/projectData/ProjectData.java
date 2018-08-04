@@ -19,6 +19,7 @@ package de.p2tools.mosaic.controller.data.projectData;
 
 import de.p2tools.mosaic.controller.config.ProgConst;
 import de.p2tools.mosaic.controller.config.ProgData;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.PAlert;
 
 import java.io.IOException;
@@ -65,7 +66,7 @@ public class ProjectData extends ProjectDataBase {
                 Files.createDirectories(baseDirectoryPath);
             } catch (final IOException ioException) {
                 new PAlert().showErrorAlert("Verzeichnis für die Vorschaubilder", "Das Verzeinis der Vorschaubilder " +
-                        "kann nicht angelegt werden: \n" +
+                        "kann nicht angelegt werden:  " + PConst.LINE_SEPARATOR +
                         baseDirectoryPath.toString());
             }
         }

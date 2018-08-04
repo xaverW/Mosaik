@@ -23,6 +23,7 @@ import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.Icons;
 import de.p2tools.mosaic.gui.*;
 import de.p2tools.mosaic.gui.dialog.AboutDialogController;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.checkForUpdates.SearchProgInfo;
 import de.p2tools.p2Lib.tools.Functions;
 import javafx.geometry.Insets;
@@ -34,8 +35,8 @@ import javafx.scene.layout.*;
 public class MosaicController extends StackPane {
 
     Button btnStart = new Button("Start");
-    Button btnThumbNail = new Button("Miniaturbilder\n" + "erstellen");
-    Button btnMosaic = new Button("Mosaik\n" + "erstellen");
+    Button btnThumbNail = new Button("Miniaturbilder " + PConst.LINE_SEPARATOR + "erstellen");
+    Button btnMosaic = new Button("Mosaik " + PConst.LINE_SEPARATOR + "erstellen");
     Button btnPrev = new Button("");
     Button btnNext = new Button("");
 

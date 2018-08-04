@@ -16,17 +16,19 @@
 
 package de.p2tools.mosaic.gui;
 
+import de.p2tools.p2Lib.PConst;
+
 public class HelpText {
 
     public static final String PROJECT_PATH = "Hier wird der Ordner ausgewählt, " +
             "in dem das Mosaik erstellt wird. In dem Ordner werden auch die " +
             "erstellten Vorschaubilder zum Bauen des Mosaik gespeichert." +
-            "\n\n" +
+            PConst.LINE_SEPARATORx2 +
             "Der Projektname dient nur der eigenen Erinnerung.";
 
     public static final String GET_THUMB_DIR = "Aus den Fotos in dem gewählten Ordner werden " +
             "Miniaturbilder erstellt. Diese werden dann im Verzeichnis des Projekts gespeichert. " +
-            "Die Miniaturbilder werden zum Erstellen des Mosaik verwendet\n\n" +
+            "Die Miniaturbilder werden zum Erstellen des Mosaik verwendet " + PConst.LINE_SEPARATORx2 +
             "Für gute Ergebnisse sollten mindestens 1000 Bilder importiert werden.";
 
     public static final String IMAGE_TAMPLATE = "Dieses Foto wird als Vorlage für das Mosaik verwendet. " +
@@ -39,17 +41,17 @@ public class HelpText {
     public static final String MOSAIC_PIXEL_SIZE = "" +
             "Die Pixel des Vorlagenfoto werden durch Miniaturbilder ersetzt. " +
             "Hier kann die Größe und die Anzahl dieser Miniaturbilder vorgegeben werden. " +
-            "\n\n" +
+            PConst.LINE_SEPARATORx2 +
 
             "Die Größe (in Pixel für die Breite und Höhe) dieser Miniaturbilder " +
             "wird mit dem ersten Regler eingestellt. Ein guter Wert liegt zwischen 50 und 100 Pixel." +
-            "\n\n" +
+            PConst.LINE_SEPARATORx2 +
 
             "Das Mosaik wird mit \"Anzahl\" Miniaturbildern pro Zeile aufgebaut. Dieser Wert wird " +
             "mit dem zweiten Regler vorgegeben. " +
             "Dadurch hat das erstellte Mosaik eine Breite von \"Anzahl\" * \"Pixelgröße\" in Pixeln. " +
             "Ein gutes Ergebnis bekommt man etwa ab 100 Miniaturbildern pro Zeile." +
-            "\n\n" +
+            PConst.LINE_SEPARATORx2 +
 
             "Je größer das Mosaik wird, desto größer wird auch die erstellte Datei. Ein Mosaik mit 100 Pixeln für das " +
             "Miniaturbild und einer Anzahl von 100 Miniaturbildern hat etwa eine Größe von 25 MByte. " +
@@ -60,27 +62,27 @@ public class HelpText {
 
     public static final String WALLPAPER_PIXEL_SIZE = "Hier kann die Größe (in Pixel) und die Anzahl (pro Zeile) " +
             "der Miniaturbilder für die Fototapete vorgegeben werden." +
-            "\n\n" +
+            PConst.LINE_SEPARATORx2 +
             "Mit der Größe der Miniaturbilder und ihrer Anzahl pro Zeile " +
             "wird auch die Größe der erstellten Fototapete festgelegt. " +
             "Die erstellte Fototapete hat eine Breite von \"Anzahl\" * \"Pixelgröße\" in Pixeln. Die Höhe hängt " +
-            "dann von der Anzahl der Miniaturbilder ab: \n" +
+            "dann von der Anzahl der Miniaturbilder ab:  " + PConst.LINE_SEPARATOR +
             "Anzahl Zeilen = Anzahl Miniaturbilder in der Liste / Anzahl " +
             "Miniaturbilder pro Zeile";
 
     public static final String MOSAIC_PIXEL_FOTO = "Hier kann ausgewählt werden, wie die Miniaturbilder " +
             "zum Bauen des Mosaik verwendet werden." +
-            "\n\n" +
+            PConst.LINE_SEPARATORx2 +
             "Möglichkeit 1: Es werden die erstellten Miniaturbilder des Projekts verwendet. " +
             "Zusätzlich kann das Mosaik als Schwarz-Weiß-Bild erstellt werden" +
-            "\n\n" +
+            PConst.LINE_SEPARATORx2 +
             "Möglichkeit 2: Es werden die erstellten Miniaturbilder des Projekts verwendet. Diese werden aber Farblich so " +
             "verändert, dass sie zur Vorlage besser passen. Das ist eine Möglichkeit, bei wenigen Miniaturbildern ein Mosaik zu " +
             "erstellen. " +
             "Hier kann noch angegeben werden, ob beim Einfärben die einzelnen Miniaturbilder immer komplett in " +
             "der gleichen Farbe gefärbt werden oder das ganze Mosaik gleichmäßig eingefärbt werden soll. Bei wenigen " +
             "Miniaturbildern im Projekt führt letzteres zu besseren Ergebnissen. " +
-            "\n\n" +
+            PConst.LINE_SEPARATORx2 +
             "Möglichkeit 3: Aus der Fotovorlage werden Miniaturbilder erstellt, " +
             "diese werden dann passend \"eingefärbt\" und dann zum Bauen des Mosaik verwendet.";
 
@@ -94,7 +96,7 @@ public class HelpText {
             "gezeichnet werden. Die Miniaturbilder haben dann also einen Abstand von 2 x Rahmen. " +
             "Mit dem Regler kann die Breite des Rahmens (in Pixel), also der Abstand der Miniaturbilder " +
             "eingestellt werden." +
-            "\n" +
+            PConst.LINE_SEPARATOR +
             "Mit der Farbauswahl kann eine Hintergrundfarbe gesetzt werden die dann zwischen den Miniaturbilder " +
             "zu sehen ist (oder aber ein Hintergrundbild).";
 

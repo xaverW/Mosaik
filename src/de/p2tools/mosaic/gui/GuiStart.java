@@ -23,6 +23,7 @@ import de.p2tools.mosaic.controller.data.projectData.ProjectData;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaic.gui.dialog.AddMosaicDialogController;
 import de.p2tools.mosaic.gui.tools.GuiTools;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import javafx.beans.binding.Bindings;
@@ -156,8 +157,8 @@ public class GuiStart extends AnchorPane {
 
         final Button btnDestDir = new Button();
         btnDestDir.setOnAction(event -> {
-            if (!new PAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von:\n" +
-                    txtDir.getText() + "\n\n" +
+            if (!new PAlert().showAlert_yes_no("Pfad ändern", "Projekt verschieben?", "Soll das Projekt von: " + PConst.LINE_SEPARATOR +
+                    txtDir.getText() + PConst.LINE_SEPARATORx2 +
                     "verschoben werden?").equals(PAlert.BUTTON.YES)) {
                 return;
             }

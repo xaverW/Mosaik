@@ -22,6 +22,7 @@ import de.p2tools.mosaic.controller.data.projectData.ProjectData;
 import de.p2tools.mosaic.controller.data.thumb.Thumb;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaic.controller.worker.genThumbList.ScaleImage;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.guiTools.POpen;
 import javafx.geometry.Insets;
@@ -103,7 +104,7 @@ public class TableChangeThumb {
 
             delThumb.setOnAction(a -> {
                 if (thumbs.size() == 1 &&
-                        !new PAlert().showAlert("Datei Löschen?", "", "Die Datei löschen:\n\n" + thumbs.get(0).getFileName())) {
+                        !new PAlert().showAlert("Datei Löschen?", "", "Die Datei löschen: " + PConst.LINE_SEPARATORx2 + thumbs.get(0).getFileName())) {
                     return;
 
                 } else if (thumbs.size() > 1 &&

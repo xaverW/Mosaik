@@ -24,6 +24,7 @@ import de.p2tools.mosaic.controller.data.mosaikData.MosaicData;
 import de.p2tools.mosaic.controller.data.mosaikData.WallpaperData;
 import de.p2tools.mosaic.controller.data.thumb.Thumb;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
@@ -147,7 +148,7 @@ public class GenWallpaper {
                 }
 
                 if (destWidth >= ImgTools.JPEG_MAX_DIMENSION || destHeight >= ImgTools.JPEG_MAX_DIMENSION) {
-                    showErrMsg("Die Maximale Größe des Mosaiks ist überschritten.\n" +
+                    showErrMsg("Die Maximale Größe des Mosaiks ist überschritten. " + PConst.LINE_SEPARATOR +
                             "(Es darf maximal eine Kantenlänge von " + ImgTools.JPEG_MAX_DIMENSION + " Pixeln haben.");
                     return;
                 }

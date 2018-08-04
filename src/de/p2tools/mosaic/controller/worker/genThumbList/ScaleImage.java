@@ -21,6 +21,7 @@ import de.p2tools.mosaic.controller.config.ProgConfig;
 import de.p2tools.mosaic.controller.config.ProgConst;
 import de.p2tools.mosaic.controller.data.thumb.Thumb;
 import de.p2tools.mosaic.controller.data.thumb.ThumbDataList;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.log.PLog;
@@ -117,7 +118,7 @@ public class ScaleImage {
             BufferedImage rImg = rotateImage(img, (rechts) ? 1 : -1);
             ImageIO.write(rImg, ImgTools.fileType(source), source);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage() + "\n" + "ScaleImage_.drehen");
+            System.out.println(ex.getMessage() + PConst.LINE_SEPARATOR + "ScaleImage_.drehen");
         }
     }
 

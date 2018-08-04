@@ -23,6 +23,7 @@ import de.p2tools.mosaic.controller.data.Icons;
 import de.p2tools.mosaic.controller.data.mosaikData.WallpaperData;
 import de.p2tools.mosaic.gui.HelpText;
 import de.p2tools.mosaic.gui.tools.GuiTools;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.guiTools.PColumnConstraints;
@@ -301,7 +302,7 @@ public class GuiWallpaperPane extends AnchorPane {
             text.setText("Die Fototapete hat eine Breite und Höhe von " +
                     numberFormat.format(pixelW) + " * " +
                     numberFormat.format(pixelH) + " Pixeln." +
-                    "\n" +
+                    PConst.LINE_SEPARATOR +
                     "Die Dateigröße wird etwa " + fileSize + " betragen.");
 
             lblSize.setText(text.getText());

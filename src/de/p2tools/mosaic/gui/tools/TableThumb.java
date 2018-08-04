@@ -83,7 +83,7 @@ public class TableThumb {
 //
 //            delThumb.setOnAction(a -> {
 //                if (thumbs.size() == 1 &&
-//                        !new PAlert().showAlert("Datei Löschen?", "", "Die Datei löschen:\n\n" + thumbs.get(0).getFileName())) {
+//                        !new PAlert().showAlert("Datei Löschen?", "", "Die Datei löschen: "+PConst.LINE_SEPARATORx2 + thumbs.get(0).getFileName())) {
 //                    return;
 //
 //                } else if (thumbs.size() > 1 &&

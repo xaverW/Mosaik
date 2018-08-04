@@ -27,6 +27,7 @@ import de.p2tools.mosaic.controller.worker.genMosaic.CreateMosaic;
 import de.p2tools.mosaic.controller.worker.genThumbList.CreateThumbList;
 import de.p2tools.mosaic.controller.worker.genThumbList.ReadThumbList;
 import de.p2tools.mosaic.controller.worker.genWallpaper.GenWallpaper;
+import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.tools.FileUtils;
 import javafx.beans.property.BooleanProperty;
@@ -127,8 +128,8 @@ public class Worker {
         if (FileUtils.movePath(progData.selectedProjectData.getDestDir(), destDir)) {
             ret = true;
         } else {
-            new PAlert().showErrorAlert("Projekt verschieben", "Das Verschieben des Verzeichnisses nach\n" +
-                    destDir + "\n\n" +
+            new PAlert().showErrorAlert("Projekt verschieben", "Das Verschieben des Verzeichnisses nach " + PConst.LINE_SEPARATOR +
+                    destDir + PConst.LINE_SEPARATORx2 +
                     "hat nicht geklappt.");
         }
 
