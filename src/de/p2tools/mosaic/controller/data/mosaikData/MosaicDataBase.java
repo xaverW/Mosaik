@@ -58,20 +58,6 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
         }
     }
 
-    public enum THUMB_RESIZE {
-        NON("NON"), ALL("ALL"), DARK("DARK"), LIGHT("LIGHT");
-        private final String name;
-
-        THUMB_RESIZE(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-
     private final StringProperty format = new SimpleStringProperty(ImgFile.IMAGE_FORMAT_JPG); // Fotoformat: jpg,png
     private final StringProperty fotoSrc = new SimpleStringProperty(""); // File SRC
     private final StringProperty fotoDest = new SimpleStringProperty(""); // File dest
@@ -79,7 +65,6 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
     private final IntegerProperty quantityThumbsWidth = new SimpleIntegerProperty(50); // Anzahl Thumbs in der Breite des Dest
     private final IntegerProperty thumbCount = new SimpleIntegerProperty(0); // Anzahl wie oft ein Thumbs verwendet werden kann
     private final StringProperty mosaicType = new SimpleStringProperty(MOSAIC_TYPE.THUMBS.toString()); // Miniaturbilder die verwendet werden
-    private final StringProperty resizeThumb = new SimpleStringProperty(THUMB_RESIZE.NON.toString()); // dunkle Thumbs werden etwas verkleinert
 
     private final BooleanProperty addBorder = new SimpleBooleanProperty(false); // einen Rahmen um die Thumbs zeichnen
     private final IntegerProperty borderSize = new SimpleIntegerProperty(0); // Anzahl Pixel um die ein Thumb verleinert wird
@@ -102,7 +87,6 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
                 new ConfigIntProp("number-thumbs-width", quantityThumbsWidth),
                 new ConfigIntProp("thumb-count", thumbCount),
                 new ConfigStringProp("mosaic-type", mosaicType),
-                new ConfigStringProp("reduce-big", resizeThumb),
 
                 new ConfigBoolProp("add-border", addBorder),
                 new ConfigIntProp("reduce-size", borderSize),
@@ -195,18 +179,6 @@ public class MosaicDataBase extends PDataSample<MosaicData> {
 
     public void setMosaicType(String mosaicType) {
         this.mosaicType.set(mosaicType);
-    }
-
-    public String getResizeThumb() {
-        return resizeThumb.getValueSafe();
-    }
-
-    public StringProperty resizeThumbProperty() {
-        return resizeThumb;
-    }
-
-    public void setResizeThumb(String resizeThumb) {
-        this.resizeThumb.set(resizeThumb);
     }
 
     public boolean isAddBorder() {

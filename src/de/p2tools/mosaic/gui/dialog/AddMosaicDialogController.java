@@ -23,8 +23,8 @@ import de.p2tools.mosaic.controller.data.projectData.ProjectData;
 import de.p2tools.mosaic.gui.HelpText;
 import de.p2tools.mosaic.gui.tools.GuiTools;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
-import de.p2tools.p2Lib.dialog.MTDialogExtra;
 import de.p2tools.p2Lib.dialog.PAlert;
+import de.p2tools.p2Lib.dialog.PDialogExtra;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.geometry.Insets;
@@ -34,7 +34,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
-public class AddMosaicDialogController extends MTDialogExtra {
+public class AddMosaicDialogController extends PDialogExtra {
 
     private final ProgData progData;
     private final Button btnOk = new Button("Ok");

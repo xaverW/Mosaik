@@ -104,14 +104,6 @@ public class GuiChangeBorderPane extends AnchorPane {
         btnBgImg.setGraphic(new Icons().ICON_BUTTON_FILE_OPEN);
         cboBgImg.init(ProgConfig.CONFIG_SRC_PHOTO_PATH_LIST, ProgConfig.CONFIG_SRC_PHOTO_PATH_SEL);
 
-        chkBorder.setOnAction(e -> {
-            if (chkBorder.isSelected()) {
-                mosaikData.setResizeThumb(MosaicData.THUMB_RESIZE.ALL.toString());
-            } else {
-                mosaikData.setResizeThumb(MosaicData.THUMB_RESIZE.NON.toString());
-            }
-        });
-
         rbBgImg.disableProperty().bind(chkBorder.selectedProperty().not());
         rbColor.disableProperty().bind(chkBorder.selectedProperty().not());
         cboBgImg.disableProperty().bind(chkBorder.selectedProperty().not());

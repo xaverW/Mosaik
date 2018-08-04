@@ -248,7 +248,7 @@ public class CreateMosaicThread implements Runnable {
             final CreateMosaicData createMosaicData = new CreateMosaicData(imgOut, srcImg,
                     imgSrcSmall, colorCollection, shuffleList, thumbCollection,
                     thumbSize, yy, quantityThumbsWidth, quantityThumbsHeight, quantityPixelProThumb,
-                    mosaicData.getResizeThumb(), mosaicData.getBorderSize(), mosaicData.isAddBorder());
+                    mosaicData.getBorderSize(), mosaicData.isAddBorder());
 
             createMosaicDataArrayList.add(createMosaicData);
         }

@@ -126,10 +126,6 @@ public class CreateMosaicFromThumbsAllPixelColored {
         double hFactor = 1.0 * height / srcRaster.getHeight();
 
 
-//        if (srcRaster.getHeight() != height && srcRaster.getWidth() != width) {
-//            throw new PException("Fehler beim Erstellen des Mosaik");
-//        }
-
         boolean borderX = true, borderY = true;
         int thumbSize = createMosaicData.sizeThumb;
         int borderSize = createMosaicData.borderSize;
@@ -209,57 +205,4 @@ public class CreateMosaicFromThumbsAllPixelColored {
         return img;
     }
 
-    private BufferedImage getBufferedImg(BufferedImage thumbImg, Raster raster, int sizeThumb, int startX, int startY) {
-        BufferedImage img = ImgFile.cloneImage(thumbImg);
-
-        int width = img.getWidth();
-        int height = img.getHeight();
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-
-                int p = thumbImg.getRGB(x, y);
-                int a = (p >> 24) & 0xff;
-                int r = (p >> 16) & 0xff;
-                int g = (p >> 8) & 0xff;
-                int b = p & 0xff;
-
-                int rasterX = startX * sizeThumb + x;
-                if (rasterX >= raster.getWidth()) {
-                    rasterX = raster.getWidth() - 1;
-                }
-
-                int rasterY = startY * sizeThumb + y;
-                if (rasterY >= raster.getHeight()) {
-                    rasterY = raster.getHeight() - 1;
-                }
-
-                int rOrg = raster.getSample(rasterX, rasterY, 0);
-                int gOrg = raster.getSample(rasterX, rasterY, 1);
-                int bOrg = raster.getSample(rasterX, rasterY, 2);
-
-
-                //calculate average
-                float avg = (float) (r + g + b) / 255;
-                // float avg = 1.0f * (r + g + b) / (3 * 255);
-
-                int rr = (int) (avg * rOrg);
-                int gg = (int) (avg * gOrg);
-                int bb = (int) (avg * bOrg);
-                if (rr > 255) {
-                    rr = 255;
-                }
-                if (gg > 255) {
-                    gg = 255;
-                }
-                if (bb > 255) {
-                    bb = 255;
-                }
-
-                p = (a << 24) | (rr << 16) | (gg << 8) | bb;
-                img.setRGB(x, y, p);
-            }
-        }
-        return img;
-    }
 }

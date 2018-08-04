@@ -34,7 +34,6 @@ class CreateMosaicData {
     int numThumbsWidth;
     int numThumbsHeight;
     int numPixelProThumb;
-    //        String thumbResize;
     boolean addBorder;
     int borderSize;
 
@@ -42,7 +41,7 @@ class CreateMosaicData {
                             BufferedImage srcImgSmall, ColorCollection colorCollection,
                             List<Integer> listForColoredThumbs, ThumbCollection thumbCollection,
                             int sizeThumb, int yy, int numThumbsWidth, int numThumbsHeight, int numPixelProThumb,
-                            String thumbResize, int borderSize, boolean addBorder) {
+                            int borderSize, boolean addBorder) {
         this.imgOut = imgOut;
         this.srcImg = srcImg;
         this.srcImgSmall = srcImgSmall;
@@ -54,7 +53,6 @@ class CreateMosaicData {
         this.numThumbsWidth = numThumbsWidth;
         this.numThumbsHeight = numThumbsHeight;
         this.numPixelProThumb = numPixelProThumb;
-//            this.thumbResize = thumbResize;
         this.borderSize = borderSize;
         this.addBorder = addBorder;
     }
