@@ -73,17 +73,24 @@ public class HelpText {
     public static final String MOSAIC_PIXEL_FOTO = "Hier kann ausgewählt werden, wie die Miniaturbilder " +
             "zum Bauen des Mosaik verwendet werden." +
             PConst.LINE_SEPARATORx2 +
-            "Möglichkeit 1: Es werden die erstellten Miniaturbilder des Projekts verwendet. " +
+            "Möglichkeit 1:" +
+            PConst.LINE_SEPARATOR +
+            "Es werden die erstellten Miniaturbilder des Projekts verwendet. " +
             "Zusätzlich kann das Mosaik als Schwarz-Weiß-Bild erstellt werden" +
             PConst.LINE_SEPARATORx2 +
-            "Möglichkeit 2: Es werden die erstellten Miniaturbilder des Projekts verwendet. Diese werden aber Farblich so " +
+            "Möglichkeit 2:" +
+            PConst.LINE_SEPARATOR +
+            "Es werden die erstellten Miniaturbilder des Projekts verwendet. Diese werden aber farblich so " +
             "verändert, dass sie zur Vorlage besser passen. Das ist eine Möglichkeit, bei wenigen Miniaturbildern ein Mosaik zu " +
             "erstellen. " +
-            "Hier kann noch angegeben werden, ob beim Einfärben die einzelnen Miniaturbilder immer komplett in " +
-            "der gleichen Farbe gefärbt werden oder das ganze Mosaik gleichmäßig eingefärbt werden soll. Bei wenigen " +
-            "Miniaturbildern im Projekt führt letzteres zu besseren Ergebnissen. " +
+            PConst.LINE_SEPARATOR +
+            "Zusätzlich kann noch ausgewählt werden, dass das ganze Mosaik gleichmäßig eingefärbt werden soll (und nicht " +
+            "die einzelnen Miniaturbilder immer in der gleichen Farbe). " +
+            "Bei wenigen Miniaturbildern im Projekt führt letzteres zu besseren Ergebnissen. " +
             PConst.LINE_SEPARATORx2 +
-            "Möglichkeit 3: Aus der Fotovorlage werden Miniaturbilder erstellt, " +
+            "Möglichkeit 3:" +
+            PConst.LINE_SEPARATOR +
+            "Aus der Fotovorlage werden Miniaturbilder erstellt, " +
             "diese werden dann passend \"eingefärbt\" und dann zum Bauen des Mosaik verwendet.";
 
     public static final String THUMB_SIZE = "Die Größe der Miniaturbilder wird geringfügig verkleinert. " +
