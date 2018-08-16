@@ -21,7 +21,7 @@ import de.p2tools.mosaic.controller.config.ProgConfig;
 import de.p2tools.mosaic.controller.config.ProgConst;
 import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.res.GetIcon;
-import de.p2tools.p2Lib.guiTools.GuiSize;
+import de.p2tools.p2Lib.guiTools.PGuiSize;
 import de.p2tools.p2Lib.tools.log.Duration;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -58,8 +58,8 @@ public class Mosaic extends Application {
             root = new MosaicController();
             progData.mosaicController = root;
             scene = new Scene(root,
-                    GuiSize.getWidth(ProgConfig.SYSTEM_GROESSE_GUI),
-                    GuiSize.getHeight(ProgConfig.SYSTEM_GROESSE_GUI));
+                    PGuiSize.getWidth(ProgConfig.SYSTEM_GROESSE_GUI),
+                    PGuiSize.getHeight(ProgConfig.SYSTEM_GROESSE_GUI));
 
             String css = this.getClass().getResource(ProgConst.CSS_FILE).toExternalForm();
             scene.getStylesheets().add(css);
@@ -70,7 +70,7 @@ public class Mosaic extends Application {
                 new ProgQuitt().quitt();
             });
 
-            GuiSize.setPos(ProgConfig.SYSTEM_GROESSE_GUI, primaryStage);
+            PGuiSize.setPos(ProgConfig.SYSTEM_GROESSE_GUI, primaryStage);
             primaryStage.show();
 
         } catch (final Exception e) {

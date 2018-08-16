@@ -51,7 +51,7 @@ public class AddMosaicDialogController extends PDialogExtra {
 
 
     public AddMosaicDialogController() {
-        super(null, ProgConfig.DIALOG_ADD_MOSAIK, "Neues Mosaik anlegen", true);
+        super(ProgConfig.DIALOG_ADD_MOSAIK, "Neues Mosaik anlegen", true);
 
         this.projectData = new ProjectData();
         this.progData = ProgData.getInstance();

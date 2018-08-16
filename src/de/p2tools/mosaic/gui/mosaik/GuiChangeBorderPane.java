@@ -160,7 +160,7 @@ public class GuiChangeBorderPane extends AnchorPane {
         gridPane.add(colorPicker, 1, row);
 
         gridPane.getColumnConstraints().addAll(PColumnConstraints.getCcPrefSize(),
-                PColumnConstraints.getCcComputedSize(),
+                PColumnConstraints.getCcComputedSizeAndHgrow(),
                 PColumnConstraints.getCcPrefSize());
 
         // import all

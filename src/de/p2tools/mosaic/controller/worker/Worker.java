@@ -29,7 +29,7 @@ import de.p2tools.mosaic.controller.worker.genThumbList.ReadThumbList;
 import de.p2tools.mosaic.controller.worker.genWallpaper.GenWallpaper;
 import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.PAlert;
-import de.p2tools.p2Lib.tools.FileUtils;
+import de.p2tools.p2Lib.tools.PFileUtils;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -125,7 +125,7 @@ public class Worker {
     public boolean moveProject(String destDir) {
         boolean ret = false;
 
-        if (FileUtils.movePath(progData.selectedProjectData.getDestDir(), destDir)) {
+        if (PFileUtils.movePath(progData.selectedProjectData.getDestDir(), destDir)) {
             ret = true;
         } else {
             new PAlert().showErrorAlert("Projekt verschieben", "Das Verschieben des Verzeichnisses nach " + PConst.LINE_SEPARATOR +

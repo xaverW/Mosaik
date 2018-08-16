@@ -114,7 +114,7 @@ public class TableChangeThumb {
                 }
 
                 for (Thumb thumb : thumbs) {
-                    if (de.p2tools.p2Lib.tools.FileUtils.deleteFileNoMsg(thumb.getFileName())) {
+                    if (de.p2tools.p2Lib.tools.PFileUtils.deleteFileNoMsg(thumb.getFileName())) {
                         thumbCollection.getThumbList().remove(thumb);
                     } else {
                         break;
@@ -210,13 +210,13 @@ public class TableChangeThumb {
                 lblFile.setText(thumb.getFileName());
                 Button btnDel = new Button("Bild löschen");
                 btnDel.setOnAction(a -> {
-                    if (de.p2tools.p2Lib.tools.FileUtils.deleteFile(thumb.getFileName())) {
+                    if (de.p2tools.p2Lib.tools.PFileUtils.deleteFile(thumb.getFileName())) {
                         ProgData.getInstance().selectedProjectData.getThumbCollection().getThumbList().remove(thumb);
                     }
                 });
 
                 Button btnOpenDir = new Button("Ordner öffnen");
-                btnOpenDir.setOnAction(a -> POpen.openDir(de.p2tools.p2Lib.tools.FileUtils.getPath(thumb.getFileName())));
+                btnOpenDir.setOnAction(a -> POpen.openDir(de.p2tools.p2Lib.tools.PFileUtils.getPath(thumb.getFileName())));
 
                 // todo
                 // erst wenns einen Config-Dialog gibt

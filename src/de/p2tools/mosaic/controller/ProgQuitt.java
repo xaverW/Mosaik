@@ -19,8 +19,8 @@ package de.p2tools.mosaic.controller;
 import de.p2tools.mosaic.controller.config.ProgConfig;
 import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.p2Lib.dialog.PAlert;
-import de.p2tools.p2Lib.guiTools.GuiSize;
-import de.p2tools.p2Lib.tools.log.LogMsg;
+import de.p2tools.p2Lib.guiTools.PGuiSize;
+import de.p2tools.p2Lib.tools.log.LogMessage;
 import javafx.application.Platform;
 
 public class ProgQuitt {
@@ -33,7 +33,7 @@ public class ProgQuitt {
 
     private void writeWindowSizes() {
         // Hauptfenster
-        GuiSize.getSizeScene(ProgConfig.SYSTEM_GROESSE_GUI, progData.primaryStage);
+        PGuiSize.getSizeScene(ProgConfig.SYSTEM_GROESSE_GUI, progData.primaryStage);
     }
 
     private void writeTabSettings() {
@@ -66,7 +66,7 @@ public class ProgQuitt {
             writeWindowSizes();
             new ProgSave().save();
 
-            LogMsg.endMsg();
+            LogMessage.endMsg();
         }
 
 

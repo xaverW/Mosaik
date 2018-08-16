@@ -23,7 +23,7 @@ import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaic.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.image.ImgFile;
-import de.p2tools.p2Lib.tools.FileUtils;
+import de.p2tools.p2Lib.tools.PFileUtils;
 import de.p2tools.p2Lib.tools.log.Duration;
 import de.p2tools.p2Lib.tools.log.PLog;
 
@@ -128,7 +128,7 @@ public class CreateThumbList {
                 }
 
                 // Dateien zählen
-                maxFile = FileUtils.countFilesInDirectory(fileSrcDir);
+                maxFile = PFileUtils.countFilesInDirectory(fileSrcDir);
                 notifyEvent(maxFile, 0, maxFile + " Miniaturbilder erstellen");
 
                 // Fotos zum Erstellen der Thumbs suchen
