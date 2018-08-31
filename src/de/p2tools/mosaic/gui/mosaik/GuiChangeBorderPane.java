@@ -25,7 +25,7 @@ import de.p2tools.mosaic.gui.HelpText;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.guiTools.PColumnConstraints;
-import de.p2tools.p2Lib.guiTools.PComboBox;
+import de.p2tools.p2Lib.guiTools.PComboBoxString;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -45,7 +45,7 @@ public class GuiChangeBorderPane extends AnchorPane {
     private final RadioButton rbColor = new RadioButton("Farbe als Hintergrund");
     private final RadioButton rbBgImg = new RadioButton("Foto als Hintergrund");
     private final ToggleGroup tg = new ToggleGroup();
-    private final PComboBox cboBgImg = new PComboBox();
+    private final PComboBoxString cboBgImg = new PComboBoxString();
     private final Button btnBgImg = new Button();
 
     private final Slider sliderBorder = new Slider();

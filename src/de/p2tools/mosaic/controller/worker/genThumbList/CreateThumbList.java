@@ -24,7 +24,7 @@ import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaic.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.tools.PFileUtils;
-import de.p2tools.p2Lib.tools.log.Duration;
+import de.p2tools.p2Lib.tools.log.PDuration;
 import de.p2tools.p2Lib.tools.log.PLog;
 
 import javax.swing.event.EventListenerList;
@@ -72,7 +72,7 @@ public class CreateThumbList {
     }
 
     public void create(ThumbCollection thumbCollection, String destDir) {
-        Duration.counterStart("Thumb erstellen");
+        PDuration.counterStart("Thumb erstellen");
         stopAll = false;
         CreateListOfThumbs createListOfThumbs = new CreateListOfThumbs(thumbCollection, destDir);
         Thread thread = new Thread(createListOfThumbs);
@@ -259,7 +259,7 @@ public class CreateThumbList {
 
                     thumbCollection.getThumbList().sort();
                     notifyEvent(0, 0, "");
-                    Duration.counterStop("Thumb erstellen");
+                    PDuration.counterStop("Thumb erstellen");
                 }
             }
 

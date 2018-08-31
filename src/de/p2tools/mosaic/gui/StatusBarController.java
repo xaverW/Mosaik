@@ -23,7 +23,7 @@ import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.Icons;
 import de.p2tools.p2Lib.guiTools.Listener;
 import de.p2tools.p2Lib.guiTools.PProgressBar;
-import de.p2tools.p2Lib.tools.Functions;
+import de.p2tools.p2Lib.tools.ProgramTools;
 import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -215,7 +215,7 @@ public class StatusBarController extends AnchorPane {
         }
 
         final long maxMem;
-        if (Functions.getOs() == Functions.OperatingSystemType.LINUX) {
+        if (ProgramTools.getOs() == ProgramTools.OperatingSystemType.LINUX) {
             maxMem = rt.totalMemory();
         } else {
             maxMem = rt.maxMemory();

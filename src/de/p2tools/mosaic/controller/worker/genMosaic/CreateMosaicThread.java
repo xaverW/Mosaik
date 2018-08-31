@@ -28,7 +28,7 @@ import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.PRandom;
-import de.p2tools.p2Lib.tools.log.Duration;
+import de.p2tools.p2Lib.tools.log.PDuration;
 import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.application.Platform;
 
@@ -81,7 +81,7 @@ public class CreateMosaicThread implements Runnable {
     @Override
     public synchronized void run() {
 
-        Duration.counterStart("Mosaik erstellen");
+        PDuration.counterStart("Mosaik erstellen");
         try {
             thumbCollection.getThumbList().resetAnz();
 
@@ -180,7 +180,7 @@ public class CreateMosaicThread implements Runnable {
 
             if (stopAll) {
                 notifyEvent(0, 0, "Abbruch");
-                Duration.counterStop("Mosaik erstellen");
+                PDuration.counterStop("Mosaik erstellen");
                 return;
             }
 
@@ -202,7 +202,7 @@ public class CreateMosaicThread implements Runnable {
         } finally {
             notifyEvent(quantityThumbsHeight, progressLines, "");
             notifyEvent(0, 0, "");
-            Duration.counterStop("Mosaik erstellen");
+            PDuration.counterStop("Mosaik erstellen");
         }
 
     }

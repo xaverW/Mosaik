@@ -26,7 +26,7 @@ import de.p2tools.mosaic.gui.tools.GuiTools;
 import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
-import de.p2tools.p2Lib.guiTools.PComboBox;
+import de.p2tools.p2Lib.guiTools.PComboBoxString;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.PFileUtils;
@@ -64,9 +64,9 @@ public class GuiMosaicPane extends AnchorPane {
     private final Label lblSlider = new Label("");
     private final Slider sliderCount = new Slider();
     private final Label lblSliderCount = new Label("");
-    private final PComboBox cbSrcPhoto = new PComboBox();
+    private final PComboBoxString cbSrcPhoto = new PComboBoxString();
 
-    private final PComboBox cbDestDir = new PComboBox();
+    private final PComboBoxString cbDestDir = new PComboBoxString();
     private final Button btnDest = new Button("");
 
     private final Label lblSrcFile = new Label("Datei:");

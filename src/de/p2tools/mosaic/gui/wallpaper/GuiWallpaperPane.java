@@ -27,7 +27,7 @@ import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.guiTools.PColumnConstraints;
-import de.p2tools.p2Lib.guiTools.PComboBox;
+import de.p2tools.p2Lib.guiTools.PComboBoxString;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.PFileUtils;
@@ -57,7 +57,7 @@ public class GuiWallpaperPane extends AnchorPane {
 
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox contPane = new VBox(10);
-    private final PComboBox cbDest = new PComboBox();
+    private final PComboBoxString cbDest = new PComboBoxString();
     private final Button btnDest = new Button("");
     private final Label lblSize = new Label("Die Fototapete wird die Größe haben von:");
     private final Label lblDest = new Label("Datei:");

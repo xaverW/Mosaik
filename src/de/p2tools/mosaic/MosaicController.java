@@ -25,7 +25,7 @@ import de.p2tools.mosaic.gui.*;
 import de.p2tools.mosaic.gui.dialog.AboutDialogController;
 import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.checkForUpdates.SearchProgInfo;
-import de.p2tools.p2Lib.tools.Functions;
+import de.p2tools.p2Lib.tools.ProgramTools;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -87,7 +87,7 @@ public class MosaicController extends StackPane {
 
             final MenuItem miUpdate = new MenuItem("Gibt es ein Update?");
             miUpdate.setOnAction(event -> new SearchProgInfo().checkUpdate(ProgConst.WEBSITE_PROG_UPDATE,
-                    Functions.getProgVersionInt(),
+                    ProgramTools.getProgVersionInt(),
                     ProgConfig.SYSTEM_INFOS_NR, true, true));
 
             final MenuItem miAbout = new MenuItem("Über dieses Programm");

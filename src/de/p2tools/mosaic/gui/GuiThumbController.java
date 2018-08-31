@@ -22,7 +22,7 @@ import de.p2tools.mosaic.controller.data.Icons;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.p2Lib.dialog.DirFileChooser;
 import de.p2tools.p2Lib.dialog.PAlert;
-import de.p2tools.p2Lib.guiTools.PComboBox;
+import de.p2tools.p2Lib.guiTools.PComboBoxString;
 import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -40,7 +40,7 @@ public class GuiThumbController extends AnchorPane {
     private final ProgData progData;
     VBox vBoxCont = new VBox(10);
     ThumbCollection thumbCollection = null;
-    PComboBox cbDir = new PComboBox();
+    PComboBoxString cbDir = new PComboBoxString();
     CheckBox tglRecursive = new CheckBox("Auch Unterordner durchsuchen");
 
     public GuiThumbController() {

@@ -29,7 +29,7 @@ import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
 import de.p2tools.p2Lib.tools.PRandom;
-import de.p2tools.p2Lib.tools.log.Duration;
+import de.p2tools.p2Lib.tools.log.PDuration;
 import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.application.Platform;
 
@@ -125,7 +125,7 @@ public class GenWallpaper {
         @Override
         public synchronized void run() {
 
-            Duration.counterStart("Mosaik erstellen");
+            PDuration.counterStart("Mosaik erstellen");
             try {
                 final int thumbListSize = thumbCollection.getThumbList().getSize();
 

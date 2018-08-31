@@ -22,7 +22,7 @@ import de.p2tools.mosaic.controller.config.ProgConst;
 import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.res.GetIcon;
 import de.p2tools.p2Lib.guiTools.PGuiSize;
-import de.p2tools.p2Lib.tools.log.Duration;
+import de.p2tools.p2Lib.tools.log.PDuration;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -44,7 +44,7 @@ public class Mosaic extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
-        Duration.counterStart(LOG_TEXT_PROGRAMMSTART);
+        PDuration.counterStart(LOG_TEXT_PROGRAMMSTART);
         progData = ProgData.getInstance();
         progData.primaryStage = primaryStage;
         new ProgStart(progData).loadConfigData();
@@ -79,14 +79,14 @@ public class Mosaic extends Application {
     }
 
     public void losGehts() {
-        Duration.counterStop(LOG_TEXT_PROGRAMMSTART);
+        PDuration.counterStop(LOG_TEXT_PROGRAMMSTART);
         primaryStage.getIcons().add(GetIcon.getImage(ProgConst.ICON_NAME, ProgConst.ICON_PATH, 32, 32));
 
-        Duration.staticPing("Erster Start");
+        PDuration.onlyPing("Erster Start");
         setTitle();
         ProgConfig.START_GUI_PROJECT_DATA.addListener((observable, oldValue, newValue) -> setTitle());
 
-        Duration.staticPing("Gui steht!");
+        PDuration.onlyPing("Gui steht!");
     }
 
     private void setTitle() {
