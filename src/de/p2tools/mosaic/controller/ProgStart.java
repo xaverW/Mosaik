@@ -59,7 +59,8 @@ public class ProgStart {
         PLog.sysLog("Progstart: Konfig");
 
         PInit.initLib(ProgData.getInstance().primaryStage, ProgConst.PROGRAMMNAME,
-                ProgConst.CSS_FILE, ProgInfos.getUserAgent(), ProgData.debug);
+                ProgConst.CSS_FILE, ProgInfos.getUserAgent(),
+                ProgData.debug, ProgData.duration);
 //        progData.projectDataList.initList();
         return true;
     }

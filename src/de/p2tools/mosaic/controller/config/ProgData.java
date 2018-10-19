@@ -35,6 +35,7 @@ public class ProgData {
 
     // flags
     public static boolean debug = false; // Debugmodus
+    public static boolean duration = false; // Duration ausgeben
     public static boolean saveMem = false; // es wird Speicher gespart, Ablauf dadurch langsamer
 
     // Infos
