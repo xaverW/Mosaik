@@ -28,11 +28,12 @@ public class Main {
      *
      * Programmschalter:
      *
-     * -d,--debug        show debug info
-     * -h,--help         show help
-     * -m,--mem          save memory
-     * -p,--path <arg>   path of configuration file
-     * -v,--version      show version
+     * -d,  --debug         show debug info
+     * -t,  --time          show timekeeping info
+     * -h,  --help          show help
+     * -m,  --mem           save memory
+     * -p,  --path <arg>    path of configuration file
+     * -v,  --version       show version
      *
      */
 
