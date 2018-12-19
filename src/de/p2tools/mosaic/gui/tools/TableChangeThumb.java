@@ -25,6 +25,7 @@ import de.p2tools.mosaic.controller.worker.genThumbList.ScaleImage;
 import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.guiTools.POpen;
+import de.p2tools.p2Lib.tools.file.PFileUtils;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -114,7 +115,7 @@ public class TableChangeThumb {
                 }
 
                 for (Thumb thumb : thumbs) {
-                    if (de.p2tools.p2Lib.tools.PFileUtils.deleteFileNoMsg(thumb.getFileName())) {
+                    if (PFileUtils.deleteFileNoMsg(thumb.getFileName())) {
                         thumbCollection.getThumbList().remove(thumb);
                     } else {
                         break;
@@ -210,13 +211,13 @@ public class TableChangeThumb {
                 lblFile.setText(thumb.getFileName());
                 Button btnDel = new Button("Bild löschen");
                 btnDel.setOnAction(a -> {
-                    if (de.p2tools.p2Lib.tools.PFileUtils.deleteFile(thumb.getFileName())) {
+                    if (PFileUtils.deleteFile(thumb.getFileName())) {
                         ProgData.getInstance().selectedProjectData.getThumbCollection().getThumbList().remove(thumb);
                     }
                 });
 
                 Button btnOpenDir = new Button("Ordner öffnen");
-                btnOpenDir.setOnAction(a -> POpen.openDir(de.p2tools.p2Lib.tools.PFileUtils.getPath(thumb.getFileName())));
+                btnOpenDir.setOnAction(a -> POpen.openDir(PFileUtils.getPath(thumb.getFileName())));
 
                 // todo
                 // erst wenns einen Config-Dialog gibt

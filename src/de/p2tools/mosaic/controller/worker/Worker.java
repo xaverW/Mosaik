@@ -29,7 +29,7 @@ import de.p2tools.mosaic.controller.worker.genThumbList.ReadThumbList;
 import de.p2tools.mosaic.controller.worker.genWallpaper.GenWallpaper;
 import de.p2tools.p2Lib.PConst;
 import de.p2tools.p2Lib.dialog.PAlert;
-import de.p2tools.p2Lib.tools.PFileUtils;
+import de.p2tools.p2Lib.tools.file.PFileUtils;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 

@@ -23,7 +23,7 @@ import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaic.controller.data.thumb.ThumbDataList;
 import de.p2tools.p2Lib.image.ImgFile;
-import de.p2tools.p2Lib.tools.PFileUtils;
+import de.p2tools.p2Lib.tools.file.PFileUtils;
 import de.p2tools.p2Lib.tools.log.PDuration;
 import de.p2tools.p2Lib.tools.log.PLog;
 
@@ -50,6 +50,7 @@ public class CreateThumbList {
     private Random random = new Random();
 
     /**
+     *
      */
     public CreateThumbList(ProgData progData) {
         this.progData = progData;

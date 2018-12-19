@@ -30,7 +30,7 @@ import de.p2tools.p2Lib.guiTools.PColumnConstraints;
 import de.p2tools.p2Lib.guiTools.PComboBoxString;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
-import de.p2tools.p2Lib.tools.PFileUtils;
+import de.p2tools.p2Lib.tools.file.PFileName;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.NumberBinding;
@@ -121,7 +121,7 @@ public class GuiWallpaperPane extends AnchorPane {
             }
 
             Path p = Paths.get(progData.selectedProjectData.getDestDir(),
-                    PFileUtils.getNextFileName(progData.selectedProjectData.getDestDir(),
+                    PFileName.getNextFileNameWithNr(progData.selectedProjectData.getDestDir(),
                             ProgConst.WALLPAPER_STD_NAME, suff));
             cbDest.selectElement(p.toString());
         }

@@ -29,7 +29,7 @@ import de.p2tools.p2Lib.dialog.PAlert;
 import de.p2tools.p2Lib.guiTools.PComboBoxString;
 import de.p2tools.p2Lib.image.ImgFile;
 import de.p2tools.p2Lib.image.ImgTools;
-import de.p2tools.p2Lib.tools.PFileUtils;
+import de.p2tools.p2Lib.tools.file.PFileName;
 import de.p2tools.p2Lib.tools.log.PLog;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -127,7 +127,7 @@ public class GuiMosaicPane extends AnchorPane {
                 suff = ImgFile.IMAGE_FORMAT_JPG;
             }
             Path p = Paths.get(progData.selectedProjectData.getDestDir(),
-                    PFileUtils.getNextFileName(progData.selectedProjectData.getDestDir(),
+                    PFileName.getNextFileNameWithNr(progData.selectedProjectData.getDestDir(),
                             ProgConst.MOSAIC_STD_NAME, suff));
             cbDestDir.selectElement(p.toString());
         }

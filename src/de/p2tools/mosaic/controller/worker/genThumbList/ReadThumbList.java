@@ -23,7 +23,7 @@ import de.p2tools.mosaic.controller.config.ProgData;
 import de.p2tools.mosaic.controller.data.thumb.Thumb;
 import de.p2tools.mosaic.controller.data.thumb.ThumbCollection;
 import de.p2tools.mosaic.controller.data.thumb.ThumbDataList;
-import de.p2tools.p2Lib.tools.PFileUtils;
+import de.p2tools.p2Lib.tools.file.PFileUtils;
 import de.p2tools.p2Lib.tools.log.PLog;
 
 import javax.swing.event.EventListenerList;
@@ -42,6 +42,7 @@ public class ReadThumbList {
     private int threads = 0;
 
     /**
+     *
      */
     public ReadThumbList(ProgData progData) {
         this.progData = progData;
