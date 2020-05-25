@@ -29,11 +29,11 @@ Ein guter Wert für die Größe und Anzahl der Miniaturbilder im Mosaik ist 50 -
 | 250 | 100 | 25.000 | 5 GByte | 150 MByte |
 
 
-<br /><br />
+<br />
 Die resultierende Dateigröße des Mosaiks hängt auch sehr vom Inhalt des Bildes ab. Ein weißes PNG mit 10.000x10.000 Pixel hat nur eine Dateigröße von 300 kByte. Als farbiges Bild kann es mehr als 100 MByte haben.
 
 
-<br /><br />
+<br />
 Sollte das Programm für große Mosaiks mehr Speicher brauchen, kann es aus einer Dosbox/Terminal heraus gestartet werden (z.B. stellt das 4GByte Speicher zur Verfügung):
 
 *java -Xmx4G -jar ./Mosaik.jar*
@@ -65,7 +65,7 @@ Für Linux-Benutzer wird OpenJDK11 empfohlen. (FX-Runtime bringt das Programm be
 Das Programm wird in drei Paketen angeboten. Diese unterscheiden sich nur im "Zubehör", das Programm selbst ist in allen Paketen identisch:
 
 - **Mosaik-XX.zip**  
-Das Programmpaket bringt nur das Programm und die benötigten "Hilfsprogramme" aber kein Java mit. Auf dem Rechner muss eine Java-Laufzeitumgebung ab Java11 installiert sein. Dieses Programmpaket kann auf allen Betriebssystemen verwendet werden. Es bringt Startdateien für Linux und Windows mit.
+Das Programmpaket bringt nur das Programm aber kein Java mit. Auf dem Rechner muss eine Java-Laufzeitumgebung ab Java11 installiert sein. Dieses Programmpaket kann auf allen Betriebssystemen verwendet werden. Es bringt Startdateien für Linux und Windows mit.
 
 - **Mosaik-XX__Linux+Java.zip**  
 **Mosaik-XX__Win+Java.zip**  
