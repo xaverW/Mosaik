@@ -6,15 +6,13 @@
 Mit dem Programm Mosaik lassen sich aus Bildersammlungen Fotomosaiks erstellen. Bei einem Foto als Vorlage werden die einzelnen Pixel durch Minibilder aus der Bildersammlungen mit passender Farbe ersetzt.
 
 
-<br />
-
+<br /><br />
 ## Anleitung
 
 Nach dem ersten Programmstart muss ein Ordner für das neue Projekt ausgewählt werden. Im zweiten Tab kann man dann Bilder importieren. Diese werden als Kopie im Ordner: *Projektordner/Bilder* in einer Größe von 600x600 Pixel gespeichert. Diese Miniaturbilder werden die "Pixel" des Fotomosaiks. Im dritten Tab kann dann das Fotomosaik erstellt werden. Dort können auch die verschiedenen Einstellungen zum Erstellen des Mosaiks vorgenommen werden (z.B. Größe).
 
 
-<br />
-
+<br /><br />
 ## Infos
 
 Die Qualität der erstellten Mosaiks hängt sehr von der Anzahl der importierten Miniaturbilder ab. Für gute Ergebnisse sollten es mehr als 1000 Bilder sein.
@@ -45,7 +43,7 @@ oder für Windows
 *java -Xmx4G -jar "C:\Users\PFAD\Mosaik.jar"*
 
 
-
+<br /><br />
 ## Systemvoraussetzungen
 
 Unterstützt wird Windows und Linux. 
@@ -61,7 +59,7 @@ Das Programm benötigt unter Windows und Linux eine aktuelle Java-VM ab Version:
 Für Linux-Benutzer wird OpenJDK11 empfohlen. (FX-Runtime bringt das Programm bereits mit und muss nicht installiert werden).
 
 
-
+<br /><br />
 ## Download
 
 Das Programm wird in drei Paketen angeboten. Diese unterscheiden sich nur im "Zubehör", das Programm selbst ist in allen Paketen identisch:
@@ -76,9 +74,8 @@ Diese Programmpakete bringen die Java-Laufzeitumgebung mit und sind nur für das
 zum Download: [github.com/xaverW/Mosaik/releases](https://github.com/xaverW/Mosaik/releases)
 
 
-
+<br /><br />
 ## Links
 
 [www.p2tools.de/mosaik/]( https://www.p2tools.de/mosaik/)
-
 
