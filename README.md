@@ -27,13 +27,11 @@ Ein guter Wert für die Größe und Anzahl der Miniaturbilder im Mosaik ist 50 -
 | 50 | 100 | 5.000 | 500 MByte | 10 MByte |
 | 100 | 100 | 10.000 | 1 GByte | 25 MByte |
 | 250 | 100 | 25.000 | 5 GByte | 150 MByte |
-
-
 <br />
+
 Die resultierende Dateigröße des Mosaiks hängt auch sehr vom Inhalt des Bildes ab. Ein weißes PNG mit 10.000x10.000 Pixel hat nur eine Dateigröße von 300 kByte. Als farbiges Bild kann es mehr als 100 MByte haben.
-
-
 <br />
+
 Sollte das Programm für große Mosaiks mehr Speicher brauchen, kann es aus einer Dosbox/Terminal heraus gestartet werden (z.B. stellt das 4GByte Speicher zur Verfügung):
 
 *java -Xmx4G -jar ./Mosaik.jar*
