@@ -4,7 +4,7 @@
 
 **Release 3-0**
 
-* Das Programm läuft jetzt auch auf Java 10
+* Das Programm läuft jetzt auch unter Java 10
 * Zum Erstellen eines Mosaik wurden neue Möglichkeiten geschaffen. Vor allem für kleine Mosaik wird so die Qualität deutlich verbesser.
 * Mit dem Schalter "-h" lassen sich die möglichen Startparameter abfragen
 * Der Pfad der Konfigurationsdatei hat sich geändert (wer eine bereits vorhandene Konfigurationsdatei behalten will, braucht nur den bisherigen Ordner ".mosaik" umbenennen, bei Windows wurde der führende Punkt der Probleme machen kann, entfernt und der Ordner wird als versteckt angelegt):  
