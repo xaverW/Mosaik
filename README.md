@@ -3,6 +3,8 @@
 
 # Mosaik
 
+## Infos über das Programm
+
 Mit dem Programm Mosaik lassen sich aus Bildersammlungen Fotomosaiks erstellen. Bei einem Foto als Vorlage werden die einzelnen Pixel durch Minibilder aus der Bildersammlungen mit passender Farbe ersetzt.
 
 <br />
