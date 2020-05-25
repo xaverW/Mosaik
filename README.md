@@ -8,14 +8,14 @@ Mit dem Programm Mosaik lassen sich aus Bildersammlungen Fotomosaiks erstellen. 
 
 <br />
 
-**Anleitung**
+## Anleitung
 
 Nach dem ersten Programmstart muss ein Ordner für das neue Projekt ausgewählt werden. Im zweiten Tab kann man dann Bilder importieren. Diese werden als Kopie im Ordner: *Projektordner/Bilder* in einer Größe von 600x600 Pixel gespeichert. Diese Miniaturbilder werden die "Pixel" des Fotomosaiks. Im dritten Tab kann dann das Fotomosaik erstellt werden. Dort können auch die verschiedenen Einstellungen zum Erstellen des Mosaiks vorgenommen werden (z.B. Größe).
 
 
 <br />
 
-**Infos**
+## Infos
 
 Die Qualität der erstellten Mosaiks hängt sehr von der Anzahl der importierten Miniaturbilder ab. Für gute Ergebnisse sollten es mehr als 1000 Bilder sein.
 <br />
@@ -45,22 +45,39 @@ oder für Windows
 *java -Xmx4G -jar "C:\Users\PFAD\Mosaik.jar"*
 
 
-<br />
 
-**Systemvoraussetzungen**
+## Systemvoraussetzungen
 
-Unterstützt wird Windows (Vista, 7, 8, 10) und Linux. Das Programm benötigt unter Windows und Linux eine aktuelle Java-VM ab Version: 1.8 (= Java 8, Java 9, Java 10).
+Unterstützt wird Windows und Linux. 
 
-Für Linux-Benutzer wird OpenJDK8 empfohlen. Außerdem benötigen Linux Benutzer die aktuelle Version von JavaFX (OpenJFX). OpenJFX ist aber nur für OpenJDK8 ohne Probleme zu installieren. Soll es Java 10 sein, wäre das Oracle Java SE 10 eine Alternative (und das bringt JavaFX schon mit).
+*bis Programmversion 3*
 
-<br />
-<br />
+Das Programm benötigt unter Windows und Linux eine aktuelle Java-VM ab Version: 1.8 (= Java 8, Java 9, Java 10).
+Für Linux-Benutzer wird OpenJDK8 empfohlen. Außerdem benötigen Linux Benutzer die aktuelle Version von JavaFX (OpenJFX).
+
+**ab Programmversion 4**
+
+Das Programm benötigt unter Windows und Linux eine aktuelle Java-VM ab Version: Java 11.
+Für Linux-Benutzer wird OpenJDK11 empfohlen. (FX-Runtime bringt das Programm bereits mit und muss nicht installiert werden).
 
 
-<br />
-<br />
 
-**Links**
+## Download
+
+Das Programm wird in drei Paketen angeboten. Diese unterscheiden sich nur im "Zubehör", das Programm selbst ist in allen Paketen identisch:
+
+- **Mosaik-XX.zip**  
+Das Programmpaket bringt nur das Programm und die benötigten "Hilfsprogramme" aber kein Java mit. Auf dem Rechner muss eine Java-Laufzeitumgebung ab Java11 installiert sein. Dieses Programmpaket kann auf allen Betriebssystemen verwendet werden. Es bringt Startdateien für Linux und Windows mit.
+
+- **Mosaik-XX__Linux+Java.zip**  
+**Mosaik-XX__Win+Java.zip**  
+Diese Programmpakete bringen die Java-Laufzeitumgebung mit und sind nur für das angegebene Betriebssystem: Linux oder Windows. Es muss kein Java auf dem System installiert sein. (Die Java-Laufzeitumgebung liegt im Ordner "Java" und kommt von jdk.java.net).
+
+zum Download: [github.com/xaverW/Mosaik/releases](https://github.com/xaverW/Mosaik/releases)
+
+
+
+## Links
 
 [www.p2tools.de/mosaik/]( https://www.p2tools.de/mosaik/)
 
