@@ -3,19 +3,15 @@
 
 # Mosaik
 
-## Infos über das Programm
-
 Mit dem Programm Mosaik lassen sich aus Bildersammlungen Fotomosaiks erstellen. Bei einem Foto als Vorlage werden die einzelnen Pixel durch Minibilder aus der Bildersammlungen mit passender Farbe ersetzt.
 
 <br />
 
-## Anleitung
+## Infos
 
 Nach dem ersten Programmstart muss ein Ordner für das neue Projekt ausgewählt werden. Im zweiten Tab kann man dann Bilder importieren. Diese werden als Kopie im Ordner: *Projektordner/Bilder* in einer Größe von 600x600 Pixel gespeichert. Diese Miniaturbilder werden die "Pixel" des Fotomosaiks. Im dritten Tab kann dann das Fotomosaik erstellt werden. Dort können auch die verschiedenen Einstellungen zum Erstellen des Mosaiks vorgenommen werden (z.B. Größe).
 
 <br />
-
-## Infos
 
 Die Qualität der erstellten Mosaiks hängt sehr von der Anzahl der importierten Miniaturbilder ab. Für gute Ergebnisse sollten es mehr als 1000 Bilder sein.
 <br />
