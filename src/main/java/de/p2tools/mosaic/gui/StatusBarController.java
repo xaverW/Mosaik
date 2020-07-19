@@ -37,27 +37,23 @@ import javafx.scene.layout.StackPane;
 
 public class StatusBarController extends AnchorPane {
 
-    StackPane stackPane = new StackPane();
-
     // memory
     private final Runtime rt = Runtime.getRuntime();
     private static final int MEGABYTE = 1000 * 1000;
-    private final PProgressBar pProgressBar1 = new PProgressBar();
-    private final PProgressBar pProgressBar2 = new PProgressBar();
+    private final PProgressBar pProgressBar = new PProgressBar();
 
     // textPane
-    private final AnchorPane textPane = new AnchorPane();
     private final Label lblLeft = new Label();
     private final Label lblRight = new Label();
 
     // workerPane
-    private final AnchorPane workerPane = new AnchorPane();
     private final Label lblProgress = new Label();
     private final ProgressBar progressBar = new ProgressBar();
     private final Button btnStop = new Button("");
 
     private boolean running = false;
     private final ProgData progData;
+    private final HBox hBoxAll = new HBox(10);
 
     public enum StatusbarIndex {
         Start, Thumb, Mosaic
@@ -69,59 +65,24 @@ public class StatusBarController extends AnchorPane {
     public StatusBarController(ProgData progData) {
         this.progData = progData;
 
-        getChildren().addAll(stackPane);
-        AnchorPane.setLeftAnchor(stackPane, 0.0);
-        AnchorPane.setBottomAnchor(stackPane, 0.0);
-        AnchorPane.setRightAnchor(stackPane, 0.0);
-        AnchorPane.setTopAnchor(stackPane, 0.0);
+        getChildren().addAll(hBoxAll);
+        AnchorPane.setLeftAnchor(hBoxAll, 0.0);
+        AnchorPane.setBottomAnchor(hBoxAll, 0.0);
+        AnchorPane.setRightAnchor(hBoxAll, 0.0);
+        AnchorPane.setTopAnchor(hBoxAll, 0.0);
+        hBoxAll.setAlignment(Pos.CENTER_RIGHT);
+        hBoxAll.setPadding(new Insets(2, 5, 2, 5));
 
-        // textPane
-        HBox hBox = getHbox();
-        pProgressBar1.setMaxWidth(Double.MAX_VALUE);
-        pProgressBar1.setAlignment(Pos.CENTER);
-        HBox.setHgrow(pProgressBar1, Priority.ALWAYS);
+        pProgressBar.setPrefWidth(200);
 
-        hBox.getChildren().addAll(lblLeft, pProgressBar1, lblRight);
-        textPane.getChildren().add(hBox);
-        textPane.setStyle("-fx-background-color: -fx-background;");
-
-        // workerPane
-        hBox = getHbox();
-
-        HBox hb = new HBox();
-        hb.getChildren().add(pProgressBar2);
-        hb.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(hb, Priority.ALWAYS);
-
-        progressBar.setPrefWidth(200);
-        hBox.getChildren().addAll(hb, lblProgress, progressBar, btnStop);
-        workerPane.getChildren().add(hBox);
-        workerPane.setStyle("-fx-background-color: -fx-background;");
-
-        stackPane.getChildren().addAll(textPane, workerPane);
-        textPane.toFront();
-
+        setInfo();
         make();
     }
-
-    private HBox getHbox() {
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(2, 5, 2, 5));
-        hBox.setSpacing(10);
-        hBox.setAlignment(Pos.CENTER);
-        AnchorPane.setLeftAnchor(hBox, 0.0);
-        AnchorPane.setBottomAnchor(hBox, 0.0);
-        AnchorPane.setRightAnchor(hBox, 0.0);
-        AnchorPane.setTopAnchor(hBox, 0.0);
-        return hBox;
-    }
-
 
     private void make() {
         btnStop.setGraphic(new Icons().ICON_BUTTON_STOP);
         btnStop.setOnAction(e -> progData.worker.setStop());
-        pProgressBar1.visibleProperty().bind(ProgConfig.START_SHOW_MEM_DATA);
-        pProgressBar2.visibleProperty().bind(ProgConfig.START_SHOW_MEM_DATA);
+        pProgressBar.visibleProperty().bind(ProgConfig.START_SHOW_MEM_DATA);
 
         progData.worker.addAdListener(new RunListener() {
             @Override
@@ -170,26 +131,44 @@ public class StatusBarController extends AnchorPane {
     public void setStatusbarIndex(StatusbarIndex statusbarIndex) {
         this.statusbarIndex = statusbarIndex;
         if (running) {
-            workerPane.toFront();
+            setWorker();
             return;
         }
 
-        textPane.toFront();
-        switch (statusbarIndex) {
-            case Start:
-                setTextNone();
-                break;
-            case Thumb:
-            case Mosaic:
-                setInfoMosaic();
-                break;
-            default:
-                setTextNone();
-        }
+        setInfo();
+
+//        switch (statusbarIndex) {
+//            case Start:
+//                setTextNone();
+//                break;
+//            case Thumb:
+//            case Mosaic:
+//                setInfoMosaic();
+//                break;
+//            default:
+//                setTextNone();
+//        }
     }
 
+    private void setWorker(){
+        hBoxAll.getChildren().clear();
 
-    private void setTextNone() {
+        HBox hBProg = new HBox();
+        hBProg.setAlignment(Pos.CENTER_LEFT);
+        hBProg.getChildren().add(pProgressBar);
+        HBox.setHgrow(hBProg, Priority.ALWAYS);
+
+        hBoxAll.getChildren().addAll(hBProg, lblProgress, progressBar, btnStop);
+    }
+    private void setInfo(){
+        hBoxAll.getChildren().clear();
+
+        HBox hBProg = new HBox(10);
+        hBProg.setAlignment(Pos.CENTER_LEFT);
+        hBProg.getChildren().addAll(lblLeft, lblRight);
+        HBox.setHgrow(hBProg, Priority.ALWAYS);
+
+        hBoxAll.getChildren().addAll(hBProg,  pProgressBar);
         setInfoMosaic();
     }
 
@@ -205,7 +184,7 @@ public class StatusBarController extends AnchorPane {
         lblLeft.setText(textLinks);
 
         String strText = progData.selectedProjectData.getThumbCollection() != null ?
-                progData.selectedProjectData.getThumbCollection().getThumbList().size() + " Miniaturbilder" : "";
+                " ( " + progData.selectedProjectData.getThumbCollection().getThumbList().size() + " Miniaturbilder )" : "";
         lblRight.setText(strText);
     }
 
@@ -230,8 +209,7 @@ public class StatusBarController extends AnchorPane {
         double usedD = 1.0 * usedMem / totalMemory;
 
         final String info = "Speicher: " + used + " von " + total + " MB";
-        pProgressBar1.setProgress(usedD, info);
-        pProgressBar2.setProgress(usedD, info);
+        pProgressBar.setProgress(usedD, info);
     }
 
 }

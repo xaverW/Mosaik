@@ -65,9 +65,8 @@ public class Mosaic extends Application {
             addThemeCss(); // damit es für die 2 schon mal stimmt
             progData.mosaicController = new MosaicController();
             scene = new Scene(progData.mosaicController,
-                    PGuiSize.getWidth(ProgConfig.SYSTEM_GROESSE_GUI),
-                    PGuiSize.getHeight(ProgConfig.SYSTEM_GROESSE_GUI));
-
+                    PGuiSize.getWidth(ProgConfig.SYSTEM_GUI_SIZE),
+                    PGuiSize.getHeight(ProgConfig.SYSTEM_GUI_SIZE));
 
             P2LibInit.addP2LibCssToScene(scene);
             ProgConfig.SYSTEM_DARK_THEME.addListener((u, o, n) -> {
@@ -82,7 +81,7 @@ public class Mosaic extends Application {
                 new ProgQuitt().quitt();
             });
 
-            if (!PGuiSize.setPos(ProgConfig.SYSTEM_GROESSE_GUI, primaryStage)) {
+            if (!PGuiSize.setPos(ProgConfig.SYSTEM_GUI_SIZE, primaryStage)) {
                 primaryStage.centerOnScreen();
             }            primaryStage.show();
 

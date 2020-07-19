@@ -42,7 +42,7 @@ public class ProgConfig extends PDataProgConfig {
 
 
     // Fenstereinstellungen
-    public static StringProperty SYSTEM_GROESSE_GUI = addStr("system-gui-size", "1000:900");
+    public static StringProperty SYSTEM_GUI_SIZE = addStr("system-gui-size", "1000:900");
 
     // Einstellungen zum Erstellen der Fotolisten
     public static StringProperty FOTO_FORMAT = addStr("foto-format", ImgFile.IMAGE_FORMAT_JPG);

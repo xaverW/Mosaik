@@ -85,6 +85,7 @@ public class MosaicController extends StackPane {
             miMem.selectedProperty().bindBidirectional(ProgConfig.START_SHOW_MEM_DATA);
 
             final MenuItem miUpdate = new MenuItem("Gibt es ein Update?");
+            // todo
 //            miUpdate.setOnAction(event -> new SearchProgInfo().checkUpdate(ProgConst.WEBSITE_PROG_UPDATE,
 //                    ProgramTools.getProgVersionInt(),
 //                    ProgConfig.SYSTEM_INFOS_NR, true, true));
